@@ -5,6 +5,7 @@ class CF_Assembler:
    def __init__( self ):
        self.chain_active   = False
        self.cf_definition  = {}
+       self.cf_link_names = {}
        self.chain_name     = None
        self.links          = []
        self.opcodes        = opcodes.Opcodes()
@@ -22,27 +23,37 @@ class CF_Assembler:
        self.chain_active = True
        self.chain_name = chain_name
        self.links      = []
+       self.link_names = []
        self.link_list.append(self.link_number)
        self.start_flag_list.append(start_flag)
 
-   def define_link( self, opcode_name, param1 = 0, param2 = 0, param3 = 0, param4 = 0 ):
+   def define_link( self, opcode_name, param1 = 0, param2 = 0, param3 = 0, param4 = 0,name = "" ):
+       if name == "":
+	       name = str(len(self.links))
        if self.opcodes.has_key( opcode_name ) == False:
            raise ValueError("improper opcode "+opcode_name )
        self.links.append({ "opcode":self.opcodes.get_opcode(opcode_name),"param1":param1,"param2":param2,"param3":param3,"param4":param4 })
        self.link_number = self.link_number+1
+       self.link_names.append(name)
+       
+   def define_link_a( self, opcode_name, param2 = 0, param3 = 0, param4 = 0, name ="" ):
+       if name == "":
+           name = str(len(self.links))
 
-   def define_link_a( self, opcode_name, param2 = 0, param3 = 0, param4 = 0 ):
        if self.opcodes.has_key( opcode_name ) == False:
            raise ValueError("improper opcode "+opcode_name )
        self.links.append({ "opcode":self.opcodes.get_opcode(opcode_name),"param1":"NULL","param2":param2,"param3":param3,"param4":param4 })
        self.link_number = self.link_number+1
+       self.link_names.append(name)
 
    def end_chain( self ):
        self.chain_list.append(self.chain_name)
        self.cf_definition[self.chain_name] = self.links
+       self.cf_link_names[ self.chain_name ] = self.link_names
        self.chain_active = False
        self.chain_name = self.chain_name
        self.links      = []
+       self.link_names = []
 
    def generate_chain_elements(self):
        links_elements = []
@@ -101,6 +112,15 @@ class CF_Assembler:
        for i in range(0,len(self.chain_list)):
                fh.write("#define  "+self.chain_list[i]+"   "+ str(i)+"\n")
        fh.write("\n\n\n")
+       for i in range(0,len(self.chain_list)):
+           fh.write("/*\n")
+           fh.write("This is the symbolic definitions of the links for chain "+self.chain_list[i]+"\n") 
+           fh.write("*/\n")
+           chain_name = self.chain_list[i]
+           for j in range(0,len(self.cf_link_names[chain_name])):
+               fh.write("#define  "+self.chain_list[i]+"_"+str(self.cf_link_names[chain_name][j])+"   "+str(j)+"\n")
+           fh.write("\n\n\n")
+ 
        for i in self.foriegn_helper_functions.keys():
               fh.write("int "+self.foriegn_helper_functions[i]+"(unsigned link_id, unsigned param_1,\n")
               fh.write("  unsigned param_2, unsigned param_3, unsigned event, unsigned data);\n")

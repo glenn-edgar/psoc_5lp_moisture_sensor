@@ -21,6 +21,7 @@ class Opcodes():
         self.opcodes["SendEvent"]                         =    "send_event_fn" 
         self.opcodes["WaitTod" ]                           =    "wait_tod_fn"  
         self.opcodes["WaitEvent"]                         =    "wait_event_fn"
+	self.opcodes["WaitEventCount"]                 =    "wait_event_count_fn"
         self.opcodes["WaitTime" ]                         =    "wait_time_fn"       
         self.opcodes["Wait"]                                =    "wait_condition_fn"  
         self.opcodes["Verify"]                             =    "verify_condition_fn" 
