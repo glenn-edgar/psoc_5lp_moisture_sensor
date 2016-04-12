@@ -8,6 +8,7 @@ Implements of codes for cf_runtime_functions.c
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <device.h>
 #include "cf_chain_flow_support.h"
 
 #include "cf_runtime_functions.h"
@@ -81,18 +82,79 @@ int wait_tod_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
 
 }
 
-  
-int wait_event_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned rx_event 
-    unsigned rx_event_count, unsigned time_count,  unsigned event, unsigned event_data)
-{
-   int      return_value;
 
+int wait_event_count_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned rx_event, 
+    unsigned rx_event_count, unsigned param_4,  unsigned event, unsigned event_data)
+{
+  unsigned value; 
+  int      return_value;
+  if( event == CF_INIT_EVENT )
+  {
+       cf_store_cell_value( link_id , 0 );
+       return_value = CF_CONTINUE;
+
+  }
+   if( event == rx_event )
+   {
+       value = cf_get_cell_value( link_id );
+       value += event_data;
+       cf_store_cell_value(link_id, value);
+       if( value >= rx_event_count )
+       {
+          return_value = CF_DISABLE;
+       }
+       else
+       {
+	   return_value = CF_HALT;
+       }
+   }
+   else
+   {
+      return_value = CF_HALT;
+   }
+   return return_value;   
+
+}
+
+  
+int wait_event_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned rx_event, 
+    unsigned time_count, unsigned param_4,  unsigned event, unsigned event_data)
+{
+   int       return_value;
+   unsigned  value;
+   if( event == CF_INIT_EVENT )
+  {
+       cf_store_cell_value( link_id , 0 );
+       return_value = CF_CONTINUE;
+
+  }
+	
    if( event == rx_event )
    {
       return_value = CF_DISABLE;
    }
+  else if( event == CF_TIME_TICK_EVENT )
+  {
+    if( time_count > 0 )
+    {
+         value = cf_get_cell_value( link_id );
+         value += event_data;
+         cf_store_cell_value(link_id, value);
+
+         if( value >= time_count )
+         {
+             return_value = CF_RESET;
+          }
+          else
+          {
+		      return_value = CF_HALT;
+          }
+	  }
+     }
+     
    else
    {
+	
       return_value = CF_HALT;
    }
    return return_value;   
@@ -110,6 +172,7 @@ int wait_time_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
   if( event == CF_INIT_EVENT )
   {
        cf_store_cell_value( link_id , 0 );
+       return CF_CONTINUE;
 
   }
   else if( event == CF_TIME_TICK_EVENT )
@@ -134,20 +197,44 @@ int wait_time_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
   return return_value;
 
 }
+
 int wait_condition_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
     unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data)
 {
-   int return_value;
-  
+    int return_value;
+    unsigned value;
+    if( event == CF_INIT_EVENT )
+  {
+        param_1( link_id , param_2, param_3, param_4, event,event_data );
+       cf_store_cell_value( link_id , 0 );
+       return CF_CONTINUE;
+
+  }
    
-   if( param_1( link_id , param_2, param_3, param_4, event,event_data ) != 0)
+   else if( param_1( link_id , param_2, param_3, param_4, event,event_data ) != 0)
    {
      return_value = CF_DISABLE;
    }
+   else if( ( event == CF_TIME_TICK_EVENT )&&(param_4 > 0 ) )
+   {
+     value = cf_get_cell_value( link_id );
+     value += event_data;
+     cf_store_cell_value(link_id, value);
+
+     if( value >= param_4 )
+     {
+       return_value = CF_RESET;
+     }
+     else
+     {
+        return_value = CF_HALT;
+     }
+  }
    else
    {
      return_value = CF_HALT;
-   } 
+   }
+ 
    return return_value;
 
 }     
@@ -239,12 +326,12 @@ int nop_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
  
 
  
-int change_state_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
-    unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data)
+int change_state_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned chain_id, 
+    unsigned link_index, unsigned param_4,  unsigned event, unsigned event_data)
 {
    if( event == CF_INIT_EVENT )
    {
-      cf_change_state(param_2, (unsigned)(intptr_t)param_3);
+      cf_change_state( chain_id, link_index );
    }
    return CF_DISABLE;
 
@@ -254,7 +341,8 @@ int change_state_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
 int system_reset_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
     unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data)
 {
-   exit(0);
+   CySoftwareReset();
+   return CF_DISABLE;
 }
 
 int enable_chain_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 

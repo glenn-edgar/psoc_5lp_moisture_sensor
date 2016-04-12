@@ -38,7 +38,7 @@
 #include "stdio.h"
 
 
-#include "usb_serial.h"
+
 #include "cf_chain_flow_support.h"
 #include "a_to_d_functions.h"
 #include "cf_events.h"
@@ -51,7 +51,7 @@
 
 #define HEART_BEAT_INTERVAL 500
 
-#define USB_MODBUS_ADDRESS        25
+
 
 
 
@@ -88,7 +88,7 @@ int main()
     cf_initialize_event_manager();
     initialize_cf_system(  );
     /* Enable Global Interrupts */
-    initialize_usb_serial( USB_MODBUS_ADDRESS );
+    
     /* Start USBFS Operation with 5V operation */
     USBUART_1_Start(0u, USBUART_1_5V_OPERATION);
     
