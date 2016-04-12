@@ -33,6 +33,10 @@ int send_event_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
 int wait_tod_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
     unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data);
 
+int wait_event_count_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
+    unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data);
+
+
 int wait_event_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
     unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data);
 

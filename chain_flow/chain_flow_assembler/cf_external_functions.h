@@ -23,7 +23,161 @@ This is the symbolic definitions of the chains
 #define  update_eeprom_temperature   3
 #define  read_counter   4
 #define  sigma_mux_channel_control   5
+#define  usb_cdc_establish_link   6
+#define  usb_rx_packet   7
+#define  usb_process_packet   8
+#define  usb_tx_packet   9
+#define  process_rtu_packet   10
 
+
+
+/*
+This is the symbolic definitions of the links for chain initialization
+*/
+#define  initialization_0   0
+#define  initialization_1   1
+#define  initialization_2   2
+#define  initialization_3   3
+#define  initialization_4   4
+#define  initialization_5   5
+#define  initialization_6   6
+#define  initialization_7   7
+#define  initialization_8   8
+#define  initialization_9   9
+#define  initialization_10   10
+
+
+
+/*
+This is the symbolic definitions of the links for chain heart_beat
+*/
+#define  heart_beat_0   0
+#define  heart_beat_1   1
+#define  heart_beat_2   2
+#define  heart_beat_3   3
+
+
+
+/*
+This is the symbolic definitions of the links for chain measure_die_temperature
+*/
+#define  measure_die_temperature_0   0
+#define  measure_die_temperature_1   1
+#define  measure_die_temperature_2   2
+
+
+
+/*
+This is the symbolic definitions of the links for chain update_eeprom_temperature
+*/
+#define  update_eeprom_temperature_0   0
+#define  update_eeprom_temperature_1   1
+#define  update_eeprom_temperature_2   2
+
+
+
+/*
+This is the symbolic definitions of the links for chain read_counter
+*/
+#define  read_counter_0   0
+#define  read_counter_1   1
+#define  read_counter_2   2
+
+
+
+/*
+This is the symbolic definitions of the links for chain sigma_mux_channel_control
+*/
+#define  sigma_mux_channel_control_0   0
+#define  sigma_mux_channel_control_1   1
+#define  sigma_mux_channel_control_2   2
+#define  sigma_mux_channel_control_3   3
+#define  sigma_mux_channel_control_4   4
+#define  sigma_mux_channel_control_5   5
+#define  sigma_mux_channel_control_6   6
+
+
+
+/*
+This is the symbolic definitions of the links for chain usb_cdc_establish_link
+*/
+#define  usb_cdc_establish_link_0   0
+#define  usb_cdc_establish_link_1   1
+#define  usb_cdc_establish_link_2   2
+#define  usb_cdc_establish_link_3   3
+#define  usb_cdc_establish_link_4   4
+
+
+
+/*
+This is the symbolic definitions of the links for chain usb_rx_packet
+*/
+#define  usb_rx_packet_0   0
+#define  usb_rx_packet_1   1
+#define  usb_rx_packet_2   2
+#define  usb_rx_packet_3   3
+#define  usb_rx_packet_4   4
+#define  usb_rx_packet_5   5
+#define  usb_rx_packet_6   6
+#define  usb_rx_packet_7   7
+#define  usb_rx_packet_8   8
+#define  usb_rx_packet_9   9
+#define  usb_rx_packet_10   10
+
+
+
+/*
+This is the symbolic definitions of the links for chain usb_process_packet
+*/
+#define  usb_process_packet_0   0
+#define  usb_process_packet_1   1
+
+
+
+/*
+This is the symbolic definitions of the links for chain usb_tx_packet
+*/
+#define  usb_tx_packet_0   0
+#define  usb_tx_packet_1   1
+#define  usb_tx_packet_2   2
+#define  usb_tx_packet_3   3
+#define  usb_tx_packet_4   4
+#define  usb_tx_packet_5   5
+#define  usb_tx_packet_6   6
+#define  usb_tx_packet_7   7
+#define  usb_tx_packet_8   8
+#define  usb_tx_packet_9   9
+#define  usb_tx_packet_10   10
+
+
+
+/*
+This is the symbolic definitions of the links for chain process_rtu_packet
+*/
+#define  process_rtu_packet_0   0
+#define  process_rtu_packet_1   1
+#define  process_rtu_packet_2   2
+
+
+
+int update_eeprom_temp(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int initialize_eeprom(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int usb_can_receive(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int process_rtu_message(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int  toggle_heart_beat(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
 int enable_pwms(unsigned link_id, unsigned param_1,
@@ -31,10 +185,6 @@ int enable_pwms(unsigned link_id, unsigned param_1,
 
 
 int enable_interrupts(unsigned link_id, unsigned param_1,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
-
-
-int start_watchdog(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
@@ -46,15 +196,7 @@ int read_counter_register(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
-int pat_watch_dog(unsigned link_id, unsigned param_1,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
-
-
 int initialize_die_temp_measurement(unsigned link_id, unsigned param_1,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
-
-
-int enable_timer_interrupt(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
@@ -62,11 +204,15 @@ int sigma_store_value(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
-int initialize_eeprom(unsigned link_id, unsigned param_1,
+int usb_process_modbus_message(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
-int initialize_analog(unsigned link_id, unsigned param_1,
+int usb_configuration_changed(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int process_usb_rx_packet(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
@@ -74,7 +220,11 @@ int enable_counters(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
-int update_eeprom_temp(unsigned link_id, unsigned param_1,
+int initialize_analog(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int usb_can_transmit(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
@@ -82,7 +232,31 @@ int set_mux_channel(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
-int  toggle_heart_beat(unsigned link_id, unsigned param_1,
+int usb_connection_still_active(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int pat_watch_dog(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int start_watchdog(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int initialize_usb(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int enable_timer_interrupt(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int initialize_modbus_rtu(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int usb_send_packet(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 

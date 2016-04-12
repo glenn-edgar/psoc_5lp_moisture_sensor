@@ -11,6 +11,7 @@
 #define CF_INIT_EVENT          1
 #define CF_TIME_TICK_EVENT     2
 #define CF_PROCESS_AD_RESULTS  3
+#define CF_USB_RTU_EVENT       4
 
 void cf_initialize_event_manager( void );
 void cf_send_interrupt_event( unsigned event, unsigned data);

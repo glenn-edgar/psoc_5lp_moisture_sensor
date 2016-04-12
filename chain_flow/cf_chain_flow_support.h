@@ -51,6 +51,8 @@ typedef struct
    const LINK_CELL  *link_cells; 
 }CHAIN_LINK; 
 
+#define cf_reset_chain  cf_enable_chain
+
 void initialize_cf_system( void );
 void cf_process_cf_event( unsigned event, unsigned event_data );
 unsigned cf_get_cell_value( unsigned link_id );
