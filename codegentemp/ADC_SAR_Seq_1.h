@@ -28,7 +28,7 @@
 
 #define ADC_SAR_Seq_1_NUMBER_OF_CHANNELS    (3u)
 #define ADC_SAR_Seq_1_SAMPLE_MODE           (0u)
-#define ADC_SAR_Seq_1_CLOCK_SOURCE          (0u)
+#define ADC_SAR_Seq_1_CLOCK_SOURCE          (1u)
 
 extern int16  ADC_SAR_Seq_1_finalArray[ADC_SAR_Seq_1_NUMBER_OF_CHANNELS];
 extern uint32 ADC_SAR_Seq_1_initVar;

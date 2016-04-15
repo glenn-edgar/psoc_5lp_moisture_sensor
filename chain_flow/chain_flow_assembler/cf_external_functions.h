@@ -28,6 +28,7 @@ This is the symbolic definitions of the chains
 #define  usb_process_packet   8
 #define  usb_tx_packet   9
 #define  process_rtu_packet   10
+#define  capsense_chain   11
 
 
 
@@ -45,6 +46,7 @@ This is the symbolic definitions of the links for chain initialization
 #define  initialization_8   8
 #define  initialization_9   9
 #define  initialization_10   10
+#define  initialization_11   11
 
 
 
@@ -160,6 +162,15 @@ This is the symbolic definitions of the links for chain process_rtu_packet
 
 
 
+/*
+This is the symbolic definitions of the links for chain capsense_chain
+*/
+#define  capsense_chain_0   0
+#define  capsense_chain_1   1
+#define  capsense_chain_2   2
+
+
+
 int update_eeprom_temp(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
@@ -204,6 +215,10 @@ int sigma_store_value(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
+int process_capsense(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
 int usb_process_modbus_message(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
@@ -217,6 +232,10 @@ int process_usb_rx_packet(unsigned link_id, unsigned param_1,
 
 
 int enable_counters(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int init_cap_sense(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
