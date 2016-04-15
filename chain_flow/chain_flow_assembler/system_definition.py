@@ -16,6 +16,7 @@ hf.one_step("initialize_usb")
 hf.one_step("initialize_modbus_rtu")
 hf.one_step("enable_interrupts")
 hf.one_step("start_watchdog")
+hf.one_step("init_cap_sense")
 hf.terminate()  #initialization is done now disable the thread
 cf.end_chain()
 
@@ -103,6 +104,12 @@ cf.end_chain()
 cf.define_chain("process_rtu_packet", False )
 hf.wait_event( "CF_USB_RTU_EVENT")
 hf.one_step("process_rtu_message")
+hf.reset()
+cf.end_chain()
+
+cf.define_chain("capsense_chain",True)
+hf.wait_time(1000)   # wait every second
+hf.one_step("process_capsense")
 hf.reset()
 cf.end_chain()
 
