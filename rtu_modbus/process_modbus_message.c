@@ -8,6 +8,8 @@
 
 
 #include <device.h>
+#include <assert.h>
+
 #include "process_modbus_message.h"
 #include "modbus_low_level_functions.h"
 #include "modbus_implementation.h"
@@ -18,18 +20,29 @@
 #define TYPE_23_Messages 0
 #define TYPE_24_Messages 0
 
+#if TYPE_3_MESSAGES 
 static int process_type_3_message( int in_message_length, char *in_message, int out_buffer_length, char *out_buffer );
+#endif
+#if 0
 static int process_type_16_message( int in_message_length, char *in_message, int out_buffer_length, char *out_buffer );
+#endif
+#if TYPE_22_MESSAGES
 static int process_type_22_message( int in_message_length, char *in_message, int out_buffer_length, char *out_buffer );
+#endif
+#if TYPE_23_MESSAGES
 static int process_type_23_message( int in_message_length, char *in_message, int out_buffer_length, char *out_buffer );
+#endif
+#if TYPE_4_MESSAGES
 static int process_type_24_message( int in_message_length, char *in_message, int out_buffer_length, char *out_buffer );
-
+#endif
 int process_modbus_message( int in_message_length, char *in_message, int out_buffer_length, char *out_buffer )
 {
 	int out_length;
 	int function_code = 0;
+    int crc_ok;
 	out_length = 0;
 	
+    crc_ok = 0;
 	// check crc //
 	if( crc_ok != 0)
 	{
@@ -74,7 +87,7 @@ int process_modbus_message( int in_message_length, char *in_message, int out_buf
 				break;
 #endif			
 			default:
-				; // bad message
+				assert(1); // should not happen
 		}
 	}
 	return out_length;
