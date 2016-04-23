@@ -64,7 +64,7 @@
 
 #define CapSense_1_WATER_PROOF                (0u)
 
-#define CapSense_1_TUNING_METHOD              (2u)
+#define CapSense_1_TUNING_METHOD              (0u)
 #define CapSense_1_TUNER_API_GENERATE         (0u)
 
 #define CapSense_1_IMPLEMENTATION_CH0         (1u)

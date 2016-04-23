@@ -3,15 +3,15 @@
 
 
 
-#define CHAIN_NUM   12
-#define LINK_NUM    67
+#define CHAIN_NUM   15
+#define LINK_NUM    75
 
 
 
-char  chain_state[12];
-char  link_state[67];
-unsigned link_data[67];
-const unsigned start_state[]={1,1,1,1,1,1,1,0,0,0,0,1};
+char  chain_state[15];
+char  link_state[75];
+unsigned link_data[75];
+const unsigned start_state[]={1,1,1,1,1,1,1,0,0,0,0,1,1,1,1};
 
 
 
@@ -28,6 +28,8 @@ const LINK_CELL CHAIN_initialization_LINKS[]=
 { one_step_fn,(CF_FUN_AUX)enable_interrupts,(unsigned)0,(unsigned)0,(unsigned)0},
 { one_step_fn,(CF_FUN_AUX)start_watchdog,(unsigned)0,(unsigned)0,(unsigned)0},
 { one_step_fn,(CF_FUN_AUX)init_cap_sense,(unsigned)0,(unsigned)0,(unsigned)0},
+{ one_step_fn,(CF_FUN_AUX)init_event_queue,(unsigned)0,(unsigned)0,(unsigned)0},
+{ one_step_fn,(CF_FUN_AUX)init_rtc,(unsigned)0,(unsigned)0,(unsigned)0},
 { terminate_fn,(CF_FUN_AUX)NULL,(unsigned)0,(unsigned)0,(unsigned)0},
 };
 const LINK_CELL CHAIN_heart_beat_LINKS[]= 
@@ -118,22 +120,40 @@ const LINK_CELL CHAIN_capsense_chain_LINKS[]=
 { one_step_fn,(CF_FUN_AUX)process_capsense,(unsigned)0,(unsigned)0,(unsigned)0},
 { reset_fn,(CF_FUN_AUX)NULL,(unsigned)0,(unsigned)0,(unsigned)0},
 };
+const LINK_CELL CHAIN_second_tick_chain_LINKS[]= 
+{
+{ wait_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_SECOND_TICK,(unsigned)0,(unsigned)0},
+{ reset_fn,(CF_FUN_AUX)NULL,(unsigned)0,(unsigned)0,(unsigned)0},
+};
+const LINK_CELL CHAIN_minute_tick_chain_LINKS[]= 
+{
+{ wait_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MINUTE_TICK,(unsigned)0,(unsigned)0},
+{ reset_fn,(CF_FUN_AUX)NULL,(unsigned)0,(unsigned)0,(unsigned)0},
+};
+const LINK_CELL CHAIN_hour_tick_chain_LINKS[]= 
+{
+{ wait_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_HOUR_TICK,(unsigned)0,(unsigned)0},
+{ reset_fn,(CF_FUN_AUX)NULL,(unsigned)0,(unsigned)0,(unsigned)0},
+};
 
 
 
 const CHAIN_LINK chain_control[] =
 {
-{ 0,0,12,CHAIN_initialization_LINKS},
-{ 12,1,4,CHAIN_heart_beat_LINKS},
-{ 16,2,3,CHAIN_measure_die_temperature_LINKS},
-{ 19,3,3,CHAIN_update_eeprom_temperature_LINKS},
-{ 22,4,3,CHAIN_read_counter_LINKS},
-{ 25,5,7,CHAIN_sigma_mux_channel_control_LINKS},
-{ 32,6,5,CHAIN_usb_cdc_establish_link_LINKS},
-{ 37,7,11,CHAIN_usb_rx_packet_LINKS},
-{ 48,8,2,CHAIN_usb_process_packet_LINKS},
-{ 50,9,11,CHAIN_usb_tx_packet_LINKS},
-{ 61,10,3,CHAIN_process_rtu_packet_LINKS},
-{ 64,11,3,CHAIN_capsense_chain_LINKS},
+{ 0,0,14,CHAIN_initialization_LINKS},
+{ 14,1,4,CHAIN_heart_beat_LINKS},
+{ 18,2,3,CHAIN_measure_die_temperature_LINKS},
+{ 21,3,3,CHAIN_update_eeprom_temperature_LINKS},
+{ 24,4,3,CHAIN_read_counter_LINKS},
+{ 27,5,7,CHAIN_sigma_mux_channel_control_LINKS},
+{ 34,6,5,CHAIN_usb_cdc_establish_link_LINKS},
+{ 39,7,11,CHAIN_usb_rx_packet_LINKS},
+{ 50,8,2,CHAIN_usb_process_packet_LINKS},
+{ 52,9,11,CHAIN_usb_tx_packet_LINKS},
+{ 63,10,3,CHAIN_process_rtu_packet_LINKS},
+{ 66,11,3,CHAIN_capsense_chain_LINKS},
+{ 69,12,2,CHAIN_second_tick_chain_LINKS},
+{ 71,13,2,CHAIN_minute_tick_chain_LINKS},
+{ 73,14,2,CHAIN_hour_tick_chain_LINKS},
 };
 #endif

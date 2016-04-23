@@ -35,7 +35,7 @@ extern uint8 RTC_1_initVar;
 ***************************************/
 
 /* what day of the week is start of week */
-#define RTC_1_START_OF_WEEK          (1u)
+#define RTC_1_START_OF_WEEK          (0u)
 
 /* Daylight saving time */
 #define RTC_1_DST_FUNC_ENABLE        (1u)
@@ -204,13 +204,13 @@ uint8 RTC_1_ReadStatus(void)                      ;
 #define RTC_1_STATUS_AA              (0x08u)
 
 /* Days Of Week definition */
-#define RTC_1_SUNDAY                       (7u)
-#define RTC_1_MONDAY                       (1u)
-#define RTC_1_TUESDAY                      (2u)
-#define RTC_1_WEDNESDAY                    (3u)
-#define RTC_1_THURDAY                      (4u)
-#define RTC_1_FRIDAY                       (5u)
-#define RTC_1_SATURDAY                     (6u)
+#define RTC_1_SUNDAY                       (1u)
+#define RTC_1_MONDAY                       (2u)
+#define RTC_1_TUESDAY                      (3u)
+#define RTC_1_WEDNESDAY                    (4u)
+#define RTC_1_THURDAY                      (5u)
+#define RTC_1_FRIDAY                       (6u)
+#define RTC_1_SATURDAY                     (7u)
 
 
 /* Month definition */

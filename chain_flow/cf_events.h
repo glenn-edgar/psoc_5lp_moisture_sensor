@@ -12,6 +12,10 @@
 #define CF_TIME_TICK_EVENT     2
 #define CF_PROCESS_AD_RESULTS  3
 #define CF_USB_RTU_EVENT       4
+#define CF_SECOND_TICK         5
+#define CF_MINUTE_TICK         6
+#define CF_HOUR_TICK           7
+    
 
 void cf_initialize_event_manager( void );
 void cf_send_interrupt_event( unsigned event, unsigned data);

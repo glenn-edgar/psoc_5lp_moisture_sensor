@@ -28,11 +28,11 @@ extern void AMux_1_CYAMUXSIDE_A_Unset(uint8 channel);
 /* AMux_1_CYAMUXSIDE_A__addrTable is an implementation detail of the AMux.
    Code that depends on it may be incompatible with other versions
    of PSoC Creator. */
-extern uint8 CYXDATA * const CYCODE AMux_1_CYAMUXSIDE_A__addrTable[2];
+extern uint8 CYXDATA * const CYCODE AMux_1_CYAMUXSIDE_A__addrTable[4];
 /* AMux_1_CYAMUXSIDE_A__maskTable is an implementation detail of the AMux.
    Code that depends on it may be incompatible with other versions
    of PSoC Creator. */
-extern const uint8 CYCODE AMux_1_CYAMUXSIDE_A__maskTable[2];
+extern const uint8 CYCODE AMux_1_CYAMUXSIDE_A__maskTable[4];
 extern void AMux_1_CYAMUXSIDE_B_Set(uint8 channel);
 extern void AMux_1_CYAMUXSIDE_B_Unset(uint8 channel);
 /* AMux_1_CYAMUXSIDE_B__addrTable is an implementation detail of the AMux.
@@ -43,16 +43,6 @@ extern uint8 CYXDATA * const CYCODE AMux_1_CYAMUXSIDE_B__addrTable[4];
    Code that depends on it may be incompatible with other versions
    of PSoC Creator. */
 extern const uint8 CYCODE AMux_1_CYAMUXSIDE_B__maskTable[4];
-extern void CapSense_1_AMuxCH0_Set(uint8 channel);
-extern void CapSense_1_AMuxCH0_Unset(uint8 channel);
-/* CapSense_1_AMuxCH0__addrTable is an implementation detail of the AMux.
-   Code that depends on it may be incompatible with other versions
-   of PSoC Creator. */
-extern uint8 CYXDATA * const CYCODE CapSense_1_AMuxCH0__addrTable[4];
-/* CapSense_1_AMuxCH0__maskTable is an implementation detail of the AMux.
-   Code that depends on it may be incompatible with other versions
-   of PSoC Creator. */
-extern const uint8 CYCODE CapSense_1_AMuxCH0__maskTable[4];
 
 
 #endif /* CYFITTER_CFG_H */

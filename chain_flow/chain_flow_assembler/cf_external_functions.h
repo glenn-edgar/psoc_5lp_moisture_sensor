@@ -29,6 +29,9 @@ This is the symbolic definitions of the chains
 #define  usb_tx_packet   9
 #define  process_rtu_packet   10
 #define  capsense_chain   11
+#define  second_tick_chain   12
+#define  minute_tick_chain   13
+#define  hour_tick_chain   14
 
 
 
@@ -47,6 +50,8 @@ This is the symbolic definitions of the links for chain initialization
 #define  initialization_9   9
 #define  initialization_10   10
 #define  initialization_11   11
+#define  initialization_12   12
+#define  initialization_13   13
 
 
 
@@ -171,6 +176,30 @@ This is the symbolic definitions of the links for chain capsense_chain
 
 
 
+/*
+This is the symbolic definitions of the links for chain second_tick_chain
+*/
+#define  second_tick_chain_0   0
+#define  second_tick_chain_1   1
+
+
+
+/*
+This is the symbolic definitions of the links for chain minute_tick_chain
+*/
+#define  minute_tick_chain_0   0
+#define  minute_tick_chain_1   1
+
+
+
+/*
+This is the symbolic definitions of the links for chain hour_tick_chain
+*/
+#define  hour_tick_chain_0   0
+#define  hour_tick_chain_1   1
+
+
+
 int update_eeprom_temp(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
@@ -243,7 +272,15 @@ int initialize_analog(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
+int init_event_queue(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
 int usb_can_transmit(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data);
+
+
+int init_rtc(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data);
 
 
