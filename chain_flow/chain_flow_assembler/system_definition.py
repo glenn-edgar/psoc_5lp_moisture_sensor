@@ -17,6 +17,8 @@ hf.one_step("initialize_modbus_rtu")
 hf.one_step("enable_interrupts")
 hf.one_step("start_watchdog")
 hf.one_step("init_cap_sense")
+hf.one_step("init_event_queue")
+hf.one_step("init_rtc")
 hf.terminate()  #initialization is done now disable the thread
 cf.end_chain()
 
@@ -112,6 +114,29 @@ hf.wait_time(1000)   # wait every second
 hf.one_step("process_capsense")
 hf.reset()
 cf.end_chain()
+
+
+#These chains are for actions every second 
+cf.define_chain("second_tick_chain", True )
+hf.wait_event("CF_SECOND_TICK")
+hf.reset()
+cf.end_chain()
+
+#These chains are for actions every minute
+cf.define_chain("minute_tick_chain", True )
+hf.wait_event("CF_MINUTE_TICK")
+hf.reset()
+cf.end_chain()
+
+
+#These chains are for actions every hour
+cf.define_chain("hour_tick_chain", True )
+hf.wait_event("CF_HOUR_TICK")
+hf.reset()
+cf.end_chain()
+
+
+
 
 cf.generate_c_header()
 
