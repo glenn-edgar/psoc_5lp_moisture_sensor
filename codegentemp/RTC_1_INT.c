@@ -31,7 +31,9 @@ static void RTC_1_EveryYearHandler(void);
 *  Place your includes, defines and code here
 *******************************************************************************/
 /* `#START RTC_ISR_DEFINITION` */
-
+extern void rtc_second_tick( void );
+extern void rtc_minute_tick( void );
+extern void rtc_hour_tick( void );
 /* `#END` */
 
 
@@ -53,7 +55,7 @@ static void RTC_1_EverySecondHandler(void)
 {
     /*  Place your every second handler code here. */
     /* `#START EVERY_SECOND_HANDLER_CODE` */
-
+    rtc_second_tick();
     /* `#END` */
     
     #ifdef RTC_1_EVERY_SECOND_HANDLER_CALLBACK
@@ -80,7 +82,7 @@ static void RTC_1_EveryMinuteHandler(void)
 {
     /*  Place your every minute handler code here. */
     /* `#START EVERY_MINUTE_HANDLER_CODE` */
-
+    rtc_minute_tick();
     /* `#END` */
 
     #ifdef RTC_1_EVERY_MINUTE_HANDLER_CALLBACK
@@ -107,7 +109,7 @@ static void RTC_1_EveryHourHandler(void)
 {
     /*  Place your every hour handler code here. */
     /* `#START EVERY_HOUR_HANDLER_CODE` */
-
+    rtc_minute_tick();
     /* `#END` */
     
     #ifdef RTC_1_EVERY_HOUR_HANDLER_CALLBACK

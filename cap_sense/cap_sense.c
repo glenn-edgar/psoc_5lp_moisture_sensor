@@ -21,13 +21,13 @@ int init_cap_sense(unsigned link_id, unsigned param_1,
    /* Initialize the input - CapSense block */
 
   /* 1. Enable Proximity sensor as it is disabled by default */
-  CapSense_1_EnableWidget(CapSense_1_PROXIMITYSENSOR0__PROX);
+  //CapSense_1_EnableWidget(CapSense_1_PROXIMITYSENSOR0__PROX);
 
   /* 2. Start CapSense block - Calibrates the proximity sensor for the set sensitivity setting (in the Scan Order tab of Component Configuration */
-  CapSense_1_Start();
+  //CapSense_1_Start();
 
  /* 3. Initialize Proximity baseline */
-  CapSense_1_InitializeSensorBaseline( PROXIMITY_SENSOR_INDEX );
+ // CapSense_1_InitializeSensorBaseline( PROXIMITY_SENSOR_INDEX );
 
   return CF_DISABLE;
 }
@@ -39,7 +39,7 @@ int process_capsense(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
 
 {  
-   
+#if 0   
     if(CapSense_1_IsBusy() == NOT_BUSY)
     {
        /* Update proximity sensor baseline */
@@ -52,6 +52,7 @@ int process_capsense(unsigned link_id, unsigned param_1,
        /* Trigger the next Scan of proximity sensor */
        CapSense_1_ScanSensor(PROXIMITY_SENSOR_INDEX);
     }
+#endif    
     return CF_DISABLE;
 }
  

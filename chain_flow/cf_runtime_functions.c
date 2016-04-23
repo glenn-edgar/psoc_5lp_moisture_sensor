@@ -77,8 +77,26 @@ int send_event_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
 int wait_tod_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
     unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data)
 {
-  
-   return CF_DISABLE;  // implemented on specific system
+   unsigned hour;
+   unsigned minute;
+   unsigned second;
+   
+   second = RTC_1_ReadSecond();   
+   minute = RTC_1_ReadMinute();
+   hour   = RTC_1_ReadHour();
+ 
+   // check hour
+   if( ( param_2 == 0xffff ) && ( param_2 == hour ))
+   {
+     if( ( param_3 == 0xffff ) && ( param_3 == hour ))
+     {
+       if( ( param_4 == 0xffff ) && ( param_4 == second ))
+       {
+          return CF_DISABLE;
+       }
+     }
+   }
+    return CF_HALT;  // implemented on specific system
 
 }
 
@@ -125,13 +143,13 @@ int wait_event_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned rx_event,
    if( event == CF_INIT_EVENT )
   {
        cf_store_cell_value( link_id , 0 );
-       return_value = CF_CONTINUE;
+       return CF_CONTINUE;
 
   }
 	
    if( event == rx_event )
    {
-      return_value = CF_DISABLE;
+      return CF_DISABLE;
    }
   else if( event == CF_TIME_TICK_EVENT )
   {
@@ -150,8 +168,11 @@ int wait_event_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned rx_event,
 		      return_value = CF_HALT;
           }
 	  }
-     }
-     
+      else
+      {
+        return CF_HALT;
+      }
+   }  
    else
    {
 	
@@ -313,8 +334,26 @@ int verify_not_event_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
 int verify_not_tod_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
     unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data)
 {
-  
-   return CF_DISABLE;  // implemented on specific system
+   unsigned hour;
+   unsigned minute;
+   unsigned second;
+   
+   second = RTC_1_ReadSecond();   
+   minute = RTC_1_ReadMinute();
+   hour   = RTC_1_ReadHour();
+ 
+   // check hour
+   if( ( param_2 == 0xffff ) && ( param_2 == hour ))
+   {
+     if( ( param_3 == 0xffff ) && ( param_3 == hour ))
+     {
+       if( ( param_4 == 0xffff ) && ( param_4 == second ))
+       {
+          return CF_RESET;
+       }
+     }
+   }
+    return CF_CONTINUE;  // implemented on specific system
 
 }
 

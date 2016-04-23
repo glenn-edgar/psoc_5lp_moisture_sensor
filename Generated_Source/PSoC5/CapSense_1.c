@@ -61,15 +61,18 @@ uint8 CYXDATA * const CYCODE CapSense_1_csTable[] = {
     (uint8 CYXDATA *)CYREG_PRT6_CAPS_SEL, (uint8 CYXDATA *)CYREG_PRT15_CAPS_SEL,
 };
 
-uint8 CapSense_1_idacSettings[] = {
+const uint8 CYCODE CapSense_1_idacSettings[] = {
     200u,
 };
 
-uint8 CapSense_1_widgetResolution[] = {
+const uint8 CYCODE CapSense_1_widgetResolution[] = {
     CapSense_1_PWM_RESOLUTION_10_BITS,
 };
 
-uint8 CapSense_1_analogSwitchDivider[CapSense_1_TOTAL_SCANSLOT_COUNT];
+uint8 CapSense_1_analogSwitchDivider[CapSense_1_TOTAL_SCANSLOT_COUNT] = {
+    11u, 
+};
+
 const uint8 CYCODE CapSense_1_widgetNumber[] = {
     0u, /* ProximitySensor0__PROX */
     

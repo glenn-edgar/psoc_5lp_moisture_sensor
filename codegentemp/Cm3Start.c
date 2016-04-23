@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: Cm3Start.c
-* Version 5.20
+* Version 5.30
 *
 *  Description:
 *  Startup code for the ARM CM3.
@@ -56,7 +56,6 @@ extern void CyBtldr_CheckLaunch(void);
 void initialize_psoc(void);
 CY_ISR(IntDefaultHandler);
 void Reset(void);
-CY_ISR(IntDefaultHandler);
 
 /* Global variables */
 #if !defined (__ICCARM__)

@@ -11,6 +11,7 @@
 #include "cf_external_functions.h"
 #include "a_to_d_functions.h"
 #include "sigma_mux.h"
+#include "event_fifo.h"
 
 #define TICK_INTERVAL          8
 
@@ -175,3 +176,12 @@ int set_mux_channel(unsigned link_id, unsigned mux_channel,
 
 }   
     
+int init_event_queue(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+{
+  
+    EF_initialize();
+    return CF_DISABLE;
+    
+}  
+
