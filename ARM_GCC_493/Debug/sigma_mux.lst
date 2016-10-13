@@ -1,0 +1,1294 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"sigma_mux.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.bss
+  19              		.align	2
+  20              	mux_ac:
+  21 0000 00000000 		.space	8
+  21      00000000 
+  22              		.align	2
+  23              	mux_dc:
+  24 0008 00000000 		.space	8
+  24      00000000 
+  25              		.align	2
+  26              	mux_peak:
+  27 0010 00000000 		.space	8
+  27      00000000 
+  28              		.align	2
+  29              	mux_negative:
+  30 0018 00000000 		.space	8
+  30      00000000 
+  31              		.section	.text.check_channel,"ax",%progbits
+  32              		.align	2
+  33              		.thumb
+  34              		.thumb_func
+  35              		.type	check_channel, %function
+  36              	check_channel:
+  37              	.LFB63:
+  38              		.file 1 ".\\a_to_d_functions\\sigma_mux.c"
+   1:.\a_to_d_functions/sigma_mux.c **** /*
+   2:.\a_to_d_functions/sigma_mux.c **** **
+   3:.\a_to_d_functions/sigma_mux.c **** **
+   4:.\a_to_d_functions/sigma_mux.c **** **  File sigma_mux.c
+   5:.\a_to_d_functions/sigma_mux.c **** **  Controls sequencing mux for sigma delta values
+   6:.\a_to_d_functions/sigma_mux.c **** **
+   7:.\a_to_d_functions/sigma_mux.c **** **
+   8:.\a_to_d_functions/sigma_mux.c **** */
+   9:.\a_to_d_functions/sigma_mux.c **** 
+  10:.\a_to_d_functions/sigma_mux.c **** #include <device.h>
+  11:.\a_to_d_functions/sigma_mux.c **** #include "sigma_mux.h"
+  12:.\a_to_d_functions/sigma_mux.c **** #include "a_to_d_functions.h"
+  13:.\a_to_d_functions/sigma_mux.c **** #include "Sigma_Mux.h"
+  14:.\a_to_d_functions/sigma_mux.c **** 
+  15:.\a_to_d_functions/sigma_mux.c **** 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 2
+
+
+  16:.\a_to_d_functions/sigma_mux.c **** static int32 mux_ac[ MUX_NUMBER ];
+  17:.\a_to_d_functions/sigma_mux.c **** static int32 mux_dc[MUX_NUMBER ];
+  18:.\a_to_d_functions/sigma_mux.c **** static int32 mux_peak[ MUX_NUMBER ];
+  19:.\a_to_d_functions/sigma_mux.c **** static int32 mux_negative[ MUX_NUMBER ];
+  20:.\a_to_d_functions/sigma_mux.c **** 
+  21:.\a_to_d_functions/sigma_mux.c **** static inline unsigned check_channel( unsigned channel )
+  22:.\a_to_d_functions/sigma_mux.c **** {
+  39              		.loc 1 22 0
+  40              		.cfi_startproc
+  41              		@ args = 0, pretend = 0, frame = 8
+  42              		@ frame_needed = 1, uses_anonymous_args = 0
+  43              		@ link register save eliminated.
+  44 0000 80B4     		push	{r7}
+  45              		.cfi_def_cfa_offset 4
+  46              		.cfi_offset 7, -4
+  47 0002 83B0     		sub	sp, sp, #12
+  48              		.cfi_def_cfa_offset 16
+  49 0004 00AF     		add	r7, sp, #0
+  50              		.cfi_def_cfa_register 7
+  51 0006 7860     		str	r0, [r7, #4]
+  23:.\a_to_d_functions/sigma_mux.c **** 	if( channel > (MUX_NUMBER -1) )
+  52              		.loc 1 23 0
+  53 0008 7B68     		ldr	r3, [r7, #4]
+  54 000a 012B     		cmp	r3, #1
+  55 000c 01D9     		bls	.L2
+  24:.\a_to_d_functions/sigma_mux.c **** 	{
+  25:.\a_to_d_functions/sigma_mux.c **** 		return MUX_NUMBER-1;
+  56              		.loc 1 25 0
+  57 000e 0123     		movs	r3, #1
+  58 0010 00E0     		b	.L3
+  59              	.L2:
+  26:.\a_to_d_functions/sigma_mux.c **** 	}
+  27:.\a_to_d_functions/sigma_mux.c **** 	return channel;
+  60              		.loc 1 27 0
+  61 0012 7B68     		ldr	r3, [r7, #4]
+  62              	.L3:
+  28:.\a_to_d_functions/sigma_mux.c **** }
+  63              		.loc 1 28 0
+  64 0014 1846     		mov	r0, r3
+  65 0016 0C37     		adds	r7, r7, #12
+  66              		.cfi_def_cfa_offset 4
+  67 0018 BD46     		mov	sp, r7
+  68              		.cfi_def_cfa_register 13
+  69              		@ sp needed
+  70 001a 5DF8047B 		ldr	r7, [sp], #4
+  71              		.cfi_restore 7
+  72              		.cfi_def_cfa_offset 0
+  73 001e 7047     		bx	lr
+  74              		.cfi_endproc
+  75              	.LFE63:
+  76              		.size	check_channel, .-check_channel
+  77              		.section	.text.sm_initialization,"ax",%progbits
+  78              		.align	2
+  79              		.global	sm_initialization
+  80              		.thumb
+  81              		.thumb_func
+  82              		.type	sm_initialization, %function
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 3
+
+
+  83              	sm_initialization:
+  84              	.LFB64:
+  29:.\a_to_d_functions/sigma_mux.c **** 
+  30:.\a_to_d_functions/sigma_mux.c **** 
+  31:.\a_to_d_functions/sigma_mux.c **** void sm_initialization( void )
+  32:.\a_to_d_functions/sigma_mux.c **** {
+  85              		.loc 1 32 0
+  86              		.cfi_startproc
+  87              		@ args = 0, pretend = 0, frame = 0
+  88              		@ frame_needed = 1, uses_anonymous_args = 0
+  89 0000 80B5     		push	{r7, lr}
+  90              		.cfi_def_cfa_offset 8
+  91              		.cfi_offset 7, -8
+  92              		.cfi_offset 14, -4
+  93 0002 00AF     		add	r7, sp, #0
+  94              		.cfi_def_cfa_register 7
+  33:.\a_to_d_functions/sigma_mux.c ****     Sigma_Mux_Differential_Start() ;
+  95              		.loc 1 33 0
+  96 0004 FFF7FEFF 		bl	Sigma_Mux_Differential_Start
+  34:.\a_to_d_functions/sigma_mux.c ****     Sigma_Mux_Differential_FastSelect(0) ;
+  97              		.loc 1 34 0
+  98 0008 0020     		movs	r0, #0
+  99 000a FFF7FEFF 		bl	Sigma_Mux_Differential_FastSelect
+  35:.\a_to_d_functions/sigma_mux.c **** 	ad_init_sigma_delta(1 );
+ 100              		.loc 1 35 0
+ 101 000e 0120     		movs	r0, #1
+ 102 0010 FFF7FEFF 		bl	ad_init_sigma_delta
+  36:.\a_to_d_functions/sigma_mux.c **** 	
+  37:.\a_to_d_functions/sigma_mux.c **** }
+ 103              		.loc 1 37 0
+ 104 0014 80BD     		pop	{r7, pc}
+ 105              		.cfi_endproc
+ 106              	.LFE64:
+ 107              		.size	sm_initialization, .-sm_initialization
+ 108 0016 00BF     		.section	.text.sm_set_configuration,"ax",%progbits
+ 109              		.align	2
+ 110              		.global	sm_set_configuration
+ 111              		.thumb
+ 112              		.thumb_func
+ 113              		.type	sm_set_configuration, %function
+ 114              	sm_set_configuration:
+ 115              	.LFB65:
+  38:.\a_to_d_functions/sigma_mux.c **** 
+  39:.\a_to_d_functions/sigma_mux.c **** void  sm_set_configuration( unsigned config, unsigned mux_channel )
+  40:.\a_to_d_functions/sigma_mux.c **** {
+ 116              		.loc 1 40 0
+ 117              		.cfi_startproc
+ 118              		@ args = 0, pretend = 0, frame = 8
+ 119              		@ frame_needed = 1, uses_anonymous_args = 0
+ 120 0000 80B5     		push	{r7, lr}
+ 121              		.cfi_def_cfa_offset 8
+ 122              		.cfi_offset 7, -8
+ 123              		.cfi_offset 14, -4
+ 124 0002 82B0     		sub	sp, sp, #8
+ 125              		.cfi_def_cfa_offset 16
+ 126 0004 00AF     		add	r7, sp, #0
+ 127              		.cfi_def_cfa_register 7
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 4
+
+
+ 128 0006 7860     		str	r0, [r7, #4]
+ 129 0008 3960     		str	r1, [r7]
+  41:.\a_to_d_functions/sigma_mux.c ****     Sigma_Mux_Differential_FastSelect(mux_channel) ;
+ 130              		.loc 1 41 0
+ 131 000a 3B68     		ldr	r3, [r7]
+ 132 000c DBB2     		uxtb	r3, r3
+ 133 000e 1846     		mov	r0, r3
+ 134 0010 FFF7FEFF 		bl	Sigma_Mux_Differential_FastSelect
+  42:.\a_to_d_functions/sigma_mux.c **** 	ad_init_sigma_delta( config );
+ 135              		.loc 1 42 0
+ 136 0014 7868     		ldr	r0, [r7, #4]
+ 137 0016 FFF7FEFF 		bl	ad_init_sigma_delta
+  43:.\a_to_d_functions/sigma_mux.c **** }
+ 138              		.loc 1 43 0
+ 139 001a 0837     		adds	r7, r7, #8
+ 140              		.cfi_def_cfa_offset 8
+ 141 001c BD46     		mov	sp, r7
+ 142              		.cfi_def_cfa_register 13
+ 143              		@ sp needed
+ 144 001e 80BD     		pop	{r7, pc}
+ 145              		.cfi_endproc
+ 146              	.LFE65:
+ 147              		.size	sm_set_configuration, .-sm_set_configuration
+ 148              		.section	.text.sm_store_value,"ax",%progbits
+ 149              		.align	2
+ 150              		.global	sm_store_value
+ 151              		.thumb
+ 152              		.thumb_func
+ 153              		.type	sm_store_value, %function
+ 154              	sm_store_value:
+ 155              	.LFB66:
+  44:.\a_to_d_functions/sigma_mux.c **** 
+  45:.\a_to_d_functions/sigma_mux.c **** void sm_store_value( unsigned mux_channel )
+  46:.\a_to_d_functions/sigma_mux.c **** {
+ 156              		.loc 1 46 0
+ 157              		.cfi_startproc
+ 158              		@ args = 0, pretend = 0, frame = 8
+ 159              		@ frame_needed = 1, uses_anonymous_args = 0
+ 160 0000 80B5     		push	{r7, lr}
+ 161              		.cfi_def_cfa_offset 8
+ 162              		.cfi_offset 7, -8
+ 163              		.cfi_offset 14, -4
+ 164 0002 82B0     		sub	sp, sp, #8
+ 165              		.cfi_def_cfa_offset 16
+ 166 0004 00AF     		add	r7, sp, #0
+ 167              		.cfi_def_cfa_register 7
+ 168 0006 7860     		str	r0, [r7, #4]
+  47:.\a_to_d_functions/sigma_mux.c ****       mux_channel = check_channel( mux_channel );
+ 169              		.loc 1 47 0
+ 170 0008 7868     		ldr	r0, [r7, #4]
+ 171 000a FFF7FEFF 		bl	check_channel
+ 172 000e 7860     		str	r0, [r7, #4]
+  48:.\a_to_d_functions/sigma_mux.c ****       mux_dc[mux_channel] = ad_get_sigma_delta_dc( );
+ 173              		.loc 1 48 0
+ 174 0010 FFF7FEFF 		bl	ad_get_sigma_delta_dc
+ 175 0014 0146     		mov	r1, r0
+ 176 0016 0E4A     		ldr	r2, .L7
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 5
+
+
+ 177 0018 7B68     		ldr	r3, [r7, #4]
+ 178 001a 42F82310 		str	r1, [r2, r3, lsl #2]
+  49:.\a_to_d_functions/sigma_mux.c ****       mux_ac[mux_channel] = ad_get_sigma_delta_ac();
+ 179              		.loc 1 49 0
+ 180 001e FFF7FEFF 		bl	ad_get_sigma_delta_ac
+ 181 0022 0146     		mov	r1, r0
+ 182 0024 0B4A     		ldr	r2, .L7+4
+ 183 0026 7B68     		ldr	r3, [r7, #4]
+ 184 0028 42F82310 		str	r1, [r2, r3, lsl #2]
+  50:.\a_to_d_functions/sigma_mux.c **** 	  mux_peak[ mux_channel ] = ad_get_sigma_delta_peak();
+ 185              		.loc 1 50 0
+ 186 002c FFF7FEFF 		bl	ad_get_sigma_delta_peak
+ 187 0030 0146     		mov	r1, r0
+ 188 0032 094A     		ldr	r2, .L7+8
+ 189 0034 7B68     		ldr	r3, [r7, #4]
+ 190 0036 42F82310 		str	r1, [r2, r3, lsl #2]
+  51:.\a_to_d_functions/sigma_mux.c ****       mux_negative[ mux_channel ] = ad_get_sigma_delta_negative();
+ 191              		.loc 1 51 0
+ 192 003a FFF7FEFF 		bl	ad_get_sigma_delta_negative
+ 193 003e 0146     		mov	r1, r0
+ 194 0040 064A     		ldr	r2, .L7+12
+ 195 0042 7B68     		ldr	r3, [r7, #4]
+ 196 0044 42F82310 		str	r1, [r2, r3, lsl #2]
+  52:.\a_to_d_functions/sigma_mux.c **** 
+  53:.\a_to_d_functions/sigma_mux.c **** }
+ 197              		.loc 1 53 0
+ 198 0048 0837     		adds	r7, r7, #8
+ 199              		.cfi_def_cfa_offset 8
+ 200 004a BD46     		mov	sp, r7
+ 201              		.cfi_def_cfa_register 13
+ 202              		@ sp needed
+ 203 004c 80BD     		pop	{r7, pc}
+ 204              	.L8:
+ 205 004e 00BF     		.align	2
+ 206              	.L7:
+ 207 0050 08000000 		.word	mux_dc
+ 208 0054 00000000 		.word	mux_ac
+ 209 0058 10000000 		.word	mux_peak
+ 210 005c 18000000 		.word	mux_negative
+ 211              		.cfi_endproc
+ 212              	.LFE66:
+ 213              		.size	sm_store_value, .-sm_store_value
+ 214              		.section	.text.sm_get_dc_channel_value,"ax",%progbits
+ 215              		.align	2
+ 216              		.global	sm_get_dc_channel_value
+ 217              		.thumb
+ 218              		.thumb_func
+ 219              		.type	sm_get_dc_channel_value, %function
+ 220              	sm_get_dc_channel_value:
+ 221              	.LFB67:
+  54:.\a_to_d_functions/sigma_mux.c **** 
+  55:.\a_to_d_functions/sigma_mux.c **** int32 sm_get_dc_channel_value( unsigned mux_channel )
+  56:.\a_to_d_functions/sigma_mux.c **** {
+ 222              		.loc 1 56 0
+ 223              		.cfi_startproc
+ 224              		@ args = 0, pretend = 0, frame = 8
+ 225              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 6
+
+
+ 226 0000 80B5     		push	{r7, lr}
+ 227              		.cfi_def_cfa_offset 8
+ 228              		.cfi_offset 7, -8
+ 229              		.cfi_offset 14, -4
+ 230 0002 82B0     		sub	sp, sp, #8
+ 231              		.cfi_def_cfa_offset 16
+ 232 0004 00AF     		add	r7, sp, #0
+ 233              		.cfi_def_cfa_register 7
+ 234 0006 7860     		str	r0, [r7, #4]
+  57:.\a_to_d_functions/sigma_mux.c ****      mux_channel = check_channel( mux_channel );	
+ 235              		.loc 1 57 0
+ 236 0008 7868     		ldr	r0, [r7, #4]
+ 237 000a FFF7FEFF 		bl	check_channel
+ 238 000e 7860     		str	r0, [r7, #4]
+  58:.\a_to_d_functions/sigma_mux.c ****      return mux_dc[mux_channel];
+ 239              		.loc 1 58 0
+ 240 0010 034A     		ldr	r2, .L11
+ 241 0012 7B68     		ldr	r3, [r7, #4]
+ 242 0014 52F82330 		ldr	r3, [r2, r3, lsl #2]
+  59:.\a_to_d_functions/sigma_mux.c **** }
+ 243              		.loc 1 59 0
+ 244 0018 1846     		mov	r0, r3
+ 245 001a 0837     		adds	r7, r7, #8
+ 246              		.cfi_def_cfa_offset 8
+ 247 001c BD46     		mov	sp, r7
+ 248              		.cfi_def_cfa_register 13
+ 249              		@ sp needed
+ 250 001e 80BD     		pop	{r7, pc}
+ 251              	.L12:
+ 252              		.align	2
+ 253              	.L11:
+ 254 0020 08000000 		.word	mux_dc
+ 255              		.cfi_endproc
+ 256              	.LFE67:
+ 257              		.size	sm_get_dc_channel_value, .-sm_get_dc_channel_value
+ 258              		.section	.text.sm_get_ac_channel_value,"ax",%progbits
+ 259              		.align	2
+ 260              		.global	sm_get_ac_channel_value
+ 261              		.thumb
+ 262              		.thumb_func
+ 263              		.type	sm_get_ac_channel_value, %function
+ 264              	sm_get_ac_channel_value:
+ 265              	.LFB68:
+  60:.\a_to_d_functions/sigma_mux.c **** 
+  61:.\a_to_d_functions/sigma_mux.c **** int32 sm_get_ac_channel_value( unsigned mux_channel )
+  62:.\a_to_d_functions/sigma_mux.c **** {
+ 266              		.loc 1 62 0
+ 267              		.cfi_startproc
+ 268              		@ args = 0, pretend = 0, frame = 8
+ 269              		@ frame_needed = 1, uses_anonymous_args = 0
+ 270 0000 80B5     		push	{r7, lr}
+ 271              		.cfi_def_cfa_offset 8
+ 272              		.cfi_offset 7, -8
+ 273              		.cfi_offset 14, -4
+ 274 0002 82B0     		sub	sp, sp, #8
+ 275              		.cfi_def_cfa_offset 16
+ 276 0004 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 7
+
+
+ 277              		.cfi_def_cfa_register 7
+ 278 0006 7860     		str	r0, [r7, #4]
+  63:.\a_to_d_functions/sigma_mux.c **** 	mux_channel = check_channel( mux_channel );
+ 279              		.loc 1 63 0
+ 280 0008 7868     		ldr	r0, [r7, #4]
+ 281 000a FFF7FEFF 		bl	check_channel
+ 282 000e 7860     		str	r0, [r7, #4]
+  64:.\a_to_d_functions/sigma_mux.c **** 	return mux_ac[mux_channel];
+ 283              		.loc 1 64 0
+ 284 0010 034A     		ldr	r2, .L15
+ 285 0012 7B68     		ldr	r3, [r7, #4]
+ 286 0014 52F82330 		ldr	r3, [r2, r3, lsl #2]
+  65:.\a_to_d_functions/sigma_mux.c **** }
+ 287              		.loc 1 65 0
+ 288 0018 1846     		mov	r0, r3
+ 289 001a 0837     		adds	r7, r7, #8
+ 290              		.cfi_def_cfa_offset 8
+ 291 001c BD46     		mov	sp, r7
+ 292              		.cfi_def_cfa_register 13
+ 293              		@ sp needed
+ 294 001e 80BD     		pop	{r7, pc}
+ 295              	.L16:
+ 296              		.align	2
+ 297              	.L15:
+ 298 0020 00000000 		.word	mux_ac
+ 299              		.cfi_endproc
+ 300              	.LFE68:
+ 301              		.size	sm_get_ac_channel_value, .-sm_get_ac_channel_value
+ 302              		.section	.text.sm_get_peak_channel_value,"ax",%progbits
+ 303              		.align	2
+ 304              		.global	sm_get_peak_channel_value
+ 305              		.thumb
+ 306              		.thumb_func
+ 307              		.type	sm_get_peak_channel_value, %function
+ 308              	sm_get_peak_channel_value:
+ 309              	.LFB69:
+  66:.\a_to_d_functions/sigma_mux.c **** 
+  67:.\a_to_d_functions/sigma_mux.c **** int32 sm_get_peak_channel_value( unsigned mux_channel )
+  68:.\a_to_d_functions/sigma_mux.c **** {
+ 310              		.loc 1 68 0
+ 311              		.cfi_startproc
+ 312              		@ args = 0, pretend = 0, frame = 8
+ 313              		@ frame_needed = 1, uses_anonymous_args = 0
+ 314 0000 80B5     		push	{r7, lr}
+ 315              		.cfi_def_cfa_offset 8
+ 316              		.cfi_offset 7, -8
+ 317              		.cfi_offset 14, -4
+ 318 0002 82B0     		sub	sp, sp, #8
+ 319              		.cfi_def_cfa_offset 16
+ 320 0004 00AF     		add	r7, sp, #0
+ 321              		.cfi_def_cfa_register 7
+ 322 0006 7860     		str	r0, [r7, #4]
+  69:.\a_to_d_functions/sigma_mux.c ****     mux_channel = check_channel( mux_channel );
+ 323              		.loc 1 69 0
+ 324 0008 7868     		ldr	r0, [r7, #4]
+ 325 000a FFF7FEFF 		bl	check_channel
+ 326 000e 7860     		str	r0, [r7, #4]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 8
+
+
+  70:.\a_to_d_functions/sigma_mux.c ****     return mux_peak[ mux_channel ];
+ 327              		.loc 1 70 0
+ 328 0010 034A     		ldr	r2, .L19
+ 329 0012 7B68     		ldr	r3, [r7, #4]
+ 330 0014 52F82330 		ldr	r3, [r2, r3, lsl #2]
+  71:.\a_to_d_functions/sigma_mux.c **** }
+ 331              		.loc 1 71 0
+ 332 0018 1846     		mov	r0, r3
+ 333 001a 0837     		adds	r7, r7, #8
+ 334              		.cfi_def_cfa_offset 8
+ 335 001c BD46     		mov	sp, r7
+ 336              		.cfi_def_cfa_register 13
+ 337              		@ sp needed
+ 338 001e 80BD     		pop	{r7, pc}
+ 339              	.L20:
+ 340              		.align	2
+ 341              	.L19:
+ 342 0020 10000000 		.word	mux_peak
+ 343              		.cfi_endproc
+ 344              	.LFE69:
+ 345              		.size	sm_get_peak_channel_value, .-sm_get_peak_channel_value
+ 346              		.section	.text.sm_get_negative_channel_value,"ax",%progbits
+ 347              		.align	2
+ 348              		.global	sm_get_negative_channel_value
+ 349              		.thumb
+ 350              		.thumb_func
+ 351              		.type	sm_get_negative_channel_value, %function
+ 352              	sm_get_negative_channel_value:
+ 353              	.LFB70:
+  72:.\a_to_d_functions/sigma_mux.c **** 
+  73:.\a_to_d_functions/sigma_mux.c **** int32 sm_get_negative_channel_value( unsigned mux_channel )
+  74:.\a_to_d_functions/sigma_mux.c **** {
+ 354              		.loc 1 74 0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 8
+ 357              		@ frame_needed = 1, uses_anonymous_args = 0
+ 358 0000 80B5     		push	{r7, lr}
+ 359              		.cfi_def_cfa_offset 8
+ 360              		.cfi_offset 7, -8
+ 361              		.cfi_offset 14, -4
+ 362 0002 82B0     		sub	sp, sp, #8
+ 363              		.cfi_def_cfa_offset 16
+ 364 0004 00AF     		add	r7, sp, #0
+ 365              		.cfi_def_cfa_register 7
+ 366 0006 7860     		str	r0, [r7, #4]
+  75:.\a_to_d_functions/sigma_mux.c ****     mux_channel = check_channel( mux_channel );
+ 367              		.loc 1 75 0
+ 368 0008 7868     		ldr	r0, [r7, #4]
+ 369 000a FFF7FEFF 		bl	check_channel
+ 370 000e 7860     		str	r0, [r7, #4]
+  76:.\a_to_d_functions/sigma_mux.c ****     return mux_negative[mux_channel ];
+ 371              		.loc 1 76 0
+ 372 0010 034A     		ldr	r2, .L23
+ 373 0012 7B68     		ldr	r3, [r7, #4]
+ 374 0014 52F82330 		ldr	r3, [r2, r3, lsl #2]
+  77:.\a_to_d_functions/sigma_mux.c **** }...
+ 375              		.loc 1 77 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 9
+
+
+ 376 0018 1846     		mov	r0, r3
+ 377 001a 0837     		adds	r7, r7, #8
+ 378              		.cfi_def_cfa_offset 8
+ 379 001c BD46     		mov	sp, r7
+ 380              		.cfi_def_cfa_register 13
+ 381              		@ sp needed
+ 382 001e 80BD     		pop	{r7, pc}
+ 383              	.L24:
+ 384              		.align	2
+ 385              	.L23:
+ 386 0020 18000000 		.word	mux_negative
+ 387              		.cfi_endproc
+ 388              	.LFE70:
+ 389              		.size	sm_get_negative_channel_value, .-sm_get_negative_channel_value
+ 390              		.text
+ 391              	.Letext0:
+ 392              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 393              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 394              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 395              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 396              		.section	.debug_info,"",%progbits
+ 397              	.Ldebug_info0:
+ 398 0000 3A020000 		.4byte	0x23a
+ 399 0004 0400     		.2byte	0x4
+ 400 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 401 000a 04       		.byte	0x4
+ 402 000b 01       		.uleb128 0x1
+ 403 000c 37000000 		.4byte	.LASF29
+ 404 0010 01       		.byte	0x1
+ 405 0011 C9010000 		.4byte	.LASF30
+ 406 0015 E8010000 		.4byte	.LASF31
+ 407 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 408 001d 00000000 		.4byte	0
+ 409 0021 00000000 		.4byte	.Ldebug_line0
+ 410 0025 02       		.uleb128 0x2
+ 411 0026 01       		.byte	0x1
+ 412 0027 06       		.byte	0x6
+ 413 0028 65020000 		.4byte	.LASF0
+ 414 002c 02       		.uleb128 0x2
+ 415 002d 01       		.byte	0x1
+ 416 002e 08       		.byte	0x8
+ 417 002f 16010000 		.4byte	.LASF1
+ 418 0033 02       		.uleb128 0x2
+ 419 0034 02       		.byte	0x2
+ 420 0035 05       		.byte	0x5
+ 421 0036 37020000 		.4byte	.LASF2
+ 422 003a 02       		.uleb128 0x2
+ 423 003b 02       		.byte	0x2
+ 424 003c 07       		.byte	0x7
+ 425 003d 8B020000 		.4byte	.LASF3
+ 426 0041 03       		.uleb128 0x3
+ 427 0042 2D000000 		.4byte	.LASF9
+ 428 0046 02       		.byte	0x2
+ 429 0047 3F       		.byte	0x3f
+ 430 0048 4C000000 		.4byte	0x4c
+ 431 004c 02       		.uleb128 0x2
+ 432 004d 04       		.byte	0x4
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 10
+
+
+ 433 004e 05       		.byte	0x5
+ 434 004f 4D020000 		.4byte	.LASF4
+ 435 0053 02       		.uleb128 0x2
+ 436 0054 04       		.byte	0x4
+ 437 0055 07       		.byte	0x7
+ 438 0056 24010000 		.4byte	.LASF5
+ 439 005a 02       		.uleb128 0x2
+ 440 005b 08       		.byte	0x8
+ 441 005c 05       		.byte	0x5
+ 442 005d B6010000 		.4byte	.LASF6
+ 443 0061 02       		.uleb128 0x2
+ 444 0062 08       		.byte	0x8
+ 445 0063 07       		.byte	0x7
+ 446 0064 8E010000 		.4byte	.LASF7
+ 447 0068 04       		.uleb128 0x4
+ 448 0069 04       		.byte	0x4
+ 449 006a 05       		.byte	0x5
+ 450 006b 696E7400 		.ascii	"int\000"
+ 451 006f 02       		.uleb128 0x2
+ 452 0070 04       		.byte	0x4
+ 453 0071 07       		.byte	0x7
+ 454 0072 81010000 		.4byte	.LASF8
+ 455 0076 03       		.uleb128 0x3
+ 456 0077 A5010000 		.4byte	.LASF10
+ 457 007b 03       		.byte	0x3
+ 458 007c 2C       		.byte	0x2c
+ 459 007d 41000000 		.4byte	0x41
+ 460 0081 05       		.uleb128 0x5
+ 461 0082 36010000 		.4byte	.LASF11
+ 462 0086 04       		.byte	0x4
+ 463 0087 9701     		.2byte	0x197
+ 464 0089 4C000000 		.4byte	0x4c
+ 465 008d 02       		.uleb128 0x2
+ 466 008e 04       		.byte	0x4
+ 467 008f 04       		.byte	0x4
+ 468 0090 FB000000 		.4byte	.LASF12
+ 469 0094 02       		.uleb128 0x2
+ 470 0095 08       		.byte	0x8
+ 471 0096 04       		.byte	0x4
+ 472 0097 CE000000 		.4byte	.LASF13
+ 473 009b 02       		.uleb128 0x2
+ 474 009c 01       		.byte	0x1
+ 475 009d 08       		.byte	0x8
+ 476 009e C4010000 		.4byte	.LASF14
+ 477 00a2 02       		.uleb128 0x2
+ 478 00a3 04       		.byte	0x4
+ 479 00a4 07       		.byte	0x7
+ 480 00a5 AD010000 		.4byte	.LASF15
+ 481 00a9 06       		.uleb128 0x6
+ 482 00aa ED000000 		.4byte	.LASF32
+ 483 00ae 01       		.byte	0x1
+ 484 00af 15       		.byte	0x15
+ 485 00b0 6F000000 		.4byte	0x6f
+ 486 00b4 00000000 		.4byte	.LFB63
+ 487 00b8 20000000 		.4byte	.LFE63-.LFB63
+ 488 00bc 01       		.uleb128 0x1
+ 489 00bd 9C       		.byte	0x9c
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 11
+
+
+ 490 00be D1000000 		.4byte	0xd1
+ 491 00c2 07       		.uleb128 0x7
+ 492 00c3 00000000 		.4byte	.LASF16
+ 493 00c7 01       		.byte	0x1
+ 494 00c8 15       		.byte	0x15
+ 495 00c9 6F000000 		.4byte	0x6f
+ 496 00cd 02       		.uleb128 0x2
+ 497 00ce 91       		.byte	0x91
+ 498 00cf 74       		.sleb128 -12
+ 499 00d0 00       		.byte	0
+ 500 00d1 08       		.uleb128 0x8
+ 501 00d2 68010000 		.4byte	.LASF33
+ 502 00d6 01       		.byte	0x1
+ 503 00d7 1F       		.byte	0x1f
+ 504 00d8 00000000 		.4byte	.LFB64
+ 505 00dc 16000000 		.4byte	.LFE64-.LFB64
+ 506 00e0 01       		.uleb128 0x1
+ 507 00e1 9C       		.byte	0x9c
+ 508 00e2 09       		.uleb128 0x9
+ 509 00e3 01010000 		.4byte	.LASF19
+ 510 00e7 01       		.byte	0x1
+ 511 00e8 27       		.byte	0x27
+ 512 00e9 00000000 		.4byte	.LFB65
+ 513 00ed 20000000 		.4byte	.LFE65-.LFB65
+ 514 00f1 01       		.uleb128 0x1
+ 515 00f2 9C       		.byte	0x9c
+ 516 00f3 14010000 		.4byte	0x114
+ 517 00f7 07       		.uleb128 0x7
+ 518 00f8 49010000 		.4byte	.LASF17
+ 519 00fc 01       		.byte	0x1
+ 520 00fd 27       		.byte	0x27
+ 521 00fe 6F000000 		.4byte	0x6f
+ 522 0102 02       		.uleb128 0x2
+ 523 0103 91       		.byte	0x91
+ 524 0104 74       		.sleb128 -12
+ 525 0105 07       		.uleb128 0x7
+ 526 0106 41020000 		.4byte	.LASF18
+ 527 010a 01       		.byte	0x1
+ 528 010b 27       		.byte	0x27
+ 529 010c 6F000000 		.4byte	0x6f
+ 530 0110 02       		.uleb128 0x2
+ 531 0111 91       		.byte	0x91
+ 532 0112 70       		.sleb128 -16
+ 533 0113 00       		.byte	0
+ 534 0114 09       		.uleb128 0x9
+ 535 0115 56020000 		.4byte	.LASF20
+ 536 0119 01       		.byte	0x1
+ 537 011a 2D       		.byte	0x2d
+ 538 011b 00000000 		.4byte	.LFB66
+ 539 011f 60000000 		.4byte	.LFE66-.LFB66
+ 540 0123 01       		.uleb128 0x1
+ 541 0124 9C       		.byte	0x9c
+ 542 0125 38010000 		.4byte	0x138
+ 543 0129 07       		.uleb128 0x7
+ 544 012a 41020000 		.4byte	.LASF18
+ 545 012e 01       		.byte	0x1
+ 546 012f 2D       		.byte	0x2d
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 12
+
+
+ 547 0130 6F000000 		.4byte	0x6f
+ 548 0134 02       		.uleb128 0x2
+ 549 0135 91       		.byte	0x91
+ 550 0136 74       		.sleb128 -12
+ 551 0137 00       		.byte	0
+ 552 0138 0A       		.uleb128 0xa
+ 553 0139 D5000000 		.4byte	.LASF21
+ 554 013d 01       		.byte	0x1
+ 555 013e 37       		.byte	0x37
+ 556 013f 81000000 		.4byte	0x81
+ 557 0143 00000000 		.4byte	.LFB67
+ 558 0147 24000000 		.4byte	.LFE67-.LFB67
+ 559 014b 01       		.uleb128 0x1
+ 560 014c 9C       		.byte	0x9c
+ 561 014d 60010000 		.4byte	0x160
+ 562 0151 07       		.uleb128 0x7
+ 563 0152 41020000 		.4byte	.LASF18
+ 564 0156 01       		.byte	0x1
+ 565 0157 37       		.byte	0x37
+ 566 0158 6F000000 		.4byte	0x6f
+ 567 015c 02       		.uleb128 0x2
+ 568 015d 91       		.byte	0x91
+ 569 015e 74       		.sleb128 -12
+ 570 015f 00       		.byte	0
+ 571 0160 0A       		.uleb128 0xa
+ 572 0161 50010000 		.4byte	.LASF22
+ 573 0165 01       		.byte	0x1
+ 574 0166 3D       		.byte	0x3d
+ 575 0167 81000000 		.4byte	0x81
+ 576 016b 00000000 		.4byte	.LFB68
+ 577 016f 24000000 		.4byte	.LFE68-.LFB68
+ 578 0173 01       		.uleb128 0x1
+ 579 0174 9C       		.byte	0x9c
+ 580 0175 88010000 		.4byte	0x188
+ 581 0179 07       		.uleb128 0x7
+ 582 017a 41020000 		.4byte	.LASF18
+ 583 017e 01       		.byte	0x1
+ 584 017f 3D       		.byte	0x3d
+ 585 0180 6F000000 		.4byte	0x6f
+ 586 0184 02       		.uleb128 0x2
+ 587 0185 91       		.byte	0x91
+ 588 0186 74       		.sleb128 -12
+ 589 0187 00       		.byte	0
+ 590 0188 0A       		.uleb128 0xa
+ 591 0189 71020000 		.4byte	.LASF23
+ 592 018d 01       		.byte	0x1
+ 593 018e 43       		.byte	0x43
+ 594 018f 81000000 		.4byte	0x81
+ 595 0193 00000000 		.4byte	.LFB69
+ 596 0197 24000000 		.4byte	.LFE69-.LFB69
+ 597 019b 01       		.uleb128 0x1
+ 598 019c 9C       		.byte	0x9c
+ 599 019d B0010000 		.4byte	0x1b0
+ 600 01a1 07       		.uleb128 0x7
+ 601 01a2 41020000 		.4byte	.LASF18
+ 602 01a6 01       		.byte	0x1
+ 603 01a7 43       		.byte	0x43
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 13
+
+
+ 604 01a8 6F000000 		.4byte	0x6f
+ 605 01ac 02       		.uleb128 0x2
+ 606 01ad 91       		.byte	0x91
+ 607 01ae 74       		.sleb128 -12
+ 608 01af 00       		.byte	0
+ 609 01b0 0A       		.uleb128 0xa
+ 610 01b1 08000000 		.4byte	.LASF24
+ 611 01b5 01       		.byte	0x1
+ 612 01b6 49       		.byte	0x49
+ 613 01b7 81000000 		.4byte	0x81
+ 614 01bb 00000000 		.4byte	.LFB70
+ 615 01bf 24000000 		.4byte	.LFE70-.LFB70
+ 616 01c3 01       		.uleb128 0x1
+ 617 01c4 9C       		.byte	0x9c
+ 618 01c5 D8010000 		.4byte	0x1d8
+ 619 01c9 07       		.uleb128 0x7
+ 620 01ca 41020000 		.4byte	.LASF18
+ 621 01ce 01       		.byte	0x1
+ 622 01cf 49       		.byte	0x49
+ 623 01d0 6F000000 		.4byte	0x6f
+ 624 01d4 02       		.uleb128 0x2
+ 625 01d5 91       		.byte	0x91
+ 626 01d6 74       		.sleb128 -12
+ 627 01d7 00       		.byte	0
+ 628 01d8 0B       		.uleb128 0xb
+ 629 01d9 81000000 		.4byte	0x81
+ 630 01dd E8010000 		.4byte	0x1e8
+ 631 01e1 0C       		.uleb128 0xc
+ 632 01e2 A2000000 		.4byte	0xa2
+ 633 01e6 01       		.byte	0x1
+ 634 01e7 00       		.byte	0
+ 635 01e8 0D       		.uleb128 0xd
+ 636 01e9 7A010000 		.4byte	.LASF25
+ 637 01ed 01       		.byte	0x1
+ 638 01ee 10       		.byte	0x10
+ 639 01ef D8010000 		.4byte	0x1d8
+ 640 01f3 05       		.uleb128 0x5
+ 641 01f4 03       		.byte	0x3
+ 642 01f5 00000000 		.4byte	mux_ac
+ 643 01f9 0D       		.uleb128 0xd
+ 644 01fa 26000000 		.4byte	.LASF26
+ 645 01fe 01       		.byte	0x1
+ 646 01ff 11       		.byte	0x11
+ 647 0200 D8010000 		.4byte	0x1d8
+ 648 0204 05       		.uleb128 0x5
+ 649 0205 03       		.byte	0x3
+ 650 0206 08000000 		.4byte	mux_dc
+ 651 020a 0D       		.uleb128 0xd
+ 652 020b C5000000 		.4byte	.LASF27
+ 653 020f 01       		.byte	0x1
+ 654 0210 12       		.byte	0x12
+ 655 0211 D8010000 		.4byte	0x1d8
+ 656 0215 05       		.uleb128 0x5
+ 657 0216 03       		.byte	0x3
+ 658 0217 10000000 		.4byte	mux_peak
+ 659 021b 0D       		.uleb128 0xd
+ 660 021c 9E020000 		.4byte	.LASF28
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 14
+
+
+ 661 0220 01       		.byte	0x1
+ 662 0221 13       		.byte	0x13
+ 663 0222 D8010000 		.4byte	0x1d8
+ 664 0226 05       		.uleb128 0x5
+ 665 0227 03       		.byte	0x3
+ 666 0228 18000000 		.4byte	mux_negative
+ 667 022c 0E       		.uleb128 0xe
+ 668 022d 3C010000 		.4byte	.LASF34
+ 669 0231 05       		.byte	0x5
+ 670 0232 9606     		.2byte	0x696
+ 671 0234 38020000 		.4byte	0x238
+ 672 0238 0F       		.uleb128 0xf
+ 673 0239 76000000 		.4byte	0x76
+ 674 023d 00       		.byte	0
+ 675              		.section	.debug_abbrev,"",%progbits
+ 676              	.Ldebug_abbrev0:
+ 677 0000 01       		.uleb128 0x1
+ 678 0001 11       		.uleb128 0x11
+ 679 0002 01       		.byte	0x1
+ 680 0003 25       		.uleb128 0x25
+ 681 0004 0E       		.uleb128 0xe
+ 682 0005 13       		.uleb128 0x13
+ 683 0006 0B       		.uleb128 0xb
+ 684 0007 03       		.uleb128 0x3
+ 685 0008 0E       		.uleb128 0xe
+ 686 0009 1B       		.uleb128 0x1b
+ 687 000a 0E       		.uleb128 0xe
+ 688 000b 55       		.uleb128 0x55
+ 689 000c 17       		.uleb128 0x17
+ 690 000d 11       		.uleb128 0x11
+ 691 000e 01       		.uleb128 0x1
+ 692 000f 10       		.uleb128 0x10
+ 693 0010 17       		.uleb128 0x17
+ 694 0011 00       		.byte	0
+ 695 0012 00       		.byte	0
+ 696 0013 02       		.uleb128 0x2
+ 697 0014 24       		.uleb128 0x24
+ 698 0015 00       		.byte	0
+ 699 0016 0B       		.uleb128 0xb
+ 700 0017 0B       		.uleb128 0xb
+ 701 0018 3E       		.uleb128 0x3e
+ 702 0019 0B       		.uleb128 0xb
+ 703 001a 03       		.uleb128 0x3
+ 704 001b 0E       		.uleb128 0xe
+ 705 001c 00       		.byte	0
+ 706 001d 00       		.byte	0
+ 707 001e 03       		.uleb128 0x3
+ 708 001f 16       		.uleb128 0x16
+ 709 0020 00       		.byte	0
+ 710 0021 03       		.uleb128 0x3
+ 711 0022 0E       		.uleb128 0xe
+ 712 0023 3A       		.uleb128 0x3a
+ 713 0024 0B       		.uleb128 0xb
+ 714 0025 3B       		.uleb128 0x3b
+ 715 0026 0B       		.uleb128 0xb
+ 716 0027 49       		.uleb128 0x49
+ 717 0028 13       		.uleb128 0x13
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 15
+
+
+ 718 0029 00       		.byte	0
+ 719 002a 00       		.byte	0
+ 720 002b 04       		.uleb128 0x4
+ 721 002c 24       		.uleb128 0x24
+ 722 002d 00       		.byte	0
+ 723 002e 0B       		.uleb128 0xb
+ 724 002f 0B       		.uleb128 0xb
+ 725 0030 3E       		.uleb128 0x3e
+ 726 0031 0B       		.uleb128 0xb
+ 727 0032 03       		.uleb128 0x3
+ 728 0033 08       		.uleb128 0x8
+ 729 0034 00       		.byte	0
+ 730 0035 00       		.byte	0
+ 731 0036 05       		.uleb128 0x5
+ 732 0037 16       		.uleb128 0x16
+ 733 0038 00       		.byte	0
+ 734 0039 03       		.uleb128 0x3
+ 735 003a 0E       		.uleb128 0xe
+ 736 003b 3A       		.uleb128 0x3a
+ 737 003c 0B       		.uleb128 0xb
+ 738 003d 3B       		.uleb128 0x3b
+ 739 003e 05       		.uleb128 0x5
+ 740 003f 49       		.uleb128 0x49
+ 741 0040 13       		.uleb128 0x13
+ 742 0041 00       		.byte	0
+ 743 0042 00       		.byte	0
+ 744 0043 06       		.uleb128 0x6
+ 745 0044 2E       		.uleb128 0x2e
+ 746 0045 01       		.byte	0x1
+ 747 0046 03       		.uleb128 0x3
+ 748 0047 0E       		.uleb128 0xe
+ 749 0048 3A       		.uleb128 0x3a
+ 750 0049 0B       		.uleb128 0xb
+ 751 004a 3B       		.uleb128 0x3b
+ 752 004b 0B       		.uleb128 0xb
+ 753 004c 27       		.uleb128 0x27
+ 754 004d 19       		.uleb128 0x19
+ 755 004e 49       		.uleb128 0x49
+ 756 004f 13       		.uleb128 0x13
+ 757 0050 11       		.uleb128 0x11
+ 758 0051 01       		.uleb128 0x1
+ 759 0052 12       		.uleb128 0x12
+ 760 0053 06       		.uleb128 0x6
+ 761 0054 40       		.uleb128 0x40
+ 762 0055 18       		.uleb128 0x18
+ 763 0056 9742     		.uleb128 0x2117
+ 764 0058 19       		.uleb128 0x19
+ 765 0059 01       		.uleb128 0x1
+ 766 005a 13       		.uleb128 0x13
+ 767 005b 00       		.byte	0
+ 768 005c 00       		.byte	0
+ 769 005d 07       		.uleb128 0x7
+ 770 005e 05       		.uleb128 0x5
+ 771 005f 00       		.byte	0
+ 772 0060 03       		.uleb128 0x3
+ 773 0061 0E       		.uleb128 0xe
+ 774 0062 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 16
+
+
+ 775 0063 0B       		.uleb128 0xb
+ 776 0064 3B       		.uleb128 0x3b
+ 777 0065 0B       		.uleb128 0xb
+ 778 0066 49       		.uleb128 0x49
+ 779 0067 13       		.uleb128 0x13
+ 780 0068 02       		.uleb128 0x2
+ 781 0069 18       		.uleb128 0x18
+ 782 006a 00       		.byte	0
+ 783 006b 00       		.byte	0
+ 784 006c 08       		.uleb128 0x8
+ 785 006d 2E       		.uleb128 0x2e
+ 786 006e 00       		.byte	0
+ 787 006f 3F       		.uleb128 0x3f
+ 788 0070 19       		.uleb128 0x19
+ 789 0071 03       		.uleb128 0x3
+ 790 0072 0E       		.uleb128 0xe
+ 791 0073 3A       		.uleb128 0x3a
+ 792 0074 0B       		.uleb128 0xb
+ 793 0075 3B       		.uleb128 0x3b
+ 794 0076 0B       		.uleb128 0xb
+ 795 0077 27       		.uleb128 0x27
+ 796 0078 19       		.uleb128 0x19
+ 797 0079 11       		.uleb128 0x11
+ 798 007a 01       		.uleb128 0x1
+ 799 007b 12       		.uleb128 0x12
+ 800 007c 06       		.uleb128 0x6
+ 801 007d 40       		.uleb128 0x40
+ 802 007e 18       		.uleb128 0x18
+ 803 007f 9642     		.uleb128 0x2116
+ 804 0081 19       		.uleb128 0x19
+ 805 0082 00       		.byte	0
+ 806 0083 00       		.byte	0
+ 807 0084 09       		.uleb128 0x9
+ 808 0085 2E       		.uleb128 0x2e
+ 809 0086 01       		.byte	0x1
+ 810 0087 3F       		.uleb128 0x3f
+ 811 0088 19       		.uleb128 0x19
+ 812 0089 03       		.uleb128 0x3
+ 813 008a 0E       		.uleb128 0xe
+ 814 008b 3A       		.uleb128 0x3a
+ 815 008c 0B       		.uleb128 0xb
+ 816 008d 3B       		.uleb128 0x3b
+ 817 008e 0B       		.uleb128 0xb
+ 818 008f 27       		.uleb128 0x27
+ 819 0090 19       		.uleb128 0x19
+ 820 0091 11       		.uleb128 0x11
+ 821 0092 01       		.uleb128 0x1
+ 822 0093 12       		.uleb128 0x12
+ 823 0094 06       		.uleb128 0x6
+ 824 0095 40       		.uleb128 0x40
+ 825 0096 18       		.uleb128 0x18
+ 826 0097 9642     		.uleb128 0x2116
+ 827 0099 19       		.uleb128 0x19
+ 828 009a 01       		.uleb128 0x1
+ 829 009b 13       		.uleb128 0x13
+ 830 009c 00       		.byte	0
+ 831 009d 00       		.byte	0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 17
+
+
+ 832 009e 0A       		.uleb128 0xa
+ 833 009f 2E       		.uleb128 0x2e
+ 834 00a0 01       		.byte	0x1
+ 835 00a1 3F       		.uleb128 0x3f
+ 836 00a2 19       		.uleb128 0x19
+ 837 00a3 03       		.uleb128 0x3
+ 838 00a4 0E       		.uleb128 0xe
+ 839 00a5 3A       		.uleb128 0x3a
+ 840 00a6 0B       		.uleb128 0xb
+ 841 00a7 3B       		.uleb128 0x3b
+ 842 00a8 0B       		.uleb128 0xb
+ 843 00a9 27       		.uleb128 0x27
+ 844 00aa 19       		.uleb128 0x19
+ 845 00ab 49       		.uleb128 0x49
+ 846 00ac 13       		.uleb128 0x13
+ 847 00ad 11       		.uleb128 0x11
+ 848 00ae 01       		.uleb128 0x1
+ 849 00af 12       		.uleb128 0x12
+ 850 00b0 06       		.uleb128 0x6
+ 851 00b1 40       		.uleb128 0x40
+ 852 00b2 18       		.uleb128 0x18
+ 853 00b3 9642     		.uleb128 0x2116
+ 854 00b5 19       		.uleb128 0x19
+ 855 00b6 01       		.uleb128 0x1
+ 856 00b7 13       		.uleb128 0x13
+ 857 00b8 00       		.byte	0
+ 858 00b9 00       		.byte	0
+ 859 00ba 0B       		.uleb128 0xb
+ 860 00bb 01       		.uleb128 0x1
+ 861 00bc 01       		.byte	0x1
+ 862 00bd 49       		.uleb128 0x49
+ 863 00be 13       		.uleb128 0x13
+ 864 00bf 01       		.uleb128 0x1
+ 865 00c0 13       		.uleb128 0x13
+ 866 00c1 00       		.byte	0
+ 867 00c2 00       		.byte	0
+ 868 00c3 0C       		.uleb128 0xc
+ 869 00c4 21       		.uleb128 0x21
+ 870 00c5 00       		.byte	0
+ 871 00c6 49       		.uleb128 0x49
+ 872 00c7 13       		.uleb128 0x13
+ 873 00c8 2F       		.uleb128 0x2f
+ 874 00c9 0B       		.uleb128 0xb
+ 875 00ca 00       		.byte	0
+ 876 00cb 00       		.byte	0
+ 877 00cc 0D       		.uleb128 0xd
+ 878 00cd 34       		.uleb128 0x34
+ 879 00ce 00       		.byte	0
+ 880 00cf 03       		.uleb128 0x3
+ 881 00d0 0E       		.uleb128 0xe
+ 882 00d1 3A       		.uleb128 0x3a
+ 883 00d2 0B       		.uleb128 0xb
+ 884 00d3 3B       		.uleb128 0x3b
+ 885 00d4 0B       		.uleb128 0xb
+ 886 00d5 49       		.uleb128 0x49
+ 887 00d6 13       		.uleb128 0x13
+ 888 00d7 02       		.uleb128 0x2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 18
+
+
+ 889 00d8 18       		.uleb128 0x18
+ 890 00d9 00       		.byte	0
+ 891 00da 00       		.byte	0
+ 892 00db 0E       		.uleb128 0xe
+ 893 00dc 34       		.uleb128 0x34
+ 894 00dd 00       		.byte	0
+ 895 00de 03       		.uleb128 0x3
+ 896 00df 0E       		.uleb128 0xe
+ 897 00e0 3A       		.uleb128 0x3a
+ 898 00e1 0B       		.uleb128 0xb
+ 899 00e2 3B       		.uleb128 0x3b
+ 900 00e3 05       		.uleb128 0x5
+ 901 00e4 49       		.uleb128 0x49
+ 902 00e5 13       		.uleb128 0x13
+ 903 00e6 3F       		.uleb128 0x3f
+ 904 00e7 19       		.uleb128 0x19
+ 905 00e8 3C       		.uleb128 0x3c
+ 906 00e9 19       		.uleb128 0x19
+ 907 00ea 00       		.byte	0
+ 908 00eb 00       		.byte	0
+ 909 00ec 0F       		.uleb128 0xf
+ 910 00ed 35       		.uleb128 0x35
+ 911 00ee 00       		.byte	0
+ 912 00ef 49       		.uleb128 0x49
+ 913 00f0 13       		.uleb128 0x13
+ 914 00f1 00       		.byte	0
+ 915 00f2 00       		.byte	0
+ 916 00f3 00       		.byte	0
+ 917              		.section	.debug_aranges,"",%progbits
+ 918 0000 54000000 		.4byte	0x54
+ 919 0004 0200     		.2byte	0x2
+ 920 0006 00000000 		.4byte	.Ldebug_info0
+ 921 000a 04       		.byte	0x4
+ 922 000b 00       		.byte	0
+ 923 000c 0000     		.2byte	0
+ 924 000e 0000     		.2byte	0
+ 925 0010 00000000 		.4byte	.LFB63
+ 926 0014 20000000 		.4byte	.LFE63-.LFB63
+ 927 0018 00000000 		.4byte	.LFB64
+ 928 001c 16000000 		.4byte	.LFE64-.LFB64
+ 929 0020 00000000 		.4byte	.LFB65
+ 930 0024 20000000 		.4byte	.LFE65-.LFB65
+ 931 0028 00000000 		.4byte	.LFB66
+ 932 002c 60000000 		.4byte	.LFE66-.LFB66
+ 933 0030 00000000 		.4byte	.LFB67
+ 934 0034 24000000 		.4byte	.LFE67-.LFB67
+ 935 0038 00000000 		.4byte	.LFB68
+ 936 003c 24000000 		.4byte	.LFE68-.LFB68
+ 937 0040 00000000 		.4byte	.LFB69
+ 938 0044 24000000 		.4byte	.LFE69-.LFB69
+ 939 0048 00000000 		.4byte	.LFB70
+ 940 004c 24000000 		.4byte	.LFE70-.LFB70
+ 941 0050 00000000 		.4byte	0
+ 942 0054 00000000 		.4byte	0
+ 943              		.section	.debug_ranges,"",%progbits
+ 944              	.Ldebug_ranges0:
+ 945 0000 00000000 		.4byte	.LFB63
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 19
+
+
+ 946 0004 20000000 		.4byte	.LFE63
+ 947 0008 00000000 		.4byte	.LFB64
+ 948 000c 16000000 		.4byte	.LFE64
+ 949 0010 00000000 		.4byte	.LFB65
+ 950 0014 20000000 		.4byte	.LFE65
+ 951 0018 00000000 		.4byte	.LFB66
+ 952 001c 60000000 		.4byte	.LFE66
+ 953 0020 00000000 		.4byte	.LFB67
+ 954 0024 24000000 		.4byte	.LFE67
+ 955 0028 00000000 		.4byte	.LFB68
+ 956 002c 24000000 		.4byte	.LFE68
+ 957 0030 00000000 		.4byte	.LFB69
+ 958 0034 24000000 		.4byte	.LFE69
+ 959 0038 00000000 		.4byte	.LFB70
+ 960 003c 24000000 		.4byte	.LFE70
+ 961 0040 00000000 		.4byte	0
+ 962 0044 00000000 		.4byte	0
+ 963              		.section	.debug_line,"",%progbits
+ 964              	.Ldebug_line0:
+ 965 0000 FC010000 		.section	.debug_str,"MS",%progbits,1
+ 965      02005F01 
+ 965      00000201 
+ 965      FB0E0D00 
+ 965      01010101 
+ 966              	.LASF16:
+ 967 0000 6368616E 		.ascii	"channel\000"
+ 967      6E656C00 
+ 968              	.LASF24:
+ 969 0008 736D5F67 		.ascii	"sm_get_negative_channel_value\000"
+ 969      65745F6E 
+ 969      65676174 
+ 969      6976655F 
+ 969      6368616E 
+ 970              	.LASF26:
+ 971 0026 6D75785F 		.ascii	"mux_dc\000"
+ 971      646300
+ 972              	.LASF9:
+ 973 002d 5F5F696E 		.ascii	"__int32_t\000"
+ 973      7433325F 
+ 973      7400
+ 974              	.LASF29:
+ 975 0037 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 975      4320342E 
+ 975      392E3320 
+ 975      32303135 
+ 975      30333033 
+ 976 006a 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 976      20726576 
+ 976      6973696F 
+ 976      6E203232 
+ 976      31323230 
+ 977 009d 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 977      66756E63 
+ 977      74696F6E 
+ 977      2D736563 
+ 977      74696F6E 
+ 978              	.LASF27:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 20
+
+
+ 979 00c5 6D75785F 		.ascii	"mux_peak\000"
+ 979      7065616B 
+ 979      00
+ 980              	.LASF13:
+ 981 00ce 646F7562 		.ascii	"double\000"
+ 981      6C6500
+ 982              	.LASF21:
+ 983 00d5 736D5F67 		.ascii	"sm_get_dc_channel_value\000"
+ 983      65745F64 
+ 983      635F6368 
+ 983      616E6E65 
+ 983      6C5F7661 
+ 984              	.LASF32:
+ 985 00ed 63686563 		.ascii	"check_channel\000"
+ 985      6B5F6368 
+ 985      616E6E65 
+ 985      6C00
+ 986              	.LASF12:
+ 987 00fb 666C6F61 		.ascii	"float\000"
+ 987      7400
+ 988              	.LASF19:
+ 989 0101 736D5F73 		.ascii	"sm_set_configuration\000"
+ 989      65745F63 
+ 989      6F6E6669 
+ 989      67757261 
+ 989      74696F6E 
+ 990              	.LASF1:
+ 991 0116 756E7369 		.ascii	"unsigned char\000"
+ 991      676E6564 
+ 991      20636861 
+ 991      7200
+ 992              	.LASF5:
+ 993 0124 6C6F6E67 		.ascii	"long unsigned int\000"
+ 993      20756E73 
+ 993      69676E65 
+ 993      6420696E 
+ 993      7400
+ 994              	.LASF11:
+ 995 0136 696E7433 		.ascii	"int32\000"
+ 995      3200
+ 996              	.LASF34:
+ 997 013c 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 997      52784275 
+ 997      66666572 
+ 997      00
+ 998              	.LASF17:
+ 999 0149 636F6E66 		.ascii	"config\000"
+ 999      696700
+ 1000              	.LASF22:
+ 1001 0150 736D5F67 		.ascii	"sm_get_ac_channel_value\000"
+ 1001      65745F61 
+ 1001      635F6368 
+ 1001      616E6E65 
+ 1001      6C5F7661 
+ 1002              	.LASF33:
+ 1003 0168 736D5F69 		.ascii	"sm_initialization\000"
+ 1003      6E697469 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 21
+
+
+ 1003      616C697A 
+ 1003      6174696F 
+ 1003      6E00
+ 1004              	.LASF25:
+ 1005 017a 6D75785F 		.ascii	"mux_ac\000"
+ 1005      616300
+ 1006              	.LASF8:
+ 1007 0181 756E7369 		.ascii	"unsigned int\000"
+ 1007      676E6564 
+ 1007      20696E74 
+ 1007      00
+ 1008              	.LASF7:
+ 1009 018e 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1009      206C6F6E 
+ 1009      6720756E 
+ 1009      7369676E 
+ 1009      65642069 
+ 1010              	.LASF10:
+ 1011 01a5 696E7433 		.ascii	"int32_t\000"
+ 1011      325F7400 
+ 1012              	.LASF15:
+ 1013 01ad 73697A65 		.ascii	"sizetype\000"
+ 1013      74797065 
+ 1013      00
+ 1014              	.LASF6:
+ 1015 01b6 6C6F6E67 		.ascii	"long long int\000"
+ 1015      206C6F6E 
+ 1015      6720696E 
+ 1015      7400
+ 1016              	.LASF14:
+ 1017 01c4 63686172 		.ascii	"char\000"
+ 1017      00
+ 1018              	.LASF30:
+ 1019 01c9 2E5C615F 		.ascii	".\\a_to_d_functions\\sigma_mux.c\000"
+ 1019      746F5F64 
+ 1019      5F66756E 
+ 1019      6374696F 
+ 1019      6E735C73 
+ 1020              	.LASF31:
+ 1021 01e8 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\psoc-5lp\\5lp-rtu"
+ 1021      73657273 
+ 1021      5C676C65 
+ 1021      6E6E5C4F 
+ 1021      6E654472 
+ 1022 0215 5C637572 		.ascii	"\\current_monitor\\USB_UART01.cydsn\000"
+ 1022      72656E74 
+ 1022      5F6D6F6E 
+ 1022      69746F72 
+ 1022      5C555342 
+ 1023              	.LASF2:
+ 1024 0237 73686F72 		.ascii	"short int\000"
+ 1024      7420696E 
+ 1024      7400
+ 1025              	.LASF18:
+ 1026 0241 6D75785F 		.ascii	"mux_channel\000"
+ 1026      6368616E 
+ 1026      6E656C00 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc65vgjb.s 			page 22
+
+
+ 1027              	.LASF4:
+ 1028 024d 6C6F6E67 		.ascii	"long int\000"
+ 1028      20696E74 
+ 1028      00
+ 1029              	.LASF20:
+ 1030 0256 736D5F73 		.ascii	"sm_store_value\000"
+ 1030      746F7265 
+ 1030      5F76616C 
+ 1030      756500
+ 1031              	.LASF0:
+ 1032 0265 7369676E 		.ascii	"signed char\000"
+ 1032      65642063 
+ 1032      68617200 
+ 1033              	.LASF23:
+ 1034 0271 736D5F67 		.ascii	"sm_get_peak_channel_value\000"
+ 1034      65745F70 
+ 1034      65616B5F 
+ 1034      6368616E 
+ 1034      6E656C5F 
+ 1035              	.LASF3:
+ 1036 028b 73686F72 		.ascii	"short unsigned int\000"
+ 1036      7420756E 
+ 1036      7369676E 
+ 1036      65642069 
+ 1036      6E7400
+ 1037              	.LASF28:
+ 1038 029e 6D75785F 		.ascii	"mux_negative\000"
+ 1038      6E656761 
+ 1038      74697665 
+ 1038      00
+ 1039              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

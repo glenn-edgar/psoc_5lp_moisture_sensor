@@ -12,8 +12,17 @@
 #include "a_to_d_functions.h"
 #include "sigma_mux.h"
 #include "event_fifo.h"
+#include "digitial_io.h"
+#include "process_modbus_message.h"
 
-#define TICK_INTERVAL          8
+
+#define TICK_INTERVAL          16
+#define WATCHDOG_ENABLE         0
+
+
+
+
+
 
 int toggle_heart_beat(unsigned link_id, unsigned param_1,
                       unsigned param_2, unsigned param_3, 
@@ -39,25 +48,7 @@ int  pat_watch_dog(unsigned link_id, unsigned param_1,
 ** Die Temperature functions
 **
 */
-static int16    temp_die;
-static MOVING_AVERAGE_STRUCT ma_die_temp;
-int initialize_die_temp_measurement(unsigned link_id, unsigned param_1,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
-{
-    ma_initialize( &ma_die_temp, .1 );
-    
-    return CF_DISABLE;
-}
 
-int meaure_die_temperature(unsigned link_id, unsigned param_1,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
-{
-    int16 temp;
-    DieTemp_1_GetTemp(&temp);
-    temp = ((temp*9)/5)+32; 
-    temp_die = ma_update( &ma_die_temp, temp);
-    return CF_DISABLE;
-}
 
 
 
@@ -75,37 +66,21 @@ CY_ISR_PROTO( sleep_timer_interrupt )
     
 }
 
-int initialize_eeprom(unsigned link_id, unsigned param_1,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
-{
-    EEPROM_1_Start();
-    EEPROM_1_UpdateTemperature();
-    return CF_DISABLE;
-}
 
 
 int start_watchdog(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
 {
-    //CyWdtStart( CYWDT_1024_TICKS, CYWDT_LPMODE_NOCHANGE ); // 2 -3 second interval
+    #if WATCHDOG_ENABLE
+       CyWdtStart( CYWDT_1024_TICKS, CYWDT_LPMODE_NOCHANGE ); // 2 -3 second interval
+    #endif
     return CF_DISABLE;
 }
 
 
 
 
-int initialize_analog(unsigned link_id, unsigned param_1,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
-{
-    ad_init_se(); 
-    ad_init_de();
-    sm_initialization();
-    DAC_1_Start();
-    DAC_2_Start();
-    WaveDAC8_1_Start();
-    ad_setup_interrupt();
-    return CF_DISABLE;
-}
+
 
 int enable_timer_interrupt(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
@@ -123,58 +98,13 @@ int enable_interrupts(unsigned link_id, unsigned param_1,
    return CF_DISABLE;
 }
 
-int update_eeprom_temp(unsigned link_id, unsigned param_1,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
-{
-   EEPROM_1_UpdateTemperature();
-   return CF_DISABLE;   
-}
-
-int enable_pwms(unsigned link_id, unsigned param_1,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
-{
-    PWM_1_Start();
-    return CF_DISABLE;
-}
 
 
-int enable_counters(unsigned link_id, unsigned param_1,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
-{
-    Control_Reg_1_Write(Control_Reg_1_Read()&~1) ;
-    Counter_1_Start();
-    return CF_DISABLE;
-}
 
-static volatile unsigned counter_value;
 
-int read_counter_register(unsigned link_id, unsigned param_1,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
-{ 
-    counter_value = Counter_1_ReadCounter();
-    Control_Reg_1_Write(Control_Reg_1_Read()|1) ;
-    Counter_1_WriteCounter(0);
-    Control_Reg_1_Write(Control_Reg_1_Read()&~1) ;
 
-   
-    return CF_DISABLE;
-}    
 
-int sigma_store_value(unsigned link_id, unsigned mux_channel,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
-{
-   sm_store_value( mux_channel );
-   return CF_DISABLE;
-}
-
-int set_mux_channel(unsigned link_id, unsigned mux_channel,
-  unsigned ad_config, unsigned param_3, unsigned event, unsigned data)
-{
  
-    sm_set_configuration( ad_config, mux_channel );
-    return CF_DISABLE;
-
-}   
     
 int init_event_queue(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
@@ -184,4 +114,113 @@ int init_event_queue(unsigned link_id, unsigned param_1,
     return CF_DISABLE;
     
 }  
+
+
+
+
+
+
+int switch_on_fn(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+{
+   int return_value;
+    
+   if( read_board_switch() == 1 )
+   {
+      return_value = 1;
+   }
+   else
+   {
+      return_value = 0;
+   }
+   return return_value;
+
+}
+
+int switch_off_fn(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+{
+    int return_value;
+    if( read_board_switch() == 0 )
+    {
+        return_value = 1;
+    }
+    else
+    {
+        return_value = 0;
+    }
+    return return_value;
+    
+}
+
+
+
+
+int set_modbus_watch_dog_flag(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+{
+    uint16 temp;
+    temp = 1;
+    store_modbus_data_registers( MOD_RTU_WATCH_DOG_FLAG, 1, &temp);
+    return 0;
+}
+
+int set_minute_rollover(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+{
+   uint16 temp;
+    temp = 1;
+    store_modbus_data_registers(MOD_MINUTE_ROLLOVER , 1, &temp);
+    return 0;
+}
+       
+ 
+int update_modbus_rtc_values(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+{
+    uint16 temp;
+    temp =   RTC_1_ReadSecond();                     
+    store_modbus_data_registers( MOD_SECOND, 1, &temp );
+    temp =   RTC_1_ReadMinute();                     
+    store_modbus_data_registers(  MOD_MINUTE,  1, &temp);
+    temp =  RTC_1_ReadHour();                     ;
+    store_modbus_data_registers( MOD_HOUR,  1, &temp);
+    temp = RTC_1_ReadDayOfMonth();                
+    store_modbus_data_registers( MOD_DAY,  1, &temp);
+    temp = RTC_1_ReadMonth();                      
+    store_modbus_data_registers(  MOD_MONTH,  1, &temp);
+    temp =  RTC_1_ReadYear();                      
+    store_modbus_data_registers( MOD_YEAR, 1, &temp);
+    return 0;
+}
+
+
+int set_modbus_reset_flag(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+{
+   uint16 temp;
+    temp = 1;
+    store_modbus_data_registers( MOD_POWER_UP_EVENT, 1, &temp);
+    return 0;
+}
+
+
+
+
+int initialize_controller_wd_flag(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+{
+     uint16 temp;
+    
+     temp = 0;
+     
+     store_modbus_data_registers( MOD_CONTROLLER_WATCH_DOG_FLAG, 0, &temp );
+     return 0;
+}
+
+
+
+ 
+
+    
 

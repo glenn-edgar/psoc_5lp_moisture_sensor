@@ -96,9 +96,9 @@ CY_ISR_PROTO(SIGMA_A_D_ISR4);
 **************************************/
 
 /* Default configuration values from user parameters */
-#define SIGMA_A_D_CFG1_RESOLUTION         (16u )
-#define SIGMA_A_D_CFG1_INPUT_RANGE        (6u)
-#define SIGMA_A_D_CFG1_SRATE              (2000u)
+#define SIGMA_A_D_CFG1_RESOLUTION         (19u )
+#define SIGMA_A_D_CFG1_INPUT_RANGE        (3u)
+#define SIGMA_A_D_CFG1_SRATE              (375u)
 #define SIGMA_A_D_CFG1_REFERENCE          (0u)
 #define SIGMA_A_D_CFG1_BUFFER_GAIN        (1u)
 #define SIGMA_A_D_CFG1_CONV_MODE          (2u)
@@ -107,7 +107,7 @@ CY_ISR_PROTO(SIGMA_A_D_ISR4);
 #define SIGMA_A_D_DEFAULT_INTERNAL_CLK               (1u)
 #define SIGMA_A_D_DEFAULT_NUM_CONFIGS                (1u)
 #define SIGMA_A_D_DEFAULT_CHARGE_PUMP_CLOCK          (1u)
-#define SIGMA_A_D_DEFAULT_INPUT_MODE                 (0u)
+#define SIGMA_A_D_DEFAULT_INPUT_MODE                 (1u)
 #define SIGMA_A_D_IRQ_REMOVE                         (0u)          /* Removes internal interrupt */
 #define SIGMA_A_D_MI_ENABLE                          (0u)
 
@@ -1337,23 +1337,23 @@ extern volatile int32 SIGMA_A_D_CountsPerVolt;
 
 /* Default register settings for the Config 1 */
 /* Default Config
-* SIGMA_A_D_CFG1 Sample Rate: 2000 Samples per Second
+* SIGMA_A_D_CFG1 Sample Rate: 375 Samples per Second
 * SIGMA_A_D_CFG1 Conversion Mode: 2
 * SIGMA_A_D_CFG1 Input Buffer Gain: 1
 * SIGMA_A_D_CFG1 Reference: 0
-* SIGMA_A_D_CFG1 Input Range: 6
-* SIGMA_A_D_CFG1 Resolution: 16 bits
-* SIGMA_A_D_CFG1 Clock: 128000 Hz
+* SIGMA_A_D_CFG1 Input Range: 3
+* SIGMA_A_D_CFG1 Resolution: 19 bits
+* SIGMA_A_D_CFG1 Clock: 3072000 Hz
 */
 
-#define SIGMA_A_D_CFG1_DEC_CR             (0x38u)
+#define SIGMA_A_D_CFG1_DEC_CR             (0x78u)
 #define SIGMA_A_D_CFG1_DEC_SR             (0x14u)
-#define SIGMA_A_D_CFG1_DEC_SHIFT1         (0x04u)
-#define SIGMA_A_D_CFG1_DEC_SHIFT2         (0x07u)
+#define SIGMA_A_D_CFG1_DEC_SHIFT1         (0x00u)
+#define SIGMA_A_D_CFG1_DEC_SHIFT2         (0x09u)
 #define SIGMA_A_D_CFG1_DEC_DIV            (0)
-#define SIGMA_A_D_CFG1_DEC_DR2            (0x00u)
+#define SIGMA_A_D_CFG1_DEC_DR2            (0x3Fu)
 #define SIGMA_A_D_CFG1_DEC_DR2H           (0x00u)
-#define SIGMA_A_D_CFG1_DEC_DR1            (0x3Fu)
+#define SIGMA_A_D_CFG1_DEC_DR1            (0x7Fu)
 #define SIGMA_A_D_CFG1_DEC_OCOR           (0x00u)
 #define SIGMA_A_D_CFG1_DEC_OCORM          (0x00u)
 #define SIGMA_A_D_CFG1_DEC_OCORH          (0x00u)
@@ -1375,10 +1375,10 @@ extern volatile int32 SIGMA_A_D_CountsPerVolt;
 #define SIGMA_A_D_CFG1_DSM_CR11           (0x5Au)
 #define SIGMA_A_D_CFG1_DSM_CR12           (0x00u)
 #define SIGMA_A_D_CFG1_DSM_CR13           (0x00u)
-#define SIGMA_A_D_CFG1_DSM_CR14           (0x00u)
-#define SIGMA_A_D_CFG1_DSM_CR15           (0x00u)
-#define SIGMA_A_D_CFG1_DSM_CR16           (0x0Au)
-#define SIGMA_A_D_CFG1_DSM_CR17           (0x43u)
+#define SIGMA_A_D_CFG1_DSM_CR14           (0x02u)
+#define SIGMA_A_D_CFG1_DSM_CR15           (0x12u)
+#define SIGMA_A_D_CFG1_DSM_CR16           (0x28u)
+#define SIGMA_A_D_CFG1_DSM_CR17           (0xEBu)
 #define SIGMA_A_D_CFG1_DSM_REF0           (0x44u)
 #define SIGMA_A_D_CFG1_DSM_REF1           (0x00u)
 #define SIGMA_A_D_CFG1_DSM_REF2           (0x58u)
@@ -1388,23 +1388,23 @@ extern volatile int32 SIGMA_A_D_CountsPerVolt;
 #define SIGMA_A_D_CFG1_DSM_MISC           (0x00u)
 #define SIGMA_A_D_CFG1_DSM_CLK            (0x18u)
 #define SIGMA_A_D_CFG1_DSM_BUF0           (0x05u)
-#define SIGMA_A_D_CFG1_DSM_BUF1           (0x01u)
+#define SIGMA_A_D_CFG1_DSM_BUF1           (0x02u)
 #define SIGMA_A_D_CFG1_DSM_BUF2           (0x00u)
-#define SIGMA_A_D_CFG1_DSM_BUF3           (0x0Au)
+#define SIGMA_A_D_CFG1_DSM_BUF3           (0x00u)
 #define SIGMA_A_D_CFG1_DSM_OUT0           (0x00u)
 #define SIGMA_A_D_CFG1_DSM_OUT1           (0x00u)
-#define SIGMA_A_D_CFG1_DSM_SW3            (0x00u)
-#define SIGMA_A_D_CFG1_CLOCKS_PER_SAMPLE  (0x0040u)
-#define SIGMA_A_D_CFG1_CLOCK_FREQ         (128000u)
-#define SIGMA_A_D_CFG1_CP_CLOCK_FREQ      (512000u)
+#define SIGMA_A_D_CFG1_DSM_SW3            (0x40u)
+#define SIGMA_A_D_CFG1_CLOCKS_PER_SAMPLE  (0x2000u)
+#define SIGMA_A_D_CFG1_CLOCK_FREQ         (3072000u)
+#define SIGMA_A_D_CFG1_CP_CLOCK_FREQ      (12288000u)
 #define SIGMA_A_D_CFG1_REFERENCE_VOLTAGE  (1.0240)
-#define SIGMA_A_D_CFG1_COUNTS_PER_VOLT    (5333)
+#define SIGMA_A_D_CFG1_COUNTS_PER_VOLT    (85333)
 #define SIGMA_A_D_CFG1_IDEAL_DEC_GAIN     (0x7F02u)
 #define SIGMA_A_D_CFG1_IDEAL_ODDDEC_GAIN  (0x8000u)
 
 #define SIGMA_A_D_CFG1_ALIGNMENT          (0u)
-#define SIGMA_A_D_CFG1_ADC_CLK_DIVIDER    (499u)
-#define SIGMA_A_D_CFG1_CP_CLK_DIVIDER     (123u)
+#define SIGMA_A_D_CFG1_ADC_CLK_DIVIDER    (20u)
+#define SIGMA_A_D_CFG1_CP_CLK_DIVIDER     (5u)
 
 /* Input and DAC Cap values in pF */
 #define SIGMA_A_D_CFG1_IPCAP1VALUE        (0x02B0u)
@@ -1441,7 +1441,7 @@ extern volatile int32 SIGMA_A_D_CountsPerVolt;
 * SIGMA_A_D_CFG2 Conversion Mode: 2
 * SIGMA_A_D_CFG2 Input Buffer Gain: 1
 * SIGMA_A_D_CFG2 Reference: 0
-* SIGMA_A_D_CFG2 Input Range: 4
+* SIGMA_A_D_CFG2 Input Range: 0
 * SIGMA_A_D_CFG2 Resolution: 16 bits
 * SIGMA_A_D_CFG2 Clock: 640000 Hz
 */
@@ -1449,7 +1449,7 @@ extern volatile int32 SIGMA_A_D_CountsPerVolt;
 #define SIGMA_A_D_CFG2_DEC_CR             (0x38u)
 #define SIGMA_A_D_CFG2_DEC_SR             (0x14u)
 #define SIGMA_A_D_CFG2_DEC_SHIFT1         (0x04u)
-#define SIGMA_A_D_CFG2_DEC_SHIFT2         (0x07u)
+#define SIGMA_A_D_CFG2_DEC_SHIFT2         (0x06u)
 #define SIGMA_A_D_CFG2_DEC_DIV            (0)
 #define SIGMA_A_D_CFG2_DEC_DR2            (0x00u)
 #define SIGMA_A_D_CFG2_DEC_DR2H           (0x00u)
@@ -1485,22 +1485,22 @@ extern volatile int32 SIGMA_A_D_CountsPerVolt;
 #define SIGMA_A_D_CFG2_DSM_DEM0           (0x04u)
 #define SIGMA_A_D_CFG2_DSM_DEM1           (0x00u)
 #define SIGMA_A_D_CFG2_DSM_BUF0           (0x05u)
-#define SIGMA_A_D_CFG2_DSM_BUF1           (0x01u)
+#define SIGMA_A_D_CFG2_DSM_BUF1           (0x02u)
 #define SIGMA_A_D_CFG2_DSM_BUF2           (0x00u)
-#define SIGMA_A_D_CFG2_DSM_BUF3           (0x0Au)
+#define SIGMA_A_D_CFG2_DSM_BUF3           (0x00u)
 #define SIGMA_A_D_CFG2_DSM_OUT0           (0x00u)
 #define SIGMA_A_D_CFG2_DSM_OUT1           (0x00u)
-#define SIGMA_A_D_CFG2_DSM_SW3            (0x00u)
+#define SIGMA_A_D_CFG2_DSM_SW3            (0x40u)
 #define SIGMA_A_D_CFG2_SRATE              (10000u )
 #define SIGMA_A_D_CFG2_CLOCKS_PER_SAMPLE  (0x0040u)
 #define SIGMA_A_D_CFG2_CLOCK_FREQ         (640000u)
 #define SIGMA_A_D_CFG2_CP_CLOCK_FREQ      (2560000u)
 #define SIGMA_A_D_CFG2_REFERENCE_VOLTAGE  (1.0240)
-#define SIGMA_A_D_CFG2_COUNTS_PER_VOLT    (32000)
+#define SIGMA_A_D_CFG2_COUNTS_PER_VOLT    (64000)
 #define SIGMA_A_D_CFG2_RESOLUTION         (16u)
 #define SIGMA_A_D_CFG2_CONV_MODE          (2u)
 #define SIGMA_A_D_CFG2_IDEAL_DEC_GAIN     (0x90DAu)
-#define SIGMA_A_D_CFG2_INPUT_RANGE        (4u)
+#define SIGMA_A_D_CFG2_INPUT_RANGE        (0u)
 #define SIGMA_A_D_CFG2_INPUT_RANGE_VALUE  (1.024)
 
 #define SIGMA_A_D_CFG2_REFERENCE          (0u)
@@ -1545,7 +1545,7 @@ extern volatile int32 SIGMA_A_D_CountsPerVolt;
 * SIGMA_A_D_CFG3 Conversion Mode: 2
 * SIGMA_A_D_CFG3 Input Buffer Gain: 1
 * SIGMA_A_D_CFG3 Reference: 0
-* SIGMA_A_D_CFG3 Input Range: 4
+* SIGMA_A_D_CFG3 Input Range: 0
 * SIGMA_A_D_CFG3 Resolution: 16 bits
 * SIGMA_A_D_CFG3 Clock: 640000 Hz
 */
@@ -1553,7 +1553,7 @@ extern volatile int32 SIGMA_A_D_CountsPerVolt;
 #define SIGMA_A_D_CFG3_DEC_CR             (0x38u)
 #define SIGMA_A_D_CFG3_DEC_SR             (0x14u)
 #define SIGMA_A_D_CFG3_DEC_SHIFT1         (0x04u)
-#define SIGMA_A_D_CFG3_DEC_SHIFT2         (0x07u)
+#define SIGMA_A_D_CFG3_DEC_SHIFT2         (0x06u)
 #define SIGMA_A_D_CFG3_DEC_DIV            (0)
 #define SIGMA_A_D_CFG3_DEC_DR2            (0x00u)
 #define SIGMA_A_D_CFG3_DEC_DR2H           (0x00u)
@@ -1589,22 +1589,22 @@ extern volatile int32 SIGMA_A_D_CountsPerVolt;
 #define SIGMA_A_D_CFG3_DSM_DEM0           (0x04u)
 #define SIGMA_A_D_CFG3_DSM_DEM1           (0x00u)
 #define SIGMA_A_D_CFG3_DSM_BUF0           (0x05u)
-#define SIGMA_A_D_CFG3_DSM_BUF1           (0x01u)
+#define SIGMA_A_D_CFG3_DSM_BUF1           (0x02u)
 #define SIGMA_A_D_CFG3_DSM_BUF2           (0x00u)
-#define SIGMA_A_D_CFG3_DSM_BUF3           (0x0Au)
+#define SIGMA_A_D_CFG3_DSM_BUF3           (0x00u)
 #define SIGMA_A_D_CFG3_DSM_OUT0           (0x00u)
 #define SIGMA_A_D_CFG3_DSM_OUT1           (0x00u)
-#define SIGMA_A_D_CFG3_DSM_SW3            (0x00u)
+#define SIGMA_A_D_CFG3_DSM_SW3            (0x40u)
 #define SIGMA_A_D_CFG3_SRATE              (10000u)
 #define SIGMA_A_D_CFG3_CLOCKS_PER_SAMPLE  (0x0040u)
 #define SIGMA_A_D_CFG3_CLOCK_FREQ         (640000u)
 #define SIGMA_A_D_CFG3_CP_CLOCK_FREQ      (2560000u)
 #define SIGMA_A_D_CFG3_REFERENCE_VOLTAGE  (1.0240)
-#define SIGMA_A_D_CFG3_COUNTS_PER_VOLT    (32000)
+#define SIGMA_A_D_CFG3_COUNTS_PER_VOLT    (64000)
 #define SIGMA_A_D_CFG3_RESOLUTION         (16u)
 #define SIGMA_A_D_CFG3_CONV_MODE          (2u)
 #define SIGMA_A_D_CFG3_IDEAL_DEC_GAIN     (0x90DAu)
-#define SIGMA_A_D_CFG3_INPUT_RANGE        (4u)
+#define SIGMA_A_D_CFG3_INPUT_RANGE        (0u)
 #define SIGMA_A_D_CFG3_REFERENCE          (0u)
 #define SIGMA_A_D_CFG3_BUFFER_GAIN        (1u)
 #define SIGMA_A_D_CFG3_INPUT_RANGE_VALUE  (1.024)
@@ -1648,7 +1648,7 @@ extern volatile int32 SIGMA_A_D_CountsPerVolt;
 * SIGMA_A_D_CFG4 Conversion Mode: 2
 * SIGMA_A_D_CFG4 Input Buffer Gain: 1
 * SIGMA_A_D_CFG4 Reference: 0
-* SIGMA_A_D_CFG4 Input Range: 4
+* SIGMA_A_D_CFG4 Input Range: 0
 * SIGMA_A_D_CFG4 Resolution: 16 bits
 * SIGMA_A_D_CFG4 Clock: 640000 Hz
 */
@@ -1656,7 +1656,7 @@ extern volatile int32 SIGMA_A_D_CountsPerVolt;
 #define SIGMA_A_D_CFG4_DEC_CR             (0x38u)
 #define SIGMA_A_D_CFG4_DEC_SR             (0x14u)
 #define SIGMA_A_D_CFG4_DEC_SHIFT1         (0x04u)
-#define SIGMA_A_D_CFG4_DEC_SHIFT2         (0x07u)
+#define SIGMA_A_D_CFG4_DEC_SHIFT2         (0x06u)
 #define SIGMA_A_D_CFG4_DEC_DIV            (0)
 #define SIGMA_A_D_CFG4_DEC_DR2            (0x00u)
 #define SIGMA_A_D_CFG4_DEC_DR2H           (0x00u)
@@ -1692,22 +1692,22 @@ extern volatile int32 SIGMA_A_D_CountsPerVolt;
 #define SIGMA_A_D_CFG4_DSM_DEM0           (0x04u)
 #define SIGMA_A_D_CFG4_DSM_DEM1           (0x00u)
 #define SIGMA_A_D_CFG4_DSM_BUF0           (0x05u)
-#define SIGMA_A_D_CFG4_DSM_BUF1           (0x01u)
+#define SIGMA_A_D_CFG4_DSM_BUF1           (0x02u)
 #define SIGMA_A_D_CFG4_DSM_BUF2           (0x00u)
-#define SIGMA_A_D_CFG4_DSM_BUF3           (0x0Au)
+#define SIGMA_A_D_CFG4_DSM_BUF3           (0x00u)
 #define SIGMA_A_D_CFG4_DSM_OUT0           (0x00u)
 #define SIGMA_A_D_CFG4_DSM_OUT1           (0x00u)
-#define SIGMA_A_D_CFG4_DSM_SW3            (0x00u)
+#define SIGMA_A_D_CFG4_DSM_SW3            (0x40u)
 #define SIGMA_A_D_CFG4_SRATE              (10000u)
 #define SIGMA_A_D_CFG4_CLOCKS_PER_SAMPLE  (0x0040u)
 #define SIGMA_A_D_CFG4_CLOCK_FREQ         (640000u)
 #define SIGMA_A_D_CFG4_CP_CLOCK_FREQ      (2560000u)
 #define SIGMA_A_D_CFG4_REFERENCE_VOLTAGE  (1.0240)
-#define SIGMA_A_D_CFG4_COUNTS_PER_VOLT    (32000)
+#define SIGMA_A_D_CFG4_COUNTS_PER_VOLT    (64000)
 #define SIGMA_A_D_CFG4_RESOLUTION         (16u)
 #define SIGMA_A_D_CFG4_CONV_MODE          (2u)
 #define SIGMA_A_D_CFG4_IDEAL_DEC_GAIN     (0x90DAu)
-#define SIGMA_A_D_CFG4_INPUT_RANGE        (4u)
+#define SIGMA_A_D_CFG4_INPUT_RANGE        (0u)
 #define SIGMA_A_D_CFG4_REFERENCE          (0u)
 #define SIGMA_A_D_CFG4_BUFFER_GAIN        (1u)
 #define SIGMA_A_D_CFG4_INPUT_RANGE_VALUE  (1.024)

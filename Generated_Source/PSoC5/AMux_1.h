@@ -42,8 +42,8 @@ void AMux_1_FastSelect(uint8 channel) ;
 *         Parameter Constants
 ***************************************/
 
-#define AMux_1_CHANNELS  2u
-#define AMux_1_MUXTYPE   2
+#define AMux_1_CHANNELS  6u
+#define AMux_1_MUXTYPE   1
 #define AMux_1_ATMOSTONE 0
 
 /***************************************

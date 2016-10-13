@@ -11,48 +11,66 @@
 #include <device.h>
 #include "a_to_d_functions.h"
 #include "moving_average.h"
-#include "cf_events.h"
+#include "cf_status_bit.h"
+#include "process_modbus_message.h"
+#include "cf_external_functions.h"
+
+#define ALPHA_VALUE_SEC .01
+#define ALPHA_VALUE_MIN .2
+
+#define   SIGMA_SETTLING_TIME   10
+#define   SIGMA_WAIT_FOR_INIT_STATE  0
+#define   SIGMA_SETTLING_STATE       1
+#define   SIGMA_MEASUREMENT_STATE    2
 
 
-#define SE_NUMBER 3
-#define DE_NUMBER 1
-#define SIGMA_DELTA_NUMBER 1
 
-static MOVING_AVERAGE_STRUCT se_dc[SE_NUMBER];
-static MOVING_AVERAGE_STRUCT se_ac[SE_NUMBER];
 
-static MOVING_AVERAGE_STRUCT de_dc[DE_NUMBER];
-static MOVING_AVERAGE_STRUCT de_ac[DE_NUMBER];
 
-static MOVING_AVERAGE_STRUCT sigma_dc[ SIGMA_DELTA_NUMBER ];
-static MOVING_AVERAGE_STRUCT sigma_ac[ SIGMA_DELTA_NUMBER ];
+static const int se_reg_mapping[1]       = { MOISTURE_TEMP_DC_MIN_FLOAT };
 
-#define ALPHA_VALUE .01
+
+static const int se_calibration_mapping[] = { MOISTURE_TEMP_CALIBRATION_A };
+
+
+static MOVING_AVERAGE_STRUCT se_dc_sec[ SE_NUMBER];
+static MOVING_AVERAGE_STRUCT se_ac_sec[ SE_NUMBER];
+static MOVING_AVERAGE_STRUCT se_dc_min[ SE_NUMBER];
+static MOVING_AVERAGE_STRUCT se_ac_min[ SE_NUMBER ];
+
+
 
 CY_ISR_PROTO(process_ad_interrupt)
 {
-    ad_interrupt_ClearPending();
-    cf_send_interrupt_event(  CF_PROCESS_AD_RESULTS, 0 );
+    ad_interrupt_1_ClearPending();
+    cf_set_interrupt_status_bit(  CF_PROCESS_AD_RESULTS );
 }
+
+/*
+**
+**  SAR Functions
+**
+*/
 
 void ad_setup_interrupt( void )
 {
-    ad_interrupt_StartEx( process_ad_interrupt );
+    AD_CLOCK_Start();
+    ad_interrupt_1_StartEx( process_ad_interrupt );
 }
 
-int ad_get_se_number( void )
-{
-    return SE_NUMBER;
-}
 
 void ad_init_se( void )  // init single ended a/d signals
 {
     int i;
     for( i = 0; i< SE_NUMBER; i++ )
     {
-        ma_initialize( &se_dc[i], ALPHA_VALUE);
-        ma_initialize( &se_ac[i],ALPHA_VALUE);
+        ma_initialize( &se_dc_sec[i], ALPHA_VALUE_SEC,0);
+        ma_initialize( &se_ac_sec[i], ALPHA_VALUE_SEC,0);
+        ma_initialize( &se_dc_min[i], ALPHA_VALUE_MIN,0);
+        ma_initialize( &se_ac_min[i],ALPHA_VALUE_MIN,0);
+
     }
+    
     ADC_SAR_Seq_1_Start();
     ADC_SAR_Seq_1_StartConvert();
 }
@@ -60,163 +78,76 @@ void ad_init_se( void )  // init single ended a/d signals
 void ad_process_se( void )  // process single ended 
 {
     int   i;
-    int16 temp;
-    int16 dc_value;
-    int16 ac_value;
-    for( i = 0; i < SE_NUMBER; i++)
-    {
-        temp =  ADC_SAR_Seq_1_GetResult16(i);
-        dc_value = ma_update( &se_dc[i], temp);
-        ac_value = (int16) abs( (int)(dc_value) -(int)temp );
-        ma_update(&se_ac[i],ac_value);
-    }
-}
-
-int ad_get_se_dc( int number, int offset, int16 *buffer )
-{
-    int i;
-    int count;
-    
-    count = 0;
-    if( number > SE_NUMBER)
-    {
-        number = SE_NUMBER;
-    }
-    for( i = offset; i < number; i++)
-    {
-        *buffer++ = ma_get_value( &se_dc[i] );
-    }
-    return count;
-}
-
-int ad_get_se_ac( int number, int offset, int16 *buffer )
-{
-    int i;
-    int count;
-    
-    count = 0;
-    if( number > SE_NUMBER)
-    {
-        number = SE_NUMBER;
-    }
-    for( i = offset; i < number; i++)
-    {
-        *buffer++ = ma_get_value( &se_ac[i] );
-    }
-    return count;
-}
-
-
-void ad_init_de( void )  // init single ended a/d signals
-{
-    int i;
-    for( i = 0; i< DE_NUMBER; i++ )
-    {
-        ma_initialize( &de_dc[i], ALPHA_VALUE);
-        ma_initialize( &de_ac[i], ALPHA_VALUE);
-    }
-    ADC_SAR_Seq_2_Start();
-    ADC_SAR_Seq_2_StartConvert();
-}
-
-void ad_process_de( void )  // process single ended 
-{
-    int   i;
-    int16 temp;
-    int16 dc_value;
-    int16 ac_value;
-    for( i = 0; i < DE_NUMBER; i++)
-    {
-      temp =  ADC_SAR_Seq_2_GetResult16(i);
-        dc_value = ma_update( &de_dc[i], temp);
-        ac_value = (int16) abs( (int)(dc_value -temp ) );
-        ma_update(&de_ac[i],ac_value);
-    }
-}
-
-
-int ad_get_de_number( void )
-{
-    return DE_NUMBER;
-}
-
-
-int ad_get_de_dc( int number, int offset, int16 *buffer )
-{
-    int i;
-    int count;
-    
-    count = 0;
-    if( number > DE_NUMBER)
-    {
-        number = DE_NUMBER;
-    }
-    for( i = offset; i < number; i++)
-    {
-        *buffer++ = ma_get_value( &de_dc[i] );
-    }
-    return count;
-}
-
-int ad_get_de_ac( int number, int offset, int16 *buffer )
-{
-    int i;
-    int count;
-    
-    count = 0;
-    if( number > DE_NUMBER)
-    {
-        number = DE_NUMBER;
-    }
-    for( i = offset; i < number; i++)
-    {
-        *buffer++ = ma_get_value( &de_ac[i] );
-    }
-    return count;
-}
-
-
-void ad_init_sigma_delta(unsigned config )
-{
-    if( config > SIGMA_CONFIG )
-    {
-        config = SIGMA_CONFIG;
-    }
-    SIGMA_A_D_Start();
-    ma_initialize( &sigma_dc[0], ALPHA_VALUE);
-    ma_initialize( &sigma_ac[0], ALPHA_VALUE);
-    SIGMA_A_D_StartConvert();
-    SIGMA_A_D_SelectConfiguration( config, 1);
-    
-    
-   
-}
-void ad_process_sigma_delta( void )
-{
-    
-    int16 temp;
-    int   status;
-    int16 dc_value;
-    int16 ac_value;
+    int32 temp;
+    int32 dc_value;
+    int32 ac_value;
     int32 mvolts;
     
-    temp =   SIGMA_A_D_GetResult16() ;
-    status = SIGMA_A_D_IsEndConversion(SIGMA_A_D_RETURN_STATUS);
-    mvolts = SIGMA_A_D_CountsTo_mVolts(temp) ;
-
-
-    dc_value = ma_update( &sigma_dc[0], temp);
-    ac_value = (int16) abs( (int)(dc_value -temp ) );
-    ma_update(&sigma_ac[0],ac_value);
-   
+    
+    for( i = 0; i < SE_NUMBER; i++)
+    {
+         temp =  ADC_SAR_Seq_1_GetResult16(i);
+         mvolts = ADC_SAR_Seq_1_CountsTo_mVolts(temp);
+         dc_value = ma_update( &se_dc_sec[i], mvolts);
+         ac_value = (int16) abs( (int)(dc_value -mvolts ) );
+         ma_update(&se_ac_sec[i],ac_value);
+ 
+    }
 }
 
-int16 ad_get_sigma_delta_dc( void )
+void ad_process_se_second( void )
 {
-   return sigma_dc[0].average;   
+    int i;
+    float value;
+    float calibration_a;
+    float calibration_b;
+    
+    for( i = 0; i< SE_NUMBER; i++ )
+    {
+        get_modbus_data_registers( se_calibration_mapping[i], 2, (uint16 *)&calibration_a );
+        get_modbus_data_registers( se_calibration_mapping[i]+2, 2, (uint16 *)&calibration_b );
+        value = ma_get_value( &se_dc_sec[i]);
+        ma_update(   &se_dc_min[i], value );
+        value = (value*calibration_a) + calibration_b;
+        store_modbus_data_registers( se_reg_mapping[i]+4, 2,(uint16*) &value);
+        value = ma_get_value( &se_ac_sec[i]);
+        ma_update(   &se_ac_min[i], value );
+        value = (value) * calibration_a;
+        store_modbus_data_registers( se_reg_mapping[i]+6, 2,(uint16*) &value);
+    }
 }
+        
 
-int16 ad_get_sigma_delta_ac( void )
+void ad_process_minute_second( void )
 {
-    return sigma_ac[0].average;  
+    int i;
+    float value;
+    float calibration_a;
+    float calibration_b;
+    
+    for( i = 0; i< SE_NUMBER; i++ )
+    {
+        get_modbus_data_registers( se_calibration_mapping[i], 2, (uint16 *)&calibration_a );
+        get_modbus_data_registers( se_calibration_mapping[i]+2, 2, (uint16 *)&calibration_b );
+        value = ma_get_value( &se_dc_min[i]);
+        value = (value*calibration_a) + calibration_b;
+        store_modbus_data_registers( se_reg_mapping[i], 2,(uint16*) &value);
+        value = ma_get_value( &se_ac_min[i]);
+        value = (value) * calibration_a;
+        store_modbus_data_registers( se_reg_mapping[i]+2, 2,(uint16*) &value);
+    
+        
+    }    
+    
 }
+      
+
+/*
+**
+**  Sigma A/D Functions
+**
+**
+**
+*/ 
+
+

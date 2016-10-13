@@ -1,0 +1,740 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"cap_sense.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.init_cap_sense,"ax",%progbits
+  19              		.align	2
+  20              		.global	init_cap_sense
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	init_cap_sense, %function
+  24              	init_cap_sense:
+  25              	.LFB63:
+  26              		.file 1 ".\\cap_sense\\cap_sense.c"
+   1:.\cap_sense/cap_sense.c **** /*
+   2:.\cap_sense/cap_sense.c **** **
+   3:.\cap_sense/cap_sense.c **** ** File: cap_sense.c
+   4:.\cap_sense/cap_sense.c **** **
+   5:.\cap_sense/cap_sense.c **** **
+   6:.\cap_sense/cap_sense.c **** **
+   7:.\cap_sense/cap_sense.c **** */
+   8:.\cap_sense/cap_sense.c **** 
+   9:.\cap_sense/cap_sense.c **** #include <device.h>
+  10:.\cap_sense/cap_sense.c **** #include "cf_chain_flow_support.h"
+  11:.\cap_sense/cap_sense.c **** #include "cf_external_functions.h"
+  12:.\cap_sense/cap_sense.c **** #include "cap_sense.h"
+  13:.\cap_sense/cap_sense.c **** 
+  14:.\cap_sense/cap_sense.c **** #define NOT_BUSY 0
+  15:.\cap_sense/cap_sense.c **** #define PROXIMITY_SENSOR_INDEX			CapSense_1_SENSOR_PROXIMITYSENSOR0_0__PROX
+  16:.\cap_sense/cap_sense.c ****  
+  17:.\cap_sense/cap_sense.c **** int init_cap_sense(unsigned link_id, unsigned param_1,
+  18:.\cap_sense/cap_sense.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+  19:.\cap_sense/cap_sense.c **** {
+  27              		.loc 1 19 0
+  28              		.cfi_startproc
+  29              		@ args = 8, pretend = 0, frame = 16
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 7, -4
+  35 0002 85B0     		sub	sp, sp, #20
+  36              		.cfi_def_cfa_offset 24
+  37 0004 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 2
+
+
+  39 0006 F860     		str	r0, [r7, #12]
+  40 0008 B960     		str	r1, [r7, #8]
+  41 000a 7A60     		str	r2, [r7, #4]
+  42 000c 3B60     		str	r3, [r7]
+  20:.\cap_sense/cap_sense.c **** 
+  21:.\cap_sense/cap_sense.c ****    /* Initialize the input - CapSense block */
+  22:.\cap_sense/cap_sense.c **** 
+  23:.\cap_sense/cap_sense.c ****   /* 1. Enable Proximity sensor as it is disabled by default */
+  24:.\cap_sense/cap_sense.c ****   //CapSense_1_EnableWidget(CapSense_1_PROXIMITYSENSOR0__PROX);
+  25:.\cap_sense/cap_sense.c **** 
+  26:.\cap_sense/cap_sense.c ****   /* 2. Start CapSense block - Calibrates the proximity sensor for the set sensitivity setting (in 
+  27:.\cap_sense/cap_sense.c ****   //CapSense_1_Start();
+  28:.\cap_sense/cap_sense.c **** 
+  29:.\cap_sense/cap_sense.c ****  /* 3. Initialize Proximity baseline */
+  30:.\cap_sense/cap_sense.c ****  // CapSense_1_InitializeSensorBaseline( PROXIMITY_SENSOR_INDEX );
+  31:.\cap_sense/cap_sense.c **** 
+  32:.\cap_sense/cap_sense.c ****   return CF_DISABLE;
+  43              		.loc 1 32 0
+  44 000e 0223     		movs	r3, #2
+  33:.\cap_sense/cap_sense.c **** }
+  45              		.loc 1 33 0
+  46 0010 1846     		mov	r0, r3
+  47 0012 1437     		adds	r7, r7, #20
+  48              		.cfi_def_cfa_offset 4
+  49 0014 BD46     		mov	sp, r7
+  50              		.cfi_def_cfa_register 13
+  51              		@ sp needed
+  52 0016 5DF8047B 		ldr	r7, [sp], #4
+  53              		.cfi_restore 7
+  54              		.cfi_def_cfa_offset 0
+  55 001a 7047     		bx	lr
+  56              		.cfi_endproc
+  57              	.LFE63:
+  58              		.size	init_cap_sense, .-init_cap_sense
+  59              		.bss
+  60              		.align	2
+  61              	proximityActive:
+  62 0000 00000000 		.space	4
+  63              		.align	2
+  64              	proximityValue:
+  65 0004 00000000 		.space	4
+  66              		.section	.text.process_capsense,"ax",%progbits
+  67              		.align	2
+  68              		.global	process_capsense
+  69              		.thumb
+  70              		.thumb_func
+  71              		.type	process_capsense, %function
+  72              	process_capsense:
+  73              	.LFB64:
+  34:.\cap_sense/cap_sense.c **** 
+  35:.\cap_sense/cap_sense.c **** static volatile int proximityActive;
+  36:.\cap_sense/cap_sense.c **** static volatile int proximityValue;
+  37:.\cap_sense/cap_sense.c **** 
+  38:.\cap_sense/cap_sense.c **** int process_capsense(unsigned link_id, unsigned param_1,
+  39:.\cap_sense/cap_sense.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+  40:.\cap_sense/cap_sense.c **** 
+  41:.\cap_sense/cap_sense.c **** {  
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 3
+
+
+  74              		.loc 1 41 0
+  75              		.cfi_startproc
+  76              		@ args = 8, pretend = 0, frame = 16
+  77              		@ frame_needed = 1, uses_anonymous_args = 0
+  78              		@ link register save eliminated.
+  79 0000 80B4     		push	{r7}
+  80              		.cfi_def_cfa_offset 4
+  81              		.cfi_offset 7, -4
+  82 0002 85B0     		sub	sp, sp, #20
+  83              		.cfi_def_cfa_offset 24
+  84 0004 00AF     		add	r7, sp, #0
+  85              		.cfi_def_cfa_register 7
+  86 0006 F860     		str	r0, [r7, #12]
+  87 0008 B960     		str	r1, [r7, #8]
+  88 000a 7A60     		str	r2, [r7, #4]
+  89 000c 3B60     		str	r3, [r7]
+  42:.\cap_sense/cap_sense.c **** #if 0   
+  43:.\cap_sense/cap_sense.c ****     if(CapSense_1_IsBusy() == NOT_BUSY)
+  44:.\cap_sense/cap_sense.c ****     {
+  45:.\cap_sense/cap_sense.c ****        /* Update proximity sensor baseline */
+  46:.\cap_sense/cap_sense.c ****        //CapSense_1_UpdateSensorBaseline(PROXIMITY_SENSOR_INDEX);
+  47:.\cap_sense/cap_sense.c **** 
+  48:.\cap_sense/cap_sense.c ****        /* Check if proximity sensor is active - thresholds are dynamically calculated during run-ti
+  49:.\cap_sense/cap_sense.c ****           proximityActive variable will have a non-zero value if Proximity was active */
+  50:.\cap_sense/cap_sense.c ****        proximityActive = CapSense_1_CheckIsSensorActive(PROXIMITY_SENSOR_INDEX);
+  51:.\cap_sense/cap_sense.c ****        proximityValue = CapSense_1_ReadSensorRaw(PROXIMITY_SENSOR_INDEX);
+  52:.\cap_sense/cap_sense.c ****        /* Trigger the next Scan of proximity sensor */
+  53:.\cap_sense/cap_sense.c ****        CapSense_1_ScanSensor(PROXIMITY_SENSOR_INDEX);
+  54:.\cap_sense/cap_sense.c ****     }
+  55:.\cap_sense/cap_sense.c **** #endif    
+  56:.\cap_sense/cap_sense.c ****     return CF_DISABLE;
+  90              		.loc 1 56 0
+  91 000e 0223     		movs	r3, #2
+  57:.\cap_sense/cap_sense.c **** }
+  92              		.loc 1 57 0
+  93 0010 1846     		mov	r0, r3
+  94 0012 1437     		adds	r7, r7, #20
+  95              		.cfi_def_cfa_offset 4
+  96 0014 BD46     		mov	sp, r7
+  97              		.cfi_def_cfa_register 13
+  98              		@ sp needed
+  99 0016 5DF8047B 		ldr	r7, [sp], #4
+ 100              		.cfi_restore 7
+ 101              		.cfi_def_cfa_offset 0
+ 102 001a 7047     		bx	lr
+ 103              		.cfi_endproc
+ 104              	.LFE64:
+ 105              		.size	process_capsense, .-process_capsense
+ 106              		.text
+ 107              	.Letext0:
+ 108              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 109              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 110              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
+ 111              		.section	.debug_info,"",%progbits
+ 112              	.Ldebug_info0:
+ 113 0000 AE010000 		.4byte	0x1ae
+ 114 0004 0400     		.2byte	0x4
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 4
+
+
+ 115 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 116 000a 04       		.byte	0x4
+ 117 000b 01       		.uleb128 0x1
+ 118 000c 12010000 		.4byte	.LASF25
+ 119 0010 01       		.byte	0x1
+ 120 0011 DE000000 		.4byte	.LASF26
+ 121 0015 3B000000 		.4byte	.LASF27
+ 122 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 123 001d 00000000 		.4byte	0
+ 124 0021 00000000 		.4byte	.Ldebug_line0
+ 125 0025 02       		.uleb128 0x2
+ 126 0026 01       		.byte	0x1
+ 127 0027 06       		.byte	0x6
+ 128 0028 D7010000 		.4byte	.LASF0
+ 129 002c 02       		.uleb128 0x2
+ 130 002d 01       		.byte	0x1
+ 131 002e 08       		.byte	0x8
+ 132 002f F6000000 		.4byte	.LASF1
+ 133 0033 02       		.uleb128 0x2
+ 134 0034 02       		.byte	0x2
+ 135 0035 05       		.byte	0x5
+ 136 0036 02020000 		.4byte	.LASF2
+ 137 003a 02       		.uleb128 0x2
+ 138 003b 02       		.byte	0x2
+ 139 003c 07       		.byte	0x7
+ 140 003d 0E000000 		.4byte	.LASF3
+ 141 0041 03       		.uleb128 0x3
+ 142 0042 F2010000 		.4byte	.LASF9
+ 143 0046 02       		.byte	0x2
+ 144 0047 3F       		.byte	0x3f
+ 145 0048 4C000000 		.4byte	0x4c
+ 146 004c 02       		.uleb128 0x2
+ 147 004d 04       		.byte	0x4
+ 148 004e 05       		.byte	0x5
+ 149 004f 09010000 		.4byte	.LASF4
+ 150 0053 02       		.uleb128 0x2
+ 151 0054 04       		.byte	0x4
+ 152 0055 07       		.byte	0x7
+ 153 0056 AA000000 		.4byte	.LASF5
+ 154 005a 02       		.uleb128 0x2
+ 155 005b 08       		.byte	0x8
+ 156 005c 05       		.byte	0x5
+ 157 005d 00000000 		.4byte	.LASF6
+ 158 0061 02       		.uleb128 0x2
+ 159 0062 08       		.byte	0x8
+ 160 0063 07       		.byte	0x7
+ 161 0064 BC000000 		.4byte	.LASF7
+ 162 0068 04       		.uleb128 0x4
+ 163 0069 04       		.byte	0x4
+ 164 006a 05       		.byte	0x5
+ 165 006b 696E7400 		.ascii	"int\000"
+ 166 006f 02       		.uleb128 0x2
+ 167 0070 04       		.byte	0x4
+ 168 0071 07       		.byte	0x7
+ 169 0072 2E000000 		.4byte	.LASF8
+ 170 0076 03       		.uleb128 0x3
+ 171 0077 0C020000 		.4byte	.LASF10
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 5
+
+
+ 172 007b 03       		.byte	0x3
+ 173 007c 2C       		.byte	0x2c
+ 174 007d 41000000 		.4byte	0x41
+ 175 0081 02       		.uleb128 0x2
+ 176 0082 04       		.byte	0x4
+ 177 0083 04       		.byte	0x4
+ 178 0084 FC010000 		.4byte	.LASF11
+ 179 0088 02       		.uleb128 0x2
+ 180 0089 08       		.byte	0x8
+ 181 008a 04       		.byte	0x4
+ 182 008b A0010000 		.4byte	.LASF12
+ 183 008f 02       		.uleb128 0x2
+ 184 0090 01       		.byte	0x1
+ 185 0091 08       		.byte	0x8
+ 186 0092 04010000 		.4byte	.LASF13
+ 187 0096 02       		.uleb128 0x2
+ 188 0097 04       		.byte	0x4
+ 189 0098 07       		.byte	0x7
+ 190 0099 14020000 		.4byte	.LASF14
+ 191 009d 05       		.uleb128 0x5
+ 192 009e E3010000 		.4byte	.LASF21
+ 193 00a2 01       		.byte	0x1
+ 194 00a3 11       		.byte	0x11
+ 195 00a4 68000000 		.4byte	0x68
+ 196 00a8 00000000 		.4byte	.LFB63
+ 197 00ac 1C000000 		.4byte	.LFE63-.LFB63
+ 198 00b0 01       		.uleb128 0x1
+ 199 00b1 9C       		.byte	0x9c
+ 200 00b2 0B010000 		.4byte	0x10b
+ 201 00b6 06       		.uleb128 0x6
+ 202 00b7 A2000000 		.4byte	.LASF15
+ 203 00bb 01       		.byte	0x1
+ 204 00bc 11       		.byte	0x11
+ 205 00bd 6F000000 		.4byte	0x6f
+ 206 00c1 02       		.uleb128 0x2
+ 207 00c2 91       		.byte	0x91
+ 208 00c3 74       		.sleb128 -12
+ 209 00c4 06       		.uleb128 0x6
+ 210 00c5 8A000000 		.4byte	.LASF16
+ 211 00c9 01       		.byte	0x1
+ 212 00ca 11       		.byte	0x11
+ 213 00cb 6F000000 		.4byte	0x6f
+ 214 00cf 02       		.uleb128 0x2
+ 215 00d0 91       		.byte	0x91
+ 216 00d1 70       		.sleb128 -16
+ 217 00d2 06       		.uleb128 0x6
+ 218 00d3 92000000 		.4byte	.LASF17
+ 219 00d7 01       		.byte	0x1
+ 220 00d8 12       		.byte	0x12
+ 221 00d9 6F000000 		.4byte	0x6f
+ 222 00dd 02       		.uleb128 0x2
+ 223 00de 91       		.byte	0x91
+ 224 00df 6C       		.sleb128 -20
+ 225 00e0 06       		.uleb128 0x6
+ 226 00e1 9A000000 		.4byte	.LASF18
+ 227 00e5 01       		.byte	0x1
+ 228 00e6 12       		.byte	0x12
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 6
+
+
+ 229 00e7 6F000000 		.4byte	0x6f
+ 230 00eb 02       		.uleb128 0x2
+ 231 00ec 91       		.byte	0x91
+ 232 00ed 68       		.sleb128 -24
+ 233 00ee 06       		.uleb128 0x6
+ 234 00ef D8000000 		.4byte	.LASF19
+ 235 00f3 01       		.byte	0x1
+ 236 00f4 12       		.byte	0x12
+ 237 00f5 6F000000 		.4byte	0x6f
+ 238 00f9 02       		.uleb128 0x2
+ 239 00fa 91       		.byte	0x91
+ 240 00fb 00       		.sleb128 0
+ 241 00fc 06       		.uleb128 0x6
+ 242 00fd D3000000 		.4byte	.LASF20
+ 243 0101 01       		.byte	0x1
+ 244 0102 12       		.byte	0x12
+ 245 0103 6F000000 		.4byte	0x6f
+ 246 0107 02       		.uleb128 0x2
+ 247 0108 91       		.byte	0x91
+ 248 0109 04       		.sleb128 4
+ 249 010a 00       		.byte	0
+ 250 010b 05       		.uleb128 0x5
+ 251 010c B6010000 		.4byte	.LASF22
+ 252 0110 01       		.byte	0x1
+ 253 0111 26       		.byte	0x26
+ 254 0112 68000000 		.4byte	0x68
+ 255 0116 00000000 		.4byte	.LFB64
+ 256 011a 1C000000 		.4byte	.LFE64-.LFB64
+ 257 011e 01       		.uleb128 0x1
+ 258 011f 9C       		.byte	0x9c
+ 259 0120 79010000 		.4byte	0x179
+ 260 0124 06       		.uleb128 0x6
+ 261 0125 A2000000 		.4byte	.LASF15
+ 262 0129 01       		.byte	0x1
+ 263 012a 26       		.byte	0x26
+ 264 012b 6F000000 		.4byte	0x6f
+ 265 012f 02       		.uleb128 0x2
+ 266 0130 91       		.byte	0x91
+ 267 0131 74       		.sleb128 -12
+ 268 0132 06       		.uleb128 0x6
+ 269 0133 8A000000 		.4byte	.LASF16
+ 270 0137 01       		.byte	0x1
+ 271 0138 26       		.byte	0x26
+ 272 0139 6F000000 		.4byte	0x6f
+ 273 013d 02       		.uleb128 0x2
+ 274 013e 91       		.byte	0x91
+ 275 013f 70       		.sleb128 -16
+ 276 0140 06       		.uleb128 0x6
+ 277 0141 92000000 		.4byte	.LASF17
+ 278 0145 01       		.byte	0x1
+ 279 0146 27       		.byte	0x27
+ 280 0147 6F000000 		.4byte	0x6f
+ 281 014b 02       		.uleb128 0x2
+ 282 014c 91       		.byte	0x91
+ 283 014d 6C       		.sleb128 -20
+ 284 014e 06       		.uleb128 0x6
+ 285 014f 9A000000 		.4byte	.LASF18
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 7
+
+
+ 286 0153 01       		.byte	0x1
+ 287 0154 27       		.byte	0x27
+ 288 0155 6F000000 		.4byte	0x6f
+ 289 0159 02       		.uleb128 0x2
+ 290 015a 91       		.byte	0x91
+ 291 015b 68       		.sleb128 -24
+ 292 015c 06       		.uleb128 0x6
+ 293 015d D8000000 		.4byte	.LASF19
+ 294 0161 01       		.byte	0x1
+ 295 0162 27       		.byte	0x27
+ 296 0163 6F000000 		.4byte	0x6f
+ 297 0167 02       		.uleb128 0x2
+ 298 0168 91       		.byte	0x91
+ 299 0169 00       		.sleb128 0
+ 300 016a 06       		.uleb128 0x6
+ 301 016b D3000000 		.4byte	.LASF20
+ 302 016f 01       		.byte	0x1
+ 303 0170 27       		.byte	0x27
+ 304 0171 6F000000 		.4byte	0x6f
+ 305 0175 02       		.uleb128 0x2
+ 306 0176 91       		.byte	0x91
+ 307 0177 04       		.sleb128 4
+ 308 0178 00       		.byte	0
+ 309 0179 07       		.uleb128 0x7
+ 310 017a C7010000 		.4byte	.LASF23
+ 311 017e 01       		.byte	0x1
+ 312 017f 23       		.byte	0x23
+ 313 0180 8A010000 		.4byte	0x18a
+ 314 0184 05       		.uleb128 0x5
+ 315 0185 03       		.byte	0x3
+ 316 0186 00000000 		.4byte	proximityActive
+ 317 018a 08       		.uleb128 0x8
+ 318 018b 68000000 		.4byte	0x68
+ 319 018f 07       		.uleb128 0x7
+ 320 0190 A7010000 		.4byte	.LASF24
+ 321 0194 01       		.byte	0x1
+ 322 0195 24       		.byte	0x24
+ 323 0196 8A010000 		.4byte	0x18a
+ 324 019a 05       		.uleb128 0x5
+ 325 019b 03       		.byte	0x3
+ 326 019c 04000000 		.4byte	proximityValue
+ 327 01a0 09       		.uleb128 0x9
+ 328 01a1 21000000 		.4byte	.LASF28
+ 329 01a5 04       		.byte	0x4
+ 330 01a6 5506     		.2byte	0x655
+ 331 01a8 AC010000 		.4byte	0x1ac
+ 332 01ac 08       		.uleb128 0x8
+ 333 01ad 76000000 		.4byte	0x76
+ 334 01b1 00       		.byte	0
+ 335              		.section	.debug_abbrev,"",%progbits
+ 336              	.Ldebug_abbrev0:
+ 337 0000 01       		.uleb128 0x1
+ 338 0001 11       		.uleb128 0x11
+ 339 0002 01       		.byte	0x1
+ 340 0003 25       		.uleb128 0x25
+ 341 0004 0E       		.uleb128 0xe
+ 342 0005 13       		.uleb128 0x13
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 8
+
+
+ 343 0006 0B       		.uleb128 0xb
+ 344 0007 03       		.uleb128 0x3
+ 345 0008 0E       		.uleb128 0xe
+ 346 0009 1B       		.uleb128 0x1b
+ 347 000a 0E       		.uleb128 0xe
+ 348 000b 55       		.uleb128 0x55
+ 349 000c 17       		.uleb128 0x17
+ 350 000d 11       		.uleb128 0x11
+ 351 000e 01       		.uleb128 0x1
+ 352 000f 10       		.uleb128 0x10
+ 353 0010 17       		.uleb128 0x17
+ 354 0011 00       		.byte	0
+ 355 0012 00       		.byte	0
+ 356 0013 02       		.uleb128 0x2
+ 357 0014 24       		.uleb128 0x24
+ 358 0015 00       		.byte	0
+ 359 0016 0B       		.uleb128 0xb
+ 360 0017 0B       		.uleb128 0xb
+ 361 0018 3E       		.uleb128 0x3e
+ 362 0019 0B       		.uleb128 0xb
+ 363 001a 03       		.uleb128 0x3
+ 364 001b 0E       		.uleb128 0xe
+ 365 001c 00       		.byte	0
+ 366 001d 00       		.byte	0
+ 367 001e 03       		.uleb128 0x3
+ 368 001f 16       		.uleb128 0x16
+ 369 0020 00       		.byte	0
+ 370 0021 03       		.uleb128 0x3
+ 371 0022 0E       		.uleb128 0xe
+ 372 0023 3A       		.uleb128 0x3a
+ 373 0024 0B       		.uleb128 0xb
+ 374 0025 3B       		.uleb128 0x3b
+ 375 0026 0B       		.uleb128 0xb
+ 376 0027 49       		.uleb128 0x49
+ 377 0028 13       		.uleb128 0x13
+ 378 0029 00       		.byte	0
+ 379 002a 00       		.byte	0
+ 380 002b 04       		.uleb128 0x4
+ 381 002c 24       		.uleb128 0x24
+ 382 002d 00       		.byte	0
+ 383 002e 0B       		.uleb128 0xb
+ 384 002f 0B       		.uleb128 0xb
+ 385 0030 3E       		.uleb128 0x3e
+ 386 0031 0B       		.uleb128 0xb
+ 387 0032 03       		.uleb128 0x3
+ 388 0033 08       		.uleb128 0x8
+ 389 0034 00       		.byte	0
+ 390 0035 00       		.byte	0
+ 391 0036 05       		.uleb128 0x5
+ 392 0037 2E       		.uleb128 0x2e
+ 393 0038 01       		.byte	0x1
+ 394 0039 3F       		.uleb128 0x3f
+ 395 003a 19       		.uleb128 0x19
+ 396 003b 03       		.uleb128 0x3
+ 397 003c 0E       		.uleb128 0xe
+ 398 003d 3A       		.uleb128 0x3a
+ 399 003e 0B       		.uleb128 0xb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 9
+
+
+ 400 003f 3B       		.uleb128 0x3b
+ 401 0040 0B       		.uleb128 0xb
+ 402 0041 27       		.uleb128 0x27
+ 403 0042 19       		.uleb128 0x19
+ 404 0043 49       		.uleb128 0x49
+ 405 0044 13       		.uleb128 0x13
+ 406 0045 11       		.uleb128 0x11
+ 407 0046 01       		.uleb128 0x1
+ 408 0047 12       		.uleb128 0x12
+ 409 0048 06       		.uleb128 0x6
+ 410 0049 40       		.uleb128 0x40
+ 411 004a 18       		.uleb128 0x18
+ 412 004b 9742     		.uleb128 0x2117
+ 413 004d 19       		.uleb128 0x19
+ 414 004e 01       		.uleb128 0x1
+ 415 004f 13       		.uleb128 0x13
+ 416 0050 00       		.byte	0
+ 417 0051 00       		.byte	0
+ 418 0052 06       		.uleb128 0x6
+ 419 0053 05       		.uleb128 0x5
+ 420 0054 00       		.byte	0
+ 421 0055 03       		.uleb128 0x3
+ 422 0056 0E       		.uleb128 0xe
+ 423 0057 3A       		.uleb128 0x3a
+ 424 0058 0B       		.uleb128 0xb
+ 425 0059 3B       		.uleb128 0x3b
+ 426 005a 0B       		.uleb128 0xb
+ 427 005b 49       		.uleb128 0x49
+ 428 005c 13       		.uleb128 0x13
+ 429 005d 02       		.uleb128 0x2
+ 430 005e 18       		.uleb128 0x18
+ 431 005f 00       		.byte	0
+ 432 0060 00       		.byte	0
+ 433 0061 07       		.uleb128 0x7
+ 434 0062 34       		.uleb128 0x34
+ 435 0063 00       		.byte	0
+ 436 0064 03       		.uleb128 0x3
+ 437 0065 0E       		.uleb128 0xe
+ 438 0066 3A       		.uleb128 0x3a
+ 439 0067 0B       		.uleb128 0xb
+ 440 0068 3B       		.uleb128 0x3b
+ 441 0069 0B       		.uleb128 0xb
+ 442 006a 49       		.uleb128 0x49
+ 443 006b 13       		.uleb128 0x13
+ 444 006c 02       		.uleb128 0x2
+ 445 006d 18       		.uleb128 0x18
+ 446 006e 00       		.byte	0
+ 447 006f 00       		.byte	0
+ 448 0070 08       		.uleb128 0x8
+ 449 0071 35       		.uleb128 0x35
+ 450 0072 00       		.byte	0
+ 451 0073 49       		.uleb128 0x49
+ 452 0074 13       		.uleb128 0x13
+ 453 0075 00       		.byte	0
+ 454 0076 00       		.byte	0
+ 455 0077 09       		.uleb128 0x9
+ 456 0078 34       		.uleb128 0x34
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 10
+
+
+ 457 0079 00       		.byte	0
+ 458 007a 03       		.uleb128 0x3
+ 459 007b 0E       		.uleb128 0xe
+ 460 007c 3A       		.uleb128 0x3a
+ 461 007d 0B       		.uleb128 0xb
+ 462 007e 3B       		.uleb128 0x3b
+ 463 007f 05       		.uleb128 0x5
+ 464 0080 49       		.uleb128 0x49
+ 465 0081 13       		.uleb128 0x13
+ 466 0082 3F       		.uleb128 0x3f
+ 467 0083 19       		.uleb128 0x19
+ 468 0084 3C       		.uleb128 0x3c
+ 469 0085 19       		.uleb128 0x19
+ 470 0086 00       		.byte	0
+ 471 0087 00       		.byte	0
+ 472 0088 00       		.byte	0
+ 473              		.section	.debug_aranges,"",%progbits
+ 474 0000 24000000 		.4byte	0x24
+ 475 0004 0200     		.2byte	0x2
+ 476 0006 00000000 		.4byte	.Ldebug_info0
+ 477 000a 04       		.byte	0x4
+ 478 000b 00       		.byte	0
+ 479 000c 0000     		.2byte	0
+ 480 000e 0000     		.2byte	0
+ 481 0010 00000000 		.4byte	.LFB63
+ 482 0014 1C000000 		.4byte	.LFE63-.LFB63
+ 483 0018 00000000 		.4byte	.LFB64
+ 484 001c 1C000000 		.4byte	.LFE64-.LFB64
+ 485 0020 00000000 		.4byte	0
+ 486 0024 00000000 		.4byte	0
+ 487              		.section	.debug_ranges,"",%progbits
+ 488              	.Ldebug_ranges0:
+ 489 0000 00000000 		.4byte	.LFB63
+ 490 0004 1C000000 		.4byte	.LFE63
+ 491 0008 00000000 		.4byte	.LFB64
+ 492 000c 1C000000 		.4byte	.LFE64
+ 493 0010 00000000 		.4byte	0
+ 494 0014 00000000 		.4byte	0
+ 495              		.section	.debug_line,"",%progbits
+ 496              	.Ldebug_line0:
+ 497 0000 77010000 		.section	.debug_str,"MS",%progbits,1
+ 497      02004B01 
+ 497      00000201 
+ 497      FB0E0D00 
+ 497      01010101 
+ 498              	.LASF6:
+ 499 0000 6C6F6E67 		.ascii	"long long int\000"
+ 499      206C6F6E 
+ 499      6720696E 
+ 499      7400
+ 500              	.LASF3:
+ 501 000e 73686F72 		.ascii	"short unsigned int\000"
+ 501      7420756E 
+ 501      7369676E 
+ 501      65642069 
+ 501      6E7400
+ 502              	.LASF28:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 11
+
+
+ 503 0021 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 503      52784275 
+ 503      66666572 
+ 503      00
+ 504              	.LASF8:
+ 505 002e 756E7369 		.ascii	"unsigned int\000"
+ 505      676E6564 
+ 505      20696E74 
+ 505      00
+ 506              	.LASF27:
+ 507 003b 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\psoc-5lp\\5lp-rtu"
+ 507      73657273 
+ 507      5C676C65 
+ 507      6E6E5C4F 
+ 507      6E654472 
+ 508 0068 5C637572 		.ascii	"\\current_monitor\\USB_UART01.cydsn\000"
+ 508      72656E74 
+ 508      5F6D6F6E 
+ 508      69746F72 
+ 508      5C555342 
+ 509              	.LASF16:
+ 510 008a 70617261 		.ascii	"param_1\000"
+ 510      6D5F3100 
+ 511              	.LASF17:
+ 512 0092 70617261 		.ascii	"param_2\000"
+ 512      6D5F3200 
+ 513              	.LASF18:
+ 514 009a 70617261 		.ascii	"param_3\000"
+ 514      6D5F3300 
+ 515              	.LASF15:
+ 516 00a2 6C696E6B 		.ascii	"link_id\000"
+ 516      5F696400 
+ 517              	.LASF5:
+ 518 00aa 6C6F6E67 		.ascii	"long unsigned int\000"
+ 518      20756E73 
+ 518      69676E65 
+ 518      6420696E 
+ 518      7400
+ 519              	.LASF7:
+ 520 00bc 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 520      206C6F6E 
+ 520      6720756E 
+ 520      7369676E 
+ 520      65642069 
+ 521              	.LASF20:
+ 522 00d3 64617461 		.ascii	"data\000"
+ 522      00
+ 523              	.LASF19:
+ 524 00d8 6576656E 		.ascii	"event\000"
+ 524      7400
+ 525              	.LASF26:
+ 526 00de 2E5C6361 		.ascii	".\\cap_sense\\cap_sense.c\000"
+ 526      705F7365 
+ 526      6E73655C 
+ 526      6361705F 
+ 526      73656E73 
+ 527              	.LASF1:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 12
+
+
+ 528 00f6 756E7369 		.ascii	"unsigned char\000"
+ 528      676E6564 
+ 528      20636861 
+ 528      7200
+ 529              	.LASF13:
+ 530 0104 63686172 		.ascii	"char\000"
+ 530      00
+ 531              	.LASF4:
+ 532 0109 6C6F6E67 		.ascii	"long int\000"
+ 532      20696E74 
+ 532      00
+ 533              	.LASF25:
+ 534 0112 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 534      4320342E 
+ 534      392E3320 
+ 534      32303135 
+ 534      30333033 
+ 535 0145 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 535      20726576 
+ 535      6973696F 
+ 535      6E203232 
+ 535      31323230 
+ 536 0178 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 536      66756E63 
+ 536      74696F6E 
+ 536      2D736563 
+ 536      74696F6E 
+ 537              	.LASF12:
+ 538 01a0 646F7562 		.ascii	"double\000"
+ 538      6C6500
+ 539              	.LASF24:
+ 540 01a7 70726F78 		.ascii	"proximityValue\000"
+ 540      696D6974 
+ 540      7956616C 
+ 540      756500
+ 541              	.LASF22:
+ 542 01b6 70726F63 		.ascii	"process_capsense\000"
+ 542      6573735F 
+ 542      63617073 
+ 542      656E7365 
+ 542      00
+ 543              	.LASF23:
+ 544 01c7 70726F78 		.ascii	"proximityActive\000"
+ 544      696D6974 
+ 544      79416374 
+ 544      69766500 
+ 545              	.LASF0:
+ 546 01d7 7369676E 		.ascii	"signed char\000"
+ 546      65642063 
+ 546      68617200 
+ 547              	.LASF21:
+ 548 01e3 696E6974 		.ascii	"init_cap_sense\000"
+ 548      5F636170 
+ 548      5F73656E 
+ 548      736500
+ 549              	.LASF9:
+ 550 01f2 5F5F696E 		.ascii	"__int32_t\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccjo0zXc.s 			page 13
+
+
+ 550      7433325F 
+ 550      7400
+ 551              	.LASF11:
+ 552 01fc 666C6F61 		.ascii	"float\000"
+ 552      7400
+ 553              	.LASF2:
+ 554 0202 73686F72 		.ascii	"short int\000"
+ 554      7420696E 
+ 554      7400
+ 555              	.LASF10:
+ 556 020c 696E7433 		.ascii	"int32_t\000"
+ 556      325F7400 
+ 557              	.LASF14:
+ 558 0214 73697A65 		.ascii	"sizetype\000"
+ 558      74797065 
+ 558      00
+ 559              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

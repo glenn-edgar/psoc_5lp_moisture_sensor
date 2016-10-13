@@ -11,7 +11,7 @@ class Helper_Functions:
 	self.asm.foriegn_helper_functions[function] = function 
    
    def  code_step( self, function, param1=0,parm2=0,parm3= 0 ,name=""):	
-       self.asm.define_link("Code_Step" , function, param1,parm2,parm3,name, name=name)
+       self.asm.define_link("Code_Step" , function, param1,parm2,parm3,name=name)
        self.asm.foriegn_helper_functions[function] = function 
        
    def  halt(self,name =""):
@@ -23,7 +23,7 @@ class Helper_Functions:
    def  reset( self ,name ="" ):            
         self.asm.define_link_a("Reset", name=name )
 
-   def  send_event( self ,event,data ,name =""):              
+   def  send_event( self ,event,data =0,name =""):              
         self.asm.define_link_a("SendEvent",event,data, name=name)
 
    def  wait_tod( self,dow,hr,minute,sec ,name ="" ):         
@@ -40,7 +40,7 @@ class Helper_Functions:
 
    def  wait( self,wait_function ,parm_1=0,parm_2=0,time_out=0,name ="" ):
         self.asm.define_link("Wait", wait_function, parm_1,parm_2,time_out,name=name)
-	self.asm.foriegn_helper_functions[wait_function] = wait_function
+        self.asm.foriegn_helper_functions[wait_function] = wait_function
 
    def  verify_not_tod( self,dow,hr,minute,sec ,name ="" ):         
         self.asm.define_link_a("Verify_Not_Tod",hr,minute,sec , name=name)
@@ -57,8 +57,8 @@ class Helper_Functions:
         self.asm.foriegn_helper_functions[verify_function] = verify_function
 
 
-   def  nop( self ,name ="" ):          
-        self.asm.define_link_a("Nop", name=name)
+   def  nop( self ,parm_1=0,name ="" ):          
+        self.asm.define_link_a("Nop",parm_1, name=name)
 
    def  enable_chain( self ,chain_1 = -1, chain_2 = -1, chain_3 = -1  ,name =""):                   
         self.asm.define_link_a("Enable_Chain",chain_1,chain_2,chain_3, name=name)

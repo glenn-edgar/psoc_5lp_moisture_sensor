@@ -1,0 +1,941 @@
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"modbus_slave.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.initialize_modbus_slave,"ax",%progbits
+  19              		.align	2
+  20              		.global	initialize_modbus_slave
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	initialize_modbus_slave, %function
+  24              	initialize_modbus_slave:
+  25              	.LFB63:
+  26              		.file 1 ".\\modbus_slave.c"
+   1:.\modbus_slave.c **** /* ========================================
+   2:.\modbus_slave.c ****  *
+   3:.\modbus_slave.c ****  * Copyright YOUR COMPANY, THE YEAR
+   4:.\modbus_slave.c ****  * All Rights Reserved
+   5:.\modbus_slave.c ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:.\modbus_slave.c ****  *
+   7:.\modbus_slave.c ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:.\modbus_slave.c ****  * WHICH IS THE PROPERTY OF your company.
+   9:.\modbus_slave.c ****  *
+  10:.\modbus_slave.c ****  * ========================================
+  11:.\modbus_slave.c **** */
+  12:.\modbus_slave.c **** #include "device.h"
+  13:.\modbus_slave.c **** #include <stdlib.h>
+  14:.\modbus_slave.c **** #include "modbus_slave.h"
+  15:.\modbus_slave.c **** 
+  16:.\modbus_slave.c **** void initialize_modbus_slave( void )
+  17:.\modbus_slave.c **** {
+  27              		.loc 1 17 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 7, -4
+  35 0002 00AF     		add	r7, sp, #0
+  36              		.cfi_def_cfa_register 7
+  18:.\modbus_slave.c ****     ;
+  19:.\modbus_slave.c **** }
+  37              		.loc 1 19 0
+  38 0004 BD46     		mov	sp, r7
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 2
+
+
+  39              		.cfi_def_cfa_register 13
+  40              		@ sp needed
+  41 0006 5DF8047B 		ldr	r7, [sp], #4
+  42              		.cfi_restore 7
+  43              		.cfi_def_cfa_offset 0
+  44 000a 7047     		bx	lr
+  45              		.cfi_endproc
+  46              	.LFE63:
+  47              		.size	initialize_modbus_slave, .-initialize_modbus_slave
+  48              		.section	.text.store_modbus_registers,"ax",%progbits
+  49              		.align	2
+  50              		.global	store_modbus_registers
+  51              		.thumb
+  52              		.thumb_func
+  53              		.type	store_modbus_registers, %function
+  54              	store_modbus_registers:
+  55              	.LFB64:
+  20:.\modbus_slave.c ****     
+  21:.\modbus_slave.c **** void store_modbus_registers( int number, int starting_reg, int *values )
+  22:.\modbus_slave.c **** {
+  56              		.loc 1 22 0
+  57              		.cfi_startproc
+  58              		@ args = 0, pretend = 0, frame = 16
+  59              		@ frame_needed = 1, uses_anonymous_args = 0
+  60              		@ link register save eliminated.
+  61 0000 80B4     		push	{r7}
+  62              		.cfi_def_cfa_offset 4
+  63              		.cfi_offset 7, -4
+  64 0002 85B0     		sub	sp, sp, #20
+  65              		.cfi_def_cfa_offset 24
+  66 0004 00AF     		add	r7, sp, #0
+  67              		.cfi_def_cfa_register 7
+  68 0006 F860     		str	r0, [r7, #12]
+  69 0008 B960     		str	r1, [r7, #8]
+  70 000a 7A60     		str	r2, [r7, #4]
+  23:.\modbus_slave.c ****  ;   
+  24:.\modbus_slave.c **** }
+  71              		.loc 1 24 0
+  72 000c 1437     		adds	r7, r7, #20
+  73              		.cfi_def_cfa_offset 4
+  74 000e BD46     		mov	sp, r7
+  75              		.cfi_def_cfa_register 13
+  76              		@ sp needed
+  77 0010 5DF8047B 		ldr	r7, [sp], #4
+  78              		.cfi_restore 7
+  79              		.cfi_def_cfa_offset 0
+  80 0014 7047     		bx	lr
+  81              		.cfi_endproc
+  82              	.LFE64:
+  83              		.size	store_modbus_registers, .-store_modbus_registers
+  84 0016 00BF     		.section	.text.get_modbus_registers,"ax",%progbits
+  85              		.align	2
+  86              		.global	get_modbus_registers
+  87              		.thumb
+  88              		.thumb_func
+  89              		.type	get_modbus_registers, %function
+  90              	get_modbus_registers:
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 3
+
+
+  91              	.LFB65:
+  25:.\modbus_slave.c **** 
+  26:.\modbus_slave.c **** // return actual_number
+  27:.\modbus_slave.c **** int get_modbus_registers( int number, int starting_reg, int values )
+  28:.\modbus_slave.c **** {
+  92              		.loc 1 28 0
+  93              		.cfi_startproc
+  94              		@ args = 0, pretend = 0, frame = 16
+  95              		@ frame_needed = 1, uses_anonymous_args = 0
+  96              		@ link register save eliminated.
+  97 0000 80B4     		push	{r7}
+  98              		.cfi_def_cfa_offset 4
+  99              		.cfi_offset 7, -4
+ 100 0002 85B0     		sub	sp, sp, #20
+ 101              		.cfi_def_cfa_offset 24
+ 102 0004 00AF     		add	r7, sp, #0
+ 103              		.cfi_def_cfa_register 7
+ 104 0006 F860     		str	r0, [r7, #12]
+ 105 0008 B960     		str	r1, [r7, #8]
+ 106 000a 7A60     		str	r2, [r7, #4]
+  29:.\modbus_slave.c ****   return 0; 
+ 107              		.loc 1 29 0
+ 108 000c 0023     		movs	r3, #0
+  30:.\modbus_slave.c **** }
+ 109              		.loc 1 30 0
+ 110 000e 1846     		mov	r0, r3
+ 111 0010 1437     		adds	r7, r7, #20
+ 112              		.cfi_def_cfa_offset 4
+ 113 0012 BD46     		mov	sp, r7
+ 114              		.cfi_def_cfa_register 13
+ 115              		@ sp needed
+ 116 0014 5DF8047B 		ldr	r7, [sp], #4
+ 117              		.cfi_restore 7
+ 118              		.cfi_def_cfa_offset 0
+ 119 0018 7047     		bx	lr
+ 120              		.cfi_endproc
+ 121              	.LFE65:
+ 122              		.size	get_modbus_registers, .-get_modbus_registers
+ 123 001a 00BF     		.section	.text.process_modbus_message,"ax",%progbits
+ 124              		.align	2
+ 125              		.global	process_modbus_message
+ 126              		.thumb
+ 127              		.thumb_func
+ 128              		.type	process_modbus_message, %function
+ 129              	process_modbus_message:
+ 130              	.LFB66:
+  31:.\modbus_slave.c ****     
+  32:.\modbus_slave.c **** 
+  33:.\modbus_slave.c **** int process_modbus_message( int address_type, int addres, int input_number, uint8* input_buffer, in
+  34:.\modbus_slave.c **** {
+ 131              		.loc 1 34 0
+ 132              		.cfi_startproc
+ 133              		@ args = 8, pretend = 0, frame = 24
+ 134              		@ frame_needed = 1, uses_anonymous_args = 0
+ 135              		@ link register save eliminated.
+ 136 0000 80B4     		push	{r7}
+ 137              		.cfi_def_cfa_offset 4
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 4
+
+
+ 138              		.cfi_offset 7, -4
+ 139 0002 87B0     		sub	sp, sp, #28
+ 140              		.cfi_def_cfa_offset 32
+ 141 0004 00AF     		add	r7, sp, #0
+ 142              		.cfi_def_cfa_register 7
+ 143 0006 F860     		str	r0, [r7, #12]
+ 144 0008 B960     		str	r1, [r7, #8]
+ 145 000a 7A60     		str	r2, [r7, #4]
+ 146 000c 3B60     		str	r3, [r7]
+  35:.\modbus_slave.c ****     int i;
+  36:.\modbus_slave.c ****     if( input_number > max_out_size )
+ 147              		.loc 1 36 0
+ 148 000e 7A68     		ldr	r2, [r7, #4]
+ 149 0010 3B6A     		ldr	r3, [r7, #32]
+ 150 0012 9A42     		cmp	r2, r3
+ 151 0014 01DD     		ble	.L6
+  37:.\modbus_slave.c ****     {
+  38:.\modbus_slave.c ****         input_number = max_out_size;
+ 152              		.loc 1 38 0
+ 153 0016 3B6A     		ldr	r3, [r7, #32]
+ 154 0018 7B60     		str	r3, [r7, #4]
+ 155              	.L6:
+  39:.\modbus_slave.c ****     }
+  40:.\modbus_slave.c ****     for( i=0;i<input_number; i++)
+ 156              		.loc 1 40 0
+ 157 001a 0023     		movs	r3, #0
+ 158 001c 7B61     		str	r3, [r7, #20]
+ 159 001e 0AE0     		b	.L7
+ 160              	.L8:
+  41:.\modbus_slave.c ****     {
+  42:.\modbus_slave.c ****         *output_buffer++ = *input_buffer++;
+ 161              		.loc 1 42 0 discriminator 3
+ 162 0020 7B6A     		ldr	r3, [r7, #36]
+ 163 0022 5A1C     		adds	r2, r3, #1
+ 164 0024 7A62     		str	r2, [r7, #36]
+ 165 0026 3A68     		ldr	r2, [r7]
+ 166 0028 511C     		adds	r1, r2, #1
+ 167 002a 3960     		str	r1, [r7]
+ 168 002c 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 169 002e 1A70     		strb	r2, [r3]
+  40:.\modbus_slave.c ****     {
+ 170              		.loc 1 40 0 discriminator 3
+ 171 0030 7B69     		ldr	r3, [r7, #20]
+ 172 0032 0133     		adds	r3, r3, #1
+ 173 0034 7B61     		str	r3, [r7, #20]
+ 174              	.L7:
+  40:.\modbus_slave.c ****     {
+ 175              		.loc 1 40 0 is_stmt 0 discriminator 1
+ 176 0036 7A69     		ldr	r2, [r7, #20]
+ 177 0038 7B68     		ldr	r3, [r7, #4]
+ 178 003a 9A42     		cmp	r2, r3
+ 179 003c F0DB     		blt	.L8
+  43:.\modbus_slave.c ****     }
+  44:.\modbus_slave.c ****     return input_number;
+ 180              		.loc 1 44 0 is_stmt 1
+ 181 003e 7B68     		ldr	r3, [r7, #4]
+  45:.\modbus_slave.c **** }
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 5
+
+
+ 182              		.loc 1 45 0
+ 183 0040 1846     		mov	r0, r3
+ 184 0042 1C37     		adds	r7, r7, #28
+ 185              		.cfi_def_cfa_offset 4
+ 186 0044 BD46     		mov	sp, r7
+ 187              		.cfi_def_cfa_register 13
+ 188              		@ sp needed
+ 189 0046 5DF8047B 		ldr	r7, [sp], #4
+ 190              		.cfi_restore 7
+ 191              		.cfi_def_cfa_offset 0
+ 192 004a 7047     		bx	lr
+ 193              		.cfi_endproc
+ 194              	.LFE66:
+ 195              		.size	process_modbus_message, .-process_modbus_message
+ 196              		.text
+ 197              	.Letext0:
+ 198              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 199              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 200              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 201              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 202              		.section	.debug_info,"",%progbits
+ 203              	.Ldebug_info0:
+ 204 0000 D1010000 		.4byte	0x1d1
+ 205 0004 0400     		.2byte	0x4
+ 206 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 207 000a 04       		.byte	0x4
+ 208 000b 01       		.uleb128 0x1
+ 209 000c 17000000 		.4byte	.LASF27
+ 210 0010 01       		.byte	0x1
+ 211 0011 2C010000 		.4byte	.LASF28
+ 212 0015 B8010000 		.4byte	.LASF29
+ 213 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 214 001d 00000000 		.4byte	0
+ 215 0021 00000000 		.4byte	.Ldebug_line0
+ 216 0025 02       		.uleb128 0x2
+ 217 0026 01       		.byte	0x1
+ 218 0027 06       		.byte	0x6
+ 219 0028 55020000 		.4byte	.LASF0
+ 220 002c 02       		.uleb128 0x2
+ 221 002d 01       		.byte	0x1
+ 222 002e 08       		.byte	0x8
+ 223 002f D0000000 		.4byte	.LASF1
+ 224 0033 02       		.uleb128 0x2
+ 225 0034 02       		.byte	0x2
+ 226 0035 05       		.byte	0x5
+ 227 0036 10020000 		.4byte	.LASF2
+ 228 003a 02       		.uleb128 0x2
+ 229 003b 02       		.byte	0x2
+ 230 003c 07       		.byte	0x7
+ 231 003d F0000000 		.4byte	.LASF3
+ 232 0041 03       		.uleb128 0x3
+ 233 0042 00000000 		.4byte	.LASF9
+ 234 0046 02       		.byte	0x2
+ 235 0047 3F       		.byte	0x3f
+ 236 0048 4C000000 		.4byte	0x4c
+ 237 004c 02       		.uleb128 0x2
+ 238 004d 04       		.byte	0x4
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 6
+
+
+ 239 004e 05       		.byte	0x5
+ 240 004f 4C020000 		.4byte	.LASF4
+ 241 0053 02       		.uleb128 0x2
+ 242 0054 04       		.byte	0x4
+ 243 0055 07       		.byte	0x7
+ 244 0056 DE000000 		.4byte	.LASF5
+ 245 005a 02       		.uleb128 0x2
+ 246 005b 08       		.byte	0x8
+ 247 005c 05       		.byte	0x5
+ 248 005d AA010000 		.4byte	.LASF6
+ 249 0061 02       		.uleb128 0x2
+ 250 0062 08       		.byte	0x8
+ 251 0063 07       		.byte	0x7
+ 252 0064 4A010000 		.4byte	.LASF7
+ 253 0068 04       		.uleb128 0x4
+ 254 0069 04       		.byte	0x4
+ 255 006a 05       		.byte	0x5
+ 256 006b 696E7400 		.ascii	"int\000"
+ 257 006f 02       		.uleb128 0x2
+ 258 0070 04       		.byte	0x4
+ 259 0071 07       		.byte	0x7
+ 260 0072 3D010000 		.4byte	.LASF8
+ 261 0076 03       		.uleb128 0x3
+ 262 0077 99010000 		.4byte	.LASF10
+ 263 007b 03       		.byte	0x3
+ 264 007c 2C       		.byte	0x2c
+ 265 007d 41000000 		.4byte	0x41
+ 266 0081 03       		.uleb128 0x3
+ 267 0082 CA000000 		.4byte	.LASF11
+ 268 0086 04       		.byte	0x4
+ 269 0087 C2       		.byte	0xc2
+ 270 0088 2C000000 		.4byte	0x2c
+ 271 008c 02       		.uleb128 0x2
+ 272 008d 04       		.byte	0x4
+ 273 008e 04       		.byte	0x4
+ 274 008f C4000000 		.4byte	.LASF12
+ 275 0093 02       		.uleb128 0x2
+ 276 0094 08       		.byte	0x8
+ 277 0095 04       		.byte	0x4
+ 278 0096 25010000 		.4byte	.LASF13
+ 279 009a 02       		.uleb128 0x2
+ 280 009b 01       		.byte	0x1
+ 281 009c 08       		.byte	0x8
+ 282 009d F7010000 		.4byte	.LASF14
+ 283 00a1 02       		.uleb128 0x2
+ 284 00a2 04       		.byte	0x4
+ 285 00a3 07       		.byte	0x7
+ 286 00a4 A1010000 		.4byte	.LASF15
+ 287 00a8 05       		.uleb128 0x5
+ 288 00a9 AC000000 		.4byte	.LASF30
+ 289 00ad 01       		.byte	0x1
+ 290 00ae 10       		.byte	0x10
+ 291 00af 00000000 		.4byte	.LFB63
+ 292 00b3 0C000000 		.4byte	.LFE63-.LFB63
+ 293 00b7 01       		.uleb128 0x1
+ 294 00b8 9C       		.byte	0x9c
+ 295 00b9 06       		.uleb128 0x6
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 7
+
+
+ 296 00ba 7B010000 		.4byte	.LASF31
+ 297 00be 01       		.byte	0x1
+ 298 00bf 15       		.byte	0x15
+ 299 00c0 00000000 		.4byte	.LFB64
+ 300 00c4 16000000 		.4byte	.LFE64-.LFB64
+ 301 00c8 01       		.uleb128 0x1
+ 302 00c9 9C       		.byte	0x9c
+ 303 00ca F9000000 		.4byte	0xf9
+ 304 00ce 07       		.uleb128 0x7
+ 305 00cf 92010000 		.4byte	.LASF16
+ 306 00d3 01       		.byte	0x1
+ 307 00d4 15       		.byte	0x15
+ 308 00d5 68000000 		.4byte	0x68
+ 309 00d9 02       		.uleb128 0x2
+ 310 00da 91       		.byte	0x91
+ 311 00db 74       		.sleb128 -12
+ 312 00dc 07       		.uleb128 0x7
+ 313 00dd 0A000000 		.4byte	.LASF17
+ 314 00e1 01       		.byte	0x1
+ 315 00e2 15       		.byte	0x15
+ 316 00e3 68000000 		.4byte	0x68
+ 317 00e7 02       		.uleb128 0x2
+ 318 00e8 91       		.byte	0x91
+ 319 00e9 70       		.sleb128 -16
+ 320 00ea 07       		.uleb128 0x7
+ 321 00eb FC010000 		.4byte	.LASF18
+ 322 00ef 01       		.byte	0x1
+ 323 00f0 15       		.byte	0x15
+ 324 00f1 F9000000 		.4byte	0xf9
+ 325 00f5 02       		.uleb128 0x2
+ 326 00f6 91       		.byte	0x91
+ 327 00f7 6C       		.sleb128 -20
+ 328 00f8 00       		.byte	0
+ 329 00f9 08       		.uleb128 0x8
+ 330 00fa 04       		.byte	0x4
+ 331 00fb 68000000 		.4byte	0x68
+ 332 00ff 09       		.uleb128 0x9
+ 333 0100 10010000 		.4byte	.LASF19
+ 334 0104 01       		.byte	0x1
+ 335 0105 1B       		.byte	0x1b
+ 336 0106 68000000 		.4byte	0x68
+ 337 010a 00000000 		.4byte	.LFB65
+ 338 010e 1A000000 		.4byte	.LFE65-.LFB65
+ 339 0112 01       		.uleb128 0x1
+ 340 0113 9C       		.byte	0x9c
+ 341 0114 43010000 		.4byte	0x143
+ 342 0118 07       		.uleb128 0x7
+ 343 0119 92010000 		.4byte	.LASF16
+ 344 011d 01       		.byte	0x1
+ 345 011e 1B       		.byte	0x1b
+ 346 011f 68000000 		.4byte	0x68
+ 347 0123 02       		.uleb128 0x2
+ 348 0124 91       		.byte	0x91
+ 349 0125 74       		.sleb128 -12
+ 350 0126 07       		.uleb128 0x7
+ 351 0127 0A000000 		.4byte	.LASF17
+ 352 012b 01       		.byte	0x1
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 8
+
+
+ 353 012c 1B       		.byte	0x1b
+ 354 012d 68000000 		.4byte	0x68
+ 355 0131 02       		.uleb128 0x2
+ 356 0132 91       		.byte	0x91
+ 357 0133 70       		.sleb128 -16
+ 358 0134 07       		.uleb128 0x7
+ 359 0135 FC010000 		.4byte	.LASF18
+ 360 0139 01       		.byte	0x1
+ 361 013a 1B       		.byte	0x1b
+ 362 013b 68000000 		.4byte	0x68
+ 363 013f 02       		.uleb128 0x2
+ 364 0140 91       		.byte	0x91
+ 365 0141 6C       		.sleb128 -20
+ 366 0142 00       		.byte	0
+ 367 0143 09       		.uleb128 0x9
+ 368 0144 35020000 		.4byte	.LASF20
+ 369 0148 01       		.byte	0x1
+ 370 0149 21       		.byte	0x21
+ 371 014a 68000000 		.4byte	0x68
+ 372 014e 00000000 		.4byte	.LFB66
+ 373 0152 4C000000 		.4byte	.LFE66-.LFB66
+ 374 0156 01       		.uleb128 0x1
+ 375 0157 9C       		.byte	0x9c
+ 376 0158 BD010000 		.4byte	0x1bd
+ 377 015c 07       		.uleb128 0x7
+ 378 015d 6E010000 		.4byte	.LASF21
+ 379 0161 01       		.byte	0x1
+ 380 0162 21       		.byte	0x21
+ 381 0163 68000000 		.4byte	0x68
+ 382 0167 02       		.uleb128 0x2
+ 383 0168 91       		.byte	0x91
+ 384 0169 6C       		.sleb128 -20
+ 385 016a 07       		.uleb128 0x7
+ 386 016b A5000000 		.4byte	.LASF22
+ 387 016f 01       		.byte	0x1
+ 388 0170 21       		.byte	0x21
+ 389 0171 68000000 		.4byte	0x68
+ 390 0175 02       		.uleb128 0x2
+ 391 0176 91       		.byte	0x91
+ 392 0177 68       		.sleb128 -24
+ 393 0178 07       		.uleb128 0x7
+ 394 0179 61010000 		.4byte	.LASF23
+ 395 017d 01       		.byte	0x1
+ 396 017e 21       		.byte	0x21
+ 397 017f 68000000 		.4byte	0x68
+ 398 0183 02       		.uleb128 0x2
+ 399 0184 91       		.byte	0x91
+ 400 0185 64       		.sleb128 -28
+ 401 0186 07       		.uleb128 0x7
+ 402 0187 03020000 		.4byte	.LASF24
+ 403 018b 01       		.byte	0x1
+ 404 018c 21       		.byte	0x21
+ 405 018d BD010000 		.4byte	0x1bd
+ 406 0191 02       		.uleb128 0x2
+ 407 0192 91       		.byte	0x91
+ 408 0193 60       		.sleb128 -32
+ 409 0194 07       		.uleb128 0x7
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 9
+
+
+ 410 0195 1A020000 		.4byte	.LASF25
+ 411 0199 01       		.byte	0x1
+ 412 019a 21       		.byte	0x21
+ 413 019b 68000000 		.4byte	0x68
+ 414 019f 02       		.uleb128 0x2
+ 415 01a0 91       		.byte	0x91
+ 416 01a1 00       		.sleb128 0
+ 417 01a2 07       		.uleb128 0x7
+ 418 01a3 27020000 		.4byte	.LASF26
+ 419 01a7 01       		.byte	0x1
+ 420 01a8 21       		.byte	0x21
+ 421 01a9 BD010000 		.4byte	0x1bd
+ 422 01ad 02       		.uleb128 0x2
+ 423 01ae 91       		.byte	0x91
+ 424 01af 04       		.sleb128 4
+ 425 01b0 0A       		.uleb128 0xa
+ 426 01b1 6900     		.ascii	"i\000"
+ 427 01b3 01       		.byte	0x1
+ 428 01b4 23       		.byte	0x23
+ 429 01b5 68000000 		.4byte	0x68
+ 430 01b9 02       		.uleb128 0x2
+ 431 01ba 91       		.byte	0x91
+ 432 01bb 74       		.sleb128 -12
+ 433 01bc 00       		.byte	0
+ 434 01bd 08       		.uleb128 0x8
+ 435 01be 04       		.byte	0x4
+ 436 01bf 81000000 		.4byte	0x81
+ 437 01c3 0B       		.uleb128 0xb
+ 438 01c4 03010000 		.4byte	.LASF32
+ 439 01c8 05       		.byte	0x5
+ 440 01c9 2A06     		.2byte	0x62a
+ 441 01cb CF010000 		.4byte	0x1cf
+ 442 01cf 0C       		.uleb128 0xc
+ 443 01d0 76000000 		.4byte	0x76
+ 444 01d4 00       		.byte	0
+ 445              		.section	.debug_abbrev,"",%progbits
+ 446              	.Ldebug_abbrev0:
+ 447 0000 01       		.uleb128 0x1
+ 448 0001 11       		.uleb128 0x11
+ 449 0002 01       		.byte	0x1
+ 450 0003 25       		.uleb128 0x25
+ 451 0004 0E       		.uleb128 0xe
+ 452 0005 13       		.uleb128 0x13
+ 453 0006 0B       		.uleb128 0xb
+ 454 0007 03       		.uleb128 0x3
+ 455 0008 0E       		.uleb128 0xe
+ 456 0009 1B       		.uleb128 0x1b
+ 457 000a 0E       		.uleb128 0xe
+ 458 000b 55       		.uleb128 0x55
+ 459 000c 17       		.uleb128 0x17
+ 460 000d 11       		.uleb128 0x11
+ 461 000e 01       		.uleb128 0x1
+ 462 000f 10       		.uleb128 0x10
+ 463 0010 17       		.uleb128 0x17
+ 464 0011 00       		.byte	0
+ 465 0012 00       		.byte	0
+ 466 0013 02       		.uleb128 0x2
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 10
+
+
+ 467 0014 24       		.uleb128 0x24
+ 468 0015 00       		.byte	0
+ 469 0016 0B       		.uleb128 0xb
+ 470 0017 0B       		.uleb128 0xb
+ 471 0018 3E       		.uleb128 0x3e
+ 472 0019 0B       		.uleb128 0xb
+ 473 001a 03       		.uleb128 0x3
+ 474 001b 0E       		.uleb128 0xe
+ 475 001c 00       		.byte	0
+ 476 001d 00       		.byte	0
+ 477 001e 03       		.uleb128 0x3
+ 478 001f 16       		.uleb128 0x16
+ 479 0020 00       		.byte	0
+ 480 0021 03       		.uleb128 0x3
+ 481 0022 0E       		.uleb128 0xe
+ 482 0023 3A       		.uleb128 0x3a
+ 483 0024 0B       		.uleb128 0xb
+ 484 0025 3B       		.uleb128 0x3b
+ 485 0026 0B       		.uleb128 0xb
+ 486 0027 49       		.uleb128 0x49
+ 487 0028 13       		.uleb128 0x13
+ 488 0029 00       		.byte	0
+ 489 002a 00       		.byte	0
+ 490 002b 04       		.uleb128 0x4
+ 491 002c 24       		.uleb128 0x24
+ 492 002d 00       		.byte	0
+ 493 002e 0B       		.uleb128 0xb
+ 494 002f 0B       		.uleb128 0xb
+ 495 0030 3E       		.uleb128 0x3e
+ 496 0031 0B       		.uleb128 0xb
+ 497 0032 03       		.uleb128 0x3
+ 498 0033 08       		.uleb128 0x8
+ 499 0034 00       		.byte	0
+ 500 0035 00       		.byte	0
+ 501 0036 05       		.uleb128 0x5
+ 502 0037 2E       		.uleb128 0x2e
+ 503 0038 00       		.byte	0
+ 504 0039 3F       		.uleb128 0x3f
+ 505 003a 19       		.uleb128 0x19
+ 506 003b 03       		.uleb128 0x3
+ 507 003c 0E       		.uleb128 0xe
+ 508 003d 3A       		.uleb128 0x3a
+ 509 003e 0B       		.uleb128 0xb
+ 510 003f 3B       		.uleb128 0x3b
+ 511 0040 0B       		.uleb128 0xb
+ 512 0041 27       		.uleb128 0x27
+ 513 0042 19       		.uleb128 0x19
+ 514 0043 11       		.uleb128 0x11
+ 515 0044 01       		.uleb128 0x1
+ 516 0045 12       		.uleb128 0x12
+ 517 0046 06       		.uleb128 0x6
+ 518 0047 40       		.uleb128 0x40
+ 519 0048 18       		.uleb128 0x18
+ 520 0049 9742     		.uleb128 0x2117
+ 521 004b 19       		.uleb128 0x19
+ 522 004c 00       		.byte	0
+ 523 004d 00       		.byte	0
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 11
+
+
+ 524 004e 06       		.uleb128 0x6
+ 525 004f 2E       		.uleb128 0x2e
+ 526 0050 01       		.byte	0x1
+ 527 0051 3F       		.uleb128 0x3f
+ 528 0052 19       		.uleb128 0x19
+ 529 0053 03       		.uleb128 0x3
+ 530 0054 0E       		.uleb128 0xe
+ 531 0055 3A       		.uleb128 0x3a
+ 532 0056 0B       		.uleb128 0xb
+ 533 0057 3B       		.uleb128 0x3b
+ 534 0058 0B       		.uleb128 0xb
+ 535 0059 27       		.uleb128 0x27
+ 536 005a 19       		.uleb128 0x19
+ 537 005b 11       		.uleb128 0x11
+ 538 005c 01       		.uleb128 0x1
+ 539 005d 12       		.uleb128 0x12
+ 540 005e 06       		.uleb128 0x6
+ 541 005f 40       		.uleb128 0x40
+ 542 0060 18       		.uleb128 0x18
+ 543 0061 9742     		.uleb128 0x2117
+ 544 0063 19       		.uleb128 0x19
+ 545 0064 01       		.uleb128 0x1
+ 546 0065 13       		.uleb128 0x13
+ 547 0066 00       		.byte	0
+ 548 0067 00       		.byte	0
+ 549 0068 07       		.uleb128 0x7
+ 550 0069 05       		.uleb128 0x5
+ 551 006a 00       		.byte	0
+ 552 006b 03       		.uleb128 0x3
+ 553 006c 0E       		.uleb128 0xe
+ 554 006d 3A       		.uleb128 0x3a
+ 555 006e 0B       		.uleb128 0xb
+ 556 006f 3B       		.uleb128 0x3b
+ 557 0070 0B       		.uleb128 0xb
+ 558 0071 49       		.uleb128 0x49
+ 559 0072 13       		.uleb128 0x13
+ 560 0073 02       		.uleb128 0x2
+ 561 0074 18       		.uleb128 0x18
+ 562 0075 00       		.byte	0
+ 563 0076 00       		.byte	0
+ 564 0077 08       		.uleb128 0x8
+ 565 0078 0F       		.uleb128 0xf
+ 566 0079 00       		.byte	0
+ 567 007a 0B       		.uleb128 0xb
+ 568 007b 0B       		.uleb128 0xb
+ 569 007c 49       		.uleb128 0x49
+ 570 007d 13       		.uleb128 0x13
+ 571 007e 00       		.byte	0
+ 572 007f 00       		.byte	0
+ 573 0080 09       		.uleb128 0x9
+ 574 0081 2E       		.uleb128 0x2e
+ 575 0082 01       		.byte	0x1
+ 576 0083 3F       		.uleb128 0x3f
+ 577 0084 19       		.uleb128 0x19
+ 578 0085 03       		.uleb128 0x3
+ 579 0086 0E       		.uleb128 0xe
+ 580 0087 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 12
+
+
+ 581 0088 0B       		.uleb128 0xb
+ 582 0089 3B       		.uleb128 0x3b
+ 583 008a 0B       		.uleb128 0xb
+ 584 008b 27       		.uleb128 0x27
+ 585 008c 19       		.uleb128 0x19
+ 586 008d 49       		.uleb128 0x49
+ 587 008e 13       		.uleb128 0x13
+ 588 008f 11       		.uleb128 0x11
+ 589 0090 01       		.uleb128 0x1
+ 590 0091 12       		.uleb128 0x12
+ 591 0092 06       		.uleb128 0x6
+ 592 0093 40       		.uleb128 0x40
+ 593 0094 18       		.uleb128 0x18
+ 594 0095 9742     		.uleb128 0x2117
+ 595 0097 19       		.uleb128 0x19
+ 596 0098 01       		.uleb128 0x1
+ 597 0099 13       		.uleb128 0x13
+ 598 009a 00       		.byte	0
+ 599 009b 00       		.byte	0
+ 600 009c 0A       		.uleb128 0xa
+ 601 009d 34       		.uleb128 0x34
+ 602 009e 00       		.byte	0
+ 603 009f 03       		.uleb128 0x3
+ 604 00a0 08       		.uleb128 0x8
+ 605 00a1 3A       		.uleb128 0x3a
+ 606 00a2 0B       		.uleb128 0xb
+ 607 00a3 3B       		.uleb128 0x3b
+ 608 00a4 0B       		.uleb128 0xb
+ 609 00a5 49       		.uleb128 0x49
+ 610 00a6 13       		.uleb128 0x13
+ 611 00a7 02       		.uleb128 0x2
+ 612 00a8 18       		.uleb128 0x18
+ 613 00a9 00       		.byte	0
+ 614 00aa 00       		.byte	0
+ 615 00ab 0B       		.uleb128 0xb
+ 616 00ac 34       		.uleb128 0x34
+ 617 00ad 00       		.byte	0
+ 618 00ae 03       		.uleb128 0x3
+ 619 00af 0E       		.uleb128 0xe
+ 620 00b0 3A       		.uleb128 0x3a
+ 621 00b1 0B       		.uleb128 0xb
+ 622 00b2 3B       		.uleb128 0x3b
+ 623 00b3 05       		.uleb128 0x5
+ 624 00b4 49       		.uleb128 0x49
+ 625 00b5 13       		.uleb128 0x13
+ 626 00b6 3F       		.uleb128 0x3f
+ 627 00b7 19       		.uleb128 0x19
+ 628 00b8 3C       		.uleb128 0x3c
+ 629 00b9 19       		.uleb128 0x19
+ 630 00ba 00       		.byte	0
+ 631 00bb 00       		.byte	0
+ 632 00bc 0C       		.uleb128 0xc
+ 633 00bd 35       		.uleb128 0x35
+ 634 00be 00       		.byte	0
+ 635 00bf 49       		.uleb128 0x49
+ 636 00c0 13       		.uleb128 0x13
+ 637 00c1 00       		.byte	0
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 13
+
+
+ 638 00c2 00       		.byte	0
+ 639 00c3 00       		.byte	0
+ 640              		.section	.debug_aranges,"",%progbits
+ 641 0000 34000000 		.4byte	0x34
+ 642 0004 0200     		.2byte	0x2
+ 643 0006 00000000 		.4byte	.Ldebug_info0
+ 644 000a 04       		.byte	0x4
+ 645 000b 00       		.byte	0
+ 646 000c 0000     		.2byte	0
+ 647 000e 0000     		.2byte	0
+ 648 0010 00000000 		.4byte	.LFB63
+ 649 0014 0C000000 		.4byte	.LFE63-.LFB63
+ 650 0018 00000000 		.4byte	.LFB64
+ 651 001c 16000000 		.4byte	.LFE64-.LFB64
+ 652 0020 00000000 		.4byte	.LFB65
+ 653 0024 1A000000 		.4byte	.LFE65-.LFB65
+ 654 0028 00000000 		.4byte	.LFB66
+ 655 002c 4C000000 		.4byte	.LFE66-.LFB66
+ 656 0030 00000000 		.4byte	0
+ 657 0034 00000000 		.4byte	0
+ 658              		.section	.debug_ranges,"",%progbits
+ 659              	.Ldebug_ranges0:
+ 660 0000 00000000 		.4byte	.LFB63
+ 661 0004 0C000000 		.4byte	.LFE63
+ 662 0008 00000000 		.4byte	.LFB64
+ 663 000c 16000000 		.4byte	.LFE64
+ 664 0010 00000000 		.4byte	.LFB65
+ 665 0014 1A000000 		.4byte	.LFE65
+ 666 0018 00000000 		.4byte	.LFB66
+ 667 001c 4C000000 		.4byte	.LFE66
+ 668 0020 00000000 		.4byte	0
+ 669 0024 00000000 		.4byte	0
+ 670              		.section	.debug_line,"",%progbits
+ 671              	.Ldebug_line0:
+ 672 0000 AD010000 		.section	.debug_str,"MS",%progbits,1
+ 672      02005101 
+ 672      00000201 
+ 672      FB0E0D00 
+ 672      01010101 
+ 673              	.LASF9:
+ 674 0000 5F5F696E 		.ascii	"__int32_t\000"
+ 674      7433325F 
+ 674      7400
+ 675              	.LASF17:
+ 676 000a 73746172 		.ascii	"starting_reg\000"
+ 676      74696E67 
+ 676      5F726567 
+ 676      00
+ 677              	.LASF27:
+ 678 0017 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 678      4320342E 
+ 678      392E3320 
+ 678      32303135 
+ 678      30333033 
+ 679 004a 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 679      20726576 
+ 679      6973696F 
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 14
+
+
+ 679      6E203232 
+ 679      31323230 
+ 680 007d 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 680      66756E63 
+ 680      74696F6E 
+ 680      2D736563 
+ 680      74696F6E 
+ 681              	.LASF22:
+ 682 00a5 61646472 		.ascii	"addres\000"
+ 682      657300
+ 683              	.LASF30:
+ 684 00ac 696E6974 		.ascii	"initialize_modbus_slave\000"
+ 684      69616C69 
+ 684      7A655F6D 
+ 684      6F646275 
+ 684      735F736C 
+ 685              	.LASF12:
+ 686 00c4 666C6F61 		.ascii	"float\000"
+ 686      7400
+ 687              	.LASF11:
+ 688 00ca 75696E74 		.ascii	"uint8\000"
+ 688      3800
+ 689              	.LASF1:
+ 690 00d0 756E7369 		.ascii	"unsigned char\000"
+ 690      676E6564 
+ 690      20636861 
+ 690      7200
+ 691              	.LASF5:
+ 692 00de 6C6F6E67 		.ascii	"long unsigned int\000"
+ 692      20756E73 
+ 692      69676E65 
+ 692      6420696E 
+ 692      7400
+ 693              	.LASF3:
+ 694 00f0 73686F72 		.ascii	"short unsigned int\000"
+ 694      7420756E 
+ 694      7369676E 
+ 694      65642069 
+ 694      6E7400
+ 695              	.LASF32:
+ 696 0103 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 696      52784275 
+ 696      66666572 
+ 696      00
+ 697              	.LASF19:
+ 698 0110 6765745F 		.ascii	"get_modbus_registers\000"
+ 698      6D6F6462 
+ 698      75735F72 
+ 698      65676973 
+ 698      74657273 
+ 699              	.LASF13:
+ 700 0125 646F7562 		.ascii	"double\000"
+ 700      6C6500
+ 701              	.LASF28:
+ 702 012c 2E5C6D6F 		.ascii	".\\modbus_slave.c\000"
+ 702      64627573 
+ 702      5F736C61 
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 15
+
+
+ 702      76652E63 
+ 702      00
+ 703              	.LASF8:
+ 704 013d 756E7369 		.ascii	"unsigned int\000"
+ 704      676E6564 
+ 704      20696E74 
+ 704      00
+ 705              	.LASF7:
+ 706 014a 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 706      206C6F6E 
+ 706      6720756E 
+ 706      7369676E 
+ 706      65642069 
+ 707              	.LASF23:
+ 708 0161 696E7075 		.ascii	"input_number\000"
+ 708      745F6E75 
+ 708      6D626572 
+ 708      00
+ 709              	.LASF21:
+ 710 016e 61646472 		.ascii	"address_type\000"
+ 710      6573735F 
+ 710      74797065 
+ 710      00
+ 711              	.LASF31:
+ 712 017b 73746F72 		.ascii	"store_modbus_registers\000"
+ 712      655F6D6F 
+ 712      64627573 
+ 712      5F726567 
+ 712      69737465 
+ 713              	.LASF16:
+ 714 0192 6E756D62 		.ascii	"number\000"
+ 714      657200
+ 715              	.LASF10:
+ 716 0199 696E7433 		.ascii	"int32_t\000"
+ 716      325F7400 
+ 717              	.LASF15:
+ 718 01a1 73697A65 		.ascii	"sizetype\000"
+ 718      74797065 
+ 718      00
+ 719              	.LASF6:
+ 720 01aa 6C6F6E67 		.ascii	"long long int\000"
+ 720      206C6F6E 
+ 720      6720696E 
+ 720      7400
+ 721              	.LASF29:
+ 722 01b8 433A5C55 		.ascii	"C:\\Users\\Glenn\\OneDrive\\PSOC\\psoc-5lp\\5lp-rtu"
+ 722      73657273 
+ 722      5C476C65 
+ 722      6E6E5C4F 
+ 722      6E654472 
+ 723 01e5 5C555342 		.ascii	"\\USB_UART01.cydsn\000"
+ 723      5F554152 
+ 723      5430312E 
+ 723      63796473 
+ 723      6E00
+ 724              	.LASF14:
+ 725 01f7 63686172 		.ascii	"char\000"
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccPIOeip.s 			page 16
+
+
+ 725      00
+ 726              	.LASF18:
+ 727 01fc 76616C75 		.ascii	"values\000"
+ 727      657300
+ 728              	.LASF24:
+ 729 0203 696E7075 		.ascii	"input_buffer\000"
+ 729      745F6275 
+ 729      66666572 
+ 729      00
+ 730              	.LASF2:
+ 731 0210 73686F72 		.ascii	"short int\000"
+ 731      7420696E 
+ 731      7400
+ 732              	.LASF25:
+ 733 021a 6D61785F 		.ascii	"max_out_size\000"
+ 733      6F75745F 
+ 733      73697A65 
+ 733      00
+ 734              	.LASF26:
+ 735 0227 6F757470 		.ascii	"output_buffer\000"
+ 735      75745F62 
+ 735      75666665 
+ 735      7200
+ 736              	.LASF20:
+ 737 0235 70726F63 		.ascii	"process_modbus_message\000"
+ 737      6573735F 
+ 737      6D6F6462 
+ 737      75735F6D 
+ 737      65737361 
+ 738              	.LASF4:
+ 739 024c 6C6F6E67 		.ascii	"long int\000"
+ 739      20696E74 
+ 739      00
+ 740              	.LASF0:
+ 741 0255 7369676E 		.ascii	"signed char\000"
+ 741      65642063 
+ 741      68617200 
+ 742              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

@@ -1,0 +1,1737 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"cb_logging.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.initialize_eeprom_logging,"ax",%progbits
+  19              		.align	2
+  20              		.global	initialize_eeprom_logging
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	initialize_eeprom_logging, %function
+  24              	initialize_eeprom_logging:
+  25              	.LFB63:
+  26              		.file 1 ".\\cb_measurement\\cb_logging.c"
+   1:.\cb_measurement/cb_logging.c **** /*
+   2:.\cb_measurement/cb_logging.c **** ** File:  cb_logging.c
+   3:.\cb_measurement/cb_logging.c **** ** Handles EEPROM Moisture Logging
+   4:.\cb_measurement/cb_logging.c **** **
+   5:.\cb_measurement/cb_logging.c **** */
+   6:.\cb_measurement/cb_logging.c **** #include <device.h>
+   7:.\cb_measurement/cb_logging.c **** #include "cb_logging.h"
+   8:.\cb_measurement/cb_logging.c **** 
+   9:.\cb_measurement/cb_logging.c **** /*
+  10:.\cb_measurement/cb_logging.c **** Layout of EEPROM Format  in 4 bytes value
+  11:.\cb_measurement/cb_logging.c **** position 0 -- Initialization Flag  0xa5a55a5a
+  12:.\cb_measurement/cb_logging.c **** position 4 -- Number of 4 byte entries per entry 
+  13:.\cb_measurement/cb_logging.c **** position 8 -- Time in Minutes Between Logging Interval
+  14:.\cb_measurement/cb_logging.c **** position 12 --  Current Logged Number
+  15:.\cb_measurement/cb_logging.c **** position 16 --  start of Logging Data
+  16:.\cb_measurement/cb_logging.c **** position 16 + number of log elements * 4  -- start of Second Logs
+  17:.\cb_measurement/cb_logging.c **** 
+  18:.\cb_measurement/cb_logging.c **** 
+  19:.\cb_measurement/cb_logging.c ****  */
+  20:.\cb_measurement/cb_logging.c **** 
+  21:.\cb_measurement/cb_logging.c **** 
+  22:.\cb_measurement/cb_logging.c **** 
+  23:.\cb_measurement/cb_logging.c **** 
+  24:.\cb_measurement/cb_logging.c **** static int validate_eeprom( void );
+  25:.\cb_measurement/cb_logging.c **** 
+  26:.\cb_measurement/cb_logging.c **** 
+  27:.\cb_measurement/cb_logging.c **** 
+  28:.\cb_measurement/cb_logging.c **** void initialize_eeprom_logging( uint32 number_of_sensors, uint32 sample_time_interval )
+  29:.\cb_measurement/cb_logging.c **** {
+  27              		.loc 1 29 0
+  28              		.cfi_startproc
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 2
+
+
+  29              		@ args = 0, pretend = 0, frame = 24
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31 0000 80B5     		push	{r7, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 7, -8
+  34              		.cfi_offset 14, -4
+  35 0002 86B0     		sub	sp, sp, #24
+  36              		.cfi_def_cfa_offset 32
+  37 0004 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+  39 0006 7860     		str	r0, [r7, #4]
+  40 0008 3960     		str	r1, [r7]
+  30:.\cb_measurement/cb_logging.c ****     // Start up EEPROM
+  31:.\cb_measurement/cb_logging.c ****     uint32 zero;
+  32:.\cb_measurement/cb_logging.c ****     uint32 init_value;
+  33:.\cb_measurement/cb_logging.c ****     uint32 max_log_number;
+  34:.\cb_measurement/cb_logging.c ****     
+  35:.\cb_measurement/cb_logging.c ****     
+  36:.\cb_measurement/cb_logging.c ****     max_log_number = ( EEPROM_1_EEPROM_SIZE - EEPROM_LOG_DATA_START_INDEX)/( number_of_sensors * 4 
+  41              		.loc 1 36 0
+  42 000a 7B68     		ldr	r3, [r7, #4]
+  43 000c 9B00     		lsls	r3, r3, #2
+  44 000e 40F2EC72 		movw	r2, #2028
+  45 0012 B2FBF3F3 		udiv	r3, r2, r3
+  46 0016 7B61     		str	r3, [r7, #20]
+  37:.\cb_measurement/cb_logging.c ****     
+  38:.\cb_measurement/cb_logging.c ****     init_value = EEPROM_INITIALIZATION_VALUE;
+  47              		.loc 1 38 0
+  48 0018 114B     		ldr	r3, .L2
+  49 001a 3B61     		str	r3, [r7, #16]
+  39:.\cb_measurement/cb_logging.c ****     zero = 0;
+  50              		.loc 1 39 0
+  51 001c 0023     		movs	r3, #0
+  52 001e FB60     		str	r3, [r7, #12]
+  40:.\cb_measurement/cb_logging.c ****     EEPROM_1_Start();
+  53              		.loc 1 40 0
+  54 0020 FFF7FEFF 		bl	EEPROM_1_Start
+  41:.\cb_measurement/cb_logging.c ****     EEPROM_1_UpdateTemperature();
+  55              		.loc 1 41 0
+  56 0024 FFF7FEFF 		bl	EEPROM_1_UpdateTemperature
+  42:.\cb_measurement/cb_logging.c ****     write_32_eeprom( EEPROM_INITIALIZATION_INDEX, (uint8 *) init_value );
+  57              		.loc 1 42 0
+  58 0028 3B69     		ldr	r3, [r7, #16]
+  59 002a 0020     		movs	r0, #0
+  60 002c 1946     		mov	r1, r3
+  61 002e FFF7FEFF 		bl	write_32_eeprom
+  43:.\cb_measurement/cb_logging.c ****     write_32_eeprom( EEPROM_NUMBER_OF_ENTRIES, ( uint8 *)number_of_sensors );
+  62              		.loc 1 43 0
+  63 0032 7B68     		ldr	r3, [r7, #4]
+  64 0034 0420     		movs	r0, #4
+  65 0036 1946     		mov	r1, r3
+  66 0038 FFF7FEFF 		bl	write_32_eeprom
+  44:.\cb_measurement/cb_logging.c ****     write_32_eeprom( EEPROM_SAMPLING_RATE, (uint8 *)&sample_time_interval );
+  67              		.loc 1 44 0
+  68 003c 3B46     		mov	r3, r7
+  69 003e 0820     		movs	r0, #8
+  70 0040 1946     		mov	r1, r3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 3
+
+
+  71 0042 FFF7FEFF 		bl	write_32_eeprom
+  45:.\cb_measurement/cb_logging.c ****     write_32_eeprom( EEPROM_LOGGING_INDEX, (uint8 *) zero );
+  72              		.loc 1 45 0
+  73 0046 FB68     		ldr	r3, [r7, #12]
+  74 0048 0C20     		movs	r0, #12
+  75 004a 1946     		mov	r1, r3
+  76 004c FFF7FEFF 		bl	write_32_eeprom
+  46:.\cb_measurement/cb_logging.c ****     write_32_eeprom( EEPROM_MAX_NUMBER_OF_ENTRIES,(uint8 *) max_log_number );
+  77              		.loc 1 46 0
+  78 0050 7B69     		ldr	r3, [r7, #20]
+  79 0052 1020     		movs	r0, #16
+  80 0054 1946     		mov	r1, r3
+  81 0056 FFF7FEFF 		bl	write_32_eeprom
+  47:.\cb_measurement/cb_logging.c **** }
+  82              		.loc 1 47 0
+  83 005a 1837     		adds	r7, r7, #24
+  84              		.cfi_def_cfa_offset 8
+  85 005c BD46     		mov	sp, r7
+  86              		.cfi_def_cfa_register 13
+  87              		@ sp needed
+  88 005e 80BD     		pop	{r7, pc}
+  89              	.L3:
+  90              		.align	2
+  91              	.L2:
+  92 0060 5A5AA5A5 		.word	-1515890086
+  93              		.cfi_endproc
+  94              	.LFE63:
+  95              		.size	initialize_eeprom_logging, .-initialize_eeprom_logging
+  96              		.section	.text.log_data,"ax",%progbits
+  97              		.align	2
+  98              		.global	log_data
+  99              		.thumb
+ 100              		.thumb_func
+ 101              		.type	log_data, %function
+ 102              	log_data:
+ 103              	.LFB64:
+  48:.\cb_measurement/cb_logging.c **** 
+  49:.\cb_measurement/cb_logging.c **** void log_data( uint32 sensor_position, float value )
+  50:.\cb_measurement/cb_logging.c **** {
+ 104              		.loc 1 50 0
+ 105              		.cfi_startproc
+ 106              		@ args = 0, pretend = 0, frame = 24
+ 107              		@ frame_needed = 1, uses_anonymous_args = 0
+ 108 0000 80B5     		push	{r7, lr}
+ 109              		.cfi_def_cfa_offset 8
+ 110              		.cfi_offset 7, -8
+ 111              		.cfi_offset 14, -4
+ 112 0002 86B0     		sub	sp, sp, #24
+ 113              		.cfi_def_cfa_offset 32
+ 114 0004 00AF     		add	r7, sp, #0
+ 115              		.cfi_def_cfa_register 7
+ 116 0006 7860     		str	r0, [r7, #4]
+ 117 0008 3960     		str	r1, [r7]	@ float
+  51:.\cb_measurement/cb_logging.c ****     uint32 number_of_sensors;
+  52:.\cb_measurement/cb_logging.c ****     uint32 logging_index;
+  53:.\cb_measurement/cb_logging.c ****     uint32 position_index;
+  54:.\cb_measurement/cb_logging.c ****     if( validate_eeprom() )
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 4
+
+
+ 118              		.loc 1 54 0
+ 119 000a FFF7FEFF 		bl	validate_eeprom
+ 120 000e 0346     		mov	r3, r0
+ 121 0010 002B     		cmp	r3, #0
+ 122 0012 1ED0     		beq	.L4
+  55:.\cb_measurement/cb_logging.c ****     {
+  56:.\cb_measurement/cb_logging.c ****          read_32_eeprom( EEPROM_NUMBER_OF_ENTRIES, (uint8 *)&number_of_sensors );
+ 123              		.loc 1 56 0
+ 124 0014 07F11003 		add	r3, r7, #16
+ 125 0018 0420     		movs	r0, #4
+ 126 001a 1946     		mov	r1, r3
+ 127 001c FFF7FEFF 		bl	read_32_eeprom
+  57:.\cb_measurement/cb_logging.c ****          if( sensor_position < number_of_sensors )
+ 128              		.loc 1 57 0
+ 129 0020 3B69     		ldr	r3, [r7, #16]
+ 130 0022 7A68     		ldr	r2, [r7, #4]
+ 131 0024 9A42     		cmp	r2, r3
+ 132 0026 14D2     		bcs	.L4
+  58:.\cb_measurement/cb_logging.c ****          {
+  59:.\cb_measurement/cb_logging.c ****              read_32_eeprom( EEPROM_LOGGING_INDEX, (uint8 *) &logging_index  );
+ 133              		.loc 1 59 0
+ 134 0028 07F10C03 		add	r3, r7, #12
+ 135 002c 0C20     		movs	r0, #12
+ 136 002e 1946     		mov	r1, r3
+ 137 0030 FFF7FEFF 		bl	read_32_eeprom
+  60:.\cb_measurement/cb_logging.c ****              position_index = EEPROM_LOG_DATA_START_INDEX  + ( number_of_sensors *4*logging_index )
+ 138              		.loc 1 60 0
+ 139 0034 3B69     		ldr	r3, [r7, #16]
+ 140 0036 FA68     		ldr	r2, [r7, #12]
+ 141 0038 02FB03F2 		mul	r2, r2, r3
+ 142 003c 7B68     		ldr	r3, [r7, #4]
+ 143 003e 1344     		add	r3, r3, r2
+ 144 0040 0533     		adds	r3, r3, #5
+ 145 0042 9B00     		lsls	r3, r3, #2
+ 146 0044 7B61     		str	r3, [r7, #20]
+  61:.\cb_measurement/cb_logging.c ****              write_32_eeprom( position_index , (uint8 *) &value );
+ 147              		.loc 1 61 0
+ 148 0046 7A69     		ldr	r2, [r7, #20]
+ 149 0048 3B46     		mov	r3, r7
+ 150 004a 1046     		mov	r0, r2
+ 151 004c 1946     		mov	r1, r3
+ 152 004e FFF7FEFF 		bl	write_32_eeprom
+ 153              	.L4:
+  62:.\cb_measurement/cb_logging.c ****          }
+  63:.\cb_measurement/cb_logging.c ****     }
+  64:.\cb_measurement/cb_logging.c **** }
+ 154              		.loc 1 64 0
+ 155 0052 1837     		adds	r7, r7, #24
+ 156              		.cfi_def_cfa_offset 8
+ 157 0054 BD46     		mov	sp, r7
+ 158              		.cfi_def_cfa_register 13
+ 159              		@ sp needed
+ 160 0056 80BD     		pop	{r7, pc}
+ 161              		.cfi_endproc
+ 162              	.LFE64:
+ 163              		.size	log_data, .-log_data
+ 164              		.section	.text.advance_index,"ax",%progbits
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 5
+
+
+ 165              		.align	2
+ 166              		.global	advance_index
+ 167              		.thumb
+ 168              		.thumb_func
+ 169              		.type	advance_index, %function
+ 170              	advance_index:
+ 171              	.LFB65:
+  65:.\cb_measurement/cb_logging.c ****        
+  66:.\cb_measurement/cb_logging.c **** void advance_index( void )
+  67:.\cb_measurement/cb_logging.c **** {
+ 172              		.loc 1 67 0
+ 173              		.cfi_startproc
+ 174              		@ args = 0, pretend = 0, frame = 8
+ 175              		@ frame_needed = 1, uses_anonymous_args = 0
+ 176 0000 80B5     		push	{r7, lr}
+ 177              		.cfi_def_cfa_offset 8
+ 178              		.cfi_offset 7, -8
+ 179              		.cfi_offset 14, -4
+ 180 0002 82B0     		sub	sp, sp, #8
+ 181              		.cfi_def_cfa_offset 16
+ 182 0004 00AF     		add	r7, sp, #0
+ 183              		.cfi_def_cfa_register 7
+  68:.\cb_measurement/cb_logging.c ****     uint32 log_index;
+  69:.\cb_measurement/cb_logging.c ****     uint32 max_index;
+  70:.\cb_measurement/cb_logging.c ****     log_index = 0; // remove warning
+ 184              		.loc 1 70 0
+ 185 0006 0023     		movs	r3, #0
+ 186 0008 3B60     		str	r3, [r7]
+  71:.\cb_measurement/cb_logging.c ****     max_index = 0; // remove warning
+ 187              		.loc 1 71 0
+ 188 000a 0023     		movs	r3, #0
+ 189 000c 7B60     		str	r3, [r7, #4]
+  72:.\cb_measurement/cb_logging.c ****     if( validate_eeprom() )
+ 190              		.loc 1 72 0
+ 191 000e FFF7FEFF 		bl	validate_eeprom
+ 192 0012 0346     		mov	r3, r0
+ 193 0014 002B     		cmp	r3, #0
+ 194 0016 15D0     		beq	.L6
+  73:.\cb_measurement/cb_logging.c ****     {
+  74:.\cb_measurement/cb_logging.c ****         
+  75:.\cb_measurement/cb_logging.c ****        read_32_eeprom( EEPROM_LOGGING_INDEX, (uint8 *)&log_index );
+ 195              		.loc 1 75 0
+ 196 0018 3B46     		mov	r3, r7
+ 197 001a 0C20     		movs	r0, #12
+ 198 001c 1946     		mov	r1, r3
+ 199 001e FFF7FEFF 		bl	read_32_eeprom
+  76:.\cb_measurement/cb_logging.c ****        read_32_eeprom(EEPROM_MAX_NUMBER_OF_ENTRIES, (uint8 *)max_index);
+ 200              		.loc 1 76 0
+ 201 0022 7B68     		ldr	r3, [r7, #4]
+ 202 0024 1020     		movs	r0, #16
+ 203 0026 1946     		mov	r1, r3
+ 204 0028 FFF7FEFF 		bl	read_32_eeprom
+  77:.\cb_measurement/cb_logging.c ****        log_index = log_index +1;
+ 205              		.loc 1 77 0
+ 206 002c 3B68     		ldr	r3, [r7]
+ 207 002e 0133     		adds	r3, r3, #1
+ 208 0030 3B60     		str	r3, [r7]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 6
+
+
+  78:.\cb_measurement/cb_logging.c ****        if( log_index < max_index )
+ 209              		.loc 1 78 0
+ 210 0032 3A68     		ldr	r2, [r7]
+ 211 0034 7B68     		ldr	r3, [r7, #4]
+ 212 0036 9A42     		cmp	r2, r3
+ 213 0038 04D2     		bcs	.L6
+  79:.\cb_measurement/cb_logging.c ****        {
+  80:.\cb_measurement/cb_logging.c ****           write_32_eeprom(  EEPROM_LOGGING_INDEX, (uint8 *) log_index);
+ 214              		.loc 1 80 0
+ 215 003a 3B68     		ldr	r3, [r7]
+ 216 003c 0C20     		movs	r0, #12
+ 217 003e 1946     		mov	r1, r3
+ 218 0040 FFF7FEFF 		bl	write_32_eeprom
+ 219              	.L6:
+  81:.\cb_measurement/cb_logging.c ****         
+  82:.\cb_measurement/cb_logging.c ****        }
+  83:.\cb_measurement/cb_logging.c ****     }
+  84:.\cb_measurement/cb_logging.c **** }
+ 220              		.loc 1 84 0
+ 221 0044 0837     		adds	r7, r7, #8
+ 222              		.cfi_def_cfa_offset 8
+ 223 0046 BD46     		mov	sp, r7
+ 224              		.cfi_def_cfa_register 13
+ 225              		@ sp needed
+ 226 0048 80BD     		pop	{r7, pc}
+ 227              		.cfi_endproc
+ 228              	.LFE65:
+ 229              		.size	advance_index, .-advance_index
+ 230 004a 00BF     		.section	.text.write_32_eeprom,"ax",%progbits
+ 231              		.align	2
+ 232              		.global	write_32_eeprom
+ 233              		.thumb
+ 234              		.thumb_func
+ 235              		.type	write_32_eeprom, %function
+ 236              	write_32_eeprom:
+ 237              	.LFB66:
+  85:.\cb_measurement/cb_logging.c ****         
+  86:.\cb_measurement/cb_logging.c **** 
+  87:.\cb_measurement/cb_logging.c **** 
+  88:.\cb_measurement/cb_logging.c **** void write_32_eeprom( int eeprom_position, uint8 *value )
+  89:.\cb_measurement/cb_logging.c **** {
+ 238              		.loc 1 89 0
+ 239              		.cfi_startproc
+ 240              		@ args = 0, pretend = 0, frame = 8
+ 241              		@ frame_needed = 1, uses_anonymous_args = 0
+ 242 0000 80B5     		push	{r7, lr}
+ 243              		.cfi_def_cfa_offset 8
+ 244              		.cfi_offset 7, -8
+ 245              		.cfi_offset 14, -4
+ 246 0002 82B0     		sub	sp, sp, #8
+ 247              		.cfi_def_cfa_offset 16
+ 248 0004 00AF     		add	r7, sp, #0
+ 249              		.cfi_def_cfa_register 7
+ 250 0006 7860     		str	r0, [r7, #4]
+ 251 0008 3960     		str	r1, [r7]
+  90:.\cb_measurement/cb_logging.c ****   EEPROM_1_WriteByte( *value++, eeprom_position++ );
+ 252              		.loc 1 90 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 7
+
+
+ 253 000a 3B68     		ldr	r3, [r7]
+ 254 000c 5A1C     		adds	r2, r3, #1
+ 255 000e 3A60     		str	r2, [r7]
+ 256 0010 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 257 0012 7B68     		ldr	r3, [r7, #4]
+ 258 0014 5A1C     		adds	r2, r3, #1
+ 259 0016 7A60     		str	r2, [r7, #4]
+ 260 0018 9BB2     		uxth	r3, r3
+ 261 001a 0846     		mov	r0, r1
+ 262 001c 1946     		mov	r1, r3
+ 263 001e FFF7FEFF 		bl	EEPROM_1_WriteByte
+  91:.\cb_measurement/cb_logging.c ****   EEPROM_1_WriteByte( *value++, eeprom_position++ );
+ 264              		.loc 1 91 0
+ 265 0022 3B68     		ldr	r3, [r7]
+ 266 0024 5A1C     		adds	r2, r3, #1
+ 267 0026 3A60     		str	r2, [r7]
+ 268 0028 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 269 002a 7B68     		ldr	r3, [r7, #4]
+ 270 002c 5A1C     		adds	r2, r3, #1
+ 271 002e 7A60     		str	r2, [r7, #4]
+ 272 0030 9BB2     		uxth	r3, r3
+ 273 0032 0846     		mov	r0, r1
+ 274 0034 1946     		mov	r1, r3
+ 275 0036 FFF7FEFF 		bl	EEPROM_1_WriteByte
+  92:.\cb_measurement/cb_logging.c ****   EEPROM_1_WriteByte( *value++, eeprom_position++ );
+ 276              		.loc 1 92 0
+ 277 003a 3B68     		ldr	r3, [r7]
+ 278 003c 5A1C     		adds	r2, r3, #1
+ 279 003e 3A60     		str	r2, [r7]
+ 280 0040 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 281 0042 7B68     		ldr	r3, [r7, #4]
+ 282 0044 5A1C     		adds	r2, r3, #1
+ 283 0046 7A60     		str	r2, [r7, #4]
+ 284 0048 9BB2     		uxth	r3, r3
+ 285 004a 0846     		mov	r0, r1
+ 286 004c 1946     		mov	r1, r3
+ 287 004e FFF7FEFF 		bl	EEPROM_1_WriteByte
+  93:.\cb_measurement/cb_logging.c ****   EEPROM_1_WriteByte( *value++, eeprom_position++ );
+ 288              		.loc 1 93 0
+ 289 0052 3B68     		ldr	r3, [r7]
+ 290 0054 5A1C     		adds	r2, r3, #1
+ 291 0056 3A60     		str	r2, [r7]
+ 292 0058 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 293 005a 7B68     		ldr	r3, [r7, #4]
+ 294 005c 5A1C     		adds	r2, r3, #1
+ 295 005e 7A60     		str	r2, [r7, #4]
+ 296 0060 9BB2     		uxth	r3, r3
+ 297 0062 0846     		mov	r0, r1
+ 298 0064 1946     		mov	r1, r3
+ 299 0066 FFF7FEFF 		bl	EEPROM_1_WriteByte
+  94:.\cb_measurement/cb_logging.c **** }
+ 300              		.loc 1 94 0
+ 301 006a 0837     		adds	r7, r7, #8
+ 302              		.cfi_def_cfa_offset 8
+ 303 006c BD46     		mov	sp, r7
+ 304              		.cfi_def_cfa_register 13
+ 305              		@ sp needed
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 8
+
+
+ 306 006e 80BD     		pop	{r7, pc}
+ 307              		.cfi_endproc
+ 308              	.LFE66:
+ 309              		.size	write_32_eeprom, .-write_32_eeprom
+ 310              		.section	.text.read_32_eeprom,"ax",%progbits
+ 311              		.align	2
+ 312              		.global	read_32_eeprom
+ 313              		.thumb
+ 314              		.thumb_func
+ 315              		.type	read_32_eeprom, %function
+ 316              	read_32_eeprom:
+ 317              	.LFB67:
+  95:.\cb_measurement/cb_logging.c **** 
+  96:.\cb_measurement/cb_logging.c **** void read_32_eeprom( int eeprom_position, uint8 *value )
+  97:.\cb_measurement/cb_logging.c **** {
+ 318              		.loc 1 97 0
+ 319              		.cfi_startproc
+ 320              		@ args = 0, pretend = 0, frame = 8
+ 321              		@ frame_needed = 1, uses_anonymous_args = 0
+ 322 0000 80B5     		push	{r7, lr}
+ 323              		.cfi_def_cfa_offset 8
+ 324              		.cfi_offset 7, -8
+ 325              		.cfi_offset 14, -4
+ 326 0002 82B0     		sub	sp, sp, #8
+ 327              		.cfi_def_cfa_offset 16
+ 328 0004 00AF     		add	r7, sp, #0
+ 329              		.cfi_def_cfa_register 7
+ 330 0006 7860     		str	r0, [r7, #4]
+ 331 0008 3960     		str	r1, [r7]
+  98:.\cb_measurement/cb_logging.c ****    EEPROM_1_WriteByte( *value++, eeprom_position++ );
+ 332              		.loc 1 98 0
+ 333 000a 3B68     		ldr	r3, [r7]
+ 334 000c 5A1C     		adds	r2, r3, #1
+ 335 000e 3A60     		str	r2, [r7]
+ 336 0010 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 337 0012 7B68     		ldr	r3, [r7, #4]
+ 338 0014 5A1C     		adds	r2, r3, #1
+ 339 0016 7A60     		str	r2, [r7, #4]
+ 340 0018 9BB2     		uxth	r3, r3
+ 341 001a 0846     		mov	r0, r1
+ 342 001c 1946     		mov	r1, r3
+ 343 001e FFF7FEFF 		bl	EEPROM_1_WriteByte
+  99:.\cb_measurement/cb_logging.c ****    EEPROM_1_WriteByte( *value++, eeprom_position++ );
+ 344              		.loc 1 99 0
+ 345 0022 3B68     		ldr	r3, [r7]
+ 346 0024 5A1C     		adds	r2, r3, #1
+ 347 0026 3A60     		str	r2, [r7]
+ 348 0028 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 349 002a 7B68     		ldr	r3, [r7, #4]
+ 350 002c 5A1C     		adds	r2, r3, #1
+ 351 002e 7A60     		str	r2, [r7, #4]
+ 352 0030 9BB2     		uxth	r3, r3
+ 353 0032 0846     		mov	r0, r1
+ 354 0034 1946     		mov	r1, r3
+ 355 0036 FFF7FEFF 		bl	EEPROM_1_WriteByte
+ 100:.\cb_measurement/cb_logging.c ****    EEPROM_1_WriteByte( *value++, eeprom_position++ );
+ 356              		.loc 1 100 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 9
+
+
+ 357 003a 3B68     		ldr	r3, [r7]
+ 358 003c 5A1C     		adds	r2, r3, #1
+ 359 003e 3A60     		str	r2, [r7]
+ 360 0040 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 361 0042 7B68     		ldr	r3, [r7, #4]
+ 362 0044 5A1C     		adds	r2, r3, #1
+ 363 0046 7A60     		str	r2, [r7, #4]
+ 364 0048 9BB2     		uxth	r3, r3
+ 365 004a 0846     		mov	r0, r1
+ 366 004c 1946     		mov	r1, r3
+ 367 004e FFF7FEFF 		bl	EEPROM_1_WriteByte
+ 101:.\cb_measurement/cb_logging.c ****    EEPROM_1_WriteByte( *value++, eeprom_position++ );
+ 368              		.loc 1 101 0
+ 369 0052 3B68     		ldr	r3, [r7]
+ 370 0054 5A1C     		adds	r2, r3, #1
+ 371 0056 3A60     		str	r2, [r7]
+ 372 0058 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 373 005a 7B68     		ldr	r3, [r7, #4]
+ 374 005c 5A1C     		adds	r2, r3, #1
+ 375 005e 7A60     		str	r2, [r7, #4]
+ 376 0060 9BB2     		uxth	r3, r3
+ 377 0062 0846     		mov	r0, r1
+ 378 0064 1946     		mov	r1, r3
+ 379 0066 FFF7FEFF 		bl	EEPROM_1_WriteByte
+ 102:.\cb_measurement/cb_logging.c **** }
+ 380              		.loc 1 102 0
+ 381 006a 0837     		adds	r7, r7, #8
+ 382              		.cfi_def_cfa_offset 8
+ 383 006c BD46     		mov	sp, r7
+ 384              		.cfi_def_cfa_register 13
+ 385              		@ sp needed
+ 386 006e 80BD     		pop	{r7, pc}
+ 387              		.cfi_endproc
+ 388              	.LFE67:
+ 389              		.size	read_32_eeprom, .-read_32_eeprom
+ 390              		.section	.text.read_16_eeprom,"ax",%progbits
+ 391              		.align	2
+ 392              		.global	read_16_eeprom
+ 393              		.thumb
+ 394              		.thumb_func
+ 395              		.type	read_16_eeprom, %function
+ 396              	read_16_eeprom:
+ 397              	.LFB68:
+ 103:.\cb_measurement/cb_logging.c **** 
+ 104:.\cb_measurement/cb_logging.c **** void read_16_eeprom( int eeprom_position, uint8 *value )
+ 105:.\cb_measurement/cb_logging.c **** {
+ 398              		.loc 1 105 0
+ 399              		.cfi_startproc
+ 400              		@ args = 0, pretend = 0, frame = 8
+ 401              		@ frame_needed = 1, uses_anonymous_args = 0
+ 402 0000 80B5     		push	{r7, lr}
+ 403              		.cfi_def_cfa_offset 8
+ 404              		.cfi_offset 7, -8
+ 405              		.cfi_offset 14, -4
+ 406 0002 82B0     		sub	sp, sp, #8
+ 407              		.cfi_def_cfa_offset 16
+ 408 0004 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 10
+
+
+ 409              		.cfi_def_cfa_register 7
+ 410 0006 7860     		str	r0, [r7, #4]
+ 411 0008 3960     		str	r1, [r7]
+ 106:.\cb_measurement/cb_logging.c ****    EEPROM_1_WriteByte( *value++, eeprom_position++ );
+ 412              		.loc 1 106 0
+ 413 000a 3B68     		ldr	r3, [r7]
+ 414 000c 5A1C     		adds	r2, r3, #1
+ 415 000e 3A60     		str	r2, [r7]
+ 416 0010 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 417 0012 7B68     		ldr	r3, [r7, #4]
+ 418 0014 5A1C     		adds	r2, r3, #1
+ 419 0016 7A60     		str	r2, [r7, #4]
+ 420 0018 9BB2     		uxth	r3, r3
+ 421 001a 0846     		mov	r0, r1
+ 422 001c 1946     		mov	r1, r3
+ 423 001e FFF7FEFF 		bl	EEPROM_1_WriteByte
+ 107:.\cb_measurement/cb_logging.c ****    EEPROM_1_WriteByte( *value++, eeprom_position++ );
+ 424              		.loc 1 107 0
+ 425 0022 3B68     		ldr	r3, [r7]
+ 426 0024 5A1C     		adds	r2, r3, #1
+ 427 0026 3A60     		str	r2, [r7]
+ 428 0028 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 429 002a 7B68     		ldr	r3, [r7, #4]
+ 430 002c 5A1C     		adds	r2, r3, #1
+ 431 002e 7A60     		str	r2, [r7, #4]
+ 432 0030 9BB2     		uxth	r3, r3
+ 433 0032 0846     		mov	r0, r1
+ 434 0034 1946     		mov	r1, r3
+ 435 0036 FFF7FEFF 		bl	EEPROM_1_WriteByte
+ 108:.\cb_measurement/cb_logging.c **** }  
+ 436              		.loc 1 108 0
+ 437 003a 0837     		adds	r7, r7, #8
+ 438              		.cfi_def_cfa_offset 8
+ 439 003c BD46     		mov	sp, r7
+ 440              		.cfi_def_cfa_register 13
+ 441              		@ sp needed
+ 442 003e 80BD     		pop	{r7, pc}
+ 443              		.cfi_endproc
+ 444              	.LFE68:
+ 445              		.size	read_16_eeprom, .-read_16_eeprom
+ 446              		.section	.text.get_modbus_eeprom_registers,"ax",%progbits
+ 447              		.align	2
+ 448              		.global	get_modbus_eeprom_registers
+ 449              		.thumb
+ 450              		.thumb_func
+ 451              		.type	get_modbus_eeprom_registers, %function
+ 452              	get_modbus_eeprom_registers:
+ 453              	.LFB69:
+ 109:.\cb_measurement/cb_logging.c **** 
+ 110:.\cb_measurement/cb_logging.c **** // this function treats eeprom as a 16 bit modbus registes
+ 111:.\cb_measurement/cb_logging.c **** int get_modbus_eeprom_registers( unsigned starting_register, unsigned number, uint16 *out )
+ 112:.\cb_measurement/cb_logging.c **** {
+ 454              		.loc 1 112 0
+ 455              		.cfi_startproc
+ 456              		@ args = 0, pretend = 0, frame = 24
+ 457              		@ frame_needed = 1, uses_anonymous_args = 0
+ 458 0000 80B5     		push	{r7, lr}
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 11
+
+
+ 459              		.cfi_def_cfa_offset 8
+ 460              		.cfi_offset 7, -8
+ 461              		.cfi_offset 14, -4
+ 462 0002 86B0     		sub	sp, sp, #24
+ 463              		.cfi_def_cfa_offset 32
+ 464 0004 00AF     		add	r7, sp, #0
+ 465              		.cfi_def_cfa_register 7
+ 466 0006 F860     		str	r0, [r7, #12]
+ 467 0008 B960     		str	r1, [r7, #8]
+ 468 000a 7A60     		str	r2, [r7, #4]
+ 113:.\cb_measurement/cb_logging.c ****     unsigned i;
+ 114:.\cb_measurement/cb_logging.c ****     int return_value;
+ 115:.\cb_measurement/cb_logging.c ****       
+ 116:.\cb_measurement/cb_logging.c ****     
+ 117:.\cb_measurement/cb_logging.c ****     starting_register = starting_register;
+ 118:.\cb_measurement/cb_logging.c ****     number            = number;
+ 119:.\cb_measurement/cb_logging.c ****     if( ( starting_register + number ) < EEPROM_1_EEPROM_SIZE )
+ 469              		.loc 1 119 0
+ 470 000c FA68     		ldr	r2, [r7, #12]
+ 471 000e BB68     		ldr	r3, [r7, #8]
+ 472 0010 1344     		add	r3, r3, r2
+ 473 0012 B3F5006F 		cmp	r3, #2048
+ 474 0016 16D2     		bcs	.L12
+ 120:.\cb_measurement/cb_logging.c ****     {
+ 121:.\cb_measurement/cb_logging.c ****         for( i= starting_register*2 ; i < number*2 ; i+=2 )
+ 475              		.loc 1 121 0
+ 476 0018 FB68     		ldr	r3, [r7, #12]
+ 477 001a 5B00     		lsls	r3, r3, #1
+ 478 001c 7B61     		str	r3, [r7, #20]
+ 479 001e 0AE0     		b	.L13
+ 480              	.L14:
+ 122:.\cb_measurement/cb_logging.c ****         {
+ 123:.\cb_measurement/cb_logging.c ****            read_16_eeprom( i, (uint8 *)out );
+ 481              		.loc 1 123 0 discriminator 3
+ 482 0020 7B69     		ldr	r3, [r7, #20]
+ 483 0022 1846     		mov	r0, r3
+ 484 0024 7968     		ldr	r1, [r7, #4]
+ 485 0026 FFF7FEFF 		bl	read_16_eeprom
+ 124:.\cb_measurement/cb_logging.c ****            out++;
+ 486              		.loc 1 124 0 discriminator 3
+ 487 002a 7B68     		ldr	r3, [r7, #4]
+ 488 002c 0233     		adds	r3, r3, #2
+ 489 002e 7B60     		str	r3, [r7, #4]
+ 121:.\cb_measurement/cb_logging.c ****         {
+ 490              		.loc 1 121 0 discriminator 3
+ 491 0030 7B69     		ldr	r3, [r7, #20]
+ 492 0032 0233     		adds	r3, r3, #2
+ 493 0034 7B61     		str	r3, [r7, #20]
+ 494              	.L13:
+ 121:.\cb_measurement/cb_logging.c ****         {
+ 495              		.loc 1 121 0 is_stmt 0 discriminator 1
+ 496 0036 BB68     		ldr	r3, [r7, #8]
+ 497 0038 5A00     		lsls	r2, r3, #1
+ 498 003a 7B69     		ldr	r3, [r7, #20]
+ 499 003c 9A42     		cmp	r2, r3
+ 500 003e EFD8     		bhi	.L14
+ 125:.\cb_measurement/cb_logging.c ****         }
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 12
+
+
+ 126:.\cb_measurement/cb_logging.c ****        
+ 127:.\cb_measurement/cb_logging.c ****         return_value = 1;
+ 501              		.loc 1 127 0 is_stmt 1
+ 502 0040 0123     		movs	r3, #1
+ 503 0042 3B61     		str	r3, [r7, #16]
+ 504 0044 01E0     		b	.L15
+ 505              	.L12:
+ 128:.\cb_measurement/cb_logging.c ****         
+ 129:.\cb_measurement/cb_logging.c ****     }
+ 130:.\cb_measurement/cb_logging.c ****     else
+ 131:.\cb_measurement/cb_logging.c ****     {
+ 132:.\cb_measurement/cb_logging.c ****         return_value = 0;
+ 506              		.loc 1 132 0
+ 507 0046 0023     		movs	r3, #0
+ 508 0048 3B61     		str	r3, [r7, #16]
+ 509              	.L15:
+ 133:.\cb_measurement/cb_logging.c ****     }
+ 134:.\cb_measurement/cb_logging.c ****     return return_value;
+ 510              		.loc 1 134 0
+ 511 004a 3B69     		ldr	r3, [r7, #16]
+ 135:.\cb_measurement/cb_logging.c **** }
+ 512              		.loc 1 135 0
+ 513 004c 1846     		mov	r0, r3
+ 514 004e 1837     		adds	r7, r7, #24
+ 515              		.cfi_def_cfa_offset 8
+ 516 0050 BD46     		mov	sp, r7
+ 517              		.cfi_def_cfa_register 13
+ 518              		@ sp needed
+ 519 0052 80BD     		pop	{r7, pc}
+ 520              		.cfi_endproc
+ 521              	.LFE69:
+ 522              		.size	get_modbus_eeprom_registers, .-get_modbus_eeprom_registers
+ 523              		.section	.text.validate_eeprom,"ax",%progbits
+ 524              		.align	2
+ 525              		.thumb
+ 526              		.thumb_func
+ 527              		.type	validate_eeprom, %function
+ 528              	validate_eeprom:
+ 529              	.LFB70:
+ 136:.\cb_measurement/cb_logging.c **** 
+ 137:.\cb_measurement/cb_logging.c **** 
+ 138:.\cb_measurement/cb_logging.c **** static int validate_eeprom( void )
+ 139:.\cb_measurement/cb_logging.c **** {
+ 530              		.loc 1 139 0
+ 531              		.cfi_startproc
+ 532              		@ args = 0, pretend = 0, frame = 8
+ 533              		@ frame_needed = 1, uses_anonymous_args = 0
+ 534 0000 80B5     		push	{r7, lr}
+ 535              		.cfi_def_cfa_offset 8
+ 536              		.cfi_offset 7, -8
+ 537              		.cfi_offset 14, -4
+ 538 0002 82B0     		sub	sp, sp, #8
+ 539              		.cfi_def_cfa_offset 16
+ 540 0004 00AF     		add	r7, sp, #0
+ 541              		.cfi_def_cfa_register 7
+ 140:.\cb_measurement/cb_logging.c ****     uint32 value;
+ 141:.\cb_measurement/cb_logging.c ****     int    return_value;
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 13
+
+
+ 142:.\cb_measurement/cb_logging.c ****     
+ 143:.\cb_measurement/cb_logging.c ****     value = 0;  // remove warning
+ 542              		.loc 1 143 0
+ 543 0006 0023     		movs	r3, #0
+ 544 0008 3B60     		str	r3, [r7]
+ 144:.\cb_measurement/cb_logging.c ****     read_32_eeprom( EEPROM_INITIALIZATION_INDEX, ( uint8 *)value );
+ 545              		.loc 1 144 0
+ 546 000a 3B68     		ldr	r3, [r7]
+ 547 000c 0020     		movs	r0, #0
+ 548 000e 1946     		mov	r1, r3
+ 549 0010 FFF7FEFF 		bl	read_32_eeprom
+ 145:.\cb_measurement/cb_logging.c ****     if( value == EEPROM_INITIALIZATION_VALUE )
+ 550              		.loc 1 145 0
+ 551 0014 3B68     		ldr	r3, [r7]
+ 552 0016 064A     		ldr	r2, .L21
+ 553 0018 9342     		cmp	r3, r2
+ 554 001a 02D1     		bne	.L18
+ 146:.\cb_measurement/cb_logging.c ****     {
+ 147:.\cb_measurement/cb_logging.c ****         return_value = 1;
+ 555              		.loc 1 147 0
+ 556 001c 0123     		movs	r3, #1
+ 557 001e 7B60     		str	r3, [r7, #4]
+ 558 0020 01E0     		b	.L19
+ 559              	.L18:
+ 148:.\cb_measurement/cb_logging.c ****     }
+ 149:.\cb_measurement/cb_logging.c ****     else
+ 150:.\cb_measurement/cb_logging.c ****     {
+ 151:.\cb_measurement/cb_logging.c ****         return_value = 0;
+ 560              		.loc 1 151 0
+ 561 0022 0023     		movs	r3, #0
+ 562 0024 7B60     		str	r3, [r7, #4]
+ 563              	.L19:
+ 152:.\cb_measurement/cb_logging.c ****     }
+ 153:.\cb_measurement/cb_logging.c ****     return return_value;
+ 564              		.loc 1 153 0
+ 565 0026 7B68     		ldr	r3, [r7, #4]
+ 154:.\cb_measurement/cb_logging.c ****     
+ 155:.\cb_measurement/cb_logging.c **** }
+ 566              		.loc 1 155 0
+ 567 0028 1846     		mov	r0, r3
+ 568 002a 0837     		adds	r7, r7, #8
+ 569              		.cfi_def_cfa_offset 8
+ 570 002c BD46     		mov	sp, r7
+ 571              		.cfi_def_cfa_register 13
+ 572              		@ sp needed
+ 573 002e 80BD     		pop	{r7, pc}
+ 574              	.L22:
+ 575              		.align	2
+ 576              	.L21:
+ 577 0030 5A5AA5A5 		.word	-1515890086
+ 578              		.cfi_endproc
+ 579              	.LFE70:
+ 580              		.size	validate_eeprom, .-validate_eeprom
+ 581              		.text
+ 582              	.Letext0:
+ 583              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 584              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 14
+
+
+ 585              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 586              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 587              		.section	.debug_info,"",%progbits
+ 588              	.Ldebug_info0:
+ 589 0000 EF020000 		.4byte	0x2ef
+ 590 0004 0400     		.2byte	0x4
+ 591 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 592 000a 04       		.byte	0x4
+ 593 000b 01       		.uleb128 0x1
+ 594 000c 55010000 		.4byte	.LASF39
+ 595 0010 01       		.byte	0x1
+ 596 0011 99000000 		.4byte	.LASF40
+ 597 0015 B7000000 		.4byte	.LASF41
+ 598 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 599 001d 00000000 		.4byte	0
+ 600 0021 00000000 		.4byte	.Ldebug_line0
+ 601 0025 02       		.uleb128 0x2
+ 602 0026 01       		.byte	0x1
+ 603 0027 06       		.byte	0x6
+ 604 0028 D2020000 		.4byte	.LASF0
+ 605 002c 02       		.uleb128 0x2
+ 606 002d 01       		.byte	0x1
+ 607 002e 08       		.byte	0x8
+ 608 002f 97020000 		.4byte	.LASF1
+ 609 0033 02       		.uleb128 0x2
+ 610 0034 02       		.byte	0x2
+ 611 0035 05       		.byte	0x5
+ 612 0036 8D020000 		.4byte	.LASF2
+ 613 003a 02       		.uleb128 0x2
+ 614 003b 02       		.byte	0x2
+ 615 003c 07       		.byte	0x7
+ 616 003d 07010000 		.4byte	.LASF3
+ 617 0041 03       		.uleb128 0x3
+ 618 0042 3C000000 		.4byte	.LASF9
+ 619 0046 02       		.byte	0x2
+ 620 0047 3F       		.byte	0x3f
+ 621 0048 4C000000 		.4byte	0x4c
+ 622 004c 02       		.uleb128 0x2
+ 623 004d 04       		.byte	0x4
+ 624 004e 05       		.byte	0x5
+ 625 004f B9020000 		.4byte	.LASF4
+ 626 0053 02       		.uleb128 0x2
+ 627 0054 04       		.byte	0x4
+ 628 0055 07       		.byte	0x7
+ 629 0056 F5000000 		.4byte	.LASF5
+ 630 005a 02       		.uleb128 0x2
+ 631 005b 08       		.byte	0x8
+ 632 005c 05       		.byte	0x5
+ 633 005d 7A020000 		.4byte	.LASF6
+ 634 0061 02       		.uleb128 0x2
+ 635 0062 08       		.byte	0x8
+ 636 0063 07       		.byte	0x7
+ 637 0064 32020000 		.4byte	.LASF7
+ 638 0068 04       		.uleb128 0x4
+ 639 0069 04       		.byte	0x4
+ 640 006a 05       		.byte	0x5
+ 641 006b 696E7400 		.ascii	"int\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 15
+
+
+ 642 006f 02       		.uleb128 0x2
+ 643 0070 04       		.byte	0x4
+ 644 0071 07       		.byte	0x7
+ 645 0072 25020000 		.4byte	.LASF8
+ 646 0076 03       		.uleb128 0x3
+ 647 0077 69020000 		.4byte	.LASF10
+ 648 007b 03       		.byte	0x3
+ 649 007c 2C       		.byte	0x2c
+ 650 007d 41000000 		.4byte	0x41
+ 651 0081 05       		.uleb128 0x5
+ 652 0082 A5020000 		.4byte	.LASF11
+ 653 0086 04       		.byte	0x4
+ 654 0087 9201     		.2byte	0x192
+ 655 0089 2C000000 		.4byte	0x2c
+ 656 008d 05       		.uleb128 0x5
+ 657 008e FA010000 		.4byte	.LASF12
+ 658 0092 04       		.byte	0x4
+ 659 0093 9301     		.2byte	0x193
+ 660 0095 3A000000 		.4byte	0x3a
+ 661 0099 05       		.uleb128 0x5
+ 662 009a 01020000 		.4byte	.LASF13
+ 663 009e 04       		.byte	0x4
+ 664 009f 9401     		.2byte	0x194
+ 665 00a1 53000000 		.4byte	0x53
+ 666 00a5 02       		.uleb128 0x2
+ 667 00a6 04       		.byte	0x4
+ 668 00a7 04       		.byte	0x4
+ 669 00a8 30000000 		.4byte	.LASF14
+ 670 00ac 02       		.uleb128 0x2
+ 671 00ad 08       		.byte	0x8
+ 672 00ae 04       		.byte	0x4
+ 673 00af E3010000 		.4byte	.LASF15
+ 674 00b3 02       		.uleb128 0x2
+ 675 00b4 01       		.byte	0x1
+ 676 00b5 08       		.byte	0x8
+ 677 00b6 88020000 		.4byte	.LASF16
+ 678 00ba 02       		.uleb128 0x2
+ 679 00bb 04       		.byte	0x4
+ 680 00bc 07       		.byte	0x7
+ 681 00bd 71020000 		.4byte	.LASF17
+ 682 00c1 06       		.uleb128 0x6
+ 683 00c2 6D000000 		.4byte	.LASF23
+ 684 00c6 01       		.byte	0x1
+ 685 00c7 1C       		.byte	0x1c
+ 686 00c8 00000000 		.4byte	.LFB63
+ 687 00cc 64000000 		.4byte	.LFE63-.LFB63
+ 688 00d0 01       		.uleb128 0x1
+ 689 00d1 9C       		.byte	0x9c
+ 690 00d2 1D010000 		.4byte	0x11d
+ 691 00d6 07       		.uleb128 0x7
+ 692 00d7 46000000 		.4byte	.LASF18
+ 693 00db 01       		.byte	0x1
+ 694 00dc 1C       		.byte	0x1c
+ 695 00dd 99000000 		.4byte	0x99
+ 696 00e1 02       		.uleb128 0x2
+ 697 00e2 91       		.byte	0x91
+ 698 00e3 64       		.sleb128 -28
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 16
+
+
+ 699 00e4 07       		.uleb128 0x7
+ 700 00e5 40010000 		.4byte	.LASF19
+ 701 00e9 01       		.byte	0x1
+ 702 00ea 1C       		.byte	0x1c
+ 703 00eb 99000000 		.4byte	0x99
+ 704 00ef 02       		.uleb128 0x2
+ 705 00f0 91       		.byte	0x91
+ 706 00f1 60       		.sleb128 -32
+ 707 00f2 08       		.uleb128 0x8
+ 708 00f3 94000000 		.4byte	.LASF20
+ 709 00f7 01       		.byte	0x1
+ 710 00f8 1F       		.byte	0x1f
+ 711 00f9 99000000 		.4byte	0x99
+ 712 00fd 02       		.uleb128 0x2
+ 713 00fe 91       		.byte	0x91
+ 714 00ff 6C       		.sleb128 -20
+ 715 0100 08       		.uleb128 0x8
+ 716 0101 62000000 		.4byte	.LASF21
+ 717 0105 01       		.byte	0x1
+ 718 0106 20       		.byte	0x20
+ 719 0107 99000000 		.4byte	0x99
+ 720 010b 02       		.uleb128 0x2
+ 721 010c 91       		.byte	0x91
+ 722 010d 70       		.sleb128 -16
+ 723 010e 08       		.uleb128 0x8
+ 724 010f 08020000 		.4byte	.LASF22
+ 725 0113 01       		.byte	0x1
+ 726 0114 21       		.byte	0x21
+ 727 0115 99000000 		.4byte	0x99
+ 728 0119 02       		.uleb128 0x2
+ 729 011a 91       		.byte	0x91
+ 730 011b 74       		.sleb128 -12
+ 731 011c 00       		.byte	0
+ 732 011d 06       		.uleb128 0x6
+ 733 011e 2A010000 		.4byte	.LASF24
+ 734 0122 01       		.byte	0x1
+ 735 0123 31       		.byte	0x31
+ 736 0124 00000000 		.4byte	.LFB64
+ 737 0128 58000000 		.4byte	.LFE64-.LFB64
+ 738 012c 01       		.uleb128 0x1
+ 739 012d 9C       		.byte	0x9c
+ 740 012e 79010000 		.4byte	0x179
+ 741 0132 07       		.uleb128 0x7
+ 742 0133 EA010000 		.4byte	.LASF25
+ 743 0137 01       		.byte	0x1
+ 744 0138 31       		.byte	0x31
+ 745 0139 99000000 		.4byte	0x99
+ 746 013d 02       		.uleb128 0x2
+ 747 013e 91       		.byte	0x91
+ 748 013f 64       		.sleb128 -28
+ 749 0140 07       		.uleb128 0x7
+ 750 0141 36000000 		.4byte	.LASF26
+ 751 0145 01       		.byte	0x1
+ 752 0146 31       		.byte	0x31
+ 753 0147 A5000000 		.4byte	0xa5
+ 754 014b 02       		.uleb128 0x2
+ 755 014c 91       		.byte	0x91
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 17
+
+
+ 756 014d 60       		.sleb128 -32
+ 757 014e 08       		.uleb128 0x8
+ 758 014f 46000000 		.4byte	.LASF18
+ 759 0153 01       		.byte	0x1
+ 760 0154 33       		.byte	0x33
+ 761 0155 99000000 		.4byte	0x99
+ 762 0159 02       		.uleb128 0x2
+ 763 015a 91       		.byte	0x91
+ 764 015b 70       		.sleb128 -16
+ 765 015c 08       		.uleb128 0x8
+ 766 015d AB020000 		.4byte	.LASF27
+ 767 0161 01       		.byte	0x1
+ 768 0162 34       		.byte	0x34
+ 769 0163 99000000 		.4byte	0x99
+ 770 0167 02       		.uleb128 0x2
+ 771 0168 91       		.byte	0x91
+ 772 0169 6C       		.sleb128 -20
+ 773 016a 08       		.uleb128 0x8
+ 774 016b 0F000000 		.4byte	.LASF28
+ 775 016f 01       		.byte	0x1
+ 776 0170 35       		.byte	0x35
+ 777 0171 99000000 		.4byte	0x99
+ 778 0175 02       		.uleb128 0x2
+ 779 0176 91       		.byte	0x91
+ 780 0177 74       		.sleb128 -12
+ 781 0178 00       		.byte	0
+ 782 0179 06       		.uleb128 0x6
+ 783 017a 17020000 		.4byte	.LASF29
+ 784 017e 01       		.byte	0x1
+ 785 017f 42       		.byte	0x42
+ 786 0180 00000000 		.4byte	.LFB65
+ 787 0184 4A000000 		.4byte	.LFE65-.LFB65
+ 788 0188 01       		.uleb128 0x1
+ 789 0189 9C       		.byte	0x9c
+ 790 018a AB010000 		.4byte	0x1ab
+ 791 018e 08       		.uleb128 0x8
+ 792 018f 49020000 		.4byte	.LASF30
+ 793 0193 01       		.byte	0x1
+ 794 0194 44       		.byte	0x44
+ 795 0195 99000000 		.4byte	0x99
+ 796 0199 02       		.uleb128 0x2
+ 797 019a 91       		.byte	0x91
+ 798 019b 70       		.sleb128 -16
+ 799 019c 08       		.uleb128 0x8
+ 800 019d 58000000 		.4byte	.LASF31
+ 801 01a1 01       		.byte	0x1
+ 802 01a2 45       		.byte	0x45
+ 803 01a3 99000000 		.4byte	0x99
+ 804 01a7 02       		.uleb128 0x2
+ 805 01a8 91       		.byte	0x91
+ 806 01a9 74       		.sleb128 -12
+ 807 01aa 00       		.byte	0
+ 808 01ab 06       		.uleb128 0x6
+ 809 01ac 1A010000 		.4byte	.LASF32
+ 810 01b0 01       		.byte	0x1
+ 811 01b1 58       		.byte	0x58
+ 812 01b2 00000000 		.4byte	.LFB66
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 18
+
+
+ 813 01b6 70000000 		.4byte	.LFE66-.LFB66
+ 814 01ba 01       		.uleb128 0x1
+ 815 01bb 9C       		.byte	0x9c
+ 816 01bc DD010000 		.4byte	0x1dd
+ 817 01c0 07       		.uleb128 0x7
+ 818 01c1 FA020000 		.4byte	.LASF33
+ 819 01c5 01       		.byte	0x1
+ 820 01c6 58       		.byte	0x58
+ 821 01c7 68000000 		.4byte	0x68
+ 822 01cb 02       		.uleb128 0x2
+ 823 01cc 91       		.byte	0x91
+ 824 01cd 74       		.sleb128 -12
+ 825 01ce 07       		.uleb128 0x7
+ 826 01cf 36000000 		.4byte	.LASF26
+ 827 01d3 01       		.byte	0x1
+ 828 01d4 58       		.byte	0x58
+ 829 01d5 DD010000 		.4byte	0x1dd
+ 830 01d9 02       		.uleb128 0x2
+ 831 01da 91       		.byte	0x91
+ 832 01db 70       		.sleb128 -16
+ 833 01dc 00       		.byte	0
+ 834 01dd 09       		.uleb128 0x9
+ 835 01de 04       		.byte	0x4
+ 836 01df 81000000 		.4byte	0x81
+ 837 01e3 06       		.uleb128 0x6
+ 838 01e4 53020000 		.4byte	.LASF34
+ 839 01e8 01       		.byte	0x1
+ 840 01e9 60       		.byte	0x60
+ 841 01ea 00000000 		.4byte	.LFB67
+ 842 01ee 70000000 		.4byte	.LFE67-.LFB67
+ 843 01f2 01       		.uleb128 0x1
+ 844 01f3 9C       		.byte	0x9c
+ 845 01f4 15020000 		.4byte	0x215
+ 846 01f8 07       		.uleb128 0x7
+ 847 01f9 FA020000 		.4byte	.LASF33
+ 848 01fd 01       		.byte	0x1
+ 849 01fe 60       		.byte	0x60
+ 850 01ff 68000000 		.4byte	0x68
+ 851 0203 02       		.uleb128 0x2
+ 852 0204 91       		.byte	0x91
+ 853 0205 74       		.sleb128 -12
+ 854 0206 07       		.uleb128 0x7
+ 855 0207 36000000 		.4byte	.LASF26
+ 856 020b 01       		.byte	0x1
+ 857 020c 60       		.byte	0x60
+ 858 020d DD010000 		.4byte	0x1dd
+ 859 0211 02       		.uleb128 0x2
+ 860 0212 91       		.byte	0x91
+ 861 0213 70       		.sleb128 -16
+ 862 0214 00       		.byte	0
+ 863 0215 06       		.uleb128 0x6
+ 864 0216 00000000 		.4byte	.LASF35
+ 865 021a 01       		.byte	0x1
+ 866 021b 68       		.byte	0x68
+ 867 021c 00000000 		.4byte	.LFB68
+ 868 0220 40000000 		.4byte	.LFE68-.LFB68
+ 869 0224 01       		.uleb128 0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 19
+
+
+ 870 0225 9C       		.byte	0x9c
+ 871 0226 47020000 		.4byte	0x247
+ 872 022a 07       		.uleb128 0x7
+ 873 022b FA020000 		.4byte	.LASF33
+ 874 022f 01       		.byte	0x1
+ 875 0230 68       		.byte	0x68
+ 876 0231 68000000 		.4byte	0x68
+ 877 0235 02       		.uleb128 0x2
+ 878 0236 91       		.byte	0x91
+ 879 0237 74       		.sleb128 -12
+ 880 0238 07       		.uleb128 0x7
+ 881 0239 36000000 		.4byte	.LASF26
+ 882 023d 01       		.byte	0x1
+ 883 023e 68       		.byte	0x68
+ 884 023f DD010000 		.4byte	0x1dd
+ 885 0243 02       		.uleb128 0x2
+ 886 0244 91       		.byte	0x91
+ 887 0245 70       		.sleb128 -16
+ 888 0246 00       		.byte	0
+ 889 0247 0A       		.uleb128 0xa
+ 890 0248 DE020000 		.4byte	.LASF42
+ 891 024c 01       		.byte	0x1
+ 892 024d 6F       		.byte	0x6f
+ 893 024e 68000000 		.4byte	0x68
+ 894 0252 00000000 		.4byte	.LFB69
+ 895 0256 54000000 		.4byte	.LFE69-.LFB69
+ 896 025a 01       		.uleb128 0x1
+ 897 025b 9C       		.byte	0x9c
+ 898 025c A5020000 		.4byte	0x2a5
+ 899 0260 07       		.uleb128 0x7
+ 900 0261 1E000000 		.4byte	.LASF36
+ 901 0265 01       		.byte	0x1
+ 902 0266 6F       		.byte	0x6f
+ 903 0267 6F000000 		.4byte	0x6f
+ 904 026b 02       		.uleb128 0x2
+ 905 026c 91       		.byte	0x91
+ 906 026d 6C       		.sleb128 -20
+ 907 026e 07       		.uleb128 0x7
+ 908 026f 62020000 		.4byte	.LASF37
+ 909 0273 01       		.byte	0x1
+ 910 0274 6F       		.byte	0x6f
+ 911 0275 6F000000 		.4byte	0x6f
+ 912 0279 02       		.uleb128 0x2
+ 913 027a 91       		.byte	0x91
+ 914 027b 68       		.sleb128 -24
+ 915 027c 0B       		.uleb128 0xb
+ 916 027d 6F757400 		.ascii	"out\000"
+ 917 0281 01       		.byte	0x1
+ 918 0282 6F       		.byte	0x6f
+ 919 0283 A5020000 		.4byte	0x2a5
+ 920 0287 02       		.uleb128 0x2
+ 921 0288 91       		.byte	0x91
+ 922 0289 64       		.sleb128 -28
+ 923 028a 0C       		.uleb128 0xc
+ 924 028b 6900     		.ascii	"i\000"
+ 925 028d 01       		.byte	0x1
+ 926 028e 71       		.byte	0x71
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 20
+
+
+ 927 028f 6F000000 		.4byte	0x6f
+ 928 0293 02       		.uleb128 0x2
+ 929 0294 91       		.byte	0x91
+ 930 0295 74       		.sleb128 -12
+ 931 0296 08       		.uleb128 0x8
+ 932 0297 87000000 		.4byte	.LASF38
+ 933 029b 01       		.byte	0x1
+ 934 029c 72       		.byte	0x72
+ 935 029d 68000000 		.4byte	0x68
+ 936 02a1 02       		.uleb128 0x2
+ 937 02a2 91       		.byte	0x91
+ 938 02a3 70       		.sleb128 -16
+ 939 02a4 00       		.byte	0
+ 940 02a5 09       		.uleb128 0x9
+ 941 02a6 04       		.byte	0x4
+ 942 02a7 8D000000 		.4byte	0x8d
+ 943 02ab 0D       		.uleb128 0xd
+ 944 02ac C2020000 		.4byte	.LASF43
+ 945 02b0 01       		.byte	0x1
+ 946 02b1 8A       		.byte	0x8a
+ 947 02b2 68000000 		.4byte	0x68
+ 948 02b6 00000000 		.4byte	.LFB70
+ 949 02ba 34000000 		.4byte	.LFE70-.LFB70
+ 950 02be 01       		.uleb128 0x1
+ 951 02bf 9C       		.byte	0x9c
+ 952 02c0 E1020000 		.4byte	0x2e1
+ 953 02c4 08       		.uleb128 0x8
+ 954 02c5 36000000 		.4byte	.LASF26
+ 955 02c9 01       		.byte	0x1
+ 956 02ca 8C       		.byte	0x8c
+ 957 02cb 99000000 		.4byte	0x99
+ 958 02cf 02       		.uleb128 0x2
+ 959 02d0 91       		.byte	0x91
+ 960 02d1 70       		.sleb128 -16
+ 961 02d2 08       		.uleb128 0x8
+ 962 02d3 87000000 		.4byte	.LASF38
+ 963 02d7 01       		.byte	0x1
+ 964 02d8 8D       		.byte	0x8d
+ 965 02d9 68000000 		.4byte	0x68
+ 966 02dd 02       		.uleb128 0x2
+ 967 02de 91       		.byte	0x91
+ 968 02df 74       		.sleb128 -12
+ 969 02e0 00       		.byte	0
+ 970 02e1 0E       		.uleb128 0xe
+ 971 02e2 33010000 		.4byte	.LASF44
+ 972 02e6 05       		.byte	0x5
+ 973 02e7 9606     		.2byte	0x696
+ 974 02e9 ED020000 		.4byte	0x2ed
+ 975 02ed 0F       		.uleb128 0xf
+ 976 02ee 76000000 		.4byte	0x76
+ 977 02f2 00       		.byte	0
+ 978              		.section	.debug_abbrev,"",%progbits
+ 979              	.Ldebug_abbrev0:
+ 980 0000 01       		.uleb128 0x1
+ 981 0001 11       		.uleb128 0x11
+ 982 0002 01       		.byte	0x1
+ 983 0003 25       		.uleb128 0x25
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 21
+
+
+ 984 0004 0E       		.uleb128 0xe
+ 985 0005 13       		.uleb128 0x13
+ 986 0006 0B       		.uleb128 0xb
+ 987 0007 03       		.uleb128 0x3
+ 988 0008 0E       		.uleb128 0xe
+ 989 0009 1B       		.uleb128 0x1b
+ 990 000a 0E       		.uleb128 0xe
+ 991 000b 55       		.uleb128 0x55
+ 992 000c 17       		.uleb128 0x17
+ 993 000d 11       		.uleb128 0x11
+ 994 000e 01       		.uleb128 0x1
+ 995 000f 10       		.uleb128 0x10
+ 996 0010 17       		.uleb128 0x17
+ 997 0011 00       		.byte	0
+ 998 0012 00       		.byte	0
+ 999 0013 02       		.uleb128 0x2
+ 1000 0014 24       		.uleb128 0x24
+ 1001 0015 00       		.byte	0
+ 1002 0016 0B       		.uleb128 0xb
+ 1003 0017 0B       		.uleb128 0xb
+ 1004 0018 3E       		.uleb128 0x3e
+ 1005 0019 0B       		.uleb128 0xb
+ 1006 001a 03       		.uleb128 0x3
+ 1007 001b 0E       		.uleb128 0xe
+ 1008 001c 00       		.byte	0
+ 1009 001d 00       		.byte	0
+ 1010 001e 03       		.uleb128 0x3
+ 1011 001f 16       		.uleb128 0x16
+ 1012 0020 00       		.byte	0
+ 1013 0021 03       		.uleb128 0x3
+ 1014 0022 0E       		.uleb128 0xe
+ 1015 0023 3A       		.uleb128 0x3a
+ 1016 0024 0B       		.uleb128 0xb
+ 1017 0025 3B       		.uleb128 0x3b
+ 1018 0026 0B       		.uleb128 0xb
+ 1019 0027 49       		.uleb128 0x49
+ 1020 0028 13       		.uleb128 0x13
+ 1021 0029 00       		.byte	0
+ 1022 002a 00       		.byte	0
+ 1023 002b 04       		.uleb128 0x4
+ 1024 002c 24       		.uleb128 0x24
+ 1025 002d 00       		.byte	0
+ 1026 002e 0B       		.uleb128 0xb
+ 1027 002f 0B       		.uleb128 0xb
+ 1028 0030 3E       		.uleb128 0x3e
+ 1029 0031 0B       		.uleb128 0xb
+ 1030 0032 03       		.uleb128 0x3
+ 1031 0033 08       		.uleb128 0x8
+ 1032 0034 00       		.byte	0
+ 1033 0035 00       		.byte	0
+ 1034 0036 05       		.uleb128 0x5
+ 1035 0037 16       		.uleb128 0x16
+ 1036 0038 00       		.byte	0
+ 1037 0039 03       		.uleb128 0x3
+ 1038 003a 0E       		.uleb128 0xe
+ 1039 003b 3A       		.uleb128 0x3a
+ 1040 003c 0B       		.uleb128 0xb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 22
+
+
+ 1041 003d 3B       		.uleb128 0x3b
+ 1042 003e 05       		.uleb128 0x5
+ 1043 003f 49       		.uleb128 0x49
+ 1044 0040 13       		.uleb128 0x13
+ 1045 0041 00       		.byte	0
+ 1046 0042 00       		.byte	0
+ 1047 0043 06       		.uleb128 0x6
+ 1048 0044 2E       		.uleb128 0x2e
+ 1049 0045 01       		.byte	0x1
+ 1050 0046 3F       		.uleb128 0x3f
+ 1051 0047 19       		.uleb128 0x19
+ 1052 0048 03       		.uleb128 0x3
+ 1053 0049 0E       		.uleb128 0xe
+ 1054 004a 3A       		.uleb128 0x3a
+ 1055 004b 0B       		.uleb128 0xb
+ 1056 004c 3B       		.uleb128 0x3b
+ 1057 004d 0B       		.uleb128 0xb
+ 1058 004e 27       		.uleb128 0x27
+ 1059 004f 19       		.uleb128 0x19
+ 1060 0050 11       		.uleb128 0x11
+ 1061 0051 01       		.uleb128 0x1
+ 1062 0052 12       		.uleb128 0x12
+ 1063 0053 06       		.uleb128 0x6
+ 1064 0054 40       		.uleb128 0x40
+ 1065 0055 18       		.uleb128 0x18
+ 1066 0056 9642     		.uleb128 0x2116
+ 1067 0058 19       		.uleb128 0x19
+ 1068 0059 01       		.uleb128 0x1
+ 1069 005a 13       		.uleb128 0x13
+ 1070 005b 00       		.byte	0
+ 1071 005c 00       		.byte	0
+ 1072 005d 07       		.uleb128 0x7
+ 1073 005e 05       		.uleb128 0x5
+ 1074 005f 00       		.byte	0
+ 1075 0060 03       		.uleb128 0x3
+ 1076 0061 0E       		.uleb128 0xe
+ 1077 0062 3A       		.uleb128 0x3a
+ 1078 0063 0B       		.uleb128 0xb
+ 1079 0064 3B       		.uleb128 0x3b
+ 1080 0065 0B       		.uleb128 0xb
+ 1081 0066 49       		.uleb128 0x49
+ 1082 0067 13       		.uleb128 0x13
+ 1083 0068 02       		.uleb128 0x2
+ 1084 0069 18       		.uleb128 0x18
+ 1085 006a 00       		.byte	0
+ 1086 006b 00       		.byte	0
+ 1087 006c 08       		.uleb128 0x8
+ 1088 006d 34       		.uleb128 0x34
+ 1089 006e 00       		.byte	0
+ 1090 006f 03       		.uleb128 0x3
+ 1091 0070 0E       		.uleb128 0xe
+ 1092 0071 3A       		.uleb128 0x3a
+ 1093 0072 0B       		.uleb128 0xb
+ 1094 0073 3B       		.uleb128 0x3b
+ 1095 0074 0B       		.uleb128 0xb
+ 1096 0075 49       		.uleb128 0x49
+ 1097 0076 13       		.uleb128 0x13
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 23
+
+
+ 1098 0077 02       		.uleb128 0x2
+ 1099 0078 18       		.uleb128 0x18
+ 1100 0079 00       		.byte	0
+ 1101 007a 00       		.byte	0
+ 1102 007b 09       		.uleb128 0x9
+ 1103 007c 0F       		.uleb128 0xf
+ 1104 007d 00       		.byte	0
+ 1105 007e 0B       		.uleb128 0xb
+ 1106 007f 0B       		.uleb128 0xb
+ 1107 0080 49       		.uleb128 0x49
+ 1108 0081 13       		.uleb128 0x13
+ 1109 0082 00       		.byte	0
+ 1110 0083 00       		.byte	0
+ 1111 0084 0A       		.uleb128 0xa
+ 1112 0085 2E       		.uleb128 0x2e
+ 1113 0086 01       		.byte	0x1
+ 1114 0087 3F       		.uleb128 0x3f
+ 1115 0088 19       		.uleb128 0x19
+ 1116 0089 03       		.uleb128 0x3
+ 1117 008a 0E       		.uleb128 0xe
+ 1118 008b 3A       		.uleb128 0x3a
+ 1119 008c 0B       		.uleb128 0xb
+ 1120 008d 3B       		.uleb128 0x3b
+ 1121 008e 0B       		.uleb128 0xb
+ 1122 008f 27       		.uleb128 0x27
+ 1123 0090 19       		.uleb128 0x19
+ 1124 0091 49       		.uleb128 0x49
+ 1125 0092 13       		.uleb128 0x13
+ 1126 0093 11       		.uleb128 0x11
+ 1127 0094 01       		.uleb128 0x1
+ 1128 0095 12       		.uleb128 0x12
+ 1129 0096 06       		.uleb128 0x6
+ 1130 0097 40       		.uleb128 0x40
+ 1131 0098 18       		.uleb128 0x18
+ 1132 0099 9642     		.uleb128 0x2116
+ 1133 009b 19       		.uleb128 0x19
+ 1134 009c 01       		.uleb128 0x1
+ 1135 009d 13       		.uleb128 0x13
+ 1136 009e 00       		.byte	0
+ 1137 009f 00       		.byte	0
+ 1138 00a0 0B       		.uleb128 0xb
+ 1139 00a1 05       		.uleb128 0x5
+ 1140 00a2 00       		.byte	0
+ 1141 00a3 03       		.uleb128 0x3
+ 1142 00a4 08       		.uleb128 0x8
+ 1143 00a5 3A       		.uleb128 0x3a
+ 1144 00a6 0B       		.uleb128 0xb
+ 1145 00a7 3B       		.uleb128 0x3b
+ 1146 00a8 0B       		.uleb128 0xb
+ 1147 00a9 49       		.uleb128 0x49
+ 1148 00aa 13       		.uleb128 0x13
+ 1149 00ab 02       		.uleb128 0x2
+ 1150 00ac 18       		.uleb128 0x18
+ 1151 00ad 00       		.byte	0
+ 1152 00ae 00       		.byte	0
+ 1153 00af 0C       		.uleb128 0xc
+ 1154 00b0 34       		.uleb128 0x34
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 24
+
+
+ 1155 00b1 00       		.byte	0
+ 1156 00b2 03       		.uleb128 0x3
+ 1157 00b3 08       		.uleb128 0x8
+ 1158 00b4 3A       		.uleb128 0x3a
+ 1159 00b5 0B       		.uleb128 0xb
+ 1160 00b6 3B       		.uleb128 0x3b
+ 1161 00b7 0B       		.uleb128 0xb
+ 1162 00b8 49       		.uleb128 0x49
+ 1163 00b9 13       		.uleb128 0x13
+ 1164 00ba 02       		.uleb128 0x2
+ 1165 00bb 18       		.uleb128 0x18
+ 1166 00bc 00       		.byte	0
+ 1167 00bd 00       		.byte	0
+ 1168 00be 0D       		.uleb128 0xd
+ 1169 00bf 2E       		.uleb128 0x2e
+ 1170 00c0 01       		.byte	0x1
+ 1171 00c1 03       		.uleb128 0x3
+ 1172 00c2 0E       		.uleb128 0xe
+ 1173 00c3 3A       		.uleb128 0x3a
+ 1174 00c4 0B       		.uleb128 0xb
+ 1175 00c5 3B       		.uleb128 0x3b
+ 1176 00c6 0B       		.uleb128 0xb
+ 1177 00c7 27       		.uleb128 0x27
+ 1178 00c8 19       		.uleb128 0x19
+ 1179 00c9 49       		.uleb128 0x49
+ 1180 00ca 13       		.uleb128 0x13
+ 1181 00cb 11       		.uleb128 0x11
+ 1182 00cc 01       		.uleb128 0x1
+ 1183 00cd 12       		.uleb128 0x12
+ 1184 00ce 06       		.uleb128 0x6
+ 1185 00cf 40       		.uleb128 0x40
+ 1186 00d0 18       		.uleb128 0x18
+ 1187 00d1 9642     		.uleb128 0x2116
+ 1188 00d3 19       		.uleb128 0x19
+ 1189 00d4 01       		.uleb128 0x1
+ 1190 00d5 13       		.uleb128 0x13
+ 1191 00d6 00       		.byte	0
+ 1192 00d7 00       		.byte	0
+ 1193 00d8 0E       		.uleb128 0xe
+ 1194 00d9 34       		.uleb128 0x34
+ 1195 00da 00       		.byte	0
+ 1196 00db 03       		.uleb128 0x3
+ 1197 00dc 0E       		.uleb128 0xe
+ 1198 00dd 3A       		.uleb128 0x3a
+ 1199 00de 0B       		.uleb128 0xb
+ 1200 00df 3B       		.uleb128 0x3b
+ 1201 00e0 05       		.uleb128 0x5
+ 1202 00e1 49       		.uleb128 0x49
+ 1203 00e2 13       		.uleb128 0x13
+ 1204 00e3 3F       		.uleb128 0x3f
+ 1205 00e4 19       		.uleb128 0x19
+ 1206 00e5 3C       		.uleb128 0x3c
+ 1207 00e6 19       		.uleb128 0x19
+ 1208 00e7 00       		.byte	0
+ 1209 00e8 00       		.byte	0
+ 1210 00e9 0F       		.uleb128 0xf
+ 1211 00ea 35       		.uleb128 0x35
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 25
+
+
+ 1212 00eb 00       		.byte	0
+ 1213 00ec 49       		.uleb128 0x49
+ 1214 00ed 13       		.uleb128 0x13
+ 1215 00ee 00       		.byte	0
+ 1216 00ef 00       		.byte	0
+ 1217 00f0 00       		.byte	0
+ 1218              		.section	.debug_aranges,"",%progbits
+ 1219 0000 54000000 		.4byte	0x54
+ 1220 0004 0200     		.2byte	0x2
+ 1221 0006 00000000 		.4byte	.Ldebug_info0
+ 1222 000a 04       		.byte	0x4
+ 1223 000b 00       		.byte	0
+ 1224 000c 0000     		.2byte	0
+ 1225 000e 0000     		.2byte	0
+ 1226 0010 00000000 		.4byte	.LFB63
+ 1227 0014 64000000 		.4byte	.LFE63-.LFB63
+ 1228 0018 00000000 		.4byte	.LFB64
+ 1229 001c 58000000 		.4byte	.LFE64-.LFB64
+ 1230 0020 00000000 		.4byte	.LFB65
+ 1231 0024 4A000000 		.4byte	.LFE65-.LFB65
+ 1232 0028 00000000 		.4byte	.LFB66
+ 1233 002c 70000000 		.4byte	.LFE66-.LFB66
+ 1234 0030 00000000 		.4byte	.LFB67
+ 1235 0034 70000000 		.4byte	.LFE67-.LFB67
+ 1236 0038 00000000 		.4byte	.LFB68
+ 1237 003c 40000000 		.4byte	.LFE68-.LFB68
+ 1238 0040 00000000 		.4byte	.LFB69
+ 1239 0044 54000000 		.4byte	.LFE69-.LFB69
+ 1240 0048 00000000 		.4byte	.LFB70
+ 1241 004c 34000000 		.4byte	.LFE70-.LFB70
+ 1242 0050 00000000 		.4byte	0
+ 1243 0054 00000000 		.4byte	0
+ 1244              		.section	.debug_ranges,"",%progbits
+ 1245              	.Ldebug_ranges0:
+ 1246 0000 00000000 		.4byte	.LFB63
+ 1247 0004 64000000 		.4byte	.LFE63
+ 1248 0008 00000000 		.4byte	.LFB64
+ 1249 000c 58000000 		.4byte	.LFE64
+ 1250 0010 00000000 		.4byte	.LFB65
+ 1251 0014 4A000000 		.4byte	.LFE65
+ 1252 0018 00000000 		.4byte	.LFB66
+ 1253 001c 70000000 		.4byte	.LFE66
+ 1254 0020 00000000 		.4byte	.LFB67
+ 1255 0024 70000000 		.4byte	.LFE67
+ 1256 0028 00000000 		.4byte	.LFB68
+ 1257 002c 40000000 		.4byte	.LFE68
+ 1258 0030 00000000 		.4byte	.LFB69
+ 1259 0034 54000000 		.4byte	.LFE69
+ 1260 0038 00000000 		.4byte	.LFB70
+ 1261 003c 34000000 		.4byte	.LFE70
+ 1262 0040 00000000 		.4byte	0
+ 1263 0044 00000000 		.4byte	0
+ 1264              		.section	.debug_line,"",%progbits
+ 1265              	.Ldebug_line0:
+ 1266 0000 2D020000 		.section	.debug_str,"MS",%progbits,1
+ 1266      02005E01 
+ 1266      00000201 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 26
+
+
+ 1266      FB0E0D00 
+ 1266      01010101 
+ 1267              	.LASF35:
+ 1268 0000 72656164 		.ascii	"read_16_eeprom\000"
+ 1268      5F31365F 
+ 1268      65657072 
+ 1268      6F6D00
+ 1269              	.LASF28:
+ 1270 000f 706F7369 		.ascii	"position_index\000"
+ 1270      74696F6E 
+ 1270      5F696E64 
+ 1270      657800
+ 1271              	.LASF36:
+ 1272 001e 73746172 		.ascii	"starting_register\000"
+ 1272      74696E67 
+ 1272      5F726567 
+ 1272      69737465 
+ 1272      7200
+ 1273              	.LASF14:
+ 1274 0030 666C6F61 		.ascii	"float\000"
+ 1274      7400
+ 1275              	.LASF26:
+ 1276 0036 76616C75 		.ascii	"value\000"
+ 1276      6500
+ 1277              	.LASF9:
+ 1278 003c 5F5F696E 		.ascii	"__int32_t\000"
+ 1278      7433325F 
+ 1278      7400
+ 1279              	.LASF18:
+ 1280 0046 6E756D62 		.ascii	"number_of_sensors\000"
+ 1280      65725F6F 
+ 1280      665F7365 
+ 1280      6E736F72 
+ 1280      7300
+ 1281              	.LASF31:
+ 1282 0058 6D61785F 		.ascii	"max_index\000"
+ 1282      696E6465 
+ 1282      7800
+ 1283              	.LASF21:
+ 1284 0062 696E6974 		.ascii	"init_value\000"
+ 1284      5F76616C 
+ 1284      756500
+ 1285              	.LASF23:
+ 1286 006d 696E6974 		.ascii	"initialize_eeprom_logging\000"
+ 1286      69616C69 
+ 1286      7A655F65 
+ 1286      6570726F 
+ 1286      6D5F6C6F 
+ 1287              	.LASF38:
+ 1288 0087 72657475 		.ascii	"return_value\000"
+ 1288      726E5F76 
+ 1288      616C7565 
+ 1288      00
+ 1289              	.LASF20:
+ 1290 0094 7A65726F 		.ascii	"zero\000"
+ 1290      00
+ 1291              	.LASF40:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 27
+
+
+ 1292 0099 2E5C6362 		.ascii	".\\cb_measurement\\cb_logging.c\000"
+ 1292      5F6D6561 
+ 1292      73757265 
+ 1292      6D656E74 
+ 1292      5C63625F 
+ 1293              	.LASF41:
+ 1294 00b7 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 1294      73657273 
+ 1294      5C676C65 
+ 1294      6E6E5C4F 
+ 1294      6E654472 
+ 1295 00e4 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ 1295      55415254 
+ 1295      30312E63 
+ 1295      7964736E 
+ 1295      00
+ 1296              	.LASF5:
+ 1297 00f5 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1297      20756E73 
+ 1297      69676E65 
+ 1297      6420696E 
+ 1297      7400
+ 1298              	.LASF3:
+ 1299 0107 73686F72 		.ascii	"short unsigned int\000"
+ 1299      7420756E 
+ 1299      7369676E 
+ 1299      65642069 
+ 1299      6E7400
+ 1300              	.LASF32:
+ 1301 011a 77726974 		.ascii	"write_32_eeprom\000"
+ 1301      655F3332 
+ 1301      5F656570 
+ 1301      726F6D00 
+ 1302              	.LASF24:
+ 1303 012a 6C6F675F 		.ascii	"log_data\000"
+ 1303      64617461 
+ 1303      00
+ 1304              	.LASF44:
+ 1305 0133 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1305      52784275 
+ 1305      66666572 
+ 1305      00
+ 1306              	.LASF19:
+ 1307 0140 73616D70 		.ascii	"sample_time_interval\000"
+ 1307      6C655F74 
+ 1307      696D655F 
+ 1307      696E7465 
+ 1307      7276616C 
+ 1308              	.LASF39:
+ 1309 0155 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 1309      4320342E 
+ 1309      392E3320 
+ 1309      32303135 
+ 1309      30333033 
+ 1310 0188 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 1310      20726576 
+ 1310      6973696F 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 28
+
+
+ 1310      6E203232 
+ 1310      31323230 
+ 1311 01bb 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1311      66756E63 
+ 1311      74696F6E 
+ 1311      2D736563 
+ 1311      74696F6E 
+ 1312              	.LASF15:
+ 1313 01e3 646F7562 		.ascii	"double\000"
+ 1313      6C6500
+ 1314              	.LASF25:
+ 1315 01ea 73656E73 		.ascii	"sensor_position\000"
+ 1315      6F725F70 
+ 1315      6F736974 
+ 1315      696F6E00 
+ 1316              	.LASF12:
+ 1317 01fa 75696E74 		.ascii	"uint16\000"
+ 1317      313600
+ 1318              	.LASF13:
+ 1319 0201 75696E74 		.ascii	"uint32\000"
+ 1319      333200
+ 1320              	.LASF22:
+ 1321 0208 6D61785F 		.ascii	"max_log_number\000"
+ 1321      6C6F675F 
+ 1321      6E756D62 
+ 1321      657200
+ 1322              	.LASF29:
+ 1323 0217 61647661 		.ascii	"advance_index\000"
+ 1323      6E63655F 
+ 1323      696E6465 
+ 1323      7800
+ 1324              	.LASF8:
+ 1325 0225 756E7369 		.ascii	"unsigned int\000"
+ 1325      676E6564 
+ 1325      20696E74 
+ 1325      00
+ 1326              	.LASF7:
+ 1327 0232 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1327      206C6F6E 
+ 1327      6720756E 
+ 1327      7369676E 
+ 1327      65642069 
+ 1328              	.LASF30:
+ 1329 0249 6C6F675F 		.ascii	"log_index\000"
+ 1329      696E6465 
+ 1329      7800
+ 1330              	.LASF34:
+ 1331 0253 72656164 		.ascii	"read_32_eeprom\000"
+ 1331      5F33325F 
+ 1331      65657072 
+ 1331      6F6D00
+ 1332              	.LASF37:
+ 1333 0262 6E756D62 		.ascii	"number\000"
+ 1333      657200
+ 1334              	.LASF10:
+ 1335 0269 696E7433 		.ascii	"int32_t\000"
+ 1335      325F7400 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccq5UQ50.s 			page 29
+
+
+ 1336              	.LASF17:
+ 1337 0271 73697A65 		.ascii	"sizetype\000"
+ 1337      74797065 
+ 1337      00
+ 1338              	.LASF6:
+ 1339 027a 6C6F6E67 		.ascii	"long long int\000"
+ 1339      206C6F6E 
+ 1339      6720696E 
+ 1339      7400
+ 1340              	.LASF16:
+ 1341 0288 63686172 		.ascii	"char\000"
+ 1341      00
+ 1342              	.LASF2:
+ 1343 028d 73686F72 		.ascii	"short int\000"
+ 1343      7420696E 
+ 1343      7400
+ 1344              	.LASF1:
+ 1345 0297 756E7369 		.ascii	"unsigned char\000"
+ 1345      676E6564 
+ 1345      20636861 
+ 1345      7200
+ 1346              	.LASF11:
+ 1347 02a5 75696E74 		.ascii	"uint8\000"
+ 1347      3800
+ 1348              	.LASF27:
+ 1349 02ab 6C6F6767 		.ascii	"logging_index\000"
+ 1349      696E675F 
+ 1349      696E6465 
+ 1349      7800
+ 1350              	.LASF4:
+ 1351 02b9 6C6F6E67 		.ascii	"long int\000"
+ 1351      20696E74 
+ 1351      00
+ 1352              	.LASF43:
+ 1353 02c2 76616C69 		.ascii	"validate_eeprom\000"
+ 1353      64617465 
+ 1353      5F656570 
+ 1353      726F6D00 
+ 1354              	.LASF0:
+ 1355 02d2 7369676E 		.ascii	"signed char\000"
+ 1355      65642063 
+ 1355      68617200 
+ 1356              	.LASF42:
+ 1357 02de 6765745F 		.ascii	"get_modbus_eeprom_registers\000"
+ 1357      6D6F6462 
+ 1357      75735F65 
+ 1357      6570726F 
+ 1357      6D5F7265 
+ 1358              	.LASF33:
+ 1359 02fa 65657072 		.ascii	"eeprom_position\000"
+ 1359      6F6D5F70 
+ 1359      6F736974 
+ 1359      696F6E00 
+ 1360              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

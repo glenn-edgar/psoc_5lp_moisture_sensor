@@ -1,0 +1,6 @@
+C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\chain_flow\PSOC_5lp_moisture_sensor.cydsn\PSOC_5lp_moisture_sensor.cyprj|a4b53b33-cd22-46f3-a493-93d97338d273
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|b811b427-4cb3-45ec-950e-b4aa80cf72bc
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyReferenceLibrary\CyReferenceLibrary.cylib\CyReferenceLibrary.cyprj|7b7cad66-10d7-4338-bfe7-de2f9e5d84e9
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|ee6507a7-6915-4bfd-bc61-80372dead0df
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|628e49c1-3a46-4d9d-b576-3529c1326102
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|9dd10cb7-a4b3-434a-9ed9-628094180899

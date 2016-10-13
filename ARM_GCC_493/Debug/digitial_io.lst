@@ -1,0 +1,565 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccTaR5AS.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"digitial_io.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.read_board_switch,"ax",%progbits
+  19              		.align	2
+  20              		.global	read_board_switch
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	read_board_switch, %function
+  24              	read_board_switch:
+  25              	.LFB63:
+  26              		.file 1 ".\\utilities\\digitial_io.c"
+   1:.\utilities/digitial_io.c **** /*
+   2:.\utilities/digitial_io.c **** File: digital_io.c
+   3:.\utilities/digitial_io.c **** 
+   4:.\utilities/digitial_io.c **** Digital functions
+   5:.\utilities/digitial_io.c **** 
+   6:.\utilities/digitial_io.c **** */
+   7:.\utilities/digitial_io.c **** 
+   8:.\utilities/digitial_io.c ****     
+   9:.\utilities/digitial_io.c **** #include <device.h>
+  10:.\utilities/digitial_io.c ****  
+  11:.\utilities/digitial_io.c **** // Masks for debounced pins
+  12:.\utilities/digitial_io.c **** #define LOG_PIN    1
+  13:.\utilities/digitial_io.c **** #define BOARD_PIN  2
+  14:.\utilities/digitial_io.c **** #define ACTIVE_PIN 4
+  15:.\utilities/digitial_io.c **** 
+  16:.\utilities/digitial_io.c **** 
+  17:.\utilities/digitial_io.c **** 
+  18:.\utilities/digitial_io.c **** uint32 read_board_switch( void )
+  19:.\utilities/digitial_io.c **** {
+  27              		.loc 1 19 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31 0000 80B5     		push	{r7, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 7, -8
+  34              		.cfi_offset 14, -4
+  35 0002 00AF     		add	r7, sp, #0
+  36              		.cfi_def_cfa_register 7
+  20:.\utilities/digitial_io.c ****    return Status_Reg_1_Read()&BOARD_PIN; 
+  37              		.loc 1 20 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccTaR5AS.s 			page 2
+
+
+  38 0004 FFF7FEFF 		bl	Status_Reg_1_Read
+  39 0008 0346     		mov	r3, r0
+  40 000a 03F00203 		and	r3, r3, #2
+  21:.\utilities/digitial_io.c **** }
+  41              		.loc 1 21 0
+  42 000e 1846     		mov	r0, r3
+  43 0010 80BD     		pop	{r7, pc}
+  44              		.cfi_endproc
+  45              	.LFE63:
+  46              		.size	read_board_switch, .-read_board_switch
+  47 0012 00BF     		.section	.text.read_log_pin,"ax",%progbits
+  48              		.align	2
+  49              		.global	read_log_pin
+  50              		.thumb
+  51              		.thumb_func
+  52              		.type	read_log_pin, %function
+  53              	read_log_pin:
+  54              	.LFB64:
+  22:.\utilities/digitial_io.c **** 
+  23:.\utilities/digitial_io.c **** uint32 read_log_pin( void )
+  24:.\utilities/digitial_io.c **** {
+  55              		.loc 1 24 0
+  56              		.cfi_startproc
+  57              		@ args = 0, pretend = 0, frame = 0
+  58              		@ frame_needed = 1, uses_anonymous_args = 0
+  59 0000 80B5     		push	{r7, lr}
+  60              		.cfi_def_cfa_offset 8
+  61              		.cfi_offset 7, -8
+  62              		.cfi_offset 14, -4
+  63 0002 00AF     		add	r7, sp, #0
+  64              		.cfi_def_cfa_register 7
+  25:.\utilities/digitial_io.c ****     return Status_Reg_1_Read()&LOG_PIN;
+  65              		.loc 1 25 0
+  66 0004 FFF7FEFF 		bl	Status_Reg_1_Read
+  67 0008 0346     		mov	r3, r0
+  68 000a 03F00103 		and	r3, r3, #1
+  26:.\utilities/digitial_io.c **** }
+  69              		.loc 1 26 0
+  70 000e 1846     		mov	r0, r3
+  71 0010 80BD     		pop	{r7, pc}
+  72              		.cfi_endproc
+  73              	.LFE64:
+  74              		.size	read_log_pin, .-read_log_pin
+  75 0012 00BF     		.section	.text.read_active_pin,"ax",%progbits
+  76              		.align	2
+  77              		.global	read_active_pin
+  78              		.thumb
+  79              		.thumb_func
+  80              		.type	read_active_pin, %function
+  81              	read_active_pin:
+  82              	.LFB65:
+  27:.\utilities/digitial_io.c **** 
+  28:.\utilities/digitial_io.c **** 
+  29:.\utilities/digitial_io.c **** uint32 read_active_pin( void )
+  30:.\utilities/digitial_io.c **** {
+  83              		.loc 1 30 0
+  84              		.cfi_startproc
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccTaR5AS.s 			page 3
+
+
+  85              		@ args = 0, pretend = 0, frame = 0
+  86              		@ frame_needed = 1, uses_anonymous_args = 0
+  87 0000 80B5     		push	{r7, lr}
+  88              		.cfi_def_cfa_offset 8
+  89              		.cfi_offset 7, -8
+  90              		.cfi_offset 14, -4
+  91 0002 00AF     		add	r7, sp, #0
+  92              		.cfi_def_cfa_register 7
+  31:.\utilities/digitial_io.c ****     return Status_Reg_1_Read()&ACTIVE_PIN;
+  93              		.loc 1 31 0
+  94 0004 FFF7FEFF 		bl	Status_Reg_1_Read
+  95 0008 0346     		mov	r3, r0
+  96 000a 03F00403 		and	r3, r3, #4
+  32:.\utilities/digitial_io.c **** }
+  97              		.loc 1 32 0
+  98 000e 1846     		mov	r0, r3
+  99 0010 80BD     		pop	{r7, pc}
+ 100              		.cfi_endproc
+ 101              	.LFE65:
+ 102              		.size	read_active_pin, .-read_active_pin
+ 103 0012 00BF     		.text
+ 104              	.Letext0:
+ 105              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 106              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 107              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 108              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 109              		.section	.debug_info,"",%progbits
+ 110              	.Ldebug_info0:
+ 111 0000 F6000000 		.4byte	0xf6
+ 112 0004 0400     		.2byte	0x4
+ 113 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 114 000a 04       		.byte	0x4
+ 115 000b 01       		.uleb128 0x1
+ 116 000c 82000000 		.4byte	.LASF19
+ 117 0010 01       		.byte	0x1
+ 118 0011 8E010000 		.4byte	.LASF20
+ 119 0015 17010000 		.4byte	.LASF21
+ 120 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 121 001d 00000000 		.4byte	0
+ 122 0021 00000000 		.4byte	.Ldebug_line0
+ 123 0025 02       		.uleb128 0x2
+ 124 0026 01       		.byte	0x1
+ 125 0027 06       		.byte	0x6
+ 126 0028 62010000 		.4byte	.LASF0
+ 127 002c 02       		.uleb128 0x2
+ 128 002d 01       		.byte	0x1
+ 129 002e 08       		.byte	0x8
+ 130 002f 66000000 		.4byte	.LASF1
+ 131 0033 02       		.uleb128 0x2
+ 132 0034 02       		.byte	0x2
+ 133 0035 05       		.byte	0x5
+ 134 0036 A8010000 		.4byte	.LASF2
+ 135 003a 02       		.uleb128 0x2
+ 136 003b 02       		.byte	0x2
+ 137 003c 07       		.byte	0x7
+ 138 003d 53000000 		.4byte	.LASF3
+ 139 0041 03       		.uleb128 0x3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccTaR5AS.s 			page 4
+
+
+ 140 0042 6E010000 		.4byte	.LASF9
+ 141 0046 02       		.byte	0x2
+ 142 0047 3F       		.byte	0x3f
+ 143 0048 4C000000 		.4byte	0x4c
+ 144 004c 02       		.uleb128 0x2
+ 145 004d 04       		.byte	0x4
+ 146 004e 05       		.byte	0x5
+ 147 004f 79000000 		.4byte	.LASF4
+ 148 0053 02       		.uleb128 0x2
+ 149 0054 04       		.byte	0x4
+ 150 0055 07       		.byte	0x7
+ 151 0056 2A000000 		.4byte	.LASF5
+ 152 005a 02       		.uleb128 0x2
+ 153 005b 08       		.byte	0x8
+ 154 005c 05       		.byte	0x5
+ 155 005d 00000000 		.4byte	.LASF6
+ 156 0061 02       		.uleb128 0x2
+ 157 0062 08       		.byte	0x8
+ 158 0063 07       		.byte	0x7
+ 159 0064 3C000000 		.4byte	.LASF7
+ 160 0068 04       		.uleb128 0x4
+ 161 0069 04       		.byte	0x4
+ 162 006a 05       		.byte	0x5
+ 163 006b 696E7400 		.ascii	"int\000"
+ 164 006f 02       		.uleb128 0x2
+ 165 0070 04       		.byte	0x4
+ 166 0071 07       		.byte	0x7
+ 167 0072 15000000 		.4byte	.LASF8
+ 168 0076 03       		.uleb128 0x3
+ 169 0077 22000000 		.4byte	.LASF10
+ 170 007b 03       		.byte	0x3
+ 171 007c 2C       		.byte	0x2c
+ 172 007d 41000000 		.4byte	0x41
+ 173 0081 05       		.uleb128 0x5
+ 174 0082 0E000000 		.4byte	.LASF11
+ 175 0086 04       		.byte	0x4
+ 176 0087 9401     		.2byte	0x194
+ 177 0089 53000000 		.4byte	0x53
+ 178 008d 02       		.uleb128 0x2
+ 179 008e 04       		.byte	0x4
+ 180 008f 04       		.byte	0x4
+ 181 0090 88010000 		.4byte	.LASF12
+ 182 0094 02       		.uleb128 0x2
+ 183 0095 08       		.byte	0x8
+ 184 0096 04       		.byte	0x4
+ 185 0097 10010000 		.4byte	.LASF13
+ 186 009b 02       		.uleb128 0x2
+ 187 009c 01       		.byte	0x1
+ 188 009d 08       		.byte	0x8
+ 189 009e 74000000 		.4byte	.LASF14
+ 190 00a2 02       		.uleb128 0x2
+ 191 00a3 04       		.byte	0x4
+ 192 00a4 07       		.byte	0x7
+ 193 00a5 D1010000 		.4byte	.LASF15
+ 194 00a9 06       		.uleb128 0x6
+ 195 00aa BF010000 		.4byte	.LASF16
+ 196 00ae 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccTaR5AS.s 			page 5
+
+
+ 197 00af 12       		.byte	0x12
+ 198 00b0 81000000 		.4byte	0x81
+ 199 00b4 00000000 		.4byte	.LFB63
+ 200 00b8 12000000 		.4byte	.LFE63-.LFB63
+ 201 00bc 01       		.uleb128 0x1
+ 202 00bd 9C       		.byte	0x9c
+ 203 00be 06       		.uleb128 0x6
+ 204 00bf B2010000 		.4byte	.LASF17
+ 205 00c3 01       		.byte	0x1
+ 206 00c4 17       		.byte	0x17
+ 207 00c5 81000000 		.4byte	0x81
+ 208 00c9 00000000 		.4byte	.LFB64
+ 209 00cd 12000000 		.4byte	.LFE64-.LFB64
+ 210 00d1 01       		.uleb128 0x1
+ 211 00d2 9C       		.byte	0x9c
+ 212 00d3 06       		.uleb128 0x6
+ 213 00d4 78010000 		.4byte	.LASF18
+ 214 00d8 01       		.byte	0x1
+ 215 00d9 1D       		.byte	0x1d
+ 216 00da 81000000 		.4byte	0x81
+ 217 00de 00000000 		.4byte	.LFB65
+ 218 00e2 12000000 		.4byte	.LFE65-.LFB65
+ 219 00e6 01       		.uleb128 0x1
+ 220 00e7 9C       		.byte	0x9c
+ 221 00e8 07       		.uleb128 0x7
+ 222 00e9 55010000 		.4byte	.LASF22
+ 223 00ed 05       		.byte	0x5
+ 224 00ee 9606     		.2byte	0x696
+ 225 00f0 F4000000 		.4byte	0xf4
+ 226 00f4 08       		.uleb128 0x8
+ 227 00f5 76000000 		.4byte	0x76
+ 228 00f9 00       		.byte	0
+ 229              		.section	.debug_abbrev,"",%progbits
+ 230              	.Ldebug_abbrev0:
+ 231 0000 01       		.uleb128 0x1
+ 232 0001 11       		.uleb128 0x11
+ 233 0002 01       		.byte	0x1
+ 234 0003 25       		.uleb128 0x25
+ 235 0004 0E       		.uleb128 0xe
+ 236 0005 13       		.uleb128 0x13
+ 237 0006 0B       		.uleb128 0xb
+ 238 0007 03       		.uleb128 0x3
+ 239 0008 0E       		.uleb128 0xe
+ 240 0009 1B       		.uleb128 0x1b
+ 241 000a 0E       		.uleb128 0xe
+ 242 000b 55       		.uleb128 0x55
+ 243 000c 17       		.uleb128 0x17
+ 244 000d 11       		.uleb128 0x11
+ 245 000e 01       		.uleb128 0x1
+ 246 000f 10       		.uleb128 0x10
+ 247 0010 17       		.uleb128 0x17
+ 248 0011 00       		.byte	0
+ 249 0012 00       		.byte	0
+ 250 0013 02       		.uleb128 0x2
+ 251 0014 24       		.uleb128 0x24
+ 252 0015 00       		.byte	0
+ 253 0016 0B       		.uleb128 0xb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccTaR5AS.s 			page 6
+
+
+ 254 0017 0B       		.uleb128 0xb
+ 255 0018 3E       		.uleb128 0x3e
+ 256 0019 0B       		.uleb128 0xb
+ 257 001a 03       		.uleb128 0x3
+ 258 001b 0E       		.uleb128 0xe
+ 259 001c 00       		.byte	0
+ 260 001d 00       		.byte	0
+ 261 001e 03       		.uleb128 0x3
+ 262 001f 16       		.uleb128 0x16
+ 263 0020 00       		.byte	0
+ 264 0021 03       		.uleb128 0x3
+ 265 0022 0E       		.uleb128 0xe
+ 266 0023 3A       		.uleb128 0x3a
+ 267 0024 0B       		.uleb128 0xb
+ 268 0025 3B       		.uleb128 0x3b
+ 269 0026 0B       		.uleb128 0xb
+ 270 0027 49       		.uleb128 0x49
+ 271 0028 13       		.uleb128 0x13
+ 272 0029 00       		.byte	0
+ 273 002a 00       		.byte	0
+ 274 002b 04       		.uleb128 0x4
+ 275 002c 24       		.uleb128 0x24
+ 276 002d 00       		.byte	0
+ 277 002e 0B       		.uleb128 0xb
+ 278 002f 0B       		.uleb128 0xb
+ 279 0030 3E       		.uleb128 0x3e
+ 280 0031 0B       		.uleb128 0xb
+ 281 0032 03       		.uleb128 0x3
+ 282 0033 08       		.uleb128 0x8
+ 283 0034 00       		.byte	0
+ 284 0035 00       		.byte	0
+ 285 0036 05       		.uleb128 0x5
+ 286 0037 16       		.uleb128 0x16
+ 287 0038 00       		.byte	0
+ 288 0039 03       		.uleb128 0x3
+ 289 003a 0E       		.uleb128 0xe
+ 290 003b 3A       		.uleb128 0x3a
+ 291 003c 0B       		.uleb128 0xb
+ 292 003d 3B       		.uleb128 0x3b
+ 293 003e 05       		.uleb128 0x5
+ 294 003f 49       		.uleb128 0x49
+ 295 0040 13       		.uleb128 0x13
+ 296 0041 00       		.byte	0
+ 297 0042 00       		.byte	0
+ 298 0043 06       		.uleb128 0x6
+ 299 0044 2E       		.uleb128 0x2e
+ 300 0045 00       		.byte	0
+ 301 0046 3F       		.uleb128 0x3f
+ 302 0047 19       		.uleb128 0x19
+ 303 0048 03       		.uleb128 0x3
+ 304 0049 0E       		.uleb128 0xe
+ 305 004a 3A       		.uleb128 0x3a
+ 306 004b 0B       		.uleb128 0xb
+ 307 004c 3B       		.uleb128 0x3b
+ 308 004d 0B       		.uleb128 0xb
+ 309 004e 27       		.uleb128 0x27
+ 310 004f 19       		.uleb128 0x19
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccTaR5AS.s 			page 7
+
+
+ 311 0050 49       		.uleb128 0x49
+ 312 0051 13       		.uleb128 0x13
+ 313 0052 11       		.uleb128 0x11
+ 314 0053 01       		.uleb128 0x1
+ 315 0054 12       		.uleb128 0x12
+ 316 0055 06       		.uleb128 0x6
+ 317 0056 40       		.uleb128 0x40
+ 318 0057 18       		.uleb128 0x18
+ 319 0058 9642     		.uleb128 0x2116
+ 320 005a 19       		.uleb128 0x19
+ 321 005b 00       		.byte	0
+ 322 005c 00       		.byte	0
+ 323 005d 07       		.uleb128 0x7
+ 324 005e 34       		.uleb128 0x34
+ 325 005f 00       		.byte	0
+ 326 0060 03       		.uleb128 0x3
+ 327 0061 0E       		.uleb128 0xe
+ 328 0062 3A       		.uleb128 0x3a
+ 329 0063 0B       		.uleb128 0xb
+ 330 0064 3B       		.uleb128 0x3b
+ 331 0065 05       		.uleb128 0x5
+ 332 0066 49       		.uleb128 0x49
+ 333 0067 13       		.uleb128 0x13
+ 334 0068 3F       		.uleb128 0x3f
+ 335 0069 19       		.uleb128 0x19
+ 336 006a 3C       		.uleb128 0x3c
+ 337 006b 19       		.uleb128 0x19
+ 338 006c 00       		.byte	0
+ 339 006d 00       		.byte	0
+ 340 006e 08       		.uleb128 0x8
+ 341 006f 35       		.uleb128 0x35
+ 342 0070 00       		.byte	0
+ 343 0071 49       		.uleb128 0x49
+ 344 0072 13       		.uleb128 0x13
+ 345 0073 00       		.byte	0
+ 346 0074 00       		.byte	0
+ 347 0075 00       		.byte	0
+ 348              		.section	.debug_aranges,"",%progbits
+ 349 0000 2C000000 		.4byte	0x2c
+ 350 0004 0200     		.2byte	0x2
+ 351 0006 00000000 		.4byte	.Ldebug_info0
+ 352 000a 04       		.byte	0x4
+ 353 000b 00       		.byte	0
+ 354 000c 0000     		.2byte	0
+ 355 000e 0000     		.2byte	0
+ 356 0010 00000000 		.4byte	.LFB63
+ 357 0014 12000000 		.4byte	.LFE63-.LFB63
+ 358 0018 00000000 		.4byte	.LFB64
+ 359 001c 12000000 		.4byte	.LFE64-.LFB64
+ 360 0020 00000000 		.4byte	.LFB65
+ 361 0024 12000000 		.4byte	.LFE65-.LFB65
+ 362 0028 00000000 		.4byte	0
+ 363 002c 00000000 		.4byte	0
+ 364              		.section	.debug_ranges,"",%progbits
+ 365              	.Ldebug_ranges0:
+ 366 0000 00000000 		.4byte	.LFB63
+ 367 0004 12000000 		.4byte	.LFE63
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccTaR5AS.s 			page 8
+
+
+ 368 0008 00000000 		.4byte	.LFB64
+ 369 000c 12000000 		.4byte	.LFE64
+ 370 0010 00000000 		.4byte	.LFB65
+ 371 0014 12000000 		.4byte	.LFE65
+ 372 0018 00000000 		.4byte	0
+ 373 001c 00000000 		.4byte	0
+ 374              		.section	.debug_line,"",%progbits
+ 375              	.Ldebug_line0:
+ 376 0000 93010000 		.section	.debug_str,"MS",%progbits,1
+ 376      02005A01 
+ 376      00000201 
+ 376      FB0E0D00 
+ 376      01010101 
+ 377              	.LASF6:
+ 378 0000 6C6F6E67 		.ascii	"long long int\000"
+ 378      206C6F6E 
+ 378      6720696E 
+ 378      7400
+ 379              	.LASF11:
+ 380 000e 75696E74 		.ascii	"uint32\000"
+ 380      333200
+ 381              	.LASF8:
+ 382 0015 756E7369 		.ascii	"unsigned int\000"
+ 382      676E6564 
+ 382      20696E74 
+ 382      00
+ 383              	.LASF10:
+ 384 0022 696E7433 		.ascii	"int32_t\000"
+ 384      325F7400 
+ 385              	.LASF5:
+ 386 002a 6C6F6E67 		.ascii	"long unsigned int\000"
+ 386      20756E73 
+ 386      69676E65 
+ 386      6420696E 
+ 386      7400
+ 387              	.LASF7:
+ 388 003c 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 388      206C6F6E 
+ 388      6720756E 
+ 388      7369676E 
+ 388      65642069 
+ 389              	.LASF3:
+ 390 0053 73686F72 		.ascii	"short unsigned int\000"
+ 390      7420756E 
+ 390      7369676E 
+ 390      65642069 
+ 390      6E7400
+ 391              	.LASF1:
+ 392 0066 756E7369 		.ascii	"unsigned char\000"
+ 392      676E6564 
+ 392      20636861 
+ 392      7200
+ 393              	.LASF14:
+ 394 0074 63686172 		.ascii	"char\000"
+ 394      00
+ 395              	.LASF4:
+ 396 0079 6C6F6E67 		.ascii	"long int\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccTaR5AS.s 			page 9
+
+
+ 396      20696E74 
+ 396      00
+ 397              	.LASF19:
+ 398 0082 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 398      4320342E 
+ 398      392E3320 
+ 398      32303135 
+ 398      30333033 
+ 399 00b5 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 399      20726576 
+ 399      6973696F 
+ 399      6E203232 
+ 399      31323230 
+ 400 00e8 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 400      66756E63 
+ 400      74696F6E 
+ 400      2D736563 
+ 400      74696F6E 
+ 401              	.LASF13:
+ 402 0110 646F7562 		.ascii	"double\000"
+ 402      6C6500
+ 403              	.LASF21:
+ 404 0117 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 404      73657273 
+ 404      5C676C65 
+ 404      6E6E5C4F 
+ 404      6E654472 
+ 405 0144 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ 405      55415254 
+ 405      30312E63 
+ 405      7964736E 
+ 405      00
+ 406              	.LASF22:
+ 407 0155 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 407      52784275 
+ 407      66666572 
+ 407      00
+ 408              	.LASF0:
+ 409 0162 7369676E 		.ascii	"signed char\000"
+ 409      65642063 
+ 409      68617200 
+ 410              	.LASF9:
+ 411 016e 5F5F696E 		.ascii	"__int32_t\000"
+ 411      7433325F 
+ 411      7400
+ 412              	.LASF18:
+ 413 0178 72656164 		.ascii	"read_active_pin\000"
+ 413      5F616374 
+ 413      6976655F 
+ 413      70696E00 
+ 414              	.LASF12:
+ 415 0188 666C6F61 		.ascii	"float\000"
+ 415      7400
+ 416              	.LASF20:
+ 417 018e 2E5C7574 		.ascii	".\\utilities\\digitial_io.c\000"
+ 417      696C6974 
+ 417      6965735C 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccTaR5AS.s 			page 10
+
+
+ 417      64696769 
+ 417      7469616C 
+ 418              	.LASF2:
+ 419 01a8 73686F72 		.ascii	"short int\000"
+ 419      7420696E 
+ 419      7400
+ 420              	.LASF17:
+ 421 01b2 72656164 		.ascii	"read_log_pin\000"
+ 421      5F6C6F67 
+ 421      5F70696E 
+ 421      00
+ 422              	.LASF16:
+ 423 01bf 72656164 		.ascii	"read_board_switch\000"
+ 423      5F626F61 
+ 423      72645F73 
+ 423      77697463 
+ 423      6800
+ 424              	.LASF15:
+ 425 01d1 73697A65 		.ascii	"sizetype\000"
+ 425      74797065 
+ 425      00
+ 426              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

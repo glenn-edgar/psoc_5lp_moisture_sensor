@@ -10,6 +10,24 @@
 
 #include "cf_chain_flow_support.h"
 #include "cf_external_functions.h"
+#include <device.h>
+/*
+--- These functions are defined in cf_external_functions.h as they are called directly by chain flow blocks
+    
+    
+    
+ int set_normal_modbus_address(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+{
 
+}
+
+int set_commissiong_address(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+   
+    
+*/    
+// called by status bit processing
+int process_rx_modbus_rtu_message(void );   
     
 #endif 

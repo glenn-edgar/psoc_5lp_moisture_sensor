@@ -1,0 +1,3082 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"process_type_16_message.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.swap_16,"ax",%progbits
+  19              		.align	2
+  20              		.thumb
+  21              		.thumb_func
+  22              		.type	swap_16, %function
+  23              	swap_16:
+  24              	.LFB65:
+  25              		.file 1 ".\\rtu_modbus\\modbus_utilities.h"
+   1:.\rtu_modbus/modbus_utilities.h **** /*
+   2:.\rtu_modbus/modbus_utilities.h **** **
+   3:.\rtu_modbus/modbus_utilities.h **** ** File: modbus_utilities.h
+   4:.\rtu_modbus/modbus_utilities.h **** ** File for shuffling bytes for network ordering
+   5:.\rtu_modbus/modbus_utilities.h **** **
+   6:.\rtu_modbus/modbus_utilities.h **** **
+   7:.\rtu_modbus/modbus_utilities.h **** **
+   8:.\rtu_modbus/modbus_utilities.h **** */
+   9:.\rtu_modbus/modbus_utilities.h **** 
+  10:.\rtu_modbus/modbus_utilities.h **** #ifndef _MODBUS_UTILITES_H_
+  11:.\rtu_modbus/modbus_utilities.h **** #define _MODBUS_UTILITES_H_
+  12:.\rtu_modbus/modbus_utilities.h **** 
+  13:.\rtu_modbus/modbus_utilities.h **** #include <device.h>
+  14:.\rtu_modbus/modbus_utilities.h ****   
+  15:.\rtu_modbus/modbus_utilities.h **** 
+  16:.\rtu_modbus/modbus_utilities.h **** 
+  17:.\rtu_modbus/modbus_utilities.h ****     
+  18:.\rtu_modbus/modbus_utilities.h **** static inline void swap_16( uint8 *input )
+  19:.\rtu_modbus/modbus_utilities.h **** {
+  26              		.loc 1 19 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 16
+  29              		@ frame_needed = 1, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31 0000 80B4     		push	{r7}
+  32              		.cfi_def_cfa_offset 4
+  33              		.cfi_offset 7, -4
+  34 0002 85B0     		sub	sp, sp, #20
+  35              		.cfi_def_cfa_offset 24
+  36 0004 00AF     		add	r7, sp, #0
+  37              		.cfi_def_cfa_register 7
+  38 0006 7860     		str	r0, [r7, #4]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 2
+
+
+  20:.\rtu_modbus/modbus_utilities.h ****     
+  21:.\rtu_modbus/modbus_utilities.h ****     uint16 *temp_ptr;
+  22:.\rtu_modbus/modbus_utilities.h ****     uint16 temp;
+  23:.\rtu_modbus/modbus_utilities.h ****     
+  24:.\rtu_modbus/modbus_utilities.h ****     temp_ptr = (uint16*)input;
+  39              		.loc 1 24 0
+  40 0008 7B68     		ldr	r3, [r7, #4]
+  41 000a FB60     		str	r3, [r7, #12]
+  25:.\rtu_modbus/modbus_utilities.h ****     temp = *temp_ptr;   
+  42              		.loc 1 25 0
+  43 000c FB68     		ldr	r3, [r7, #12]
+  44 000e 1B88     		ldrh	r3, [r3]	@ movhi
+  45 0010 7B81     		strh	r3, [r7, #10]	@ movhi
+  26:.\rtu_modbus/modbus_utilities.h ****     temp =  ((temp&0xff)<<8)|((temp>>8)&0xff);
+  46              		.loc 1 26 0
+  47 0012 7B89     		ldrh	r3, [r7, #10]
+  48 0014 1B02     		lsls	r3, r3, #8
+  49 0016 9AB2     		uxth	r2, r3
+  50 0018 7B89     		ldrh	r3, [r7, #10]
+  51 001a 1B0A     		lsrs	r3, r3, #8
+  52 001c 9BB2     		uxth	r3, r3
+  53 001e 9BB2     		uxth	r3, r3
+  54 0020 1343     		orrs	r3, r3, r2
+  55 0022 9BB2     		uxth	r3, r3
+  56 0024 7B81     		strh	r3, [r7, #10]	@ movhi
+  27:.\rtu_modbus/modbus_utilities.h ****     *temp_ptr = temp;
+  57              		.loc 1 27 0
+  58 0026 FB68     		ldr	r3, [r7, #12]
+  59 0028 7A89     		ldrh	r2, [r7, #10]	@ movhi
+  60 002a 1A80     		strh	r2, [r3]	@ movhi
+  28:.\rtu_modbus/modbus_utilities.h ****       
+  29:.\rtu_modbus/modbus_utilities.h ****    
+  30:.\rtu_modbus/modbus_utilities.h **** }
+  61              		.loc 1 30 0
+  62 002c 1437     		adds	r7, r7, #20
+  63              		.cfi_def_cfa_offset 4
+  64 002e BD46     		mov	sp, r7
+  65              		.cfi_def_cfa_register 13
+  66              		@ sp needed
+  67 0030 5DF8047B 		ldr	r7, [sp], #4
+  68              		.cfi_restore 7
+  69              		.cfi_def_cfa_offset 0
+  70 0034 7047     		bx	lr
+  71              		.cfi_endproc
+  72              	.LFE65:
+  73              		.size	swap_16, .-swap_16
+  74 0036 00BF     		.section	.text.swap_32,"ax",%progbits
+  75              		.align	2
+  76              		.thumb
+  77              		.thumb_func
+  78              		.type	swap_32, %function
+  79              	swap_32:
+  80              	.LFB66:
+  31:.\rtu_modbus/modbus_utilities.h **** 
+  32:.\rtu_modbus/modbus_utilities.h **** static inline void swap_32( uint8 *input )
+  33:.\rtu_modbus/modbus_utilities.h **** {
+  81              		.loc 1 33 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 3
+
+
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 16
+  84              		@ frame_needed = 1, uses_anonymous_args = 0
+  85              		@ link register save eliminated.
+  86 0000 80B4     		push	{r7}
+  87              		.cfi_def_cfa_offset 4
+  88              		.cfi_offset 7, -4
+  89 0002 85B0     		sub	sp, sp, #20
+  90              		.cfi_def_cfa_offset 24
+  91 0004 00AF     		add	r7, sp, #0
+  92              		.cfi_def_cfa_register 7
+  93 0006 7860     		str	r0, [r7, #4]
+  34:.\rtu_modbus/modbus_utilities.h ****     uint32 *temp_ptr;
+  35:.\rtu_modbus/modbus_utilities.h ****     uint32 temp;
+  36:.\rtu_modbus/modbus_utilities.h ****     
+  37:.\rtu_modbus/modbus_utilities.h ****     temp_ptr = (uint32*)input;
+  94              		.loc 1 37 0
+  95 0008 7B68     		ldr	r3, [r7, #4]
+  96 000a FB60     		str	r3, [r7, #12]
+  38:.\rtu_modbus/modbus_utilities.h ****     temp = *temp_ptr;   
+  97              		.loc 1 38 0
+  98 000c FB68     		ldr	r3, [r7, #12]
+  99 000e 1B68     		ldr	r3, [r3]
+ 100 0010 BB60     		str	r3, [r7, #8]
+  39:.\rtu_modbus/modbus_utilities.h ****   
+  40:.\rtu_modbus/modbus_utilities.h ****     temp =  ((temp&0xff000000)>>24)|((temp&0x00ff0000)>>8)|((temp&0xff00)<<8)|((temp&0xff)<<24 );
+ 101              		.loc 1 40 0
+ 102 0012 BB68     		ldr	r3, [r7, #8]
+ 103 0014 1A0E     		lsrs	r2, r3, #24
+ 104 0016 BB68     		ldr	r3, [r7, #8]
+ 105 0018 03F47F03 		and	r3, r3, #16711680
+ 106 001c 1B0A     		lsrs	r3, r3, #8
+ 107 001e 1A43     		orrs	r2, r2, r3
+ 108 0020 BB68     		ldr	r3, [r7, #8]
+ 109 0022 03F47F43 		and	r3, r3, #65280
+ 110 0026 1B02     		lsls	r3, r3, #8
+ 111 0028 1A43     		orrs	r2, r2, r3
+ 112 002a BB68     		ldr	r3, [r7, #8]
+ 113 002c 1B06     		lsls	r3, r3, #24
+ 114 002e 1343     		orrs	r3, r3, r2
+ 115 0030 BB60     		str	r3, [r7, #8]
+  41:.\rtu_modbus/modbus_utilities.h ****      *temp_ptr = temp;
+ 116              		.loc 1 41 0
+ 117 0032 FB68     		ldr	r3, [r7, #12]
+ 118 0034 BA68     		ldr	r2, [r7, #8]
+ 119 0036 1A60     		str	r2, [r3]
+  42:.\rtu_modbus/modbus_utilities.h **** }
+ 120              		.loc 1 42 0
+ 121 0038 1437     		adds	r7, r7, #20
+ 122              		.cfi_def_cfa_offset 4
+ 123 003a BD46     		mov	sp, r7
+ 124              		.cfi_def_cfa_register 13
+ 125              		@ sp needed
+ 126 003c 5DF8047B 		ldr	r7, [sp], #4
+ 127              		.cfi_restore 7
+ 128              		.cfi_def_cfa_offset 0
+ 129 0040 7047     		bx	lr
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 4
+
+
+ 130              		.cfi_endproc
+ 131              	.LFE66:
+ 132              		.size	swap_32, .-swap_32
+ 133 0042 00BF     		.section	.text.clear_watch_dog_flags,"ax",%progbits
+ 134              		.align	2
+ 135              		.thumb
+ 136              		.thumb_func
+ 137              		.type	clear_watch_dog_flags, %function
+ 138              	clear_watch_dog_flags:
+ 139              	.LFB67:
+ 140              		.file 2 ".\\rtu_modbus\\process_type_16_message.c"
+   1:.\rtu_modbus/process_type_16_message.c **** /*
+   2:.\rtu_modbus/process_type_16_message.c **** **
+   3:.\rtu_modbus/process_type_16_message.c **** ** File: process_type_16_message.c
+   4:.\rtu_modbus/process_type_16_message.c **** **
+   5:.\rtu_modbus/process_type_16_message.c **** **
+   6:.\rtu_modbus/process_type_16_message.c **** Query
+   7:.\rtu_modbus/process_type_16_message.c **** Slave Address 11
+   8:.\rtu_modbus/process_type_16_message.c **** Function 10
+   9:.\rtu_modbus/process_type_16_message.c **** Starting Address Hi 00
+  10:.\rtu_modbus/process_type_16_message.c **** Starting Address Lo 01
+  11:.\rtu_modbus/process_type_16_message.c **** No. of Registers Hi 00
+  12:.\rtu_modbus/process_type_16_message.c **** No. of Registers Lo 02
+  13:.\rtu_modbus/process_type_16_message.c **** Byte Count 04
+  14:.\rtu_modbus/process_type_16_message.c **** Data Hi 00
+  15:.\rtu_modbus/process_type_16_message.c **** Data Lo 0A
+  16:.\rtu_modbus/process_type_16_message.c **** Data Hi 01
+  17:.\rtu_modbus/process_type_16_message.c **** Data Lo 02
+  18:.\rtu_modbus/process_type_16_message.c **** Error Check (LRC or CRC) ––    
+  19:.\rtu_modbus/process_type_16_message.c ****     
+  20:.\rtu_modbus/process_type_16_message.c **** Response
+  21:.\rtu_modbus/process_type_16_message.c **** Slave Address 11
+  22:.\rtu_modbus/process_type_16_message.c **** Function 10
+  23:.\rtu_modbus/process_type_16_message.c **** Starting Address Hi 00
+  24:.\rtu_modbus/process_type_16_message.c **** Starting Address Lo 01
+  25:.\rtu_modbus/process_type_16_message.c **** No. of Registers Hi 00
+  26:.\rtu_modbus/process_type_16_message.c **** No. of Registers Lo 02
+  27:.\rtu_modbus/process_type_16_message.c **** Error Check (LRC or CRC) ––    
+  28:.\rtu_modbus/process_type_16_message.c ****     
+  29:.\rtu_modbus/process_type_16_message.c **** 
+  30:.\rtu_modbus/process_type_16_message.c **** 
+  31:.\rtu_modbus/process_type_16_message.c **** 
+  32:.\rtu_modbus/process_type_16_message.c **** 
+  33:.\rtu_modbus/process_type_16_message.c **** **
+  34:.\rtu_modbus/process_type_16_message.c **** **
+  35:.\rtu_modbus/process_type_16_message.c **** */
+  36:.\rtu_modbus/process_type_16_message.c **** 
+  37:.\rtu_modbus/process_type_16_message.c **** 
+  38:.\rtu_modbus/process_type_16_message.c **** 
+  39:.\rtu_modbus/process_type_16_message.c **** 
+  40:.\rtu_modbus/process_type_16_message.c **** #include <device.h>
+  41:.\rtu_modbus/process_type_16_message.c **** #include "process_modbus_message.h"
+  42:.\rtu_modbus/process_type_16_message.c **** #include "process_type_16_message.h" 
+  43:.\rtu_modbus/process_type_16_message.c **** #include "modbus_interface_functions.h"
+  44:.\rtu_modbus/process_type_16_message.c **** #include "modbus_utilities.h"
+  45:.\rtu_modbus/process_type_16_message.c **** #include "cb_logging.h"
+  46:.\rtu_modbus/process_type_16_message.c **** 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 5
+
+
+  47:.\rtu_modbus/process_type_16_message.c **** #include "cf_events.h"
+  48:.\rtu_modbus/process_type_16_message.c **** 
+  49:.\rtu_modbus/process_type_16_message.c **** #define SWAP_16 0
+  50:.\rtu_modbus/process_type_16_message.c **** #define SWAP_32 1
+  51:.\rtu_modbus/process_type_16_message.c **** 
+  52:.\rtu_modbus/process_type_16_message.c **** extern void set_reset_flag( void );
+  53:.\rtu_modbus/process_type_16_message.c **** 
+  54:.\rtu_modbus/process_type_16_message.c **** typedef uint16 (*FN_16)( uint8 *buffer );
+  55:.\rtu_modbus/process_type_16_message.c **** 
+  56:.\rtu_modbus/process_type_16_message.c **** typedef struct
+  57:.\rtu_modbus/process_type_16_message.c **** {
+  58:.\rtu_modbus/process_type_16_message.c ****     unsigned start_register;
+  59:.\rtu_modbus/process_type_16_message.c ****     unsigned register_count;
+  60:.\rtu_modbus/process_type_16_message.c ****     unsigned swap_type;
+  61:.\rtu_modbus/process_type_16_message.c ****     FN_16   access;
+  62:.\rtu_modbus/process_type_16_message.c ****     
+  63:.\rtu_modbus/process_type_16_message.c **** }TYPE_16_STRUCT;      
+  64:.\rtu_modbus/process_type_16_message.c **** 
+  65:.\rtu_modbus/process_type_16_message.c **** 
+  66:.\rtu_modbus/process_type_16_message.c **** static uint16 clear_watch_dog_flags( uint8 * buffer )
+  67:.\rtu_modbus/process_type_16_message.c **** {
+ 141              		.loc 2 67 0
+ 142              		.cfi_startproc
+ 143              		@ args = 0, pretend = 0, frame = 16
+ 144              		@ frame_needed = 1, uses_anonymous_args = 0
+ 145 0000 80B5     		push	{r7, lr}
+ 146              		.cfi_def_cfa_offset 8
+ 147              		.cfi_offset 7, -8
+ 148              		.cfi_offset 14, -4
+ 149 0002 84B0     		sub	sp, sp, #16
+ 150              		.cfi_def_cfa_offset 24
+ 151 0004 00AF     		add	r7, sp, #0
+ 152              		.cfi_def_cfa_register 7
+ 153 0006 7860     		str	r0, [r7, #4]
+  68:.\rtu_modbus/process_type_16_message.c ****     uint16 temp;
+  69:.\rtu_modbus/process_type_16_message.c ****     
+  70:.\rtu_modbus/process_type_16_message.c ****     temp =  0;
+ 154              		.loc 2 70 0
+ 155 0008 0023     		movs	r3, #0
+ 156 000a FB81     		strh	r3, [r7, #14]	@ movhi
+  71:.\rtu_modbus/process_type_16_message.c ****     store_modbus_data_registers( MOD_RTU_WATCH_DOG_FLAG, 1 , &temp);
+ 157              		.loc 2 71 0
+ 158 000c 07F10E03 		add	r3, r7, #14
+ 159 0010 0220     		movs	r0, #2
+ 160 0012 0121     		movs	r1, #1
+ 161 0014 1A46     		mov	r2, r3
+ 162 0016 FFF7FEFF 		bl	store_modbus_data_registers
+  72:.\rtu_modbus/process_type_16_message.c ****     temp = 1;
+ 163              		.loc 2 72 0
+ 164 001a 0123     		movs	r3, #1
+ 165 001c FB81     		strh	r3, [r7, #14]	@ movhi
+  73:.\rtu_modbus/process_type_16_message.c ****     store_modbus_data_registers( MOD_CONTROLLER_WATCH_DOG_FLAG, 1 , &temp);
+ 166              		.loc 2 73 0
+ 167 001e 07F10E03 		add	r3, r7, #14
+ 168 0022 0320     		movs	r0, #3
+ 169 0024 0121     		movs	r1, #1
+ 170 0026 1A46     		mov	r2, r3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 6
+
+
+ 171 0028 FFF7FEFF 		bl	store_modbus_data_registers
+  74:.\rtu_modbus/process_type_16_message.c **** 
+  75:.\rtu_modbus/process_type_16_message.c ****     return 1;
+ 172              		.loc 2 75 0
+ 173 002c 0123     		movs	r3, #1
+  76:.\rtu_modbus/process_type_16_message.c **** }
+ 174              		.loc 2 76 0
+ 175 002e 1846     		mov	r0, r3
+ 176 0030 1037     		adds	r7, r7, #16
+ 177              		.cfi_def_cfa_offset 8
+ 178 0032 BD46     		mov	sp, r7
+ 179              		.cfi_def_cfa_register 13
+ 180              		@ sp needed
+ 181 0034 80BD     		pop	{r7, pc}
+ 182              		.cfi_endproc
+ 183              	.LFE67:
+ 184              		.size	clear_watch_dog_flags, .-clear_watch_dog_flags
+ 185 0036 00BF     		.section	.text.clear_power_up_event,"ax",%progbits
+ 186              		.align	2
+ 187              		.thumb
+ 188              		.thumb_func
+ 189              		.type	clear_power_up_event, %function
+ 190              	clear_power_up_event:
+ 191              	.LFB68:
+  77:.\rtu_modbus/process_type_16_message.c **** 
+  78:.\rtu_modbus/process_type_16_message.c **** 
+  79:.\rtu_modbus/process_type_16_message.c **** static uint16 clear_power_up_event( uint8 *buffer )
+  80:.\rtu_modbus/process_type_16_message.c **** {
+ 192              		.loc 2 80 0
+ 193              		.cfi_startproc
+ 194              		@ args = 0, pretend = 0, frame = 16
+ 195              		@ frame_needed = 1, uses_anonymous_args = 0
+ 196 0000 80B5     		push	{r7, lr}
+ 197              		.cfi_def_cfa_offset 8
+ 198              		.cfi_offset 7, -8
+ 199              		.cfi_offset 14, -4
+ 200 0002 84B0     		sub	sp, sp, #16
+ 201              		.cfi_def_cfa_offset 24
+ 202 0004 00AF     		add	r7, sp, #0
+ 203              		.cfi_def_cfa_register 7
+ 204 0006 7860     		str	r0, [r7, #4]
+  81:.\rtu_modbus/process_type_16_message.c ****     uint16 temp;
+  82:.\rtu_modbus/process_type_16_message.c ****     
+  83:.\rtu_modbus/process_type_16_message.c ****     temp = 0;
+ 205              		.loc 2 83 0
+ 206 0008 0023     		movs	r3, #0
+ 207 000a FB81     		strh	r3, [r7, #14]	@ movhi
+  84:.\rtu_modbus/process_type_16_message.c ****     store_modbus_data_registers( MOD_POWER_UP_EVENT, 1 , &temp);
+ 208              		.loc 2 84 0
+ 209 000c 07F10E03 		add	r3, r7, #14
+ 210 0010 0520     		movs	r0, #5
+ 211 0012 0121     		movs	r1, #1
+ 212 0014 1A46     		mov	r2, r3
+ 213 0016 FFF7FEFF 		bl	store_modbus_data_registers
+  85:.\rtu_modbus/process_type_16_message.c ****     return 1;
+ 214              		.loc 2 85 0
+ 215 001a 0123     		movs	r3, #1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 7
+
+
+  86:.\rtu_modbus/process_type_16_message.c **** }
+ 216              		.loc 2 86 0
+ 217 001c 1846     		mov	r0, r3
+ 218 001e 1037     		adds	r7, r7, #16
+ 219              		.cfi_def_cfa_offset 8
+ 220 0020 BD46     		mov	sp, r7
+ 221              		.cfi_def_cfa_register 13
+ 222              		@ sp needed
+ 223 0022 80BD     		pop	{r7, pc}
+ 224              		.cfi_endproc
+ 225              	.LFE68:
+ 226              		.size	clear_power_up_event, .-clear_power_up_event
+ 227              		.section	.text.clear_minute_rollover,"ax",%progbits
+ 228              		.align	2
+ 229              		.thumb
+ 230              		.thumb_func
+ 231              		.type	clear_minute_rollover, %function
+ 232              	clear_minute_rollover:
+ 233              	.LFB69:
+  87:.\rtu_modbus/process_type_16_message.c **** 
+  88:.\rtu_modbus/process_type_16_message.c **** 
+  89:.\rtu_modbus/process_type_16_message.c **** static uint16 clear_minute_rollover( uint8 *buffer )
+  90:.\rtu_modbus/process_type_16_message.c **** {
+ 234              		.loc 2 90 0
+ 235              		.cfi_startproc
+ 236              		@ args = 0, pretend = 0, frame = 16
+ 237              		@ frame_needed = 1, uses_anonymous_args = 0
+ 238 0000 80B5     		push	{r7, lr}
+ 239              		.cfi_def_cfa_offset 8
+ 240              		.cfi_offset 7, -8
+ 241              		.cfi_offset 14, -4
+ 242 0002 84B0     		sub	sp, sp, #16
+ 243              		.cfi_def_cfa_offset 24
+ 244 0004 00AF     		add	r7, sp, #0
+ 245              		.cfi_def_cfa_register 7
+ 246 0006 7860     		str	r0, [r7, #4]
+  91:.\rtu_modbus/process_type_16_message.c ****     uint16 temp;
+  92:.\rtu_modbus/process_type_16_message.c ****     
+  93:.\rtu_modbus/process_type_16_message.c ****     temp = 0;
+ 247              		.loc 2 93 0
+ 248 0008 0023     		movs	r3, #0
+ 249 000a FB81     		strh	r3, [r7, #14]	@ movhi
+  94:.\rtu_modbus/process_type_16_message.c ****     store_modbus_data_registers( MOD_MINUTE_ROLLOVER, 1 , &temp);
+ 250              		.loc 2 94 0
+ 251 000c 07F10E03 		add	r3, r7, #14
+ 252 0010 0620     		movs	r0, #6
+ 253 0012 0121     		movs	r1, #1
+ 254 0014 1A46     		mov	r2, r3
+ 255 0016 FFF7FEFF 		bl	store_modbus_data_registers
+  95:.\rtu_modbus/process_type_16_message.c ****     return 1;
+ 256              		.loc 2 95 0
+ 257 001a 0123     		movs	r3, #1
+  96:.\rtu_modbus/process_type_16_message.c **** }
+ 258              		.loc 2 96 0
+ 259 001c 1846     		mov	r0, r3
+ 260 001e 1037     		adds	r7, r7, #16
+ 261              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 8
+
+
+ 262 0020 BD46     		mov	sp, r7
+ 263              		.cfi_def_cfa_register 13
+ 264              		@ sp needed
+ 265 0022 80BD     		pop	{r7, pc}
+ 266              		.cfi_endproc
+ 267              	.LFE69:
+ 268              		.size	clear_minute_rollover, .-clear_minute_rollover
+ 269              		.section	.text.change_time,"ax",%progbits
+ 270              		.align	2
+ 271              		.thumb
+ 272              		.thumb_func
+ 273              		.type	change_time, %function
+ 274              	change_time:
+ 275              	.LFB70:
+  97:.\rtu_modbus/process_type_16_message.c **** 
+  98:.\rtu_modbus/process_type_16_message.c **** 
+  99:.\rtu_modbus/process_type_16_message.c **** 
+ 100:.\rtu_modbus/process_type_16_message.c **** 
+ 101:.\rtu_modbus/process_type_16_message.c **** 
+ 102:.\rtu_modbus/process_type_16_message.c **** static uint16 change_time( uint8 *buffer )
+ 103:.\rtu_modbus/process_type_16_message.c **** {
+ 276              		.loc 2 103 0
+ 277              		.cfi_startproc
+ 278              		@ args = 0, pretend = 0, frame = 24
+ 279              		@ frame_needed = 1, uses_anonymous_args = 0
+ 280 0000 80B5     		push	{r7, lr}
+ 281              		.cfi_def_cfa_offset 8
+ 282              		.cfi_offset 7, -8
+ 283              		.cfi_offset 14, -4
+ 284 0002 86B0     		sub	sp, sp, #24
+ 285              		.cfi_def_cfa_offset 32
+ 286 0004 00AF     		add	r7, sp, #0
+ 287              		.cfi_def_cfa_register 7
+ 288 0006 7860     		str	r0, [r7, #4]
+ 104:.\rtu_modbus/process_type_16_message.c ****     uint16 *data;
+ 105:.\rtu_modbus/process_type_16_message.c ****     uint16 second;
+ 106:.\rtu_modbus/process_type_16_message.c ****     uint16 minute;
+ 107:.\rtu_modbus/process_type_16_message.c ****     uint16 hour;
+ 108:.\rtu_modbus/process_type_16_message.c ****     uint16 day;
+ 109:.\rtu_modbus/process_type_16_message.c ****     uint16 month;
+ 110:.\rtu_modbus/process_type_16_message.c ****     uint16 year;
+ 111:.\rtu_modbus/process_type_16_message.c ****     data = (uint16 *)buffer;
+ 289              		.loc 2 111 0
+ 290 0008 7B68     		ldr	r3, [r7, #4]
+ 291 000a 7B61     		str	r3, [r7, #20]
+ 112:.\rtu_modbus/process_type_16_message.c ****     store_modbus_data_registers(MOD_YEAR, 6, data);
+ 292              		.loc 2 112 0
+ 293 000c 0820     		movs	r0, #8
+ 294 000e 0621     		movs	r1, #6
+ 295 0010 7A69     		ldr	r2, [r7, #20]
+ 296 0012 FFF7FEFF 		bl	store_modbus_data_registers
+ 113:.\rtu_modbus/process_type_16_message.c **** 
+ 114:.\rtu_modbus/process_type_16_message.c ****     year = *data++;
+ 297              		.loc 2 114 0
+ 298 0016 7B69     		ldr	r3, [r7, #20]
+ 299 0018 9A1C     		adds	r2, r3, #2
+ 300 001a 7A61     		str	r2, [r7, #20]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 9
+
+
+ 301 001c 1B88     		ldrh	r3, [r3]	@ movhi
+ 302 001e 7B82     		strh	r3, [r7, #18]	@ movhi
+ 115:.\rtu_modbus/process_type_16_message.c ****     month = *data++;
+ 303              		.loc 2 115 0
+ 304 0020 7B69     		ldr	r3, [r7, #20]
+ 305 0022 9A1C     		adds	r2, r3, #2
+ 306 0024 7A61     		str	r2, [r7, #20]
+ 307 0026 1B88     		ldrh	r3, [r3]	@ movhi
+ 308 0028 3B82     		strh	r3, [r7, #16]	@ movhi
+ 116:.\rtu_modbus/process_type_16_message.c ****     day  = *data++;
+ 309              		.loc 2 116 0
+ 310 002a 7B69     		ldr	r3, [r7, #20]
+ 311 002c 9A1C     		adds	r2, r3, #2
+ 312 002e 7A61     		str	r2, [r7, #20]
+ 313 0030 1B88     		ldrh	r3, [r3]	@ movhi
+ 314 0032 FB81     		strh	r3, [r7, #14]	@ movhi
+ 117:.\rtu_modbus/process_type_16_message.c ****     hour = *data++;
+ 315              		.loc 2 117 0
+ 316 0034 7B69     		ldr	r3, [r7, #20]
+ 317 0036 9A1C     		adds	r2, r3, #2
+ 318 0038 7A61     		str	r2, [r7, #20]
+ 319 003a 1B88     		ldrh	r3, [r3]	@ movhi
+ 320 003c BB81     		strh	r3, [r7, #12]	@ movhi
+ 118:.\rtu_modbus/process_type_16_message.c ****     minute = *data++;
+ 321              		.loc 2 118 0
+ 322 003e 7B69     		ldr	r3, [r7, #20]
+ 323 0040 9A1C     		adds	r2, r3, #2
+ 324 0042 7A61     		str	r2, [r7, #20]
+ 325 0044 1B88     		ldrh	r3, [r3]	@ movhi
+ 326 0046 7B81     		strh	r3, [r7, #10]	@ movhi
+ 119:.\rtu_modbus/process_type_16_message.c ****     second = *data++;
+ 327              		.loc 2 119 0
+ 328 0048 7B69     		ldr	r3, [r7, #20]
+ 329 004a 9A1C     		adds	r2, r3, #2
+ 330 004c 7A61     		str	r2, [r7, #20]
+ 331 004e 1B88     		ldrh	r3, [r3]	@ movhi
+ 332 0050 3B81     		strh	r3, [r7, #8]	@ movhi
+ 120:.\rtu_modbus/process_type_16_message.c ****     
+ 121:.\rtu_modbus/process_type_16_message.c ****     
+ 122:.\rtu_modbus/process_type_16_message.c ****     RTC_1_WriteSecond(second);   
+ 333              		.loc 2 122 0
+ 334 0052 3B89     		ldrh	r3, [r7, #8]	@ movhi
+ 335 0054 DBB2     		uxtb	r3, r3
+ 336 0056 1846     		mov	r0, r3
+ 337 0058 FFF7FEFF 		bl	RTC_1_WriteSecond
+ 123:.\rtu_modbus/process_type_16_message.c ****     RTC_1_WriteMinute(minute);  
+ 338              		.loc 2 123 0
+ 339 005c 7B89     		ldrh	r3, [r7, #10]	@ movhi
+ 340 005e DBB2     		uxtb	r3, r3
+ 341 0060 1846     		mov	r0, r3
+ 342 0062 FFF7FEFF 		bl	RTC_1_WriteMinute
+ 124:.\rtu_modbus/process_type_16_message.c ****     RTC_1_WriteHour( hour );
+ 343              		.loc 2 124 0
+ 344 0066 BB89     		ldrh	r3, [r7, #12]	@ movhi
+ 345 0068 DBB2     		uxtb	r3, r3
+ 346 006a 1846     		mov	r0, r3
+ 347 006c FFF7FEFF 		bl	RTC_1_WriteHour
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 10
+
+
+ 125:.\rtu_modbus/process_type_16_message.c ****     RTC_1_WriteDayOfMonth(day);
+ 348              		.loc 2 125 0
+ 349 0070 FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 350 0072 DBB2     		uxtb	r3, r3
+ 351 0074 1846     		mov	r0, r3
+ 352 0076 FFF7FEFF 		bl	RTC_1_WriteDayOfMonth
+ 126:.\rtu_modbus/process_type_16_message.c ****     RTC_1_WriteMonth(month);
+ 353              		.loc 2 126 0
+ 354 007a 3B8A     		ldrh	r3, [r7, #16]	@ movhi
+ 355 007c DBB2     		uxtb	r3, r3
+ 356 007e 1846     		mov	r0, r3
+ 357 0080 FFF7FEFF 		bl	RTC_1_WriteMonth
+ 127:.\rtu_modbus/process_type_16_message.c ****     RTC_1_WriteYear( year );
+ 358              		.loc 2 127 0
+ 359 0084 7B8A     		ldrh	r3, [r7, #18]
+ 360 0086 1846     		mov	r0, r3
+ 361 0088 FFF7FEFF 		bl	RTC_1_WriteYear
+ 128:.\rtu_modbus/process_type_16_message.c ****     return 1;
+ 362              		.loc 2 128 0
+ 363 008c 0123     		movs	r3, #1
+ 129:.\rtu_modbus/process_type_16_message.c **** 
+ 130:.\rtu_modbus/process_type_16_message.c **** }
+ 364              		.loc 2 130 0
+ 365 008e 1846     		mov	r0, r3
+ 366 0090 1837     		adds	r7, r7, #24
+ 367              		.cfi_def_cfa_offset 8
+ 368 0092 BD46     		mov	sp, r7
+ 369              		.cfi_def_cfa_register 13
+ 370              		@ sp needed
+ 371 0094 80BD     		pop	{r7, pc}
+ 372              		.cfi_endproc
+ 373              	.LFE70:
+ 374              		.size	change_time, .-change_time
+ 375 0096 00BF     		.section	.text.change_modbus_address,"ax",%progbits
+ 376              		.align	2
+ 377              		.thumb
+ 378              		.thumb_func
+ 379              		.type	change_modbus_address, %function
+ 380              	change_modbus_address:
+ 381              	.LFB71:
+ 131:.\rtu_modbus/process_type_16_message.c **** 
+ 132:.\rtu_modbus/process_type_16_message.c **** static uint16 change_modbus_address( uint8 *buffer )
+ 133:.\rtu_modbus/process_type_16_message.c **** {
+ 382              		.loc 2 133 0
+ 383              		.cfi_startproc
+ 384              		@ args = 0, pretend = 0, frame = 16
+ 385              		@ frame_needed = 1, uses_anonymous_args = 0
+ 386 0000 80B5     		push	{r7, lr}
+ 387              		.cfi_def_cfa_offset 8
+ 388              		.cfi_offset 7, -8
+ 389              		.cfi_offset 14, -4
+ 390 0002 84B0     		sub	sp, sp, #16
+ 391              		.cfi_def_cfa_offset 24
+ 392 0004 00AF     		add	r7, sp, #0
+ 393              		.cfi_def_cfa_register 7
+ 394 0006 7860     		str	r0, [r7, #4]
+ 134:.\rtu_modbus/process_type_16_message.c ****     uint16 mod_commission_flag;
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 11
+
+
+ 135:.\rtu_modbus/process_type_16_message.c ****     uint16 return_value;
+ 136:.\rtu_modbus/process_type_16_message.c ****     
+ 137:.\rtu_modbus/process_type_16_message.c ****     get_modbus_data_registers( MOD_COMMISSIONING_FLAG, 1, &mod_commission_flag );
+ 395              		.loc 2 137 0
+ 396 0008 07F10C03 		add	r3, r7, #12
+ 397 000c 0420     		movs	r0, #4
+ 398 000e 0121     		movs	r1, #1
+ 399 0010 1A46     		mov	r2, r3
+ 400 0012 FFF7FEFF 		bl	get_modbus_data_registers
+ 138:.\rtu_modbus/process_type_16_message.c ****     
+ 139:.\rtu_modbus/process_type_16_message.c ****     if( mod_commission_flag != 0  )
+ 401              		.loc 2 139 0
+ 402 0016 BB89     		ldrh	r3, [r7, #12]
+ 403 0018 002B     		cmp	r3, #0
+ 404 001a 0BD0     		beq	.L12
+ 140:.\rtu_modbus/process_type_16_message.c ****     {
+ 141:.\rtu_modbus/process_type_16_message.c ****         return_value = 1;
+ 405              		.loc 2 141 0
+ 406 001c 0123     		movs	r3, #1
+ 407 001e FB81     		strh	r3, [r7, #14]	@ movhi
+ 142:.\rtu_modbus/process_type_16_message.c ****         Em_EEPROM_1_Write( (const uint8* )buffer, (const uint8*)modbus_address_data , sizeof(modbus
+ 408              		.loc 2 142 0
+ 409 0020 7868     		ldr	r0, [r7, #4]
+ 410 0022 0849     		ldr	r1, .L15
+ 411 0024 0422     		movs	r2, #4
+ 412 0026 FFF7FEFF 		bl	Em_EEPROM_1_Write
+ 143:.\rtu_modbus/process_type_16_message.c ****         cf_send_event(  CF_COMMISSIONING_DONE, 0 );
+ 413              		.loc 2 143 0
+ 414 002a 0820     		movs	r0, #8
+ 415 002c 0021     		movs	r1, #0
+ 416 002e FFF7FEFF 		bl	cf_send_event
+ 417 0032 01E0     		b	.L13
+ 418              	.L12:
+ 144:.\rtu_modbus/process_type_16_message.c ****     }
+ 145:.\rtu_modbus/process_type_16_message.c ****     else
+ 146:.\rtu_modbus/process_type_16_message.c ****     {
+ 147:.\rtu_modbus/process_type_16_message.c ****         return_value = 0;
+ 419              		.loc 2 147 0
+ 420 0034 0023     		movs	r3, #0
+ 421 0036 FB81     		strh	r3, [r7, #14]	@ movhi
+ 422              	.L13:
+ 148:.\rtu_modbus/process_type_16_message.c ****     }    
+ 149:.\rtu_modbus/process_type_16_message.c ****     return return_value;
+ 423              		.loc 2 149 0
+ 424 0038 FB89     		ldrh	r3, [r7, #14]
+ 150:.\rtu_modbus/process_type_16_message.c **** }
+ 425              		.loc 2 150 0
+ 426 003a 1846     		mov	r0, r3
+ 427 003c 1037     		adds	r7, r7, #16
+ 428              		.cfi_def_cfa_offset 8
+ 429 003e BD46     		mov	sp, r7
+ 430              		.cfi_def_cfa_register 13
+ 431              		@ sp needed
+ 432 0040 80BD     		pop	{r7, pc}
+ 433              	.L16:
+ 434 0042 00BF     		.align	2
+ 435              	.L15:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 12
+
+
+ 436 0044 00000000 		.word	modbus_address_data
+ 437              		.cfi_endproc
+ 438              	.LFE71:
+ 439              		.size	change_modbus_address, .-change_modbus_address
+ 440              		.section	.text.set_moisture_sampling_rate,"ax",%progbits
+ 441              		.align	2
+ 442              		.thumb
+ 443              		.thumb_func
+ 444              		.type	set_moisture_sampling_rate, %function
+ 445              	set_moisture_sampling_rate:
+ 446              	.LFB72:
+ 151:.\rtu_modbus/process_type_16_message.c **** /*
+ 152:.\rtu_modbus/process_type_16_message.c **** static uint16 store_calibration_variables( uint8 *buffer )
+ 153:.\rtu_modbus/process_type_16_message.c **** {
+ 154:.\rtu_modbus/process_type_16_message.c ****     uint16 *temp;
+ 155:.\rtu_modbus/process_type_16_message.c ****     CyGlobalIntDisable
+ 156:.\rtu_modbus/process_type_16_message.c ****     temp = (uint16*) buffer;
+ 157:.\rtu_modbus/process_type_16_message.c ****     store_modbus_data_registers( MAIN_FLOW_RATE_CALIBRATION, CALIBRATION_ARRAY_LENGTH *2 , temp);
+ 158:.\rtu_modbus/process_type_16_message.c ****     Em_EEPROM_1_Write( (const uint8*)buffer,(uint8*) calibration_factors, CALIBRATION_ARRAY_LENGTH*
+ 159:.\rtu_modbus/process_type_16_message.c ****     CYGlobalIntEnable
+ 160:.\rtu_modbus/process_type_16_message.c ****     return 1;
+ 161:.\rtu_modbus/process_type_16_message.c ****  
+ 162:.\rtu_modbus/process_type_16_message.c **** }
+ 163:.\rtu_modbus/process_type_16_message.c **** */
+ 164:.\rtu_modbus/process_type_16_message.c **** 
+ 165:.\rtu_modbus/process_type_16_message.c **** static uint16 set_moisture_sampling_rate( uint8 *buffer )
+ 166:.\rtu_modbus/process_type_16_message.c **** {
+ 447              		.loc 2 166 0
+ 448              		.cfi_startproc
+ 449              		@ args = 0, pretend = 0, frame = 16
+ 450              		@ frame_needed = 1, uses_anonymous_args = 0
+ 451 0000 80B5     		push	{r7, lr}
+ 452              		.cfi_def_cfa_offset 8
+ 453              		.cfi_offset 7, -8
+ 454              		.cfi_offset 14, -4
+ 455 0002 84B0     		sub	sp, sp, #16
+ 456              		.cfi_def_cfa_offset 24
+ 457 0004 00AF     		add	r7, sp, #0
+ 458              		.cfi_def_cfa_register 7
+ 459 0006 7860     		str	r0, [r7, #4]
+ 167:.\rtu_modbus/process_type_16_message.c ****     uint32 temp32;
+ 168:.\rtu_modbus/process_type_16_message.c ****     uint16 temp16;
+ 169:.\rtu_modbus/process_type_16_message.c ****     
+ 170:.\rtu_modbus/process_type_16_message.c ****     store_modbus_data_registers( LOGGING_RATE, 1, (uint16 *)buffer);
+ 460              		.loc 2 170 0
+ 461 0008 2020     		movs	r0, #32
+ 462 000a 0121     		movs	r1, #1
+ 463 000c 7A68     		ldr	r2, [r7, #4]
+ 464 000e FFF7FEFF 		bl	store_modbus_data_registers
+ 171:.\rtu_modbus/process_type_16_message.c ****     get_modbus_data_registers( LOGGING_RATE,1, &temp16 );
+ 465              		.loc 2 171 0
+ 466 0012 07F10A03 		add	r3, r7, #10
+ 467 0016 2020     		movs	r0, #32
+ 468 0018 0121     		movs	r1, #1
+ 469 001a 1A46     		mov	r2, r3
+ 470 001c FFF7FEFF 		bl	get_modbus_data_registers
+ 172:.\rtu_modbus/process_type_16_message.c ****     temp32 = temp16;
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 13
+
+
+ 471              		.loc 2 172 0
+ 472 0020 7B89     		ldrh	r3, [r7, #10]
+ 473 0022 FB60     		str	r3, [r7, #12]
+ 173:.\rtu_modbus/process_type_16_message.c ****     write_32_eeprom(  EEPROM_SAMPLING_RATE,(uint8 *) &temp32 );
+ 474              		.loc 2 173 0
+ 475 0024 07F10C03 		add	r3, r7, #12
+ 476 0028 0820     		movs	r0, #8
+ 477 002a 1946     		mov	r1, r3
+ 478 002c FFF7FEFF 		bl	write_32_eeprom
+ 174:.\rtu_modbus/process_type_16_message.c ****     return 0;
+ 479              		.loc 2 174 0
+ 480 0030 0023     		movs	r3, #0
+ 175:.\rtu_modbus/process_type_16_message.c **** }
+ 481              		.loc 2 175 0
+ 482 0032 1846     		mov	r0, r3
+ 483 0034 1037     		adds	r7, r7, #16
+ 484              		.cfi_def_cfa_offset 8
+ 485 0036 BD46     		mov	sp, r7
+ 486              		.cfi_def_cfa_register 13
+ 487              		@ sp needed
+ 488 0038 80BD     		pop	{r7, pc}
+ 489              		.cfi_endproc
+ 490              	.LFE72:
+ 491              		.size	set_moisture_sampling_rate, .-set_moisture_sampling_rate
+ 492 003a 00BF     		.section	.text.clear_moisture_log_data,"ax",%progbits
+ 493              		.align	2
+ 494              		.thumb
+ 495              		.thumb_func
+ 496              		.type	clear_moisture_log_data, %function
+ 497              	clear_moisture_log_data:
+ 498              	.LFB73:
+ 176:.\rtu_modbus/process_type_16_message.c **** 
+ 177:.\rtu_modbus/process_type_16_message.c ****     
+ 178:.\rtu_modbus/process_type_16_message.c **** static uint16 clear_moisture_log_data( uint8 *buffer )
+ 179:.\rtu_modbus/process_type_16_message.c **** {
+ 499              		.loc 2 179 0
+ 500              		.cfi_startproc
+ 501              		@ args = 0, pretend = 0, frame = 16
+ 502              		@ frame_needed = 1, uses_anonymous_args = 0
+ 503 0000 80B5     		push	{r7, lr}
+ 504              		.cfi_def_cfa_offset 8
+ 505              		.cfi_offset 7, -8
+ 506              		.cfi_offset 14, -4
+ 507 0002 84B0     		sub	sp, sp, #16
+ 508              		.cfi_def_cfa_offset 24
+ 509 0004 00AF     		add	r7, sp, #0
+ 510              		.cfi_def_cfa_register 7
+ 511 0006 7860     		str	r0, [r7, #4]
+ 180:.\rtu_modbus/process_type_16_message.c ****      uint32 temp32;
+ 181:.\rtu_modbus/process_type_16_message.c ****      uint16 temp16;
+ 182:.\rtu_modbus/process_type_16_message.c ****     temp16 = 0;
+ 512              		.loc 2 182 0
+ 513 0008 0023     		movs	r3, #0
+ 514 000a 7B81     		strh	r3, [r7, #10]	@ movhi
+ 183:.\rtu_modbus/process_type_16_message.c ****     store_modbus_data_registers( LOGGING_INDEX, 1,&temp16 );
+ 515              		.loc 2 183 0
+ 516 000c 07F10A03 		add	r3, r7, #10
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 14
+
+
+ 517 0010 1F20     		movs	r0, #31
+ 518 0012 0121     		movs	r1, #1
+ 519 0014 1A46     		mov	r2, r3
+ 520 0016 FFF7FEFF 		bl	store_modbus_data_registers
+ 184:.\rtu_modbus/process_type_16_message.c ****     temp32 = temp16;
+ 521              		.loc 2 184 0
+ 522 001a 7B89     		ldrh	r3, [r7, #10]
+ 523 001c FB60     		str	r3, [r7, #12]
+ 185:.\rtu_modbus/process_type_16_message.c ****     write_32_eeprom( EEPROM_LOGGING_INDEX ,(uint8 *) &temp32 );
+ 524              		.loc 2 185 0
+ 525 001e 07F10C03 		add	r3, r7, #12
+ 526 0022 0C20     		movs	r0, #12
+ 527 0024 1946     		mov	r1, r3
+ 528 0026 FFF7FEFF 		bl	write_32_eeprom
+ 186:.\rtu_modbus/process_type_16_message.c ****     return 1;
+ 529              		.loc 2 186 0
+ 530 002a 0123     		movs	r3, #1
+ 187:.\rtu_modbus/process_type_16_message.c **** }
+ 531              		.loc 2 187 0
+ 532 002c 1846     		mov	r0, r3
+ 533 002e 1037     		adds	r7, r7, #16
+ 534              		.cfi_def_cfa_offset 8
+ 535 0030 BD46     		mov	sp, r7
+ 536              		.cfi_def_cfa_register 13
+ 537              		@ sp needed
+ 538 0032 80BD     		pop	{r7, pc}
+ 539              		.cfi_endproc
+ 540              	.LFE73:
+ 541              		.size	clear_moisture_log_data, .-clear_moisture_log_data
+ 542              		.section	.text.update_moisture_sensor_configuration,"ax",%progbits
+ 543              		.align	2
+ 544              		.thumb
+ 545              		.thumb_func
+ 546              		.type	update_moisture_sensor_configuration, %function
+ 547              	update_moisture_sensor_configuration:
+ 548              	.LFB74:
+ 188:.\rtu_modbus/process_type_16_message.c **** 
+ 189:.\rtu_modbus/process_type_16_message.c **** 
+ 190:.\rtu_modbus/process_type_16_message.c **** 
+ 191:.\rtu_modbus/process_type_16_message.c **** static uint16 update_moisture_sensor_configuration( uint8 *buffer )
+ 192:.\rtu_modbus/process_type_16_message.c **** {
+ 549              		.loc 2 192 0
+ 550              		.cfi_startproc
+ 551              		@ args = 0, pretend = 0, frame = 8
+ 552              		@ frame_needed = 1, uses_anonymous_args = 0
+ 553 0000 80B5     		push	{r7, lr}
+ 554              		.cfi_def_cfa_offset 8
+ 555              		.cfi_offset 7, -8
+ 556              		.cfi_offset 14, -4
+ 557 0002 82B0     		sub	sp, sp, #8
+ 558              		.cfi_def_cfa_offset 16
+ 559 0004 00AF     		add	r7, sp, #0
+ 560              		.cfi_def_cfa_register 7
+ 561 0006 7860     		str	r0, [r7, #4]
+ 193:.\rtu_modbus/process_type_16_message.c **** 
+ 194:.\rtu_modbus/process_type_16_message.c ****     CyGlobalIntDisable
+ 562              		.loc 2 194 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 15
+
+
+ 563              	@ 194 ".\rtu_modbus\process_type_16_message.c" 1
+ 564 0008 72B6     		CPSID   i
+ 565              	@ 0 "" 2
+ 195:.\rtu_modbus/process_type_16_message.c **** 
+ 196:.\rtu_modbus/process_type_16_message.c ****     Em_EEPROM_1_Write(buffer, (uint8 *) moisture_configuration_data, sizeof(update_moisture_sensor_
+ 566              		.loc 2 196 0
+ 567              		.thumb
+ 568 000a 7868     		ldr	r0, [r7, #4]
+ 569 000c 0749     		ldr	r1, .L23
+ 570 000e 0122     		movs	r2, #1
+ 571 0010 FFF7FEFF 		bl	Em_EEPROM_1_Write
+ 197:.\rtu_modbus/process_type_16_message.c ****     store_modbus_data_registers( MOISTURE_SENSOR_1_CONFIGURATION , sizeof(moisture_configuration_da
+ 572              		.loc 2 197 0
+ 573 0014 5020     		movs	r0, #80
+ 574 0016 0821     		movs	r1, #8
+ 575 0018 044A     		ldr	r2, .L23
+ 576 001a FFF7FEFF 		bl	store_modbus_data_registers
+ 198:.\rtu_modbus/process_type_16_message.c ****     CYGlobalIntEnable
+ 577              		.loc 2 198 0
+ 578              	@ 198 ".\rtu_modbus\process_type_16_message.c" 1
+ 579 001e 62B6     		CPSIE   i
+ 580              	@ 0 "" 2
+ 199:.\rtu_modbus/process_type_16_message.c ****     return 1;
+ 581              		.loc 2 199 0
+ 582              		.thumb
+ 583 0020 0123     		movs	r3, #1
+ 200:.\rtu_modbus/process_type_16_message.c **** 
+ 201:.\rtu_modbus/process_type_16_message.c **** }
+ 584              		.loc 2 201 0
+ 585 0022 1846     		mov	r0, r3
+ 586 0024 0837     		adds	r7, r7, #8
+ 587              		.cfi_def_cfa_offset 8
+ 588 0026 BD46     		mov	sp, r7
+ 589              		.cfi_def_cfa_register 13
+ 590              		@ sp needed
+ 591 0028 80BD     		pop	{r7, pc}
+ 592              	.L24:
+ 593 002a 00BF     		.align	2
+ 594              	.L23:
+ 595 002c 00000000 		.word	moisture_configuration_data
+ 596              		.cfi_endproc
+ 597              	.LFE74:
+ 598              		.size	update_moisture_sensor_configuration, .-update_moisture_sensor_configuration
+ 599              		.section	.text.force_moisture_reading,"ax",%progbits
+ 600              		.align	2
+ 601              		.thumb
+ 602              		.thumb_func
+ 603              		.type	force_moisture_reading, %function
+ 604              	force_moisture_reading:
+ 605              	.LFB75:
+ 202:.\rtu_modbus/process_type_16_message.c **** 
+ 203:.\rtu_modbus/process_type_16_message.c **** static uint16 force_moisture_reading( uint8 *buffer )
+ 204:.\rtu_modbus/process_type_16_message.c **** {
+ 606              		.loc 2 204 0
+ 607              		.cfi_startproc
+ 608              		@ args = 0, pretend = 0, frame = 8
+ 609              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 16
+
+
+ 610 0000 80B5     		push	{r7, lr}
+ 611              		.cfi_def_cfa_offset 8
+ 612              		.cfi_offset 7, -8
+ 613              		.cfi_offset 14, -4
+ 614 0002 82B0     		sub	sp, sp, #8
+ 615              		.cfi_def_cfa_offset 16
+ 616 0004 00AF     		add	r7, sp, #0
+ 617              		.cfi_def_cfa_register 7
+ 618 0006 7860     		str	r0, [r7, #4]
+ 205:.\rtu_modbus/process_type_16_message.c ****     cf_send_event( CF_MOISTURE_READING, 0 );
+ 619              		.loc 2 205 0
+ 620 0008 0920     		movs	r0, #9
+ 621 000a 0021     		movs	r1, #0
+ 622 000c FFF7FEFF 		bl	cf_send_event
+ 206:.\rtu_modbus/process_type_16_message.c ****     return 1;
+ 623              		.loc 2 206 0
+ 624 0010 0123     		movs	r3, #1
+ 207:.\rtu_modbus/process_type_16_message.c **** }
+ 625              		.loc 2 207 0
+ 626 0012 1846     		mov	r0, r3
+ 627 0014 0837     		adds	r7, r7, #8
+ 628              		.cfi_def_cfa_offset 8
+ 629 0016 BD46     		mov	sp, r7
+ 630              		.cfi_def_cfa_register 13
+ 631              		@ sp needed
+ 632 0018 80BD     		pop	{r7, pc}
+ 633              		.cfi_endproc
+ 634              	.LFE75:
+ 635              		.size	force_moisture_reading, .-force_moisture_reading
+ 636 001a 00BF     		.section	.rodata
+ 637              		.align	2
+ 638              		.type	type_16_access_functions, %object
+ 639              		.size	type_16_access_functions, 144
+ 640              	type_16_access_functions:
+ 641 0000 14000000 		.word	20
+ 642 0004 06000000 		.word	6
+ 643 0008 00000000 		.word	0
+ 644 000c 00000000 		.word	change_time
+ 645 0010 15000000 		.word	21
+ 646 0014 01000000 		.word	1
+ 647 0018 00000000 		.word	0
+ 648 001c 00000000 		.word	change_modbus_address
+ 649 0020 16000000 		.word	22
+ 650 0024 01000000 		.word	1
+ 651 0028 00000000 		.word	0
+ 652 002c 00000000 		.word	clear_watch_dog_flags
+ 653 0030 17000000 		.word	23
+ 654 0034 01000000 		.word	1
+ 655 0038 00000000 		.word	0
+ 656 003c 00000000 		.word	clear_power_up_event
+ 657 0040 19000000 		.word	25
+ 658 0044 01000000 		.word	1
+ 659 0048 00000000 		.word	0
+ 660 004c 00000000 		.word	clear_minute_rollover
+ 661 0050 1E000000 		.word	30
+ 662 0054 01000000 		.word	1
+ 663 0058 00000000 		.word	0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 17
+
+
+ 664 005c 00000000 		.word	set_moisture_sampling_rate
+ 665 0060 1F000000 		.word	31
+ 666 0064 01000000 		.word	1
+ 667 0068 00000000 		.word	0
+ 668 006c 00000000 		.word	clear_moisture_log_data
+ 669 0070 20000000 		.word	32
+ 670 0074 08000000 		.word	8
+ 671 0078 00000000 		.word	0
+ 672 007c 00000000 		.word	update_moisture_sensor_configuration
+ 673 0080 21000000 		.word	33
+ 674 0084 01000000 		.word	1
+ 675 0088 00000000 		.word	0
+ 676 008c 00000000 		.word	force_moisture_reading
+ 677              		.section	.text.process_type_16_message,"ax",%progbits
+ 678              		.align	2
+ 679              		.global	process_type_16_message
+ 680              		.thumb
+ 681              		.thumb_func
+ 682              		.type	process_type_16_message, %function
+ 683              	process_type_16_message:
+ 684              	.LFB76:
+ 208:.\rtu_modbus/process_type_16_message.c **** 
+ 209:.\rtu_modbus/process_type_16_message.c **** 
+ 210:.\rtu_modbus/process_type_16_message.c **** static const TYPE_16_STRUCT type_16_access_functions[] = 
+ 211:.\rtu_modbus/process_type_16_message.c **** {
+ 212:.\rtu_modbus/process_type_16_message.c ****     // System Level Writes
+ 213:.\rtu_modbus/process_type_16_message.c ****     { 20,    6,                                                 SWAP_16,  change_time              
+ 214:.\rtu_modbus/process_type_16_message.c ****     { 21,    MODBUS_ARRAY_LENGTH,                               SWAP_16,  change_modbus_address    
+ 215:.\rtu_modbus/process_type_16_message.c ****     { 22,    1,                                                 SWAP_16,  clear_watch_dog_flags    
+ 216:.\rtu_modbus/process_type_16_message.c ****     { 23,    1,                                                 SWAP_16,  clear_power_up_event     
+ 217:.\rtu_modbus/process_type_16_message.c ****     { 25,    1,                                                 SWAP_16,  clear_minute_rollover    
+ 218:.\rtu_modbus/process_type_16_message.c ****     // Moisture Sensor Related Writes
+ 219:.\rtu_modbus/process_type_16_message.c ****     // 30 write sampling index
+ 220:.\rtu_modbus/process_type_16_message.c ****     { 30,    1,                                                 SWAP_16,  set_moisture_sampling_rat
+ 221:.\rtu_modbus/process_type_16_message.c ****     // 31 write clear logging data
+ 222:.\rtu_modbus/process_type_16_message.c ****     { 31,    1,                                                 SWAP_16,  clear_moisture_log_data  
+ 223:.\rtu_modbus/process_type_16_message.c ****     // 33 update moisture configuration
+ 224:.\rtu_modbus/process_type_16_message.c ****     { 32,     MOISTURE_SENSOR_NUMBER,                           SWAP_16,  update_moisture_sensor_co
+ 225:.\rtu_modbus/process_type_16_message.c ****     // 33 force mositure reading
+ 226:.\rtu_modbus/process_type_16_message.c ****     { 33,    1,                                                 SWAP_16, force_moisture_reading    
+ 227:.\rtu_modbus/process_type_16_message.c ****    
+ 228:.\rtu_modbus/process_type_16_message.c **** };
+ 229:.\rtu_modbus/process_type_16_message.c ****         
+ 230:.\rtu_modbus/process_type_16_message.c **** #define TABLE_LENGTH sizeof(type_16_access_functions)/sizeof(type_16_access_functions)
+ 231:.\rtu_modbus/process_type_16_message.c **** 
+ 232:.\rtu_modbus/process_type_16_message.c **** static  const TYPE_16_STRUCT *find_access_function( unsigned start_register, unsigned number );
+ 233:.\rtu_modbus/process_type_16_message.c **** 
+ 234:.\rtu_modbus/process_type_16_message.c **** 
+ 235:.\rtu_modbus/process_type_16_message.c **** int process_type_16_message( int in_length, uint8 *in, int out_length, uint8 *out )
+ 236:.\rtu_modbus/process_type_16_message.c **** {
+ 685              		.loc 2 236 0
+ 686              		.cfi_startproc
+ 687              		@ args = 0, pretend = 0, frame = 56
+ 688              		@ frame_needed = 1, uses_anonymous_args = 0
+ 689 0000 80B5     		push	{r7, lr}
+ 690              		.cfi_def_cfa_offset 8
+ 691              		.cfi_offset 7, -8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 18
+
+
+ 692              		.cfi_offset 14, -4
+ 693 0002 8EB0     		sub	sp, sp, #56
+ 694              		.cfi_def_cfa_offset 64
+ 695 0004 00AF     		add	r7, sp, #0
+ 696              		.cfi_def_cfa_register 7
+ 697 0006 F860     		str	r0, [r7, #12]
+ 698 0008 B960     		str	r1, [r7, #8]
+ 699 000a 7A60     		str	r2, [r7, #4]
+ 700 000c 3B60     		str	r3, [r7]
+ 237:.\rtu_modbus/process_type_16_message.c ****     int       return_value;
+ 238:.\rtu_modbus/process_type_16_message.c ****     unsigned working_register;
+ 239:.\rtu_modbus/process_type_16_message.c ****     unsigned number_of_registers;
+ 240:.\rtu_modbus/process_type_16_message.c ****     unsigned count;
+ 241:.\rtu_modbus/process_type_16_message.c ****     unsigned i;
+ 242:.\rtu_modbus/process_type_16_message.c ****     unsigned swap_inc;
+ 243:.\rtu_modbus/process_type_16_message.c ****     unsigned swap_type;
+ 244:.\rtu_modbus/process_type_16_message.c ****     const TYPE_16_STRUCT     *acc_struct;
+ 245:.\rtu_modbus/process_type_16_message.c ****     uint8                    *ref_pointer;
+ 246:.\rtu_modbus/process_type_16_message.c **** 
+ 247:.\rtu_modbus/process_type_16_message.c ****     
+ 248:.\rtu_modbus/process_type_16_message.c ****     
+ 249:.\rtu_modbus/process_type_16_message.c ****     return_value = 0;
+ 701              		.loc 2 249 0
+ 702 000e 0023     		movs	r3, #0
+ 703 0010 7B63     		str	r3, [r7, #52]
+ 250:.\rtu_modbus/process_type_16_message.c ****     *out++           = *in;
+ 704              		.loc 2 250 0
+ 705 0012 3B68     		ldr	r3, [r7]
+ 706 0014 5A1C     		adds	r2, r3, #1
+ 707 0016 3A60     		str	r2, [r7]
+ 708 0018 BA68     		ldr	r2, [r7, #8]
+ 709 001a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 710 001c 1A70     		strb	r2, [r3]
+ 251:.\rtu_modbus/process_type_16_message.c ****     working_register = (*in++)*256;
+ 711              		.loc 2 251 0
+ 712 001e BB68     		ldr	r3, [r7, #8]
+ 713 0020 5A1C     		adds	r2, r3, #1
+ 714 0022 BA60     		str	r2, [r7, #8]
+ 715 0024 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 716 0026 1B02     		lsls	r3, r3, #8
+ 717 0028 7B62     		str	r3, [r7, #36]
+ 252:.\rtu_modbus/process_type_16_message.c ****     *out++           = *in;
+ 718              		.loc 2 252 0
+ 719 002a 3B68     		ldr	r3, [r7]
+ 720 002c 5A1C     		adds	r2, r3, #1
+ 721 002e 3A60     		str	r2, [r7]
+ 722 0030 BA68     		ldr	r2, [r7, #8]
+ 723 0032 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 724 0034 1A70     		strb	r2, [r3]
+ 253:.\rtu_modbus/process_type_16_message.c ****     working_register += (*in++);
+ 725              		.loc 2 253 0
+ 726 0036 BB68     		ldr	r3, [r7, #8]
+ 727 0038 5A1C     		adds	r2, r3, #1
+ 728 003a BA60     		str	r2, [r7, #8]
+ 729 003c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 730 003e 1A46     		mov	r2, r3
+ 731 0040 7B6A     		ldr	r3, [r7, #36]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 19
+
+
+ 732 0042 1344     		add	r3, r3, r2
+ 733 0044 7B62     		str	r3, [r7, #36]
+ 254:.\rtu_modbus/process_type_16_message.c ****     *out++           = *in;
+ 734              		.loc 2 254 0
+ 735 0046 3B68     		ldr	r3, [r7]
+ 736 0048 5A1C     		adds	r2, r3, #1
+ 737 004a 3A60     		str	r2, [r7]
+ 738 004c BA68     		ldr	r2, [r7, #8]
+ 739 004e 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 740 0050 1A70     		strb	r2, [r3]
+ 255:.\rtu_modbus/process_type_16_message.c ****     number_of_registers = (*in++)*256;
+ 741              		.loc 2 255 0
+ 742 0052 BB68     		ldr	r3, [r7, #8]
+ 743 0054 5A1C     		adds	r2, r3, #1
+ 744 0056 BA60     		str	r2, [r7, #8]
+ 745 0058 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 746 005a 1B02     		lsls	r3, r3, #8
+ 747 005c 3B62     		str	r3, [r7, #32]
+ 256:.\rtu_modbus/process_type_16_message.c ****     *out++           = *in;
+ 748              		.loc 2 256 0
+ 749 005e 3B68     		ldr	r3, [r7]
+ 750 0060 5A1C     		adds	r2, r3, #1
+ 751 0062 3A60     		str	r2, [r7]
+ 752 0064 BA68     		ldr	r2, [r7, #8]
+ 753 0066 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 754 0068 1A70     		strb	r2, [r3]
+ 257:.\rtu_modbus/process_type_16_message.c ****     number_of_registers += (*in++);
+ 755              		.loc 2 257 0
+ 756 006a BB68     		ldr	r3, [r7, #8]
+ 757 006c 5A1C     		adds	r2, r3, #1
+ 758 006e BA60     		str	r2, [r7, #8]
+ 759 0070 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 760 0072 1A46     		mov	r2, r3
+ 761 0074 3B6A     		ldr	r3, [r7, #32]
+ 762 0076 1344     		add	r3, r3, r2
+ 763 0078 3B62     		str	r3, [r7, #32]
+ 258:.\rtu_modbus/process_type_16_message.c ****     count       = 4;
+ 764              		.loc 2 258 0
+ 765 007a 0423     		movs	r3, #4
+ 766 007c FB61     		str	r3, [r7, #28]
+ 259:.\rtu_modbus/process_type_16_message.c ****     in++;   // skip byte count;
+ 767              		.loc 2 259 0
+ 768 007e BB68     		ldr	r3, [r7, #8]
+ 769 0080 0133     		adds	r3, r3, #1
+ 770 0082 BB60     		str	r3, [r7, #8]
+ 260:.\rtu_modbus/process_type_16_message.c **** 
+ 261:.\rtu_modbus/process_type_16_message.c ****     ref_pointer =  in;
+ 771              		.loc 2 261 0
+ 772 0084 BB68     		ldr	r3, [r7, #8]
+ 773 0086 BB61     		str	r3, [r7, #24]
+ 262:.\rtu_modbus/process_type_16_message.c ****     acc_struct = find_access_function( working_register, number_of_registers );
+ 774              		.loc 2 262 0
+ 775 0088 786A     		ldr	r0, [r7, #36]
+ 776 008a 396A     		ldr	r1, [r7, #32]
+ 777 008c FFF7FEFF 		bl	find_access_function
+ 778 0090 7861     		str	r0, [r7, #20]
+ 263:.\rtu_modbus/process_type_16_message.c ****     
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 20
+
+
+ 264:.\rtu_modbus/process_type_16_message.c ****     if( acc_struct != NULL )
+ 779              		.loc 2 264 0
+ 780 0092 7B69     		ldr	r3, [r7, #20]
+ 781 0094 002B     		cmp	r3, #0
+ 782 0096 03D0     		beq	.L28
+ 265:.\rtu_modbus/process_type_16_message.c ****     {
+ 266:.\rtu_modbus/process_type_16_message.c ****         swap_type = acc_struct->swap_type;
+ 783              		.loc 2 266 0
+ 784 0098 7B69     		ldr	r3, [r7, #20]
+ 785 009a 9B68     		ldr	r3, [r3, #8]
+ 786 009c BB62     		str	r3, [r7, #40]
+ 787 009e 01E0     		b	.L29
+ 788              	.L28:
+ 267:.\rtu_modbus/process_type_16_message.c ****     }
+ 268:.\rtu_modbus/process_type_16_message.c ****     else
+ 269:.\rtu_modbus/process_type_16_message.c ****     {
+ 270:.\rtu_modbus/process_type_16_message.c ****         swap_type = SWAP_16;
+ 789              		.loc 2 270 0
+ 790 00a0 0023     		movs	r3, #0
+ 791 00a2 BB62     		str	r3, [r7, #40]
+ 792              	.L29:
+ 271:.\rtu_modbus/process_type_16_message.c ****     }
+ 272:.\rtu_modbus/process_type_16_message.c ****         
+ 273:.\rtu_modbus/process_type_16_message.c ****     switch( swap_type)
+ 793              		.loc 2 273 0
+ 794 00a4 BB6A     		ldr	r3, [r7, #40]
+ 795 00a6 002B     		cmp	r3, #0
+ 796 00a8 02D0     		beq	.L31
+ 797 00aa 012B     		cmp	r3, #1
+ 798 00ac 03D0     		beq	.L32
+ 799 00ae 05E0     		b	.L46
+ 800              	.L31:
+ 274:.\rtu_modbus/process_type_16_message.c ****     {
+ 275:.\rtu_modbus/process_type_16_message.c ****             case SWAP_16:
+ 276:.\rtu_modbus/process_type_16_message.c ****                 swap_inc = 2;
+ 801              		.loc 2 276 0
+ 802 00b0 0223     		movs	r3, #2
+ 803 00b2 FB62     		str	r3, [r7, #44]
+ 277:.\rtu_modbus/process_type_16_message.c ****                 break;
+ 804              		.loc 2 277 0
+ 805 00b4 06E0     		b	.L33
+ 806              	.L32:
+ 278:.\rtu_modbus/process_type_16_message.c ****             case SWAP_32:
+ 279:.\rtu_modbus/process_type_16_message.c ****                 swap_inc = 4;
+ 807              		.loc 2 279 0
+ 808 00b6 0423     		movs	r3, #4
+ 809 00b8 FB62     		str	r3, [r7, #44]
+ 280:.\rtu_modbus/process_type_16_message.c ****                 break;
+ 810              		.loc 2 280 0
+ 811 00ba 03E0     		b	.L33
+ 812              	.L46:
+ 281:.\rtu_modbus/process_type_16_message.c ****             default:
+ 282:.\rtu_modbus/process_type_16_message.c ****                 // should not happen
+ 283:.\rtu_modbus/process_type_16_message.c ****                 count = 0;
+ 813              		.loc 2 283 0
+ 814 00bc 0023     		movs	r3, #0
+ 815 00be FB61     		str	r3, [r7, #28]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 21
+
+
+ 284:.\rtu_modbus/process_type_16_message.c ****                 return 0;
+ 816              		.loc 2 284 0
+ 817 00c0 0023     		movs	r3, #0
+ 818 00c2 3AE0     		b	.L34
+ 819              	.L33:
+ 285:.\rtu_modbus/process_type_16_message.c ****     }
+ 286:.\rtu_modbus/process_type_16_message.c ****     for( i = 0; i< number_of_registers*2; i+= swap_inc )
+ 820              		.loc 2 286 0
+ 821 00c4 0023     		movs	r3, #0
+ 822 00c6 3B63     		str	r3, [r7, #48]
+ 823 00c8 19E0     		b	.L35
+ 824              	.L40:
+ 287:.\rtu_modbus/process_type_16_message.c ****     {
+ 288:.\rtu_modbus/process_type_16_message.c ****             switch( swap_type)
+ 825              		.loc 2 288 0
+ 826 00ca BB6A     		ldr	r3, [r7, #40]
+ 827 00cc 002B     		cmp	r3, #0
+ 828 00ce 02D0     		beq	.L37
+ 829 00d0 012B     		cmp	r3, #1
+ 830 00d2 04D0     		beq	.L38
+ 831 00d4 07E0     		b	.L47
+ 832              	.L37:
+ 289:.\rtu_modbus/process_type_16_message.c ****             {
+ 290:.\rtu_modbus/process_type_16_message.c ****                case SWAP_16:
+ 291:.\rtu_modbus/process_type_16_message.c ****                   swap_16( in );
+ 833              		.loc 2 291 0
+ 834 00d6 B868     		ldr	r0, [r7, #8]
+ 835 00d8 FFF7FEFF 		bl	swap_16
+ 292:.\rtu_modbus/process_type_16_message.c ****                   break;
+ 836              		.loc 2 292 0
+ 837 00dc 07E0     		b	.L39
+ 838              	.L38:
+ 293:.\rtu_modbus/process_type_16_message.c ****                case SWAP_32:
+ 294:.\rtu_modbus/process_type_16_message.c ****                  swap_32( in);
+ 839              		.loc 2 294 0
+ 840 00de B868     		ldr	r0, [r7, #8]
+ 841 00e0 FFF7FEFF 		bl	swap_32
+ 295:.\rtu_modbus/process_type_16_message.c ****                  break;
+ 842              		.loc 2 295 0
+ 843 00e4 03E0     		b	.L39
+ 844              	.L47:
+ 296:.\rtu_modbus/process_type_16_message.c ****             default:
+ 297:.\rtu_modbus/process_type_16_message.c ****                 // should not happen
+ 298:.\rtu_modbus/process_type_16_message.c ****                 count = 0;
+ 845              		.loc 2 298 0
+ 846 00e6 0023     		movs	r3, #0
+ 847 00e8 FB61     		str	r3, [r7, #28]
+ 299:.\rtu_modbus/process_type_16_message.c ****                 return 0;
+ 848              		.loc 2 299 0
+ 849 00ea 0023     		movs	r3, #0
+ 850 00ec 25E0     		b	.L34
+ 851              	.L39:
+ 300:.\rtu_modbus/process_type_16_message.c ****              }
+ 301:.\rtu_modbus/process_type_16_message.c ****              in += swap_inc;
+ 852              		.loc 2 301 0 discriminator 2
+ 853 00ee BA68     		ldr	r2, [r7, #8]
+ 854 00f0 FB6A     		ldr	r3, [r7, #44]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 22
+
+
+ 855 00f2 1344     		add	r3, r3, r2
+ 856 00f4 BB60     		str	r3, [r7, #8]
+ 286:.\rtu_modbus/process_type_16_message.c ****     {
+ 857              		.loc 2 286 0 discriminator 2
+ 858 00f6 3A6B     		ldr	r2, [r7, #48]
+ 859 00f8 FB6A     		ldr	r3, [r7, #44]
+ 860 00fa 1344     		add	r3, r3, r2
+ 861 00fc 3B63     		str	r3, [r7, #48]
+ 862              	.L35:
+ 286:.\rtu_modbus/process_type_16_message.c ****     {
+ 863              		.loc 2 286 0 is_stmt 0 discriminator 1
+ 864 00fe 3B6A     		ldr	r3, [r7, #32]
+ 865 0100 5A00     		lsls	r2, r3, #1
+ 866 0102 3B6B     		ldr	r3, [r7, #48]
+ 867 0104 9A42     		cmp	r2, r3
+ 868 0106 E0D8     		bhi	.L40
+ 302:.\rtu_modbus/process_type_16_message.c ****      }
+ 303:.\rtu_modbus/process_type_16_message.c ****          
+ 304:.\rtu_modbus/process_type_16_message.c ****      if( acc_struct != NULL )
+ 869              		.loc 2 304 0 is_stmt 1
+ 870 0108 7B69     		ldr	r3, [r7, #20]
+ 871 010a 002B     		cmp	r3, #0
+ 872 010c 0CD0     		beq	.L41
+ 305:.\rtu_modbus/process_type_16_message.c ****      {
+ 306:.\rtu_modbus/process_type_16_message.c ****         if( acc_struct->access( ref_pointer ) )
+ 873              		.loc 2 306 0
+ 874 010e 7B69     		ldr	r3, [r7, #20]
+ 875 0110 DB68     		ldr	r3, [r3, #12]
+ 876 0112 B869     		ldr	r0, [r7, #24]
+ 877 0114 9847     		blx	r3
+ 878 0116 0346     		mov	r3, r0
+ 879 0118 002B     		cmp	r3, #0
+ 880 011a 02D0     		beq	.L42
+ 307:.\rtu_modbus/process_type_16_message.c ****         {
+ 308:.\rtu_modbus/process_type_16_message.c ****             return_value = count;
+ 881              		.loc 2 308 0
+ 882 011c FB69     		ldr	r3, [r7, #28]
+ 883 011e 7B63     		str	r3, [r7, #52]
+ 884 0120 04E0     		b	.L44
+ 885              	.L42:
+ 309:.\rtu_modbus/process_type_16_message.c ****         }
+ 310:.\rtu_modbus/process_type_16_message.c ****         else
+ 311:.\rtu_modbus/process_type_16_message.c ****         {
+ 312:.\rtu_modbus/process_type_16_message.c ****            return_value = 0;
+ 886              		.loc 2 312 0
+ 887 0122 0023     		movs	r3, #0
+ 888 0124 7B63     		str	r3, [r7, #52]
+ 889 0126 01E0     		b	.L44
+ 890              	.L41:
+ 313:.\rtu_modbus/process_type_16_message.c ****         }
+ 314:.\rtu_modbus/process_type_16_message.c ****     }
+ 315:.\rtu_modbus/process_type_16_message.c ****     else
+ 316:.\rtu_modbus/process_type_16_message.c ****     {
+ 317:.\rtu_modbus/process_type_16_message.c ****         return_value = 0;
+ 891              		.loc 2 317 0
+ 892 0128 0023     		movs	r3, #0
+ 893 012a 7B63     		str	r3, [r7, #52]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 23
+
+
+ 894              	.L44:
+ 318:.\rtu_modbus/process_type_16_message.c ****  #if 0
+ 319:.\rtu_modbus/process_type_16_message.c ****       if( store_modbus_data_registers( working_register, number_of_registers, (uint16 *) ref_pointe
+ 320:.\rtu_modbus/process_type_16_message.c ****       {
+ 321:.\rtu_modbus/process_type_16_message.c ****         return_value = count;
+ 322:.\rtu_modbus/process_type_16_message.c ****       }
+ 323:.\rtu_modbus/process_type_16_message.c ****       else
+ 324:.\rtu_modbus/process_type_16_message.c ****       {
+ 325:.\rtu_modbus/process_type_16_message.c ****         return_value = 0;
+ 326:.\rtu_modbus/process_type_16_message.c ****       }
+ 327:.\rtu_modbus/process_type_16_message.c **** #endif
+ 328:.\rtu_modbus/process_type_16_message.c ****     }
+ 329:.\rtu_modbus/process_type_16_message.c ****     if( return_value > 200 )
+ 895              		.loc 2 329 0
+ 896 012c 7B6B     		ldr	r3, [r7, #52]
+ 897 012e C82B     		cmp	r3, #200
+ 898 0130 02DD     		ble	.L45
+ 330:.\rtu_modbus/process_type_16_message.c ****     {
+ 331:.\rtu_modbus/process_type_16_message.c ****         CYASSERT(0);
+ 899              		.loc 2 331 0 discriminator 1
+ 900 0132 0020     		movs	r0, #0
+ 901 0134 FFF7FEFF 		bl	CyHalt
+ 902              	.L45:
+ 332:.\rtu_modbus/process_type_16_message.c ****     }
+ 333:.\rtu_modbus/process_type_16_message.c ****     return return_value;
+ 903              		.loc 2 333 0
+ 904 0138 7B6B     		ldr	r3, [r7, #52]
+ 905              	.L34:
+ 334:.\rtu_modbus/process_type_16_message.c ****    
+ 335:.\rtu_modbus/process_type_16_message.c **** }    
+ 906              		.loc 2 335 0
+ 907 013a 1846     		mov	r0, r3
+ 908 013c 3837     		adds	r7, r7, #56
+ 909              		.cfi_def_cfa_offset 8
+ 910 013e BD46     		mov	sp, r7
+ 911              		.cfi_def_cfa_register 13
+ 912              		@ sp needed
+ 913 0140 80BD     		pop	{r7, pc}
+ 914              		.cfi_endproc
+ 915              	.LFE76:
+ 916              		.size	process_type_16_message, .-process_type_16_message
+ 917 0142 00BF     		.section	.text.find_access_function,"ax",%progbits
+ 918              		.align	2
+ 919              		.thumb
+ 920              		.thumb_func
+ 921              		.type	find_access_function, %function
+ 922              	find_access_function:
+ 923              	.LFB77:
+ 336:.\rtu_modbus/process_type_16_message.c ****                                                     
+ 337:.\rtu_modbus/process_type_16_message.c **** const TYPE_16_STRUCT * find_access_function( unsigned start_register, unsigned number )
+ 338:.\rtu_modbus/process_type_16_message.c **** {
+ 924              		.loc 2 338 0
+ 925              		.cfi_startproc
+ 926              		@ args = 0, pretend = 0, frame = 16
+ 927              		@ frame_needed = 1, uses_anonymous_args = 0
+ 928              		@ link register save eliminated.
+ 929 0000 80B4     		push	{r7}
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 24
+
+
+ 930              		.cfi_def_cfa_offset 4
+ 931              		.cfi_offset 7, -4
+ 932 0002 85B0     		sub	sp, sp, #20
+ 933              		.cfi_def_cfa_offset 24
+ 934 0004 00AF     		add	r7, sp, #0
+ 935              		.cfi_def_cfa_register 7
+ 936 0006 7860     		str	r0, [r7, #4]
+ 937 0008 3960     		str	r1, [r7]
+ 339:.\rtu_modbus/process_type_16_message.c ****    unsigned i;
+ 340:.\rtu_modbus/process_type_16_message.c ****    const TYPE_16_STRUCT *access_ptr;
+ 341:.\rtu_modbus/process_type_16_message.c ****    
+ 342:.\rtu_modbus/process_type_16_message.c ****    access_ptr = &type_16_access_functions[0];
+ 938              		.loc 2 342 0
+ 939 000a 104B     		ldr	r3, .L53
+ 940 000c BB60     		str	r3, [r7, #8]
+ 343:.\rtu_modbus/process_type_16_message.c ****    for( i = 0; i < TABLE_LENGTH; i++ )
+ 941              		.loc 2 343 0
+ 942 000e 0023     		movs	r3, #0
+ 943 0010 FB60     		str	r3, [r7, #12]
+ 944 0012 11E0     		b	.L49
+ 945              	.L52:
+ 344:.\rtu_modbus/process_type_16_message.c ****    {
+ 345:.\rtu_modbus/process_type_16_message.c ****        if( (  access_ptr->start_register == start_register ) && (access_ptr->register_count == numb
+ 946              		.loc 2 345 0
+ 947 0014 BB68     		ldr	r3, [r7, #8]
+ 948 0016 1A68     		ldr	r2, [r3]
+ 949 0018 7B68     		ldr	r3, [r7, #4]
+ 950 001a 9A42     		cmp	r2, r3
+ 951 001c 06D1     		bne	.L50
+ 952              		.loc 2 345 0 is_stmt 0 discriminator 1
+ 953 001e BB68     		ldr	r3, [r7, #8]
+ 954 0020 5A68     		ldr	r2, [r3, #4]
+ 955 0022 3B68     		ldr	r3, [r7]
+ 956 0024 9A42     		cmp	r2, r3
+ 957 0026 01D1     		bne	.L50
+ 346:.\rtu_modbus/process_type_16_message.c ****        {
+ 347:.\rtu_modbus/process_type_16_message.c ****           return access_ptr;
+ 958              		.loc 2 347 0 is_stmt 1
+ 959 0028 BB68     		ldr	r3, [r7, #8]
+ 960 002a 09E0     		b	.L51
+ 961              	.L50:
+ 348:.\rtu_modbus/process_type_16_message.c ****        }
+ 349:.\rtu_modbus/process_type_16_message.c ****        else
+ 350:.\rtu_modbus/process_type_16_message.c ****        {
+ 351:.\rtu_modbus/process_type_16_message.c ****           access_ptr++;
+ 962              		.loc 2 351 0 discriminator 2
+ 963 002c BB68     		ldr	r3, [r7, #8]
+ 964 002e 1033     		adds	r3, r3, #16
+ 965 0030 BB60     		str	r3, [r7, #8]
+ 343:.\rtu_modbus/process_type_16_message.c ****    {
+ 966              		.loc 2 343 0 discriminator 2
+ 967 0032 FB68     		ldr	r3, [r7, #12]
+ 968 0034 0133     		adds	r3, r3, #1
+ 969 0036 FB60     		str	r3, [r7, #12]
+ 970              	.L49:
+ 343:.\rtu_modbus/process_type_16_message.c ****    {
+ 971              		.loc 2 343 0 is_stmt 0 discriminator 1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 25
+
+
+ 972 0038 FB68     		ldr	r3, [r7, #12]
+ 973 003a 002B     		cmp	r3, #0
+ 974 003c EAD0     		beq	.L52
+ 352:.\rtu_modbus/process_type_16_message.c ****        }
+ 353:.\rtu_modbus/process_type_16_message.c ****     }
+ 354:.\rtu_modbus/process_type_16_message.c ****     return NULL;
+ 975              		.loc 2 354 0 is_stmt 1
+ 976 003e 0023     		movs	r3, #0
+ 977              	.L51:
+ 355:.\rtu_modbus/process_type_16_message.c ****     
+ 356:.\rtu_modbus/process_type_16_message.c ****     
+ 357:.\rtu_modbus/process_type_16_message.c **** } ...
+ 978              		.loc 2 357 0
+ 979 0040 1846     		mov	r0, r3
+ 980 0042 1437     		adds	r7, r7, #20
+ 981              		.cfi_def_cfa_offset 4
+ 982 0044 BD46     		mov	sp, r7
+ 983              		.cfi_def_cfa_register 13
+ 984              		@ sp needed
+ 985 0046 5DF8047B 		ldr	r7, [sp], #4
+ 986              		.cfi_restore 7
+ 987              		.cfi_def_cfa_offset 0
+ 988 004a 7047     		bx	lr
+ 989              	.L54:
+ 990              		.align	2
+ 991              	.L53:
+ 992 004c 00000000 		.word	type_16_access_functions
+ 993              		.cfi_endproc
+ 994              	.LFE77:
+ 995              		.size	find_access_function, .-find_access_function
+ 996              		.text
+ 997              	.Letext0:
+ 998              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 999              		.file 4 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 1000              		.file 5 "Generated_Source\\PSoC5/cytypes.h"
+ 1001              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 1002              		.file 7 ".\\rtu_modbus\\process_modbus_message.h"
+ 1003              		.section	.debug_info,"",%progbits
+ 1004              	.Ldebug_info0:
+ 1005 0000 A0050000 		.4byte	0x5a0
+ 1006 0004 0400     		.2byte	0x4
+ 1007 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1008 000a 04       		.byte	0x4
+ 1009 000b 01       		.uleb128 0x1
+ 1010 000c 32010000 		.4byte	.LASF64
+ 1011 0010 01       		.byte	0x1
+ 1012 0011 1E020000 		.4byte	.LASF65
+ 1013 0015 85020000 		.4byte	.LASF66
+ 1014 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1015 001d 00000000 		.4byte	0
+ 1016 0021 00000000 		.4byte	.Ldebug_line0
+ 1017 0025 02       		.uleb128 0x2
+ 1018 0026 01       		.byte	0x1
+ 1019 0027 06       		.byte	0x6
+ 1020 0028 5B020000 		.4byte	.LASF0
+ 1021 002c 02       		.uleb128 0x2
+ 1022 002d 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 26
+
+
+ 1023 002e 08       		.byte	0x8
+ 1024 002f 10020000 		.4byte	.LASF1
+ 1025 0033 02       		.uleb128 0x2
+ 1026 0034 02       		.byte	0x2
+ 1027 0035 05       		.byte	0x5
+ 1028 0036 68000000 		.4byte	.LASF2
+ 1029 003a 02       		.uleb128 0x2
+ 1030 003b 02       		.byte	0x2
+ 1031 003c 07       		.byte	0x7
+ 1032 003d 1C030000 		.4byte	.LASF3
+ 1033 0041 03       		.uleb128 0x3
+ 1034 0042 D6030000 		.4byte	.LASF9
+ 1035 0046 03       		.byte	0x3
+ 1036 0047 3F       		.byte	0x3f
+ 1037 0048 4C000000 		.4byte	0x4c
+ 1038 004c 02       		.uleb128 0x2
+ 1039 004d 04       		.byte	0x4
+ 1040 004e 05       		.byte	0x5
+ 1041 004f 4F030000 		.4byte	.LASF4
+ 1042 0053 02       		.uleb128 0x2
+ 1043 0054 04       		.byte	0x4
+ 1044 0055 07       		.byte	0x7
+ 1045 0056 A1030000 		.4byte	.LASF5
+ 1046 005a 02       		.uleb128 0x2
+ 1047 005b 08       		.byte	0x8
+ 1048 005c 05       		.byte	0x5
+ 1049 005d EA000000 		.4byte	.LASF6
+ 1050 0061 02       		.uleb128 0x2
+ 1051 0062 08       		.byte	0x8
+ 1052 0063 07       		.byte	0x7
+ 1053 0064 6E020000 		.4byte	.LASF7
+ 1054 0068 04       		.uleb128 0x4
+ 1055 0069 04       		.byte	0x4
+ 1056 006a 05       		.byte	0x5
+ 1057 006b 696E7400 		.ascii	"int\000"
+ 1058 006f 02       		.uleb128 0x2
+ 1059 0070 04       		.byte	0x4
+ 1060 0071 07       		.byte	0x7
+ 1061 0072 CA020000 		.4byte	.LASF8
+ 1062 0076 03       		.uleb128 0x3
+ 1063 0077 6F030000 		.4byte	.LASF10
+ 1064 007b 04       		.byte	0x4
+ 1065 007c 2C       		.byte	0x2c
+ 1066 007d 41000000 		.4byte	0x41
+ 1067 0081 05       		.uleb128 0x5
+ 1068 0082 C9000000 		.4byte	.LASF11
+ 1069 0086 05       		.byte	0x5
+ 1070 0087 9201     		.2byte	0x192
+ 1071 0089 2C000000 		.4byte	0x2c
+ 1072 008d 05       		.uleb128 0x5
+ 1073 008e B3000000 		.4byte	.LASF12
+ 1074 0092 05       		.byte	0x5
+ 1075 0093 9301     		.2byte	0x193
+ 1076 0095 3A000000 		.4byte	0x3a
+ 1077 0099 05       		.uleb128 0x5
+ 1078 009a 9A030000 		.4byte	.LASF13
+ 1079 009e 05       		.byte	0x5
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 27
+
+
+ 1080 009f 9401     		.2byte	0x194
+ 1081 00a1 53000000 		.4byte	0x53
+ 1082 00a5 02       		.uleb128 0x2
+ 1083 00a6 04       		.byte	0x4
+ 1084 00a7 04       		.byte	0x4
+ 1085 00a8 E4000000 		.4byte	.LASF14
+ 1086 00ac 02       		.uleb128 0x2
+ 1087 00ad 08       		.byte	0x8
+ 1088 00ae 04       		.byte	0x4
+ 1089 00af B3030000 		.4byte	.LASF15
+ 1090 00b3 02       		.uleb128 0x2
+ 1091 00b4 01       		.byte	0x1
+ 1092 00b5 08       		.byte	0x8
+ 1093 00b6 4A030000 		.4byte	.LASF16
+ 1094 00ba 02       		.uleb128 0x2
+ 1095 00bb 04       		.byte	0x4
+ 1096 00bc 07       		.byte	0x7
+ 1097 00bd EC030000 		.4byte	.LASF17
+ 1098 00c1 03       		.uleb128 0x3
+ 1099 00c2 78000000 		.4byte	.LASF18
+ 1100 00c6 02       		.byte	0x2
+ 1101 00c7 36       		.byte	0x36
+ 1102 00c8 CC000000 		.4byte	0xcc
+ 1103 00cc 06       		.uleb128 0x6
+ 1104 00cd 04       		.byte	0x4
+ 1105 00ce D2000000 		.4byte	0xd2
+ 1106 00d2 07       		.uleb128 0x7
+ 1107 00d3 8D000000 		.4byte	0x8d
+ 1108 00d7 E1000000 		.4byte	0xe1
+ 1109 00db 08       		.uleb128 0x8
+ 1110 00dc E1000000 		.4byte	0xe1
+ 1111 00e0 00       		.byte	0
+ 1112 00e1 06       		.uleb128 0x6
+ 1113 00e2 04       		.byte	0x4
+ 1114 00e3 81000000 		.4byte	0x81
+ 1115 00e7 09       		.uleb128 0x9
+ 1116 00e8 10       		.byte	0x10
+ 1117 00e9 02       		.byte	0x2
+ 1118 00ea 38       		.byte	0x38
+ 1119 00eb 20010000 		.4byte	0x120
+ 1120 00ef 0A       		.uleb128 0xa
+ 1121 00f0 4C020000 		.4byte	.LASF19
+ 1122 00f4 02       		.byte	0x2
+ 1123 00f5 3A       		.byte	0x3a
+ 1124 00f6 6F000000 		.4byte	0x6f
+ 1125 00fa 00       		.byte	0
+ 1126 00fb 0A       		.uleb128 0xa
+ 1127 00fc 0E010000 		.4byte	.LASF20
+ 1128 0100 02       		.byte	0x2
+ 1129 0101 3B       		.byte	0x3b
+ 1130 0102 6F000000 		.4byte	0x6f
+ 1131 0106 04       		.byte	0x4
+ 1132 0107 0A       		.uleb128 0xa
+ 1133 0108 7D030000 		.4byte	.LASF21
+ 1134 010c 02       		.byte	0x2
+ 1135 010d 3C       		.byte	0x3c
+ 1136 010e 6F000000 		.4byte	0x6f
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 28
+
+
+ 1137 0112 08       		.byte	0x8
+ 1138 0113 0A       		.uleb128 0xa
+ 1139 0114 45020000 		.4byte	.LASF22
+ 1140 0118 02       		.byte	0x2
+ 1141 0119 3D       		.byte	0x3d
+ 1142 011a C1000000 		.4byte	0xc1
+ 1143 011e 0C       		.byte	0xc
+ 1144 011f 00       		.byte	0
+ 1145 0120 03       		.uleb128 0x3
+ 1146 0121 BA000000 		.4byte	.LASF23
+ 1147 0125 02       		.byte	0x2
+ 1148 0126 3F       		.byte	0x3f
+ 1149 0127 E7000000 		.4byte	0xe7
+ 1150 012b 0B       		.uleb128 0xb
+ 1151 012c FA010000 		.4byte	.LASF26
+ 1152 0130 01       		.byte	0x1
+ 1153 0131 12       		.byte	0x12
+ 1154 0132 00000000 		.4byte	.LFB65
+ 1155 0136 36000000 		.4byte	.LFE65-.LFB65
+ 1156 013a 01       		.uleb128 0x1
+ 1157 013b 9C       		.byte	0x9c
+ 1158 013c 6B010000 		.4byte	0x16b
+ 1159 0140 0C       		.uleb128 0xc
+ 1160 0141 72000000 		.4byte	.LASF28
+ 1161 0145 01       		.byte	0x1
+ 1162 0146 12       		.byte	0x12
+ 1163 0147 E1000000 		.4byte	0xe1
+ 1164 014b 02       		.uleb128 0x2
+ 1165 014c 91       		.byte	0x91
+ 1166 014d 6C       		.sleb128 -20
+ 1167 014e 0D       		.uleb128 0xd
+ 1168 014f 02020000 		.4byte	.LASF24
+ 1169 0153 01       		.byte	0x1
+ 1170 0154 15       		.byte	0x15
+ 1171 0155 6B010000 		.4byte	0x16b
+ 1172 0159 02       		.uleb128 0x2
+ 1173 015a 91       		.byte	0x91
+ 1174 015b 74       		.sleb128 -12
+ 1175 015c 0D       		.uleb128 0xd
+ 1176 015d 63000000 		.4byte	.LASF25
+ 1177 0161 01       		.byte	0x1
+ 1178 0162 16       		.byte	0x16
+ 1179 0163 8D000000 		.4byte	0x8d
+ 1180 0167 02       		.uleb128 0x2
+ 1181 0168 91       		.byte	0x91
+ 1182 0169 72       		.sleb128 -14
+ 1183 016a 00       		.byte	0
+ 1184 016b 06       		.uleb128 0x6
+ 1185 016c 04       		.byte	0x4
+ 1186 016d 8D000000 		.4byte	0x8d
+ 1187 0171 0B       		.uleb128 0xb
+ 1188 0172 1D040000 		.4byte	.LASF27
+ 1189 0176 01       		.byte	0x1
+ 1190 0177 20       		.byte	0x20
+ 1191 0178 00000000 		.4byte	.LFB66
+ 1192 017c 42000000 		.4byte	.LFE66-.LFB66
+ 1193 0180 01       		.uleb128 0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 29
+
+
+ 1194 0181 9C       		.byte	0x9c
+ 1195 0182 B1010000 		.4byte	0x1b1
+ 1196 0186 0C       		.uleb128 0xc
+ 1197 0187 72000000 		.4byte	.LASF28
+ 1198 018b 01       		.byte	0x1
+ 1199 018c 20       		.byte	0x20
+ 1200 018d E1000000 		.4byte	0xe1
+ 1201 0191 02       		.uleb128 0x2
+ 1202 0192 91       		.byte	0x91
+ 1203 0193 6C       		.sleb128 -20
+ 1204 0194 0D       		.uleb128 0xd
+ 1205 0195 02020000 		.4byte	.LASF24
+ 1206 0199 01       		.byte	0x1
+ 1207 019a 22       		.byte	0x22
+ 1208 019b B1010000 		.4byte	0x1b1
+ 1209 019f 02       		.uleb128 0x2
+ 1210 01a0 91       		.byte	0x91
+ 1211 01a1 74       		.sleb128 -12
+ 1212 01a2 0D       		.uleb128 0xd
+ 1213 01a3 63000000 		.4byte	.LASF25
+ 1214 01a7 01       		.byte	0x1
+ 1215 01a8 23       		.byte	0x23
+ 1216 01a9 99000000 		.4byte	0x99
+ 1217 01ad 02       		.uleb128 0x2
+ 1218 01ae 91       		.byte	0x91
+ 1219 01af 70       		.sleb128 -16
+ 1220 01b0 00       		.byte	0
+ 1221 01b1 06       		.uleb128 0x6
+ 1222 01b2 04       		.byte	0x4
+ 1223 01b3 99000000 		.4byte	0x99
+ 1224 01b7 0E       		.uleb128 0xe
+ 1225 01b8 BA030000 		.4byte	.LASF30
+ 1226 01bc 02       		.byte	0x2
+ 1227 01bd 42       		.byte	0x42
+ 1228 01be 8D000000 		.4byte	0x8d
+ 1229 01c2 00000000 		.4byte	.LFB67
+ 1230 01c6 36000000 		.4byte	.LFE67-.LFB67
+ 1231 01ca 01       		.uleb128 0x1
+ 1232 01cb 9C       		.byte	0x9c
+ 1233 01cc ED010000 		.4byte	0x1ed
+ 1234 01d0 0C       		.uleb128 0xc
+ 1235 01d1 8C030000 		.4byte	.LASF29
+ 1236 01d5 02       		.byte	0x2
+ 1237 01d6 42       		.byte	0x42
+ 1238 01d7 E1000000 		.4byte	0xe1
+ 1239 01db 02       		.uleb128 0x2
+ 1240 01dc 91       		.byte	0x91
+ 1241 01dd 6C       		.sleb128 -20
+ 1242 01de 0D       		.uleb128 0xd
+ 1243 01df 63000000 		.4byte	.LASF25
+ 1244 01e3 02       		.byte	0x2
+ 1245 01e4 44       		.byte	0x44
+ 1246 01e5 8D000000 		.4byte	0x8d
+ 1247 01e9 02       		.uleb128 0x2
+ 1248 01ea 91       		.byte	0x91
+ 1249 01eb 76       		.sleb128 -10
+ 1250 01ec 00       		.byte	0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 30
+
+
+ 1251 01ed 0E       		.uleb128 0xe
+ 1252 01ee CF000000 		.4byte	.LASF31
+ 1253 01f2 02       		.byte	0x2
+ 1254 01f3 4F       		.byte	0x4f
+ 1255 01f4 8D000000 		.4byte	0x8d
+ 1256 01f8 00000000 		.4byte	.LFB68
+ 1257 01fc 24000000 		.4byte	.LFE68-.LFB68
+ 1258 0200 01       		.uleb128 0x1
+ 1259 0201 9C       		.byte	0x9c
+ 1260 0202 23020000 		.4byte	0x223
+ 1261 0206 0C       		.uleb128 0xc
+ 1262 0207 8C030000 		.4byte	.LASF29
+ 1263 020b 02       		.byte	0x2
+ 1264 020c 4F       		.byte	0x4f
+ 1265 020d E1000000 		.4byte	0xe1
+ 1266 0211 02       		.uleb128 0x2
+ 1267 0212 91       		.byte	0x91
+ 1268 0213 6C       		.sleb128 -20
+ 1269 0214 0D       		.uleb128 0xd
+ 1270 0215 63000000 		.4byte	.LASF25
+ 1271 0219 02       		.byte	0x2
+ 1272 021a 51       		.byte	0x51
+ 1273 021b 8D000000 		.4byte	0x8d
+ 1274 021f 02       		.uleb128 0x2
+ 1275 0220 91       		.byte	0x91
+ 1276 0221 76       		.sleb128 -10
+ 1277 0222 00       		.byte	0
+ 1278 0223 0E       		.uleb128 0xe
+ 1279 0224 F8000000 		.4byte	.LASF32
+ 1280 0228 02       		.byte	0x2
+ 1281 0229 59       		.byte	0x59
+ 1282 022a 8D000000 		.4byte	0x8d
+ 1283 022e 00000000 		.4byte	.LFB69
+ 1284 0232 24000000 		.4byte	.LFE69-.LFB69
+ 1285 0236 01       		.uleb128 0x1
+ 1286 0237 9C       		.byte	0x9c
+ 1287 0238 59020000 		.4byte	0x259
+ 1288 023c 0C       		.uleb128 0xc
+ 1289 023d 8C030000 		.4byte	.LASF29
+ 1290 0241 02       		.byte	0x2
+ 1291 0242 59       		.byte	0x59
+ 1292 0243 E1000000 		.4byte	0xe1
+ 1293 0247 02       		.uleb128 0x2
+ 1294 0248 91       		.byte	0x91
+ 1295 0249 6C       		.sleb128 -20
+ 1296 024a 0D       		.uleb128 0xd
+ 1297 024b 63000000 		.4byte	.LASF25
+ 1298 024f 02       		.byte	0x2
+ 1299 0250 5B       		.byte	0x5b
+ 1300 0251 8D000000 		.4byte	0x8d
+ 1301 0255 02       		.uleb128 0x2
+ 1302 0256 91       		.byte	0x91
+ 1303 0257 76       		.sleb128 -10
+ 1304 0258 00       		.byte	0
+ 1305 0259 0E       		.uleb128 0xe
+ 1306 025a D7020000 		.4byte	.LASF33
+ 1307 025e 02       		.byte	0x2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 31
+
+
+ 1308 025f 66       		.byte	0x66
+ 1309 0260 8D000000 		.4byte	0x8d
+ 1310 0264 00000000 		.4byte	.LFB70
+ 1311 0268 96000000 		.4byte	.LFE70-.LFB70
+ 1312 026c 01       		.uleb128 0x1
+ 1313 026d 9C       		.byte	0x9c
+ 1314 026e E3020000 		.4byte	0x2e3
+ 1315 0272 0C       		.uleb128 0xc
+ 1316 0273 8C030000 		.4byte	.LASF29
+ 1317 0277 02       		.byte	0x2
+ 1318 0278 66       		.byte	0x66
+ 1319 0279 E1000000 		.4byte	0xe1
+ 1320 027d 02       		.uleb128 0x2
+ 1321 027e 91       		.byte	0x91
+ 1322 027f 64       		.sleb128 -28
+ 1323 0280 0D       		.uleb128 0xd
+ 1324 0281 87030000 		.4byte	.LASF34
+ 1325 0285 02       		.byte	0x2
+ 1326 0286 68       		.byte	0x68
+ 1327 0287 6B010000 		.4byte	0x16b
+ 1328 028b 02       		.uleb128 0x2
+ 1329 028c 91       		.byte	0x91
+ 1330 028d 74       		.sleb128 -12
+ 1331 028e 0D       		.uleb128 0xd
+ 1332 028f 67020000 		.4byte	.LASF35
+ 1333 0293 02       		.byte	0x2
+ 1334 0294 69       		.byte	0x69
+ 1335 0295 8D000000 		.4byte	0x8d
+ 1336 0299 02       		.uleb128 0x2
+ 1337 029a 91       		.byte	0x91
+ 1338 029b 68       		.sleb128 -24
+ 1339 029c 0D       		.uleb128 0xd
+ 1340 029d 93030000 		.4byte	.LASF36
+ 1341 02a1 02       		.byte	0x2
+ 1342 02a2 6A       		.byte	0x6a
+ 1343 02a3 8D000000 		.4byte	0x8d
+ 1344 02a7 02       		.uleb128 0x2
+ 1345 02a8 91       		.byte	0x91
+ 1346 02a9 6A       		.sleb128 -22
+ 1347 02aa 0D       		.uleb128 0xd
+ 1348 02ab 0B020000 		.4byte	.LASF37
+ 1349 02af 02       		.byte	0x2
+ 1350 02b0 6B       		.byte	0x6b
+ 1351 02b1 8D000000 		.4byte	0x8d
+ 1352 02b5 02       		.uleb128 0x2
+ 1353 02b6 91       		.byte	0x91
+ 1354 02b7 6C       		.sleb128 -20
+ 1355 02b8 0F       		.uleb128 0xf
+ 1356 02b9 64617900 		.ascii	"day\000"
+ 1357 02bd 02       		.byte	0x2
+ 1358 02be 6C       		.byte	0x6c
+ 1359 02bf 8D000000 		.4byte	0x8d
+ 1360 02c3 02       		.uleb128 0x2
+ 1361 02c4 91       		.byte	0x91
+ 1362 02c5 6E       		.sleb128 -18
+ 1363 02c6 0D       		.uleb128 0xd
+ 1364 02c7 77030000 		.4byte	.LASF38
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 32
+
+
+ 1365 02cb 02       		.byte	0x2
+ 1366 02cc 6D       		.byte	0x6d
+ 1367 02cd 8D000000 		.4byte	0x8d
+ 1368 02d1 02       		.uleb128 0x2
+ 1369 02d2 91       		.byte	0x91
+ 1370 02d3 70       		.sleb128 -16
+ 1371 02d4 0D       		.uleb128 0xd
+ 1372 02d5 2F030000 		.4byte	.LASF39
+ 1373 02d9 02       		.byte	0x2
+ 1374 02da 6E       		.byte	0x6e
+ 1375 02db 8D000000 		.4byte	0x8d
+ 1376 02df 02       		.uleb128 0x2
+ 1377 02e0 91       		.byte	0x91
+ 1378 02e1 72       		.sleb128 -14
+ 1379 02e2 00       		.byte	0
+ 1380 02e3 0E       		.uleb128 0xe
+ 1381 02e4 34030000 		.4byte	.LASF40
+ 1382 02e8 02       		.byte	0x2
+ 1383 02e9 84       		.byte	0x84
+ 1384 02ea 8D000000 		.4byte	0x8d
+ 1385 02ee 00000000 		.4byte	.LFB71
+ 1386 02f2 48000000 		.4byte	.LFE71-.LFB71
+ 1387 02f6 01       		.uleb128 0x1
+ 1388 02f7 9C       		.byte	0x9c
+ 1389 02f8 27030000 		.4byte	0x327
+ 1390 02fc 0C       		.uleb128 0xc
+ 1391 02fd 8C030000 		.4byte	.LASF29
+ 1392 0301 02       		.byte	0x2
+ 1393 0302 84       		.byte	0x84
+ 1394 0303 E1000000 		.4byte	0xe1
+ 1395 0307 02       		.uleb128 0x2
+ 1396 0308 91       		.byte	0x91
+ 1397 0309 6C       		.sleb128 -20
+ 1398 030a 0D       		.uleb128 0xd
+ 1399 030b F5030000 		.4byte	.LASF41
+ 1400 030f 02       		.byte	0x2
+ 1401 0310 86       		.byte	0x86
+ 1402 0311 8D000000 		.4byte	0x8d
+ 1403 0315 02       		.uleb128 0x2
+ 1404 0316 91       		.byte	0x91
+ 1405 0317 74       		.sleb128 -12
+ 1406 0318 0D       		.uleb128 0xd
+ 1407 0319 EE020000 		.4byte	.LASF42
+ 1408 031d 02       		.byte	0x2
+ 1409 031e 87       		.byte	0x87
+ 1410 031f 8D000000 		.4byte	0x8d
+ 1411 0323 02       		.uleb128 0x2
+ 1412 0324 91       		.byte	0x91
+ 1413 0325 76       		.sleb128 -10
+ 1414 0326 00       		.byte	0
+ 1415 0327 0E       		.uleb128 0xe
+ 1416 0328 25040000 		.4byte	.LASF43
+ 1417 032c 02       		.byte	0x2
+ 1418 032d A5       		.byte	0xa5
+ 1419 032e 8D000000 		.4byte	0x8d
+ 1420 0332 00000000 		.4byte	.LFB72
+ 1421 0336 3A000000 		.4byte	.LFE72-.LFB72
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 33
+
+
+ 1422 033a 01       		.uleb128 0x1
+ 1423 033b 9C       		.byte	0x9c
+ 1424 033c 6B030000 		.4byte	0x36b
+ 1425 0340 0C       		.uleb128 0xc
+ 1426 0341 8C030000 		.4byte	.LASF29
+ 1427 0345 02       		.byte	0x2
+ 1428 0346 A5       		.byte	0xa5
+ 1429 0347 E1000000 		.4byte	0xe1
+ 1430 034b 02       		.uleb128 0x2
+ 1431 034c 91       		.byte	0x91
+ 1432 034d 6C       		.sleb128 -20
+ 1433 034e 0D       		.uleb128 0xd
+ 1434 034f C3020000 		.4byte	.LASF44
+ 1435 0353 02       		.byte	0x2
+ 1436 0354 A7       		.byte	0xa7
+ 1437 0355 99000000 		.4byte	0x99
+ 1438 0359 02       		.uleb128 0x2
+ 1439 035a 91       		.byte	0x91
+ 1440 035b 74       		.sleb128 -12
+ 1441 035c 0D       		.uleb128 0xd
+ 1442 035d 00000000 		.4byte	.LASF45
+ 1443 0361 02       		.byte	0x2
+ 1444 0362 A8       		.byte	0xa8
+ 1445 0363 8D000000 		.4byte	0x8d
+ 1446 0367 02       		.uleb128 0x2
+ 1447 0368 91       		.byte	0x91
+ 1448 0369 72       		.sleb128 -14
+ 1449 036a 00       		.byte	0
+ 1450 036b 0E       		.uleb128 0xe
+ 1451 036c 40000000 		.4byte	.LASF46
+ 1452 0370 02       		.byte	0x2
+ 1453 0371 B2       		.byte	0xb2
+ 1454 0372 8D000000 		.4byte	0x8d
+ 1455 0376 00000000 		.4byte	.LFB73
+ 1456 037a 34000000 		.4byte	.LFE73-.LFB73
+ 1457 037e 01       		.uleb128 0x1
+ 1458 037f 9C       		.byte	0x9c
+ 1459 0380 AF030000 		.4byte	0x3af
+ 1460 0384 0C       		.uleb128 0xc
+ 1461 0385 8C030000 		.4byte	.LASF29
+ 1462 0389 02       		.byte	0x2
+ 1463 038a B2       		.byte	0xb2
+ 1464 038b E1000000 		.4byte	0xe1
+ 1465 038f 02       		.uleb128 0x2
+ 1466 0390 91       		.byte	0x91
+ 1467 0391 6C       		.sleb128 -20
+ 1468 0392 0D       		.uleb128 0xd
+ 1469 0393 C3020000 		.4byte	.LASF44
+ 1470 0397 02       		.byte	0x2
+ 1471 0398 B4       		.byte	0xb4
+ 1472 0399 99000000 		.4byte	0x99
+ 1473 039d 02       		.uleb128 0x2
+ 1474 039e 91       		.byte	0x91
+ 1475 039f 74       		.sleb128 -12
+ 1476 03a0 0D       		.uleb128 0xd
+ 1477 03a1 00000000 		.4byte	.LASF45
+ 1478 03a5 02       		.byte	0x2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 34
+
+
+ 1479 03a6 B5       		.byte	0xb5
+ 1480 03a7 8D000000 		.4byte	0x8d
+ 1481 03ab 02       		.uleb128 0x2
+ 1482 03ac 91       		.byte	0x91
+ 1483 03ad 72       		.sleb128 -14
+ 1484 03ae 00       		.byte	0
+ 1485 03af 0E       		.uleb128 0xe
+ 1486 03b0 07000000 		.4byte	.LASF47
+ 1487 03b4 02       		.byte	0x2
+ 1488 03b5 BF       		.byte	0xbf
+ 1489 03b6 8D000000 		.4byte	0x8d
+ 1490 03ba 00000000 		.4byte	.LFB74
+ 1491 03be 30000000 		.4byte	.LFE74-.LFB74
+ 1492 03c2 01       		.uleb128 0x1
+ 1493 03c3 9C       		.byte	0x9c
+ 1494 03c4 D7030000 		.4byte	0x3d7
+ 1495 03c8 0C       		.uleb128 0xc
+ 1496 03c9 8C030000 		.4byte	.LASF29
+ 1497 03cd 02       		.byte	0x2
+ 1498 03ce BF       		.byte	0xbf
+ 1499 03cf E1000000 		.4byte	0xe1
+ 1500 03d3 02       		.uleb128 0x2
+ 1501 03d4 91       		.byte	0x91
+ 1502 03d5 74       		.sleb128 -12
+ 1503 03d6 00       		.byte	0
+ 1504 03d7 0E       		.uleb128 0xe
+ 1505 03d8 58030000 		.4byte	.LASF48
+ 1506 03dc 02       		.byte	0x2
+ 1507 03dd CB       		.byte	0xcb
+ 1508 03de 8D000000 		.4byte	0x8d
+ 1509 03e2 00000000 		.4byte	.LFB75
+ 1510 03e6 1A000000 		.4byte	.LFE75-.LFB75
+ 1511 03ea 01       		.uleb128 0x1
+ 1512 03eb 9C       		.byte	0x9c
+ 1513 03ec FF030000 		.4byte	0x3ff
+ 1514 03f0 0C       		.uleb128 0xc
+ 1515 03f1 8C030000 		.4byte	.LASF29
+ 1516 03f5 02       		.byte	0x2
+ 1517 03f6 CB       		.byte	0xcb
+ 1518 03f7 E1000000 		.4byte	0xe1
+ 1519 03fb 02       		.uleb128 0x2
+ 1520 03fc 91       		.byte	0x91
+ 1521 03fd 74       		.sleb128 -12
+ 1522 03fe 00       		.byte	0
+ 1523 03ff 10       		.uleb128 0x10
+ 1524 0400 FB020000 		.4byte	.LASF67
+ 1525 0404 02       		.byte	0x2
+ 1526 0405 EB       		.byte	0xeb
+ 1527 0406 68000000 		.4byte	0x68
+ 1528 040a 00000000 		.4byte	.LFB76
+ 1529 040e 42010000 		.4byte	.LFE76-.LFB76
+ 1530 0412 01       		.uleb128 0x1
+ 1531 0413 9C       		.byte	0x9c
+ 1532 0414 CC040000 		.4byte	0x4cc
+ 1533 0418 0C       		.uleb128 0xc
+ 1534 0419 D4010000 		.4byte	.LASF49
+ 1535 041d 02       		.byte	0x2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 35
+
+
+ 1536 041e EB       		.byte	0xeb
+ 1537 041f 68000000 		.4byte	0x68
+ 1538 0423 02       		.uleb128 0x2
+ 1539 0424 91       		.byte	0x91
+ 1540 0425 4C       		.sleb128 -52
+ 1541 0426 11       		.uleb128 0x11
+ 1542 0427 696E00   		.ascii	"in\000"
+ 1543 042a 02       		.byte	0x2
+ 1544 042b EB       		.byte	0xeb
+ 1545 042c E1000000 		.4byte	0xe1
+ 1546 0430 02       		.uleb128 0x2
+ 1547 0431 91       		.byte	0x91
+ 1548 0432 48       		.sleb128 -56
+ 1549 0433 0C       		.uleb128 0xc
+ 1550 0434 E3020000 		.4byte	.LASF50
+ 1551 0438 02       		.byte	0x2
+ 1552 0439 EB       		.byte	0xeb
+ 1553 043a 68000000 		.4byte	0x68
+ 1554 043e 02       		.uleb128 0x2
+ 1555 043f 91       		.byte	0x91
+ 1556 0440 44       		.sleb128 -60
+ 1557 0441 11       		.uleb128 0x11
+ 1558 0442 6F757400 		.ascii	"out\000"
+ 1559 0446 02       		.byte	0x2
+ 1560 0447 EB       		.byte	0xeb
+ 1561 0448 E1000000 		.4byte	0xe1
+ 1562 044c 02       		.uleb128 0x2
+ 1563 044d 91       		.byte	0x91
+ 1564 044e 40       		.sleb128 -64
+ 1565 044f 0D       		.uleb128 0xd
+ 1566 0450 EE020000 		.4byte	.LASF42
+ 1567 0454 02       		.byte	0x2
+ 1568 0455 ED       		.byte	0xed
+ 1569 0456 68000000 		.4byte	0x68
+ 1570 045a 02       		.uleb128 0x2
+ 1571 045b 91       		.byte	0x91
+ 1572 045c 74       		.sleb128 -12
+ 1573 045d 0D       		.uleb128 0xd
+ 1574 045e A2000000 		.4byte	.LASF51
+ 1575 0462 02       		.byte	0x2
+ 1576 0463 EE       		.byte	0xee
+ 1577 0464 6F000000 		.4byte	0x6f
+ 1578 0468 02       		.uleb128 0x2
+ 1579 0469 91       		.byte	0x91
+ 1580 046a 64       		.sleb128 -28
+ 1581 046b 0D       		.uleb128 0xd
+ 1582 046c C0010000 		.4byte	.LASF52
+ 1583 0470 02       		.byte	0x2
+ 1584 0471 EF       		.byte	0xef
+ 1585 0472 6F000000 		.4byte	0x6f
+ 1586 0476 02       		.uleb128 0x2
+ 1587 0477 91       		.byte	0x91
+ 1588 0478 60       		.sleb128 -32
+ 1589 0479 0D       		.uleb128 0xd
+ 1590 047a D0030000 		.4byte	.LASF53
+ 1591 047e 02       		.byte	0x2
+ 1592 047f F0       		.byte	0xf0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 36
+
+
+ 1593 0480 6F000000 		.4byte	0x6f
+ 1594 0484 02       		.uleb128 0x2
+ 1595 0485 91       		.byte	0x91
+ 1596 0486 5C       		.sleb128 -36
+ 1597 0487 0F       		.uleb128 0xf
+ 1598 0488 6900     		.ascii	"i\000"
+ 1599 048a 02       		.byte	0x2
+ 1600 048b F1       		.byte	0xf1
+ 1601 048c 6F000000 		.4byte	0x6f
+ 1602 0490 02       		.uleb128 0x2
+ 1603 0491 91       		.byte	0x91
+ 1604 0492 70       		.sleb128 -16
+ 1605 0493 0D       		.uleb128 0xd
+ 1606 0494 13030000 		.4byte	.LASF54
+ 1607 0498 02       		.byte	0x2
+ 1608 0499 F2       		.byte	0xf2
+ 1609 049a 6F000000 		.4byte	0x6f
+ 1610 049e 02       		.uleb128 0x2
+ 1611 049f 91       		.byte	0x91
+ 1612 04a0 6C       		.sleb128 -20
+ 1613 04a1 0D       		.uleb128 0xd
+ 1614 04a2 7D030000 		.4byte	.LASF21
+ 1615 04a6 02       		.byte	0x2
+ 1616 04a7 F3       		.byte	0xf3
+ 1617 04a8 6F000000 		.4byte	0x6f
+ 1618 04ac 02       		.uleb128 0x2
+ 1619 04ad 91       		.byte	0x91
+ 1620 04ae 68       		.sleb128 -24
+ 1621 04af 0D       		.uleb128 0xd
+ 1622 04b0 58000000 		.4byte	.LASF55
+ 1623 04b4 02       		.byte	0x2
+ 1624 04b5 F4       		.byte	0xf4
+ 1625 04b6 CC040000 		.4byte	0x4cc
+ 1626 04ba 02       		.uleb128 0x2
+ 1627 04bb 91       		.byte	0x91
+ 1628 04bc 54       		.sleb128 -44
+ 1629 04bd 0D       		.uleb128 0xd
+ 1630 04be E0030000 		.4byte	.LASF56
+ 1631 04c2 02       		.byte	0x2
+ 1632 04c3 F5       		.byte	0xf5
+ 1633 04c4 E1000000 		.4byte	0xe1
+ 1634 04c8 02       		.uleb128 0x2
+ 1635 04c9 91       		.byte	0x91
+ 1636 04ca 58       		.sleb128 -40
+ 1637 04cb 00       		.byte	0
+ 1638 04cc 06       		.uleb128 0x6
+ 1639 04cd 04       		.byte	0x4
+ 1640 04ce D2040000 		.4byte	0x4d2
+ 1641 04d2 12       		.uleb128 0x12
+ 1642 04d3 20010000 		.4byte	0x120
+ 1643 04d7 13       		.uleb128 0x13
+ 1644 04d8 1D010000 		.4byte	.LASF57
+ 1645 04dc 02       		.byte	0x2
+ 1646 04dd 5101     		.2byte	0x151
+ 1647 04df CC040000 		.4byte	0x4cc
+ 1648 04e3 00000000 		.4byte	.LFB77
+ 1649 04e7 50000000 		.4byte	.LFE77-.LFB77
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 37
+
+
+ 1650 04eb 01       		.uleb128 0x1
+ 1651 04ec 9C       		.byte	0x9c
+ 1652 04ed 2C050000 		.4byte	0x52c
+ 1653 04f1 14       		.uleb128 0x14
+ 1654 04f2 4C020000 		.4byte	.LASF19
+ 1655 04f6 02       		.byte	0x2
+ 1656 04f7 5101     		.2byte	0x151
+ 1657 04f9 6F000000 		.4byte	0x6f
+ 1658 04fd 02       		.uleb128 0x2
+ 1659 04fe 91       		.byte	0x91
+ 1660 04ff 6C       		.sleb128 -20
+ 1661 0500 14       		.uleb128 0x14
+ 1662 0501 09040000 		.4byte	.LASF58
+ 1663 0505 02       		.byte	0x2
+ 1664 0506 5101     		.2byte	0x151
+ 1665 0508 6F000000 		.4byte	0x6f
+ 1666 050c 02       		.uleb128 0x2
+ 1667 050d 91       		.byte	0x91
+ 1668 050e 68       		.sleb128 -24
+ 1669 050f 15       		.uleb128 0x15
+ 1670 0510 6900     		.ascii	"i\000"
+ 1671 0512 02       		.byte	0x2
+ 1672 0513 5301     		.2byte	0x153
+ 1673 0515 6F000000 		.4byte	0x6f
+ 1674 0519 02       		.uleb128 0x2
+ 1675 051a 91       		.byte	0x91
+ 1676 051b 74       		.sleb128 -12
+ 1677 051c 16       		.uleb128 0x16
+ 1678 051d 97000000 		.4byte	.LASF59
+ 1679 0521 02       		.byte	0x2
+ 1680 0522 5401     		.2byte	0x154
+ 1681 0524 CC040000 		.4byte	0x4cc
+ 1682 0528 02       		.uleb128 0x2
+ 1683 0529 91       		.byte	0x91
+ 1684 052a 70       		.sleb128 -16
+ 1685 052b 00       		.byte	0
+ 1686 052c 17       		.uleb128 0x17
+ 1687 052d 20010000 		.4byte	0x120
+ 1688 0531 3C050000 		.4byte	0x53c
+ 1689 0535 18       		.uleb128 0x18
+ 1690 0536 BA000000 		.4byte	0xba
+ 1691 053a 08       		.byte	0x8
+ 1692 053b 00       		.byte	0
+ 1693 053c 0D       		.uleb128 0xd
+ 1694 053d 7E000000 		.4byte	.LASF60
+ 1695 0541 02       		.byte	0x2
+ 1696 0542 D2       		.byte	0xd2
+ 1697 0543 4D050000 		.4byte	0x54d
+ 1698 0547 05       		.uleb128 0x5
+ 1699 0548 03       		.byte	0x3
+ 1700 0549 00000000 		.4byte	type_16_access_functions
+ 1701 054d 12       		.uleb128 0x12
+ 1702 054e 2C050000 		.4byte	0x52c
+ 1703 0552 19       		.uleb128 0x19
+ 1704 0553 10040000 		.4byte	.LASF61
+ 1705 0557 06       		.byte	0x6
+ 1706 0558 9606     		.2byte	0x696
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 38
+
+
+ 1707 055a 5E050000 		.4byte	0x55e
+ 1708 055e 1A       		.uleb128 0x1a
+ 1709 055f 76000000 		.4byte	0x76
+ 1710 0563 17       		.uleb128 0x17
+ 1711 0564 8D000000 		.4byte	0x8d
+ 1712 0568 73050000 		.4byte	0x573
+ 1713 056c 18       		.uleb128 0x18
+ 1714 056d BA000000 		.4byte	0xba
+ 1715 0571 07       		.byte	0x7
+ 1716 0572 00       		.byte	0
+ 1717 0573 1B       		.uleb128 0x1b
+ 1718 0574 DE010000 		.4byte	.LASF62
+ 1719 0578 07       		.byte	0x7
+ 1720 0579 57       		.byte	0x57
+ 1721 057a 7E050000 		.4byte	0x57e
+ 1722 057e 12       		.uleb128 0x12
+ 1723 057f 63050000 		.4byte	0x563
+ 1724 0583 17       		.uleb128 0x17
+ 1725 0584 8D000000 		.4byte	0x8d
+ 1726 0588 93050000 		.4byte	0x593
+ 1727 058c 18       		.uleb128 0x18
+ 1728 058d BA000000 		.4byte	0xba
+ 1729 0591 01       		.byte	0x1
+ 1730 0592 00       		.byte	0
+ 1731 0593 1B       		.uleb128 0x1b
+ 1732 0594 2C000000 		.4byte	.LASF63
+ 1733 0598 07       		.byte	0x7
+ 1734 0599 5E       		.byte	0x5e
+ 1735 059a 9E050000 		.4byte	0x59e
+ 1736 059e 12       		.uleb128 0x12
+ 1737 059f 83050000 		.4byte	0x583
+ 1738 05a3 00       		.byte	0
+ 1739              		.section	.debug_abbrev,"",%progbits
+ 1740              	.Ldebug_abbrev0:
+ 1741 0000 01       		.uleb128 0x1
+ 1742 0001 11       		.uleb128 0x11
+ 1743 0002 01       		.byte	0x1
+ 1744 0003 25       		.uleb128 0x25
+ 1745 0004 0E       		.uleb128 0xe
+ 1746 0005 13       		.uleb128 0x13
+ 1747 0006 0B       		.uleb128 0xb
+ 1748 0007 03       		.uleb128 0x3
+ 1749 0008 0E       		.uleb128 0xe
+ 1750 0009 1B       		.uleb128 0x1b
+ 1751 000a 0E       		.uleb128 0xe
+ 1752 000b 55       		.uleb128 0x55
+ 1753 000c 17       		.uleb128 0x17
+ 1754 000d 11       		.uleb128 0x11
+ 1755 000e 01       		.uleb128 0x1
+ 1756 000f 10       		.uleb128 0x10
+ 1757 0010 17       		.uleb128 0x17
+ 1758 0011 00       		.byte	0
+ 1759 0012 00       		.byte	0
+ 1760 0013 02       		.uleb128 0x2
+ 1761 0014 24       		.uleb128 0x24
+ 1762 0015 00       		.byte	0
+ 1763 0016 0B       		.uleb128 0xb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 39
+
+
+ 1764 0017 0B       		.uleb128 0xb
+ 1765 0018 3E       		.uleb128 0x3e
+ 1766 0019 0B       		.uleb128 0xb
+ 1767 001a 03       		.uleb128 0x3
+ 1768 001b 0E       		.uleb128 0xe
+ 1769 001c 00       		.byte	0
+ 1770 001d 00       		.byte	0
+ 1771 001e 03       		.uleb128 0x3
+ 1772 001f 16       		.uleb128 0x16
+ 1773 0020 00       		.byte	0
+ 1774 0021 03       		.uleb128 0x3
+ 1775 0022 0E       		.uleb128 0xe
+ 1776 0023 3A       		.uleb128 0x3a
+ 1777 0024 0B       		.uleb128 0xb
+ 1778 0025 3B       		.uleb128 0x3b
+ 1779 0026 0B       		.uleb128 0xb
+ 1780 0027 49       		.uleb128 0x49
+ 1781 0028 13       		.uleb128 0x13
+ 1782 0029 00       		.byte	0
+ 1783 002a 00       		.byte	0
+ 1784 002b 04       		.uleb128 0x4
+ 1785 002c 24       		.uleb128 0x24
+ 1786 002d 00       		.byte	0
+ 1787 002e 0B       		.uleb128 0xb
+ 1788 002f 0B       		.uleb128 0xb
+ 1789 0030 3E       		.uleb128 0x3e
+ 1790 0031 0B       		.uleb128 0xb
+ 1791 0032 03       		.uleb128 0x3
+ 1792 0033 08       		.uleb128 0x8
+ 1793 0034 00       		.byte	0
+ 1794 0035 00       		.byte	0
+ 1795 0036 05       		.uleb128 0x5
+ 1796 0037 16       		.uleb128 0x16
+ 1797 0038 00       		.byte	0
+ 1798 0039 03       		.uleb128 0x3
+ 1799 003a 0E       		.uleb128 0xe
+ 1800 003b 3A       		.uleb128 0x3a
+ 1801 003c 0B       		.uleb128 0xb
+ 1802 003d 3B       		.uleb128 0x3b
+ 1803 003e 05       		.uleb128 0x5
+ 1804 003f 49       		.uleb128 0x49
+ 1805 0040 13       		.uleb128 0x13
+ 1806 0041 00       		.byte	0
+ 1807 0042 00       		.byte	0
+ 1808 0043 06       		.uleb128 0x6
+ 1809 0044 0F       		.uleb128 0xf
+ 1810 0045 00       		.byte	0
+ 1811 0046 0B       		.uleb128 0xb
+ 1812 0047 0B       		.uleb128 0xb
+ 1813 0048 49       		.uleb128 0x49
+ 1814 0049 13       		.uleb128 0x13
+ 1815 004a 00       		.byte	0
+ 1816 004b 00       		.byte	0
+ 1817 004c 07       		.uleb128 0x7
+ 1818 004d 15       		.uleb128 0x15
+ 1819 004e 01       		.byte	0x1
+ 1820 004f 27       		.uleb128 0x27
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 40
+
+
+ 1821 0050 19       		.uleb128 0x19
+ 1822 0051 49       		.uleb128 0x49
+ 1823 0052 13       		.uleb128 0x13
+ 1824 0053 01       		.uleb128 0x1
+ 1825 0054 13       		.uleb128 0x13
+ 1826 0055 00       		.byte	0
+ 1827 0056 00       		.byte	0
+ 1828 0057 08       		.uleb128 0x8
+ 1829 0058 05       		.uleb128 0x5
+ 1830 0059 00       		.byte	0
+ 1831 005a 49       		.uleb128 0x49
+ 1832 005b 13       		.uleb128 0x13
+ 1833 005c 00       		.byte	0
+ 1834 005d 00       		.byte	0
+ 1835 005e 09       		.uleb128 0x9
+ 1836 005f 13       		.uleb128 0x13
+ 1837 0060 01       		.byte	0x1
+ 1838 0061 0B       		.uleb128 0xb
+ 1839 0062 0B       		.uleb128 0xb
+ 1840 0063 3A       		.uleb128 0x3a
+ 1841 0064 0B       		.uleb128 0xb
+ 1842 0065 3B       		.uleb128 0x3b
+ 1843 0066 0B       		.uleb128 0xb
+ 1844 0067 01       		.uleb128 0x1
+ 1845 0068 13       		.uleb128 0x13
+ 1846 0069 00       		.byte	0
+ 1847 006a 00       		.byte	0
+ 1848 006b 0A       		.uleb128 0xa
+ 1849 006c 0D       		.uleb128 0xd
+ 1850 006d 00       		.byte	0
+ 1851 006e 03       		.uleb128 0x3
+ 1852 006f 0E       		.uleb128 0xe
+ 1853 0070 3A       		.uleb128 0x3a
+ 1854 0071 0B       		.uleb128 0xb
+ 1855 0072 3B       		.uleb128 0x3b
+ 1856 0073 0B       		.uleb128 0xb
+ 1857 0074 49       		.uleb128 0x49
+ 1858 0075 13       		.uleb128 0x13
+ 1859 0076 38       		.uleb128 0x38
+ 1860 0077 0B       		.uleb128 0xb
+ 1861 0078 00       		.byte	0
+ 1862 0079 00       		.byte	0
+ 1863 007a 0B       		.uleb128 0xb
+ 1864 007b 2E       		.uleb128 0x2e
+ 1865 007c 01       		.byte	0x1
+ 1866 007d 03       		.uleb128 0x3
+ 1867 007e 0E       		.uleb128 0xe
+ 1868 007f 3A       		.uleb128 0x3a
+ 1869 0080 0B       		.uleb128 0xb
+ 1870 0081 3B       		.uleb128 0x3b
+ 1871 0082 0B       		.uleb128 0xb
+ 1872 0083 27       		.uleb128 0x27
+ 1873 0084 19       		.uleb128 0x19
+ 1874 0085 11       		.uleb128 0x11
+ 1875 0086 01       		.uleb128 0x1
+ 1876 0087 12       		.uleb128 0x12
+ 1877 0088 06       		.uleb128 0x6
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 41
+
+
+ 1878 0089 40       		.uleb128 0x40
+ 1879 008a 18       		.uleb128 0x18
+ 1880 008b 9742     		.uleb128 0x2117
+ 1881 008d 19       		.uleb128 0x19
+ 1882 008e 01       		.uleb128 0x1
+ 1883 008f 13       		.uleb128 0x13
+ 1884 0090 00       		.byte	0
+ 1885 0091 00       		.byte	0
+ 1886 0092 0C       		.uleb128 0xc
+ 1887 0093 05       		.uleb128 0x5
+ 1888 0094 00       		.byte	0
+ 1889 0095 03       		.uleb128 0x3
+ 1890 0096 0E       		.uleb128 0xe
+ 1891 0097 3A       		.uleb128 0x3a
+ 1892 0098 0B       		.uleb128 0xb
+ 1893 0099 3B       		.uleb128 0x3b
+ 1894 009a 0B       		.uleb128 0xb
+ 1895 009b 49       		.uleb128 0x49
+ 1896 009c 13       		.uleb128 0x13
+ 1897 009d 02       		.uleb128 0x2
+ 1898 009e 18       		.uleb128 0x18
+ 1899 009f 00       		.byte	0
+ 1900 00a0 00       		.byte	0
+ 1901 00a1 0D       		.uleb128 0xd
+ 1902 00a2 34       		.uleb128 0x34
+ 1903 00a3 00       		.byte	0
+ 1904 00a4 03       		.uleb128 0x3
+ 1905 00a5 0E       		.uleb128 0xe
+ 1906 00a6 3A       		.uleb128 0x3a
+ 1907 00a7 0B       		.uleb128 0xb
+ 1908 00a8 3B       		.uleb128 0x3b
+ 1909 00a9 0B       		.uleb128 0xb
+ 1910 00aa 49       		.uleb128 0x49
+ 1911 00ab 13       		.uleb128 0x13
+ 1912 00ac 02       		.uleb128 0x2
+ 1913 00ad 18       		.uleb128 0x18
+ 1914 00ae 00       		.byte	0
+ 1915 00af 00       		.byte	0
+ 1916 00b0 0E       		.uleb128 0xe
+ 1917 00b1 2E       		.uleb128 0x2e
+ 1918 00b2 01       		.byte	0x1
+ 1919 00b3 03       		.uleb128 0x3
+ 1920 00b4 0E       		.uleb128 0xe
+ 1921 00b5 3A       		.uleb128 0x3a
+ 1922 00b6 0B       		.uleb128 0xb
+ 1923 00b7 3B       		.uleb128 0x3b
+ 1924 00b8 0B       		.uleb128 0xb
+ 1925 00b9 27       		.uleb128 0x27
+ 1926 00ba 19       		.uleb128 0x19
+ 1927 00bb 49       		.uleb128 0x49
+ 1928 00bc 13       		.uleb128 0x13
+ 1929 00bd 11       		.uleb128 0x11
+ 1930 00be 01       		.uleb128 0x1
+ 1931 00bf 12       		.uleb128 0x12
+ 1932 00c0 06       		.uleb128 0x6
+ 1933 00c1 40       		.uleb128 0x40
+ 1934 00c2 18       		.uleb128 0x18
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 42
+
+
+ 1935 00c3 9642     		.uleb128 0x2116
+ 1936 00c5 19       		.uleb128 0x19
+ 1937 00c6 01       		.uleb128 0x1
+ 1938 00c7 13       		.uleb128 0x13
+ 1939 00c8 00       		.byte	0
+ 1940 00c9 00       		.byte	0
+ 1941 00ca 0F       		.uleb128 0xf
+ 1942 00cb 34       		.uleb128 0x34
+ 1943 00cc 00       		.byte	0
+ 1944 00cd 03       		.uleb128 0x3
+ 1945 00ce 08       		.uleb128 0x8
+ 1946 00cf 3A       		.uleb128 0x3a
+ 1947 00d0 0B       		.uleb128 0xb
+ 1948 00d1 3B       		.uleb128 0x3b
+ 1949 00d2 0B       		.uleb128 0xb
+ 1950 00d3 49       		.uleb128 0x49
+ 1951 00d4 13       		.uleb128 0x13
+ 1952 00d5 02       		.uleb128 0x2
+ 1953 00d6 18       		.uleb128 0x18
+ 1954 00d7 00       		.byte	0
+ 1955 00d8 00       		.byte	0
+ 1956 00d9 10       		.uleb128 0x10
+ 1957 00da 2E       		.uleb128 0x2e
+ 1958 00db 01       		.byte	0x1
+ 1959 00dc 3F       		.uleb128 0x3f
+ 1960 00dd 19       		.uleb128 0x19
+ 1961 00de 03       		.uleb128 0x3
+ 1962 00df 0E       		.uleb128 0xe
+ 1963 00e0 3A       		.uleb128 0x3a
+ 1964 00e1 0B       		.uleb128 0xb
+ 1965 00e2 3B       		.uleb128 0x3b
+ 1966 00e3 0B       		.uleb128 0xb
+ 1967 00e4 27       		.uleb128 0x27
+ 1968 00e5 19       		.uleb128 0x19
+ 1969 00e6 49       		.uleb128 0x49
+ 1970 00e7 13       		.uleb128 0x13
+ 1971 00e8 11       		.uleb128 0x11
+ 1972 00e9 01       		.uleb128 0x1
+ 1973 00ea 12       		.uleb128 0x12
+ 1974 00eb 06       		.uleb128 0x6
+ 1975 00ec 40       		.uleb128 0x40
+ 1976 00ed 18       		.uleb128 0x18
+ 1977 00ee 9642     		.uleb128 0x2116
+ 1978 00f0 19       		.uleb128 0x19
+ 1979 00f1 01       		.uleb128 0x1
+ 1980 00f2 13       		.uleb128 0x13
+ 1981 00f3 00       		.byte	0
+ 1982 00f4 00       		.byte	0
+ 1983 00f5 11       		.uleb128 0x11
+ 1984 00f6 05       		.uleb128 0x5
+ 1985 00f7 00       		.byte	0
+ 1986 00f8 03       		.uleb128 0x3
+ 1987 00f9 08       		.uleb128 0x8
+ 1988 00fa 3A       		.uleb128 0x3a
+ 1989 00fb 0B       		.uleb128 0xb
+ 1990 00fc 3B       		.uleb128 0x3b
+ 1991 00fd 0B       		.uleb128 0xb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 43
+
+
+ 1992 00fe 49       		.uleb128 0x49
+ 1993 00ff 13       		.uleb128 0x13
+ 1994 0100 02       		.uleb128 0x2
+ 1995 0101 18       		.uleb128 0x18
+ 1996 0102 00       		.byte	0
+ 1997 0103 00       		.byte	0
+ 1998 0104 12       		.uleb128 0x12
+ 1999 0105 26       		.uleb128 0x26
+ 2000 0106 00       		.byte	0
+ 2001 0107 49       		.uleb128 0x49
+ 2002 0108 13       		.uleb128 0x13
+ 2003 0109 00       		.byte	0
+ 2004 010a 00       		.byte	0
+ 2005 010b 13       		.uleb128 0x13
+ 2006 010c 2E       		.uleb128 0x2e
+ 2007 010d 01       		.byte	0x1
+ 2008 010e 03       		.uleb128 0x3
+ 2009 010f 0E       		.uleb128 0xe
+ 2010 0110 3A       		.uleb128 0x3a
+ 2011 0111 0B       		.uleb128 0xb
+ 2012 0112 3B       		.uleb128 0x3b
+ 2013 0113 05       		.uleb128 0x5
+ 2014 0114 27       		.uleb128 0x27
+ 2015 0115 19       		.uleb128 0x19
+ 2016 0116 49       		.uleb128 0x49
+ 2017 0117 13       		.uleb128 0x13
+ 2018 0118 11       		.uleb128 0x11
+ 2019 0119 01       		.uleb128 0x1
+ 2020 011a 12       		.uleb128 0x12
+ 2021 011b 06       		.uleb128 0x6
+ 2022 011c 40       		.uleb128 0x40
+ 2023 011d 18       		.uleb128 0x18
+ 2024 011e 9742     		.uleb128 0x2117
+ 2025 0120 19       		.uleb128 0x19
+ 2026 0121 01       		.uleb128 0x1
+ 2027 0122 13       		.uleb128 0x13
+ 2028 0123 00       		.byte	0
+ 2029 0124 00       		.byte	0
+ 2030 0125 14       		.uleb128 0x14
+ 2031 0126 05       		.uleb128 0x5
+ 2032 0127 00       		.byte	0
+ 2033 0128 03       		.uleb128 0x3
+ 2034 0129 0E       		.uleb128 0xe
+ 2035 012a 3A       		.uleb128 0x3a
+ 2036 012b 0B       		.uleb128 0xb
+ 2037 012c 3B       		.uleb128 0x3b
+ 2038 012d 05       		.uleb128 0x5
+ 2039 012e 49       		.uleb128 0x49
+ 2040 012f 13       		.uleb128 0x13
+ 2041 0130 02       		.uleb128 0x2
+ 2042 0131 18       		.uleb128 0x18
+ 2043 0132 00       		.byte	0
+ 2044 0133 00       		.byte	0
+ 2045 0134 15       		.uleb128 0x15
+ 2046 0135 34       		.uleb128 0x34
+ 2047 0136 00       		.byte	0
+ 2048 0137 03       		.uleb128 0x3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 44
+
+
+ 2049 0138 08       		.uleb128 0x8
+ 2050 0139 3A       		.uleb128 0x3a
+ 2051 013a 0B       		.uleb128 0xb
+ 2052 013b 3B       		.uleb128 0x3b
+ 2053 013c 05       		.uleb128 0x5
+ 2054 013d 49       		.uleb128 0x49
+ 2055 013e 13       		.uleb128 0x13
+ 2056 013f 02       		.uleb128 0x2
+ 2057 0140 18       		.uleb128 0x18
+ 2058 0141 00       		.byte	0
+ 2059 0142 00       		.byte	0
+ 2060 0143 16       		.uleb128 0x16
+ 2061 0144 34       		.uleb128 0x34
+ 2062 0145 00       		.byte	0
+ 2063 0146 03       		.uleb128 0x3
+ 2064 0147 0E       		.uleb128 0xe
+ 2065 0148 3A       		.uleb128 0x3a
+ 2066 0149 0B       		.uleb128 0xb
+ 2067 014a 3B       		.uleb128 0x3b
+ 2068 014b 05       		.uleb128 0x5
+ 2069 014c 49       		.uleb128 0x49
+ 2070 014d 13       		.uleb128 0x13
+ 2071 014e 02       		.uleb128 0x2
+ 2072 014f 18       		.uleb128 0x18
+ 2073 0150 00       		.byte	0
+ 2074 0151 00       		.byte	0
+ 2075 0152 17       		.uleb128 0x17
+ 2076 0153 01       		.uleb128 0x1
+ 2077 0154 01       		.byte	0x1
+ 2078 0155 49       		.uleb128 0x49
+ 2079 0156 13       		.uleb128 0x13
+ 2080 0157 01       		.uleb128 0x1
+ 2081 0158 13       		.uleb128 0x13
+ 2082 0159 00       		.byte	0
+ 2083 015a 00       		.byte	0
+ 2084 015b 18       		.uleb128 0x18
+ 2085 015c 21       		.uleb128 0x21
+ 2086 015d 00       		.byte	0
+ 2087 015e 49       		.uleb128 0x49
+ 2088 015f 13       		.uleb128 0x13
+ 2089 0160 2F       		.uleb128 0x2f
+ 2090 0161 0B       		.uleb128 0xb
+ 2091 0162 00       		.byte	0
+ 2092 0163 00       		.byte	0
+ 2093 0164 19       		.uleb128 0x19
+ 2094 0165 34       		.uleb128 0x34
+ 2095 0166 00       		.byte	0
+ 2096 0167 03       		.uleb128 0x3
+ 2097 0168 0E       		.uleb128 0xe
+ 2098 0169 3A       		.uleb128 0x3a
+ 2099 016a 0B       		.uleb128 0xb
+ 2100 016b 3B       		.uleb128 0x3b
+ 2101 016c 05       		.uleb128 0x5
+ 2102 016d 49       		.uleb128 0x49
+ 2103 016e 13       		.uleb128 0x13
+ 2104 016f 3F       		.uleb128 0x3f
+ 2105 0170 19       		.uleb128 0x19
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 45
+
+
+ 2106 0171 3C       		.uleb128 0x3c
+ 2107 0172 19       		.uleb128 0x19
+ 2108 0173 00       		.byte	0
+ 2109 0174 00       		.byte	0
+ 2110 0175 1A       		.uleb128 0x1a
+ 2111 0176 35       		.uleb128 0x35
+ 2112 0177 00       		.byte	0
+ 2113 0178 49       		.uleb128 0x49
+ 2114 0179 13       		.uleb128 0x13
+ 2115 017a 00       		.byte	0
+ 2116 017b 00       		.byte	0
+ 2117 017c 1B       		.uleb128 0x1b
+ 2118 017d 34       		.uleb128 0x34
+ 2119 017e 00       		.byte	0
+ 2120 017f 03       		.uleb128 0x3
+ 2121 0180 0E       		.uleb128 0xe
+ 2122 0181 3A       		.uleb128 0x3a
+ 2123 0182 0B       		.uleb128 0xb
+ 2124 0183 3B       		.uleb128 0x3b
+ 2125 0184 0B       		.uleb128 0xb
+ 2126 0185 49       		.uleb128 0x49
+ 2127 0186 13       		.uleb128 0x13
+ 2128 0187 3F       		.uleb128 0x3f
+ 2129 0188 19       		.uleb128 0x19
+ 2130 0189 3C       		.uleb128 0x3c
+ 2131 018a 19       		.uleb128 0x19
+ 2132 018b 00       		.byte	0
+ 2133 018c 00       		.byte	0
+ 2134 018d 00       		.byte	0
+ 2135              		.section	.debug_aranges,"",%progbits
+ 2136 0000 7C000000 		.4byte	0x7c
+ 2137 0004 0200     		.2byte	0x2
+ 2138 0006 00000000 		.4byte	.Ldebug_info0
+ 2139 000a 04       		.byte	0x4
+ 2140 000b 00       		.byte	0
+ 2141 000c 0000     		.2byte	0
+ 2142 000e 0000     		.2byte	0
+ 2143 0010 00000000 		.4byte	.LFB65
+ 2144 0014 36000000 		.4byte	.LFE65-.LFB65
+ 2145 0018 00000000 		.4byte	.LFB66
+ 2146 001c 42000000 		.4byte	.LFE66-.LFB66
+ 2147 0020 00000000 		.4byte	.LFB67
+ 2148 0024 36000000 		.4byte	.LFE67-.LFB67
+ 2149 0028 00000000 		.4byte	.LFB68
+ 2150 002c 24000000 		.4byte	.LFE68-.LFB68
+ 2151 0030 00000000 		.4byte	.LFB69
+ 2152 0034 24000000 		.4byte	.LFE69-.LFB69
+ 2153 0038 00000000 		.4byte	.LFB70
+ 2154 003c 96000000 		.4byte	.LFE70-.LFB70
+ 2155 0040 00000000 		.4byte	.LFB71
+ 2156 0044 48000000 		.4byte	.LFE71-.LFB71
+ 2157 0048 00000000 		.4byte	.LFB72
+ 2158 004c 3A000000 		.4byte	.LFE72-.LFB72
+ 2159 0050 00000000 		.4byte	.LFB73
+ 2160 0054 34000000 		.4byte	.LFE73-.LFB73
+ 2161 0058 00000000 		.4byte	.LFB74
+ 2162 005c 30000000 		.4byte	.LFE74-.LFB74
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 46
+
+
+ 2163 0060 00000000 		.4byte	.LFB75
+ 2164 0064 1A000000 		.4byte	.LFE75-.LFB75
+ 2165 0068 00000000 		.4byte	.LFB76
+ 2166 006c 42010000 		.4byte	.LFE76-.LFB76
+ 2167 0070 00000000 		.4byte	.LFB77
+ 2168 0074 50000000 		.4byte	.LFE77-.LFB77
+ 2169 0078 00000000 		.4byte	0
+ 2170 007c 00000000 		.4byte	0
+ 2171              		.section	.debug_ranges,"",%progbits
+ 2172              	.Ldebug_ranges0:
+ 2173 0000 00000000 		.4byte	.LFB65
+ 2174 0004 36000000 		.4byte	.LFE65
+ 2175 0008 00000000 		.4byte	.LFB66
+ 2176 000c 42000000 		.4byte	.LFE66
+ 2177 0010 00000000 		.4byte	.LFB67
+ 2178 0014 36000000 		.4byte	.LFE67
+ 2179 0018 00000000 		.4byte	.LFB68
+ 2180 001c 24000000 		.4byte	.LFE68
+ 2181 0020 00000000 		.4byte	.LFB69
+ 2182 0024 24000000 		.4byte	.LFE69
+ 2183 0028 00000000 		.4byte	.LFB70
+ 2184 002c 96000000 		.4byte	.LFE70
+ 2185 0030 00000000 		.4byte	.LFB71
+ 2186 0034 48000000 		.4byte	.LFE71
+ 2187 0038 00000000 		.4byte	.LFB72
+ 2188 003c 3A000000 		.4byte	.LFE72
+ 2189 0040 00000000 		.4byte	.LFB73
+ 2190 0044 34000000 		.4byte	.LFE73
+ 2191 0048 00000000 		.4byte	.LFB74
+ 2192 004c 30000000 		.4byte	.LFE74
+ 2193 0050 00000000 		.4byte	.LFB75
+ 2194 0054 1A000000 		.4byte	.LFE75
+ 2195 0058 00000000 		.4byte	.LFB76
+ 2196 005c 42010000 		.4byte	.LFE76
+ 2197 0060 00000000 		.4byte	.LFB77
+ 2198 0064 50000000 		.4byte	.LFE77
+ 2199 0068 00000000 		.4byte	0
+ 2200 006c 00000000 		.4byte	0
+ 2201              		.section	.debug_line,"",%progbits
+ 2202              	.Ldebug_line0:
+ 2203 0000 2F030000 		.section	.debug_str,"MS",%progbits,1
+ 2203      02009901 
+ 2203      00000201 
+ 2203      FB0E0D00 
+ 2203      01010101 
+ 2204              	.LASF45:
+ 2205 0000 74656D70 		.ascii	"temp16\000"
+ 2205      313600
+ 2206              	.LASF47:
+ 2207 0007 75706461 		.ascii	"update_moisture_sensor_configuration\000"
+ 2207      74655F6D 
+ 2207      6F697374 
+ 2207      7572655F 
+ 2207      73656E73 
+ 2208              	.LASF63:
+ 2209 002c 6D6F6462 		.ascii	"modbus_address_data\000"
+ 2209      75735F61 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 47
+
+
+ 2209      64647265 
+ 2209      73735F64 
+ 2209      61746100 
+ 2210              	.LASF46:
+ 2211 0040 636C6561 		.ascii	"clear_moisture_log_data\000"
+ 2211      725F6D6F 
+ 2211      69737475 
+ 2211      72655F6C 
+ 2211      6F675F64 
+ 2212              	.LASF55:
+ 2213 0058 6163635F 		.ascii	"acc_struct\000"
+ 2213      73747275 
+ 2213      637400
+ 2214              	.LASF25:
+ 2215 0063 74656D70 		.ascii	"temp\000"
+ 2215      00
+ 2216              	.LASF2:
+ 2217 0068 73686F72 		.ascii	"short int\000"
+ 2217      7420696E 
+ 2217      7400
+ 2218              	.LASF28:
+ 2219 0072 696E7075 		.ascii	"input\000"
+ 2219      7400
+ 2220              	.LASF18:
+ 2221 0078 464E5F31 		.ascii	"FN_16\000"
+ 2221      3600
+ 2222              	.LASF60:
+ 2223 007e 74797065 		.ascii	"type_16_access_functions\000"
+ 2223      5F31365F 
+ 2223      61636365 
+ 2223      73735F66 
+ 2223      756E6374 
+ 2224              	.LASF59:
+ 2225 0097 61636365 		.ascii	"access_ptr\000"
+ 2225      73735F70 
+ 2225      747200
+ 2226              	.LASF51:
+ 2227 00a2 776F726B 		.ascii	"working_register\000"
+ 2227      696E675F 
+ 2227      72656769 
+ 2227      73746572 
+ 2227      00
+ 2228              	.LASF12:
+ 2229 00b3 75696E74 		.ascii	"uint16\000"
+ 2229      313600
+ 2230              	.LASF23:
+ 2231 00ba 54595045 		.ascii	"TYPE_16_STRUCT\000"
+ 2231      5F31365F 
+ 2231      53545255 
+ 2231      435400
+ 2232              	.LASF11:
+ 2233 00c9 75696E74 		.ascii	"uint8\000"
+ 2233      3800
+ 2234              	.LASF31:
+ 2235 00cf 636C6561 		.ascii	"clear_power_up_event\000"
+ 2235      725F706F 
+ 2235      7765725F 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 48
+
+
+ 2235      75705F65 
+ 2235      76656E74 
+ 2236              	.LASF14:
+ 2237 00e4 666C6F61 		.ascii	"float\000"
+ 2237      7400
+ 2238              	.LASF6:
+ 2239 00ea 6C6F6E67 		.ascii	"long long int\000"
+ 2239      206C6F6E 
+ 2239      6720696E 
+ 2239      7400
+ 2240              	.LASF32:
+ 2241 00f8 636C6561 		.ascii	"clear_minute_rollover\000"
+ 2241      725F6D69 
+ 2241      6E757465 
+ 2241      5F726F6C 
+ 2241      6C6F7665 
+ 2242              	.LASF20:
+ 2243 010e 72656769 		.ascii	"register_count\000"
+ 2243      73746572 
+ 2243      5F636F75 
+ 2243      6E7400
+ 2244              	.LASF57:
+ 2245 011d 66696E64 		.ascii	"find_access_function\000"
+ 2245      5F616363 
+ 2245      6573735F 
+ 2245      66756E63 
+ 2245      74696F6E 
+ 2246              	.LASF64:
+ 2247 0132 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 2247      4320342E 
+ 2247      392E3320 
+ 2247      32303135 
+ 2247      30333033 
+ 2248 0165 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 2248      20726576 
+ 2248      6973696F 
+ 2248      6E203232 
+ 2248      31323230 
+ 2249 0198 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 2249      66756E63 
+ 2249      74696F6E 
+ 2249      2D736563 
+ 2249      74696F6E 
+ 2250              	.LASF52:
+ 2251 01c0 6E756D62 		.ascii	"number_of_registers\000"
+ 2251      65725F6F 
+ 2251      665F7265 
+ 2251      67697374 
+ 2251      65727300 
+ 2252              	.LASF49:
+ 2253 01d4 696E5F6C 		.ascii	"in_length\000"
+ 2253      656E6774 
+ 2253      6800
+ 2254              	.LASF62:
+ 2255 01de 6D6F6973 		.ascii	"moisture_configuration_data\000"
+ 2255      74757265 
+ 2255      5F636F6E 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 49
+
+
+ 2255      66696775 
+ 2255      72617469 
+ 2256              	.LASF26:
+ 2257 01fa 73776170 		.ascii	"swap_16\000"
+ 2257      5F313600 
+ 2258              	.LASF24:
+ 2259 0202 74656D70 		.ascii	"temp_ptr\000"
+ 2259      5F707472 
+ 2259      00
+ 2260              	.LASF37:
+ 2261 020b 686F7572 		.ascii	"hour\000"
+ 2261      00
+ 2262              	.LASF1:
+ 2263 0210 756E7369 		.ascii	"unsigned char\000"
+ 2263      676E6564 
+ 2263      20636861 
+ 2263      7200
+ 2264              	.LASF65:
+ 2265 021e 2E5C7274 		.ascii	".\\rtu_modbus\\process_type_16_message.c\000"
+ 2265      755F6D6F 
+ 2265      64627573 
+ 2265      5C70726F 
+ 2265      63657373 
+ 2266              	.LASF22:
+ 2267 0245 61636365 		.ascii	"access\000"
+ 2267      737300
+ 2268              	.LASF19:
+ 2269 024c 73746172 		.ascii	"start_register\000"
+ 2269      745F7265 
+ 2269      67697374 
+ 2269      657200
+ 2270              	.LASF0:
+ 2271 025b 7369676E 		.ascii	"signed char\000"
+ 2271      65642063 
+ 2271      68617200 
+ 2272              	.LASF35:
+ 2273 0267 7365636F 		.ascii	"second\000"
+ 2273      6E6400
+ 2274              	.LASF7:
+ 2275 026e 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2275      206C6F6E 
+ 2275      6720756E 
+ 2275      7369676E 
+ 2275      65642069 
+ 2276              	.LASF66:
+ 2277 0285 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 2277      73657273 
+ 2277      5C676C65 
+ 2277      6E6E5C4F 
+ 2277      6E654472 
+ 2278 02b2 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ 2278      55415254 
+ 2278      30312E63 
+ 2278      7964736E 
+ 2278      00
+ 2279              	.LASF44:
+ 2280 02c3 74656D70 		.ascii	"temp32\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 50
+
+
+ 2280      333200
+ 2281              	.LASF8:
+ 2282 02ca 756E7369 		.ascii	"unsigned int\000"
+ 2282      676E6564 
+ 2282      20696E74 
+ 2282      00
+ 2283              	.LASF33:
+ 2284 02d7 6368616E 		.ascii	"change_time\000"
+ 2284      67655F74 
+ 2284      696D6500 
+ 2285              	.LASF50:
+ 2286 02e3 6F75745F 		.ascii	"out_length\000"
+ 2286      6C656E67 
+ 2286      746800
+ 2287              	.LASF42:
+ 2288 02ee 72657475 		.ascii	"return_value\000"
+ 2288      726E5F76 
+ 2288      616C7565 
+ 2288      00
+ 2289              	.LASF67:
+ 2290 02fb 70726F63 		.ascii	"process_type_16_message\000"
+ 2290      6573735F 
+ 2290      74797065 
+ 2290      5F31365F 
+ 2290      6D657373 
+ 2291              	.LASF54:
+ 2292 0313 73776170 		.ascii	"swap_inc\000"
+ 2292      5F696E63 
+ 2292      00
+ 2293              	.LASF3:
+ 2294 031c 73686F72 		.ascii	"short unsigned int\000"
+ 2294      7420756E 
+ 2294      7369676E 
+ 2294      65642069 
+ 2294      6E7400
+ 2295              	.LASF39:
+ 2296 032f 79656172 		.ascii	"year\000"
+ 2296      00
+ 2297              	.LASF40:
+ 2298 0334 6368616E 		.ascii	"change_modbus_address\000"
+ 2298      67655F6D 
+ 2298      6F646275 
+ 2298      735F6164 
+ 2298      64726573 
+ 2299              	.LASF16:
+ 2300 034a 63686172 		.ascii	"char\000"
+ 2300      00
+ 2301              	.LASF4:
+ 2302 034f 6C6F6E67 		.ascii	"long int\000"
+ 2302      20696E74 
+ 2302      00
+ 2303              	.LASF48:
+ 2304 0358 666F7263 		.ascii	"force_moisture_reading\000"
+ 2304      655F6D6F 
+ 2304      69737475 
+ 2304      72655F72 
+ 2304      65616469 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 51
+
+
+ 2305              	.LASF10:
+ 2306 036f 696E7433 		.ascii	"int32_t\000"
+ 2306      325F7400 
+ 2307              	.LASF38:
+ 2308 0377 6D6F6E74 		.ascii	"month\000"
+ 2308      6800
+ 2309              	.LASF21:
+ 2310 037d 73776170 		.ascii	"swap_type\000"
+ 2310      5F747970 
+ 2310      6500
+ 2311              	.LASF34:
+ 2312 0387 64617461 		.ascii	"data\000"
+ 2312      00
+ 2313              	.LASF29:
+ 2314 038c 62756666 		.ascii	"buffer\000"
+ 2314      657200
+ 2315              	.LASF36:
+ 2316 0393 6D696E75 		.ascii	"minute\000"
+ 2316      746500
+ 2317              	.LASF13:
+ 2318 039a 75696E74 		.ascii	"uint32\000"
+ 2318      333200
+ 2319              	.LASF5:
+ 2320 03a1 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2320      20756E73 
+ 2320      69676E65 
+ 2320      6420696E 
+ 2320      7400
+ 2321              	.LASF15:
+ 2322 03b3 646F7562 		.ascii	"double\000"
+ 2322      6C6500
+ 2323              	.LASF30:
+ 2324 03ba 636C6561 		.ascii	"clear_watch_dog_flags\000"
+ 2324      725F7761 
+ 2324      7463685F 
+ 2324      646F675F 
+ 2324      666C6167 
+ 2325              	.LASF53:
+ 2326 03d0 636F756E 		.ascii	"count\000"
+ 2326      7400
+ 2327              	.LASF9:
+ 2328 03d6 5F5F696E 		.ascii	"__int32_t\000"
+ 2328      7433325F 
+ 2328      7400
+ 2329              	.LASF56:
+ 2330 03e0 7265665F 		.ascii	"ref_pointer\000"
+ 2330      706F696E 
+ 2330      74657200 
+ 2331              	.LASF17:
+ 2332 03ec 73697A65 		.ascii	"sizetype\000"
+ 2332      74797065 
+ 2332      00
+ 2333              	.LASF41:
+ 2334 03f5 6D6F645F 		.ascii	"mod_commission_flag\000"
+ 2334      636F6D6D 
+ 2334      69737369 
+ 2334      6F6E5F66 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccknROVE.s 			page 52
+
+
+ 2334      6C616700 
+ 2335              	.LASF58:
+ 2336 0409 6E756D62 		.ascii	"number\000"
+ 2336      657200
+ 2337              	.LASF61:
+ 2338 0410 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2338      52784275 
+ 2338      66666572 
+ 2338      00
+ 2339              	.LASF27:
+ 2340 041d 73776170 		.ascii	"swap_32\000"
+ 2340      5F333200 
+ 2341              	.LASF43:
+ 2342 0425 7365745F 		.ascii	"set_moisture_sampling_rate\000"
+ 2342      6D6F6973 
+ 2342      74757265 
+ 2342      5F73616D 
+ 2342      706C696E 
+ 2343              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

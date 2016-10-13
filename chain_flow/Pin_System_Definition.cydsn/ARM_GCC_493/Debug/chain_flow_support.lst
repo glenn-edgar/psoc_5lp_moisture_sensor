@@ -1,0 +1,4289 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"chain_flow_support.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.comm	chain_state,9,4
+  19              		.comm	link_state,47,4
+  20              		.comm	link_data,188,4
+  21              		.global	start_state
+  22              		.section	.rodata
+  23              		.align	2
+  24              		.type	start_state, %object
+  25              		.size	start_state, 36
+  26              	start_state:
+  27 0000 01000000 		.word	1
+  28 0004 01000000 		.word	1
+  29 0008 01000000 		.word	1
+  30 000c 01000000 		.word	1
+  31 0010 01000000 		.word	1
+  32 0014 01000000 		.word	1
+  33 0018 00000000 		.word	0
+  34 001c 00000000 		.word	0
+  35 0020 01000000 		.word	1
+  36              		.global	CHAIN_initialization_LINKS
+  37              		.align	2
+  38              		.type	CHAIN_initialization_LINKS, %object
+  39              		.size	CHAIN_initialization_LINKS, 240
+  40              	CHAIN_initialization_LINKS:
+  41 0024 00000000 		.word	one_step_fn
+  42 0028 00000000 		.word	initialize_die_temp_measurement
+  43 002c 00000000 		.word	0
+  44 0030 00000000 		.word	0
+  45 0034 00000000 		.word	0
+  46 0038 00000000 		.word	one_step_fn
+  47 003c 00000000 		.word	enable_timer_interrupt
+  48 0040 00000000 		.word	0
+  49 0044 00000000 		.word	0
+  50 0048 00000000 		.word	0
+  51 004c 00000000 		.word	one_step_fn
+  52 0050 00000000 		.word	initialize_modbus_rtu
+  53 0054 00000000 		.word	0
+  54 0058 00000000 		.word	0
+  55 005c 00000000 		.word	0
+  56 0060 00000000 		.word	one_step_fn
+  57 0064 00000000 		.word	enable_interrupts
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 2
+
+
+  58 0068 00000000 		.word	0
+  59 006c 00000000 		.word	0
+  60 0070 00000000 		.word	0
+  61 0074 00000000 		.word	one_step_fn
+  62 0078 00000000 		.word	start_watchdog
+  63 007c 00000000 		.word	0
+  64 0080 00000000 		.word	0
+  65 0084 00000000 		.word	0
+  66 0088 00000000 		.word	one_step_fn
+  67 008c 00000000 		.word	init_event_queue
+  68 0090 00000000 		.word	0
+  69 0094 00000000 		.word	0
+  70 0098 00000000 		.word	0
+  71 009c 00000000 		.word	one_step_fn
+  72 00a0 00000000 		.word	init_rtc
+  73 00a4 00000000 		.word	0
+  74 00a8 00000000 		.word	0
+  75 00ac 00000000 		.word	0
+  76 00b0 00000000 		.word	one_step_fn
+  77 00b4 00000000 		.word	set_modbus_reset_flag
+  78 00b8 00000000 		.word	0
+  79 00bc 00000000 		.word	0
+  80 00c0 00000000 		.word	0
+  81 00c4 00000000 		.word	one_step_fn
+  82 00c8 00000000 		.word	initialize_callibration_variables
+  83 00cc 00000000 		.word	0
+  84 00d0 00000000 		.word	0
+  85 00d4 00000000 		.word	0
+  86 00d8 00000000 		.word	one_step_fn
+  87 00dc 00000000 		.word	initialize_controller_wd_flag
+  88 00e0 00000000 		.word	0
+  89 00e4 00000000 		.word	0
+  90 00e8 00000000 		.word	0
+  91 00ec 00000000 		.word	one_step_fn
+  92 00f0 00000000 		.word	clear_reset_flag
+  93 00f4 00000000 		.word	0
+  94 00f8 00000000 		.word	0
+  95 00fc 00000000 		.word	0
+  96 0100 00000000 		.word	terminate_fn
+  97 0104 00000000 		.word	0
+  98 0108 00000000 		.word	0
+  99 010c 00000000 		.word	0
+ 100 0110 00000000 		.word	0
+ 101              		.global	CHAIN_measure_die_temperature_LINKS
+ 102              		.align	2
+ 103              		.type	CHAIN_measure_die_temperature_LINKS, %object
+ 104              		.size	CHAIN_measure_die_temperature_LINKS, 60
+ 105              	CHAIN_measure_die_temperature_LINKS:
+ 106 0114 00000000 		.word	one_step_fn
+ 107 0118 00000000 		.word	meaure_die_temperature
+ 108 011c 00000000 		.word	0
+ 109 0120 00000000 		.word	0
+ 110 0124 00000000 		.word	0
+ 111 0128 00000000 		.word	wait_time_fn
+ 112 012c 00000000 		.word	0
+ 113 0130 E8030000 		.word	1000
+ 114 0134 00000000 		.word	0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 3
+
+
+ 115 0138 00000000 		.word	0
+ 116 013c 00000000 		.word	reset_fn
+ 117 0140 00000000 		.word	0
+ 118 0144 00000000 		.word	0
+ 119 0148 00000000 		.word	0
+ 120 014c 00000000 		.word	0
+ 121              		.global	CHAIN_process_rtu_packet_LINKS
+ 122              		.align	2
+ 123              		.type	CHAIN_process_rtu_packet_LINKS, %object
+ 124              		.size	CHAIN_process_rtu_packet_LINKS, 60
+ 125              	CHAIN_process_rtu_packet_LINKS:
+ 126 0150 00000000 		.word	wait_event_fn
+ 127 0154 00000000 		.word	0
+ 128 0158 04000000 		.word	4
+ 129 015c 00000000 		.word	0
+ 130 0160 00000000 		.word	0
+ 131 0164 00000000 		.word	one_step_fn
+ 132 0168 00000000 		.word	process_rtu_message
+ 133 016c 00000000 		.word	0
+ 134 0170 00000000 		.word	0
+ 135 0174 00000000 		.word	0
+ 136 0178 00000000 		.word	reset_fn
+ 137 017c 00000000 		.word	0
+ 138 0180 00000000 		.word	0
+ 139 0184 00000000 		.word	0
+ 140 0188 00000000 		.word	0
+ 141              		.global	CHAIN_second_tick_chain_LINKS
+ 142              		.align	2
+ 143              		.type	CHAIN_second_tick_chain_LINKS, %object
+ 144              		.size	CHAIN_second_tick_chain_LINKS, 100
+ 145              	CHAIN_second_tick_chain_LINKS:
+ 146 018c 00000000 		.word	wait_event_fn
+ 147 0190 00000000 		.word	0
+ 148 0194 05000000 		.word	5
+ 149 0198 00000000 		.word	0
+ 150 019c 00000000 		.word	0
+ 151 01a0 00000000 		.word	one_step_fn
+ 152 01a4 00000000 		.word	set_modbus_watch_dog_flag
+ 153 01a8 00000000 		.word	0
+ 154 01ac 00000000 		.word	0
+ 155 01b0 00000000 		.word	0
+ 156 01b4 00000000 		.word	one_step_fn
+ 157 01b8 00000000 		.word	update_modbus_rtc_values
+ 158 01bc 00000000 		.word	0
+ 159 01c0 00000000 		.word	0
+ 160 01c4 00000000 		.word	0
+ 161 01c8 00000000 		.word	one_step_fn
+ 162 01cc 00000000 		.word	meaure_die_temperature
+ 163 01d0 00000000 		.word	0
+ 164 01d4 00000000 		.word	0
+ 165 01d8 00000000 		.word	0
+ 166 01dc 00000000 		.word	reset_fn
+ 167 01e0 00000000 		.word	0
+ 168 01e4 00000000 		.word	0
+ 169 01e8 00000000 		.word	0
+ 170 01ec 00000000 		.word	0
+ 171              		.global	CHAIN_minute_tick_chain_LINKS
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 4
+
+
+ 172              		.align	2
+ 173              		.type	CHAIN_minute_tick_chain_LINKS, %object
+ 174              		.size	CHAIN_minute_tick_chain_LINKS, 40
+ 175              	CHAIN_minute_tick_chain_LINKS:
+ 176 01f0 00000000 		.word	wait_event_fn
+ 177 01f4 00000000 		.word	0
+ 178 01f8 06000000 		.word	6
+ 179 01fc 00000000 		.word	0
+ 180 0200 00000000 		.word	0
+ 181 0204 00000000 		.word	reset_fn
+ 182 0208 00000000 		.word	0
+ 183 020c 00000000 		.word	0
+ 184 0210 00000000 		.word	0
+ 185 0214 00000000 		.word	0
+ 186              		.global	CHAIN_hour_tick_chain_LINKS
+ 187              		.align	2
+ 188              		.type	CHAIN_hour_tick_chain_LINKS, %object
+ 189              		.size	CHAIN_hour_tick_chain_LINKS, 40
+ 190              	CHAIN_hour_tick_chain_LINKS:
+ 191 0218 00000000 		.word	wait_event_fn
+ 192 021c 00000000 		.word	0
+ 193 0220 07000000 		.word	7
+ 194 0224 00000000 		.word	0
+ 195 0228 00000000 		.word	0
+ 196 022c 00000000 		.word	reset_fn
+ 197 0230 00000000 		.word	0
+ 198 0234 00000000 		.word	0
+ 199 0238 00000000 		.word	0
+ 200 023c 00000000 		.word	0
+ 201              		.global	CHAIN_commissioning_heart_beat_LINKS
+ 202              		.align	2
+ 203              		.type	CHAIN_commissioning_heart_beat_LINKS, %object
+ 204              		.size	CHAIN_commissioning_heart_beat_LINKS, 80
+ 205              	CHAIN_commissioning_heart_beat_LINKS:
+ 206 0240 00000000 		.word	wait_time_fn
+ 207 0244 00000000 		.word	0
+ 208 0248 64000000 		.word	100
+ 209 024c 00000000 		.word	0
+ 210 0250 00000000 		.word	0
+ 211 0254 00000000 		.word	one_step_fn
+ 212 0258 00000000 		.word	toggle_heart_beat
+ 213 025c 00000000 		.word	0
+ 214 0260 00000000 		.word	0
+ 215 0264 00000000 		.word	0
+ 216 0268 00000000 		.word	one_step_fn
+ 217 026c 00000000 		.word	pat_watch_dog
+ 218 0270 00000000 		.word	0
+ 219 0274 00000000 		.word	0
+ 220 0278 00000000 		.word	0
+ 221 027c 00000000 		.word	reset_fn
+ 222 0280 00000000 		.word	0
+ 223 0284 00000000 		.word	0
+ 224 0288 00000000 		.word	0
+ 225 028c 00000000 		.word	0
+ 226              		.global	CHAIN_heart_beat_LINKS
+ 227              		.align	2
+ 228              		.type	CHAIN_heart_beat_LINKS, %object
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 5
+
+
+ 229              		.size	CHAIN_heart_beat_LINKS, 80
+ 230              	CHAIN_heart_beat_LINKS:
+ 231 0290 00000000 		.word	wait_time_fn
+ 232 0294 00000000 		.word	0
+ 233 0298 E8030000 		.word	1000
+ 234 029c 00000000 		.word	0
+ 235 02a0 00000000 		.word	0
+ 236 02a4 00000000 		.word	one_step_fn
+ 237 02a8 00000000 		.word	toggle_heart_beat
+ 238 02ac 00000000 		.word	0
+ 239 02b0 00000000 		.word	0
+ 240 02b4 00000000 		.word	0
+ 241 02b8 00000000 		.word	one_step_fn
+ 242 02bc 00000000 		.word	pat_watch_dog
+ 243 02c0 00000000 		.word	0
+ 244 02c4 00000000 		.word	0
+ 245 02c8 00000000 		.word	0
+ 246 02cc 00000000 		.word	reset_fn
+ 247 02d0 00000000 		.word	0
+ 248 02d4 00000000 		.word	0
+ 249 02d8 00000000 		.word	0
+ 250 02dc 00000000 		.word	0
+ 251              		.global	CHAIN_handle_commissioning_LINKS
+ 252              		.align	2
+ 253              		.type	CHAIN_handle_commissioning_LINKS, %object
+ 254              		.size	CHAIN_handle_commissioning_LINKS, 240
+ 255              	CHAIN_handle_commissioning_LINKS:
+ 256 02e0 00000000 		.word	one_step_fn
+ 257 02e4 00000000 		.word	set_normal_modbus_address
+ 258 02e8 00000000 		.word	0
+ 259 02ec 00000000 		.word	0
+ 260 02f0 00000000 		.word	0
+ 261 02f4 00000000 		.word	disable_chain_fn
+ 262 02f8 00000000 		.word	0
+ 263 02fc 06000000 		.word	6
+ 264 0300 FFFFFFFF 		.word	-1
+ 265 0304 FFFFFFFF 		.word	-1
+ 266 0308 00000000 		.word	enable_chain_fn
+ 267 030c 00000000 		.word	0
+ 268 0310 07000000 		.word	7
+ 269 0314 FFFFFFFF 		.word	-1
+ 270 0318 FFFFFFFF 		.word	-1
+ 271 031c 00000000 		.word	wait_condition_fn
+ 272 0320 00000000 		.word	switch_off_fn
+ 273 0324 00000000 		.word	0
+ 274 0328 00000000 		.word	0
+ 275 032c 00000000 		.word	0
+ 276 0330 00000000 		.word	wait_condition_fn
+ 277 0334 00000000 		.word	switch_on_fn
+ 278 0338 00000000 		.word	0
+ 279 033c 00000000 		.word	0
+ 280 0340 00000000 		.word	0
+ 281 0344 00000000 		.word	wait_condition_fn
+ 282 0348 00000000 		.word	switch_off_fn
+ 283 034c 00000000 		.word	0
+ 284 0350 00000000 		.word	0
+ 285 0354 00000000 		.word	0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 6
+
+
+ 286 0358 00000000 		.word	disable_chain_fn
+ 287 035c 00000000 		.word	0
+ 288 0360 07000000 		.word	7
+ 289 0364 FFFFFFFF 		.word	-1
+ 290 0368 FFFFFFFF 		.word	-1
+ 291 036c 00000000 		.word	enable_chain_fn
+ 292 0370 00000000 		.word	0
+ 293 0374 06000000 		.word	6
+ 294 0378 FFFFFFFF 		.word	-1
+ 295 037c FFFFFFFF 		.word	-1
+ 296 0380 00000000 		.word	one_step_fn
+ 297 0384 00000000 		.word	set_commissiong_address
+ 298 0388 00000000 		.word	0
+ 299 038c 00000000 		.word	0
+ 300 0390 00000000 		.word	0
+ 301 0394 00000000 		.word	verify_condition_fn
+ 302 0398 00000000 		.word	switch_off_fn
+ 303 039c 00000000 		.word	0
+ 304 03a0 00000000 		.word	0
+ 305 03a4 00000000 		.word	0
+ 306 03a8 00000000 		.word	wait_event_fn
+ 307 03ac 00000000 		.word	0
+ 308 03b0 08000000 		.word	8
+ 309 03b4 E0930400 		.word	300000
+ 310 03b8 00000000 		.word	0
+ 311 03bc 00000000 		.word	reset_fn
+ 312 03c0 00000000 		.word	0
+ 313 03c4 00000000 		.word	0
+ 314 03c8 00000000 		.word	0
+ 315 03cc 00000000 		.word	0
+ 316              		.global	chain_control
+ 317              		.align	2
+ 318              		.type	chain_control, %object
+ 319              		.size	chain_control, 144
+ 320              	chain_control:
+ 321 03d0 00000000 		.word	0
+ 322 03d4 00000000 		.word	0
+ 323 03d8 0C000000 		.word	12
+ 324 03dc 00000000 		.word	CHAIN_initialization_LINKS
+ 325 03e0 0C000000 		.word	12
+ 326 03e4 01000000 		.word	1
+ 327 03e8 03000000 		.word	3
+ 328 03ec 00000000 		.word	CHAIN_measure_die_temperature_LINKS
+ 329 03f0 0F000000 		.word	15
+ 330 03f4 02000000 		.word	2
+ 331 03f8 03000000 		.word	3
+ 332 03fc 00000000 		.word	CHAIN_process_rtu_packet_LINKS
+ 333 0400 12000000 		.word	18
+ 334 0404 03000000 		.word	3
+ 335 0408 05000000 		.word	5
+ 336 040c 00000000 		.word	CHAIN_second_tick_chain_LINKS
+ 337 0410 17000000 		.word	23
+ 338 0414 04000000 		.word	4
+ 339 0418 02000000 		.word	2
+ 340 041c 00000000 		.word	CHAIN_minute_tick_chain_LINKS
+ 341 0420 19000000 		.word	25
+ 342 0424 05000000 		.word	5
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 7
+
+
+ 343 0428 02000000 		.word	2
+ 344 042c 00000000 		.word	CHAIN_hour_tick_chain_LINKS
+ 345 0430 1B000000 		.word	27
+ 346 0434 06000000 		.word	6
+ 347 0438 04000000 		.word	4
+ 348 043c 00000000 		.word	CHAIN_commissioning_heart_beat_LINKS
+ 349 0440 1F000000 		.word	31
+ 350 0444 07000000 		.word	7
+ 351 0448 04000000 		.word	4
+ 352 044c 00000000 		.word	CHAIN_heart_beat_LINKS
+ 353 0450 23000000 		.word	35
+ 354 0454 08000000 		.word	8
+ 355 0458 0C000000 		.word	12
+ 356 045c 00000000 		.word	CHAIN_handle_commissioning_LINKS
+ 357              		.section	.text.chain_enable_for_event,"ax",%progbits
+ 358              		.align	2
+ 359              		.thumb
+ 360              		.thumb_func
+ 361              		.type	chain_enable_for_event, %function
+ 362              	chain_enable_for_event:
+ 363              	.LFB63:
+ 364              		.file 1 ".\\chain_flow\\chain_flow_support.c"
+   1:.\chain_flow/chain_flow_support.c **** /*
+   2:.\chain_flow/chain_flow_support.c **** **
+   3:.\chain_flow/chain_flow_support.c **** ** File: cf_chain_flow_support.c
+   4:.\chain_flow/chain_flow_support.c **** **
+   5:.\chain_flow/chain_flow_support.c **** **
+   6:.\chain_flow/chain_flow_support.c **** */
+   7:.\chain_flow/chain_flow_support.c **** #include <stdio.h>
+   8:.\chain_flow/chain_flow_support.c **** #include <assert.h>
+   9:.\chain_flow/chain_flow_support.c **** #include <string.h>
+  10:.\chain_flow/chain_flow_support.c **** 
+  11:.\chain_flow/chain_flow_support.c **** #include "cf_chain_flow_support.h"
+  12:.\chain_flow/chain_flow_support.c **** 
+  13:.\chain_flow/chain_flow_support.c **** #include "cf_runtime_functions.h"
+  14:.\chain_flow/chain_flow_support.c **** #include "cf_external_functions.h"
+  15:.\chain_flow/chain_flow_support.c **** #include "cf_events.h"
+  16:.\chain_flow/chain_flow_support.c **** 
+  17:.\chain_flow/chain_flow_support.c **** int blink_heart_beat( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
+  18:.\chain_flow/chain_flow_support.c ****                       unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data);
+  19:.\chain_flow/chain_flow_support.c **** #include "cf_chain_flow_include.h"
+  20:.\chain_flow/chain_flow_support.c **** 
+  21:.\chain_flow/chain_flow_support.c **** 
+  22:.\chain_flow/chain_flow_support.c **** 
+  23:.\chain_flow/chain_flow_support.c **** #define CHAIN_ENABLE_MASK  1
+  24:.\chain_flow/chain_flow_support.c **** #define CHAIN_RESUME_MASK 2
+  25:.\chain_flow/chain_flow_support.c **** #define CHAIN_ACTIVE_MASK  3
+  26:.\chain_flow/chain_flow_support.c **** 
+  27:.\chain_flow/chain_flow_support.c **** #define LINK_ACTIVE_MASK 1
+  28:.\chain_flow/chain_flow_support.c **** #define LINK_INIT_MASK   2
+  29:.\chain_flow/chain_flow_support.c **** #define LINK_RESET_STATE 1
+  30:.\chain_flow/chain_flow_support.c **** 
+  31:.\chain_flow/chain_flow_support.c **** 
+  32:.\chain_flow/chain_flow_support.c **** 
+  33:.\chain_flow/chain_flow_support.c **** static void chain_execute_chain( unsigned chain_id, unsigned event, unsigned event_data );
+  34:.\chain_flow/chain_flow_support.c **** static unsigned execute_cell( unsigned link_index,  const LINK_CELL *cell_ptr, unsigned event, unsi
+  35:.\chain_flow/chain_flow_support.c **** static unsigned check_return_code( unsigned chain_id, unsigned link_offset, unsigned return_code );
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 8
+
+
+  36:.\chain_flow/chain_flow_support.c **** 
+  37:.\chain_flow/chain_flow_support.c **** static inline int  chain_enable_for_event( unsigned chain_id )
+  38:.\chain_flow/chain_flow_support.c **** {
+ 365              		.loc 1 38 0
+ 366              		.cfi_startproc
+ 367              		@ args = 0, pretend = 0, frame = 16
+ 368              		@ frame_needed = 1, uses_anonymous_args = 0
+ 369              		@ link register save eliminated.
+ 370 0000 80B4     		push	{r7}
+ 371              		.cfi_def_cfa_offset 4
+ 372              		.cfi_offset 7, -4
+ 373 0002 85B0     		sub	sp, sp, #20
+ 374              		.cfi_def_cfa_offset 24
+ 375 0004 00AF     		add	r7, sp, #0
+ 376              		.cfi_def_cfa_register 7
+ 377 0006 7860     		str	r0, [r7, #4]
+  39:.\chain_flow/chain_flow_support.c ****    int return_value;
+  40:.\chain_flow/chain_flow_support.c ****    if( chain_state[chain_id] == CHAIN_ACTIVE_MASK )
+ 378              		.loc 1 40 0
+ 379 0008 084A     		ldr	r2, .L5
+ 380 000a 7B68     		ldr	r3, [r7, #4]
+ 381 000c 1344     		add	r3, r3, r2
+ 382 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 383 0010 032B     		cmp	r3, #3
+ 384 0012 02D1     		bne	.L2
+  41:.\chain_flow/chain_flow_support.c ****    {
+  42:.\chain_flow/chain_flow_support.c ****          return_value = 1;
+ 385              		.loc 1 42 0
+ 386 0014 0123     		movs	r3, #1
+ 387 0016 FB60     		str	r3, [r7, #12]
+ 388 0018 01E0     		b	.L3
+ 389              	.L2:
+  43:.\chain_flow/chain_flow_support.c ****    }
+  44:.\chain_flow/chain_flow_support.c ****    else
+  45:.\chain_flow/chain_flow_support.c ****    {
+  46:.\chain_flow/chain_flow_support.c ****           return_value = 0;
+ 390              		.loc 1 46 0
+ 391 001a 0023     		movs	r3, #0
+ 392 001c FB60     		str	r3, [r7, #12]
+ 393              	.L3:
+  47:.\chain_flow/chain_flow_support.c ****    }
+  48:.\chain_flow/chain_flow_support.c ****    return return_value;
+ 394              		.loc 1 48 0
+ 395 001e FB68     		ldr	r3, [r7, #12]
+  49:.\chain_flow/chain_flow_support.c **** }
+ 396              		.loc 1 49 0
+ 397 0020 1846     		mov	r0, r3
+ 398 0022 1437     		adds	r7, r7, #20
+ 399              		.cfi_def_cfa_offset 4
+ 400 0024 BD46     		mov	sp, r7
+ 401              		.cfi_def_cfa_register 13
+ 402              		@ sp needed
+ 403 0026 5DF8047B 		ldr	r7, [sp], #4
+ 404              		.cfi_restore 7
+ 405              		.cfi_def_cfa_offset 0
+ 406 002a 7047     		bx	lr
+ 407              	.L6:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 9
+
+
+ 408              		.align	2
+ 409              	.L5:
+ 410 002c 00000000 		.word	chain_state
+ 411              		.cfi_endproc
+ 412              	.LFE63:
+ 413              		.size	chain_enable_for_event, .-chain_enable_for_event
+ 414              		.section	.text.chain_get_link_number,"ax",%progbits
+ 415              		.align	2
+ 416              		.thumb
+ 417              		.thumb_func
+ 418              		.type	chain_get_link_number, %function
+ 419              	chain_get_link_number:
+ 420              	.LFB64:
+  50:.\chain_flow/chain_flow_support.c **** 
+  51:.\chain_flow/chain_flow_support.c **** 
+  52:.\chain_flow/chain_flow_support.c **** static inline int  chain_get_link_number( unsigned chain_id )
+  53:.\chain_flow/chain_flow_support.c **** {
+ 421              		.loc 1 53 0
+ 422              		.cfi_startproc
+ 423              		@ args = 0, pretend = 0, frame = 8
+ 424              		@ frame_needed = 1, uses_anonymous_args = 0
+ 425              		@ link register save eliminated.
+ 426 0000 80B4     		push	{r7}
+ 427              		.cfi_def_cfa_offset 4
+ 428              		.cfi_offset 7, -4
+ 429 0002 83B0     		sub	sp, sp, #12
+ 430              		.cfi_def_cfa_offset 16
+ 431 0004 00AF     		add	r7, sp, #0
+ 432              		.cfi_def_cfa_register 7
+ 433 0006 7860     		str	r0, [r7, #4]
+  54:.\chain_flow/chain_flow_support.c ****    return chain_control[chain_id].link_number;
+ 434              		.loc 1 54 0
+ 435 0008 054A     		ldr	r2, .L9
+ 436 000a 7B68     		ldr	r3, [r7, #4]
+ 437 000c 1B01     		lsls	r3, r3, #4
+ 438 000e 1344     		add	r3, r3, r2
+ 439 0010 0833     		adds	r3, r3, #8
+ 440 0012 1B68     		ldr	r3, [r3]
+  55:.\chain_flow/chain_flow_support.c **** }
+ 441              		.loc 1 55 0
+ 442 0014 1846     		mov	r0, r3
+ 443 0016 0C37     		adds	r7, r7, #12
+ 444              		.cfi_def_cfa_offset 4
+ 445 0018 BD46     		mov	sp, r7
+ 446              		.cfi_def_cfa_register 13
+ 447              		@ sp needed
+ 448 001a 5DF8047B 		ldr	r7, [sp], #4
+ 449              		.cfi_restore 7
+ 450              		.cfi_def_cfa_offset 0
+ 451 001e 7047     		bx	lr
+ 452              	.L10:
+ 453              		.align	2
+ 454              	.L9:
+ 455 0020 00000000 		.word	chain_control
+ 456              		.cfi_endproc
+ 457              	.LFE64:
+ 458              		.size	chain_get_link_number, .-chain_get_link_number
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 10
+
+
+ 459              		.section	.text.chain_get_link_offset,"ax",%progbits
+ 460              		.align	2
+ 461              		.thumb
+ 462              		.thumb_func
+ 463              		.type	chain_get_link_offset, %function
+ 464              	chain_get_link_offset:
+ 465              	.LFB65:
+  56:.\chain_flow/chain_flow_support.c **** 
+  57:.\chain_flow/chain_flow_support.c **** static inline int  chain_get_link_offset( unsigned chain_id )
+  58:.\chain_flow/chain_flow_support.c **** {
+ 466              		.loc 1 58 0
+ 467              		.cfi_startproc
+ 468              		@ args = 0, pretend = 0, frame = 8
+ 469              		@ frame_needed = 1, uses_anonymous_args = 0
+ 470              		@ link register save eliminated.
+ 471 0000 80B4     		push	{r7}
+ 472              		.cfi_def_cfa_offset 4
+ 473              		.cfi_offset 7, -4
+ 474 0002 83B0     		sub	sp, sp, #12
+ 475              		.cfi_def_cfa_offset 16
+ 476 0004 00AF     		add	r7, sp, #0
+ 477              		.cfi_def_cfa_register 7
+ 478 0006 7860     		str	r0, [r7, #4]
+  59:.\chain_flow/chain_flow_support.c ****    return chain_control[chain_id].link_index;
+ 479              		.loc 1 59 0
+ 480 0008 054A     		ldr	r2, .L13
+ 481 000a 7B68     		ldr	r3, [r7, #4]
+ 482 000c 1B01     		lsls	r3, r3, #4
+ 483 000e 1344     		add	r3, r3, r2
+ 484 0010 1B68     		ldr	r3, [r3]
+  60:.\chain_flow/chain_flow_support.c **** }
+ 485              		.loc 1 60 0
+ 486 0012 1846     		mov	r0, r3
+ 487 0014 0C37     		adds	r7, r7, #12
+ 488              		.cfi_def_cfa_offset 4
+ 489 0016 BD46     		mov	sp, r7
+ 490              		.cfi_def_cfa_register 13
+ 491              		@ sp needed
+ 492 0018 5DF8047B 		ldr	r7, [sp], #4
+ 493              		.cfi_restore 7
+ 494              		.cfi_def_cfa_offset 0
+ 495 001c 7047     		bx	lr
+ 496              	.L14:
+ 497 001e 00BF     		.align	2
+ 498              	.L13:
+ 499 0020 00000000 		.word	chain_control
+ 500              		.cfi_endproc
+ 501              	.LFE65:
+ 502              		.size	chain_get_link_offset, .-chain_get_link_offset
+ 503              		.section	.text.get_cell_pointer,"ax",%progbits
+ 504              		.align	2
+ 505              		.thumb
+ 506              		.thumb_func
+ 507              		.type	get_cell_pointer, %function
+ 508              	get_cell_pointer:
+ 509              	.LFB66:
+  61:.\chain_flow/chain_flow_support.c **** 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 11
+
+
+  62:.\chain_flow/chain_flow_support.c **** static inline const LINK_CELL *get_cell_pointer( unsigned chain_id )
+  63:.\chain_flow/chain_flow_support.c **** {
+ 510              		.loc 1 63 0
+ 511              		.cfi_startproc
+ 512              		@ args = 0, pretend = 0, frame = 8
+ 513              		@ frame_needed = 1, uses_anonymous_args = 0
+ 514              		@ link register save eliminated.
+ 515 0000 80B4     		push	{r7}
+ 516              		.cfi_def_cfa_offset 4
+ 517              		.cfi_offset 7, -4
+ 518 0002 83B0     		sub	sp, sp, #12
+ 519              		.cfi_def_cfa_offset 16
+ 520 0004 00AF     		add	r7, sp, #0
+ 521              		.cfi_def_cfa_register 7
+ 522 0006 7860     		str	r0, [r7, #4]
+  64:.\chain_flow/chain_flow_support.c ****   return chain_control[chain_id].link_cells;
+ 523              		.loc 1 64 0
+ 524 0008 054A     		ldr	r2, .L17
+ 525 000a 7B68     		ldr	r3, [r7, #4]
+ 526 000c 1B01     		lsls	r3, r3, #4
+ 527 000e 1344     		add	r3, r3, r2
+ 528 0010 0833     		adds	r3, r3, #8
+ 529 0012 5B68     		ldr	r3, [r3, #4]
+  65:.\chain_flow/chain_flow_support.c **** }
+ 530              		.loc 1 65 0
+ 531 0014 1846     		mov	r0, r3
+ 532 0016 0C37     		adds	r7, r7, #12
+ 533              		.cfi_def_cfa_offset 4
+ 534 0018 BD46     		mov	sp, r7
+ 535              		.cfi_def_cfa_register 13
+ 536              		@ sp needed
+ 537 001a 5DF8047B 		ldr	r7, [sp], #4
+ 538              		.cfi_restore 7
+ 539              		.cfi_def_cfa_offset 0
+ 540 001e 7047     		bx	lr
+ 541              	.L18:
+ 542              		.align	2
+ 543              	.L17:
+ 544 0020 00000000 		.word	chain_control
+ 545              		.cfi_endproc
+ 546              	.LFE66:
+ 547              		.size	get_cell_pointer, .-get_cell_pointer
+ 548              		.section	.text.reset_all_links,"ax",%progbits
+ 549              		.align	2
+ 550              		.thumb
+ 551              		.thumb_func
+ 552              		.type	reset_all_links, %function
+ 553              	reset_all_links:
+ 554              	.LFB67:
+  66:.\chain_flow/chain_flow_support.c **** 
+  67:.\chain_flow/chain_flow_support.c **** static inline void reset_all_links( int chain_id )
+  68:.\chain_flow/chain_flow_support.c **** {
+ 555              		.loc 1 68 0
+ 556              		.cfi_startproc
+ 557              		@ args = 0, pretend = 0, frame = 24
+ 558              		@ frame_needed = 1, uses_anonymous_args = 0
+ 559              		@ link register save eliminated.
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 12
+
+
+ 560 0000 80B4     		push	{r7}
+ 561              		.cfi_def_cfa_offset 4
+ 562              		.cfi_offset 7, -4
+ 563 0002 87B0     		sub	sp, sp, #28
+ 564              		.cfi_def_cfa_offset 32
+ 565 0004 00AF     		add	r7, sp, #0
+ 566              		.cfi_def_cfa_register 7
+ 567 0006 7860     		str	r0, [r7, #4]
+  69:.\chain_flow/chain_flow_support.c ****     unsigned link_number;
+  70:.\chain_flow/chain_flow_support.c ****     unsigned link_offset;
+  71:.\chain_flow/chain_flow_support.c ****     unsigned i;
+  72:.\chain_flow/chain_flow_support.c **** 
+  73:.\chain_flow/chain_flow_support.c ****     link_offset = chain_control[ chain_id ].link_index;
+ 568              		.loc 1 73 0
+ 569 0008 104A     		ldr	r2, .L22
+ 570 000a 7B68     		ldr	r3, [r7, #4]
+ 571 000c 1B01     		lsls	r3, r3, #4
+ 572 000e 1344     		add	r3, r3, r2
+ 573 0010 1B68     		ldr	r3, [r3]
+ 574 0012 7B61     		str	r3, [r7, #20]
+  74:.\chain_flow/chain_flow_support.c ****     link_number = chain_control[ chain_id ].link_number;
+ 575              		.loc 1 74 0
+ 576 0014 0D4A     		ldr	r2, .L22
+ 577 0016 7B68     		ldr	r3, [r7, #4]
+ 578 0018 1B01     		lsls	r3, r3, #4
+ 579 001a 1344     		add	r3, r3, r2
+ 580 001c 0833     		adds	r3, r3, #8
+ 581 001e 1B68     		ldr	r3, [r3]
+ 582 0020 FB60     		str	r3, [r7, #12]
+  75:.\chain_flow/chain_flow_support.c ****     for( i = 0; i< link_number; i++ )
+ 583              		.loc 1 75 0
+ 584 0022 0023     		movs	r3, #0
+ 585 0024 3B61     		str	r3, [r7, #16]
+ 586 0026 08E0     		b	.L20
+ 587              	.L21:
+  76:.\chain_flow/chain_flow_support.c ****     {
+  77:.\chain_flow/chain_flow_support.c ****         link_state[link_offset++] = LINK_RESET_STATE;
+ 588              		.loc 1 77 0 discriminator 3
+ 589 0028 7B69     		ldr	r3, [r7, #20]
+ 590 002a 5A1C     		adds	r2, r3, #1
+ 591 002c 7A61     		str	r2, [r7, #20]
+ 592 002e 084A     		ldr	r2, .L22+4
+ 593 0030 0121     		movs	r1, #1
+ 594 0032 D154     		strb	r1, [r2, r3]
+  75:.\chain_flow/chain_flow_support.c ****     for( i = 0; i< link_number; i++ )
+ 595              		.loc 1 75 0 discriminator 3
+ 596 0034 3B69     		ldr	r3, [r7, #16]
+ 597 0036 0133     		adds	r3, r3, #1
+ 598 0038 3B61     		str	r3, [r7, #16]
+ 599              	.L20:
+  75:.\chain_flow/chain_flow_support.c ****     for( i = 0; i< link_number; i++ )
+ 600              		.loc 1 75 0 is_stmt 0 discriminator 1
+ 601 003a 3A69     		ldr	r2, [r7, #16]
+ 602 003c FB68     		ldr	r3, [r7, #12]
+ 603 003e 9A42     		cmp	r2, r3
+ 604 0040 F2D3     		bcc	.L21
+  78:.\chain_flow/chain_flow_support.c ****     }
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 13
+
+
+  79:.\chain_flow/chain_flow_support.c ****     
+  80:.\chain_flow/chain_flow_support.c **** }
+ 605              		.loc 1 80 0 is_stmt 1
+ 606 0042 1C37     		adds	r7, r7, #28
+ 607              		.cfi_def_cfa_offset 4
+ 608 0044 BD46     		mov	sp, r7
+ 609              		.cfi_def_cfa_register 13
+ 610              		@ sp needed
+ 611 0046 5DF8047B 		ldr	r7, [sp], #4
+ 612              		.cfi_restore 7
+ 613              		.cfi_def_cfa_offset 0
+ 614 004a 7047     		bx	lr
+ 615              	.L23:
+ 616              		.align	2
+ 617              	.L22:
+ 618 004c 00000000 		.word	chain_control
+ 619 0050 00000000 		.word	link_state
+ 620              		.cfi_endproc
+ 621              	.LFE67:
+ 622              		.size	reset_all_links, .-reset_all_links
+ 623              		.section	.text.is_link_active,"ax",%progbits
+ 624              		.align	2
+ 625              		.thumb
+ 626              		.thumb_func
+ 627              		.type	is_link_active, %function
+ 628              	is_link_active:
+ 629              	.LFB68:
+  81:.\chain_flow/chain_flow_support.c **** 
+  82:.\chain_flow/chain_flow_support.c **** static inline unsigned is_link_active( unsigned link_offset )
+  83:.\chain_flow/chain_flow_support.c **** {
+ 630              		.loc 1 83 0
+ 631              		.cfi_startproc
+ 632              		@ args = 0, pretend = 0, frame = 8
+ 633              		@ frame_needed = 1, uses_anonymous_args = 0
+ 634              		@ link register save eliminated.
+ 635 0000 80B4     		push	{r7}
+ 636              		.cfi_def_cfa_offset 4
+ 637              		.cfi_offset 7, -4
+ 638 0002 83B0     		sub	sp, sp, #12
+ 639              		.cfi_def_cfa_offset 16
+ 640 0004 00AF     		add	r7, sp, #0
+ 641              		.cfi_def_cfa_register 7
+ 642 0006 7860     		str	r0, [r7, #4]
+  84:.\chain_flow/chain_flow_support.c ****    return link_state[ link_offset] &LINK_ACTIVE_MASK;
+ 643              		.loc 1 84 0
+ 644 0008 054A     		ldr	r2, .L26
+ 645 000a 7B68     		ldr	r3, [r7, #4]
+ 646 000c 1344     		add	r3, r3, r2
+ 647 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 648 0010 03F00103 		and	r3, r3, #1
+  85:.\chain_flow/chain_flow_support.c **** }
+ 649              		.loc 1 85 0
+ 650 0014 1846     		mov	r0, r3
+ 651 0016 0C37     		adds	r7, r7, #12
+ 652              		.cfi_def_cfa_offset 4
+ 653 0018 BD46     		mov	sp, r7
+ 654              		.cfi_def_cfa_register 13
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 14
+
+
+ 655              		@ sp needed
+ 656 001a 5DF8047B 		ldr	r7, [sp], #4
+ 657              		.cfi_restore 7
+ 658              		.cfi_def_cfa_offset 0
+ 659 001e 7047     		bx	lr
+ 660              	.L27:
+ 661              		.align	2
+ 662              	.L26:
+ 663 0020 00000000 		.word	link_state
+ 664              		.cfi_endproc
+ 665              	.LFE68:
+ 666              		.size	is_link_active, .-is_link_active
+ 667              		.section	.text.is_link_initialized,"ax",%progbits
+ 668              		.align	2
+ 669              		.thumb
+ 670              		.thumb_func
+ 671              		.type	is_link_initialized, %function
+ 672              	is_link_initialized:
+ 673              	.LFB69:
+  86:.\chain_flow/chain_flow_support.c **** 
+  87:.\chain_flow/chain_flow_support.c **** static inline unsigned is_link_initialized( unsigned link_offset )
+  88:.\chain_flow/chain_flow_support.c **** {
+ 674              		.loc 1 88 0
+ 675              		.cfi_startproc
+ 676              		@ args = 0, pretend = 0, frame = 8
+ 677              		@ frame_needed = 1, uses_anonymous_args = 0
+ 678              		@ link register save eliminated.
+ 679 0000 80B4     		push	{r7}
+ 680              		.cfi_def_cfa_offset 4
+ 681              		.cfi_offset 7, -4
+ 682 0002 83B0     		sub	sp, sp, #12
+ 683              		.cfi_def_cfa_offset 16
+ 684 0004 00AF     		add	r7, sp, #0
+ 685              		.cfi_def_cfa_register 7
+ 686 0006 7860     		str	r0, [r7, #4]
+  89:.\chain_flow/chain_flow_support.c ****    return link_state[ link_offset] &LINK_INIT_MASK;
+ 687              		.loc 1 89 0
+ 688 0008 054A     		ldr	r2, .L30
+ 689 000a 7B68     		ldr	r3, [r7, #4]
+ 690 000c 1344     		add	r3, r3, r2
+ 691 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 692 0010 03F00203 		and	r3, r3, #2
+  90:.\chain_flow/chain_flow_support.c **** }
+ 693              		.loc 1 90 0
+ 694 0014 1846     		mov	r0, r3
+ 695 0016 0C37     		adds	r7, r7, #12
+ 696              		.cfi_def_cfa_offset 4
+ 697 0018 BD46     		mov	sp, r7
+ 698              		.cfi_def_cfa_register 13
+ 699              		@ sp needed
+ 700 001a 5DF8047B 		ldr	r7, [sp], #4
+ 701              		.cfi_restore 7
+ 702              		.cfi_def_cfa_offset 0
+ 703 001e 7047     		bx	lr
+ 704              	.L31:
+ 705              		.align	2
+ 706              	.L30:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 15
+
+
+ 707 0020 00000000 		.word	link_state
+ 708              		.cfi_endproc
+ 709              	.LFE69:
+ 710              		.size	is_link_initialized, .-is_link_initialized
+ 711              		.section	.text.mark_disable_link,"ax",%progbits
+ 712              		.align	2
+ 713              		.thumb
+ 714              		.thumb_func
+ 715              		.type	mark_disable_link, %function
+ 716              	mark_disable_link:
+ 717              	.LFB70:
+  91:.\chain_flow/chain_flow_support.c **** 
+  92:.\chain_flow/chain_flow_support.c **** static inline void mark_disable_link( unsigned link_offset )
+  93:.\chain_flow/chain_flow_support.c **** {
+ 718              		.loc 1 93 0
+ 719              		.cfi_startproc
+ 720              		@ args = 0, pretend = 0, frame = 8
+ 721              		@ frame_needed = 1, uses_anonymous_args = 0
+ 722              		@ link register save eliminated.
+ 723 0000 80B4     		push	{r7}
+ 724              		.cfi_def_cfa_offset 4
+ 725              		.cfi_offset 7, -4
+ 726 0002 83B0     		sub	sp, sp, #12
+ 727              		.cfi_def_cfa_offset 16
+ 728 0004 00AF     		add	r7, sp, #0
+ 729              		.cfi_def_cfa_register 7
+ 730 0006 7860     		str	r0, [r7, #4]
+  94:.\chain_flow/chain_flow_support.c ****    link_state[ link_offset] &= ~LINK_ACTIVE_MASK;
+ 731              		.loc 1 94 0
+ 732 0008 084A     		ldr	r2, .L33
+ 733 000a 7B68     		ldr	r3, [r7, #4]
+ 734 000c 1344     		add	r3, r3, r2
+ 735 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 736 0010 23F00103 		bic	r3, r3, #1
+ 737 0014 D9B2     		uxtb	r1, r3
+ 738 0016 054A     		ldr	r2, .L33
+ 739 0018 7B68     		ldr	r3, [r7, #4]
+ 740 001a 1344     		add	r3, r3, r2
+ 741 001c 0A46     		mov	r2, r1
+ 742 001e 1A70     		strb	r2, [r3]
+  95:.\chain_flow/chain_flow_support.c **** }
+ 743              		.loc 1 95 0
+ 744 0020 0C37     		adds	r7, r7, #12
+ 745              		.cfi_def_cfa_offset 4
+ 746 0022 BD46     		mov	sp, r7
+ 747              		.cfi_def_cfa_register 13
+ 748              		@ sp needed
+ 749 0024 5DF8047B 		ldr	r7, [sp], #4
+ 750              		.cfi_restore 7
+ 751              		.cfi_def_cfa_offset 0
+ 752 0028 7047     		bx	lr
+ 753              	.L34:
+ 754 002a 00BF     		.align	2
+ 755              	.L33:
+ 756 002c 00000000 		.word	link_state
+ 757              		.cfi_endproc
+ 758              	.LFE70:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 16
+
+
+ 759              		.size	mark_disable_link, .-mark_disable_link
+ 760              		.section	.text.mark_initialize_link,"ax",%progbits
+ 761              		.align	2
+ 762              		.thumb
+ 763              		.thumb_func
+ 764              		.type	mark_initialize_link, %function
+ 765              	mark_initialize_link:
+ 766              	.LFB71:
+  96:.\chain_flow/chain_flow_support.c **** 
+  97:.\chain_flow/chain_flow_support.c **** static inline void mark_initialize_link( unsigned link_offset )
+  98:.\chain_flow/chain_flow_support.c **** {
+ 767              		.loc 1 98 0
+ 768              		.cfi_startproc
+ 769              		@ args = 0, pretend = 0, frame = 8
+ 770              		@ frame_needed = 1, uses_anonymous_args = 0
+ 771              		@ link register save eliminated.
+ 772 0000 80B4     		push	{r7}
+ 773              		.cfi_def_cfa_offset 4
+ 774              		.cfi_offset 7, -4
+ 775 0002 83B0     		sub	sp, sp, #12
+ 776              		.cfi_def_cfa_offset 16
+ 777 0004 00AF     		add	r7, sp, #0
+ 778              		.cfi_def_cfa_register 7
+ 779 0006 7860     		str	r0, [r7, #4]
+  99:.\chain_flow/chain_flow_support.c ****    link_state[ link_offset ] |= LINK_INIT_MASK;
+ 780              		.loc 1 99 0
+ 781 0008 084A     		ldr	r2, .L36
+ 782 000a 7B68     		ldr	r3, [r7, #4]
+ 783 000c 1344     		add	r3, r3, r2
+ 784 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 785 0010 43F00203 		orr	r3, r3, #2
+ 786 0014 D9B2     		uxtb	r1, r3
+ 787 0016 054A     		ldr	r2, .L36
+ 788 0018 7B68     		ldr	r3, [r7, #4]
+ 789 001a 1344     		add	r3, r3, r2
+ 790 001c 0A46     		mov	r2, r1
+ 791 001e 1A70     		strb	r2, [r3]
+ 100:.\chain_flow/chain_flow_support.c **** }
+ 792              		.loc 1 100 0
+ 793 0020 0C37     		adds	r7, r7, #12
+ 794              		.cfi_def_cfa_offset 4
+ 795 0022 BD46     		mov	sp, r7
+ 796              		.cfi_def_cfa_register 13
+ 797              		@ sp needed
+ 798 0024 5DF8047B 		ldr	r7, [sp], #4
+ 799              		.cfi_restore 7
+ 800              		.cfi_def_cfa_offset 0
+ 801 0028 7047     		bx	lr
+ 802              	.L37:
+ 803 002a 00BF     		.align	2
+ 804              	.L36:
+ 805 002c 00000000 		.word	link_state
+ 806              		.cfi_endproc
+ 807              	.LFE71:
+ 808              		.size	mark_initialize_link, .-mark_initialize_link
+ 809              		.section	.text.cf_change_state,"ax",%progbits
+ 810              		.align	2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 17
+
+
+ 811              		.global	cf_change_state
+ 812              		.thumb
+ 813              		.thumb_func
+ 814              		.type	cf_change_state, %function
+ 815              	cf_change_state:
+ 816              	.LFB72:
+ 101:.\chain_flow/chain_flow_support.c **** 
+ 102:.\chain_flow/chain_flow_support.c **** void cf_change_state( unsigned chain_id, unsigned link_index)
+ 103:.\chain_flow/chain_flow_support.c **** {
+ 817              		.loc 1 103 0
+ 818              		.cfi_startproc
+ 819              		@ args = 0, pretend = 0, frame = 24
+ 820              		@ frame_needed = 1, uses_anonymous_args = 0
+ 821 0000 80B5     		push	{r7, lr}
+ 822              		.cfi_def_cfa_offset 8
+ 823              		.cfi_offset 7, -8
+ 824              		.cfi_offset 14, -4
+ 825 0002 86B0     		sub	sp, sp, #24
+ 826              		.cfi_def_cfa_offset 32
+ 827 0004 00AF     		add	r7, sp, #0
+ 828              		.cfi_def_cfa_register 7
+ 829 0006 7860     		str	r0, [r7, #4]
+ 830 0008 3960     		str	r1, [r7]
+ 104:.\chain_flow/chain_flow_support.c ****     unsigned link_base;
+ 105:.\chain_flow/chain_flow_support.c ****     unsigned link_number;
+ 106:.\chain_flow/chain_flow_support.c ****     unsigned      i;
+ 107:.\chain_flow/chain_flow_support.c ****     
+ 108:.\chain_flow/chain_flow_support.c ****     link_base    =  chain_get_link_offset( chain_id );
+ 831              		.loc 1 108 0
+ 832 000a 7868     		ldr	r0, [r7, #4]
+ 833 000c FFF7FEFF 		bl	chain_get_link_offset
+ 834 0010 0346     		mov	r3, r0
+ 835 0012 3B61     		str	r3, [r7, #16]
+ 109:.\chain_flow/chain_flow_support.c ****     link_number  =  chain_get_link_number(  chain_id );
+ 836              		.loc 1 109 0
+ 837 0014 7868     		ldr	r0, [r7, #4]
+ 838 0016 FFF7FEFF 		bl	chain_get_link_number
+ 839 001a 0346     		mov	r3, r0
+ 840 001c FB60     		str	r3, [r7, #12]
+ 110:.\chain_flow/chain_flow_support.c ****     /*
+ 111:.\chain_flow/chain_flow_support.c ****        Mark all cells except for the first cell inactive
+ 112:.\chain_flow/chain_flow_support.c ****     */
+ 113:.\chain_flow/chain_flow_support.c ****     for( i = 1; i < link_number; i++)
+ 841              		.loc 1 113 0
+ 842 001e 0123     		movs	r3, #1
+ 843 0020 7B61     		str	r3, [r7, #20]
+ 844 0022 0FE0     		b	.L39
+ 845              	.L40:
+ 114:.\chain_flow/chain_flow_support.c ****     {
+ 115:.\chain_flow/chain_flow_support.c ****        link_state[i+link_base] &= ~LINK_ACTIVE_MASK;
+ 846              		.loc 1 115 0 discriminator 3
+ 847 0024 7A69     		ldr	r2, [r7, #20]
+ 848 0026 3B69     		ldr	r3, [r7, #16]
+ 849 0028 1344     		add	r3, r3, r2
+ 850 002a 7969     		ldr	r1, [r7, #20]
+ 851 002c 3A69     		ldr	r2, [r7, #16]
+ 852 002e 0A44     		add	r2, r2, r1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 18
+
+
+ 853 0030 0E49     		ldr	r1, .L42
+ 854 0032 8A5C     		ldrb	r2, [r1, r2]	@ zero_extendqisi2
+ 855 0034 22F00102 		bic	r2, r2, #1
+ 856 0038 D1B2     		uxtb	r1, r2
+ 857 003a 0C4A     		ldr	r2, .L42
+ 858 003c D154     		strb	r1, [r2, r3]
+ 113:.\chain_flow/chain_flow_support.c ****     {
+ 859              		.loc 1 113 0 discriminator 3
+ 860 003e 7B69     		ldr	r3, [r7, #20]
+ 861 0040 0133     		adds	r3, r3, #1
+ 862 0042 7B61     		str	r3, [r7, #20]
+ 863              	.L39:
+ 113:.\chain_flow/chain_flow_support.c ****     {
+ 864              		.loc 1 113 0 is_stmt 0 discriminator 1
+ 865 0044 7A69     		ldr	r2, [r7, #20]
+ 866 0046 FB68     		ldr	r3, [r7, #12]
+ 867 0048 9A42     		cmp	r2, r3
+ 868 004a EBD3     		bcc	.L40
+ 116:.\chain_flow/chain_flow_support.c ****     }
+ 117:.\chain_flow/chain_flow_support.c ****     if( ( link_index < link_number ) && ( link_index != 0 ))
+ 869              		.loc 1 117 0 is_stmt 1
+ 870 004c 3A68     		ldr	r2, [r7]
+ 871 004e FB68     		ldr	r3, [r7, #12]
+ 872 0050 9A42     		cmp	r2, r3
+ 873 0052 08D2     		bcs	.L38
+ 874              		.loc 1 117 0 is_stmt 0 discriminator 1
+ 875 0054 3B68     		ldr	r3, [r7]
+ 876 0056 002B     		cmp	r3, #0
+ 877 0058 05D0     		beq	.L38
+ 118:.\chain_flow/chain_flow_support.c ****     {
+ 119:.\chain_flow/chain_flow_support.c ****         link_state[ link_index +link_base] = LINK_RESET_STATE;
+ 878              		.loc 1 119 0 is_stmt 1
+ 879 005a 3A68     		ldr	r2, [r7]
+ 880 005c 3B69     		ldr	r3, [r7, #16]
+ 881 005e 1344     		add	r3, r3, r2
+ 882 0060 024A     		ldr	r2, .L42
+ 883 0062 0121     		movs	r1, #1
+ 884 0064 D154     		strb	r1, [r2, r3]
+ 885              	.L38:
+ 120:.\chain_flow/chain_flow_support.c ****     }
+ 121:.\chain_flow/chain_flow_support.c ****     
+ 122:.\chain_flow/chain_flow_support.c **** }
+ 886              		.loc 1 122 0
+ 887 0066 1837     		adds	r7, r7, #24
+ 888              		.cfi_def_cfa_offset 8
+ 889 0068 BD46     		mov	sp, r7
+ 890              		.cfi_def_cfa_register 13
+ 891              		@ sp needed
+ 892 006a 80BD     		pop	{r7, pc}
+ 893              	.L43:
+ 894              		.align	2
+ 895              	.L42:
+ 896 006c 00000000 		.word	link_state
+ 897              		.cfi_endproc
+ 898              	.LFE72:
+ 899              		.size	cf_change_state, .-cf_change_state
+ 900              		.section	.text.cf_get_cell_value,"ax",%progbits
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 19
+
+
+ 901              		.align	2
+ 902              		.global	cf_get_cell_value
+ 903              		.thumb
+ 904              		.thumb_func
+ 905              		.type	cf_get_cell_value, %function
+ 906              	cf_get_cell_value:
+ 907              	.LFB73:
+ 123:.\chain_flow/chain_flow_support.c **** 
+ 124:.\chain_flow/chain_flow_support.c **** unsigned cf_get_cell_value( unsigned link_id )
+ 125:.\chain_flow/chain_flow_support.c **** {
+ 908              		.loc 1 125 0
+ 909              		.cfi_startproc
+ 910              		@ args = 0, pretend = 0, frame = 8
+ 911              		@ frame_needed = 1, uses_anonymous_args = 0
+ 912              		@ link register save eliminated.
+ 913 0000 80B4     		push	{r7}
+ 914              		.cfi_def_cfa_offset 4
+ 915              		.cfi_offset 7, -4
+ 916 0002 83B0     		sub	sp, sp, #12
+ 917              		.cfi_def_cfa_offset 16
+ 918 0004 00AF     		add	r7, sp, #0
+ 919              		.cfi_def_cfa_register 7
+ 920 0006 7860     		str	r0, [r7, #4]
+ 126:.\chain_flow/chain_flow_support.c ****     return link_data[link_id];
+ 921              		.loc 1 126 0
+ 922 0008 044A     		ldr	r2, .L46
+ 923 000a 7B68     		ldr	r3, [r7, #4]
+ 924 000c 52F82330 		ldr	r3, [r2, r3, lsl #2]
+ 127:.\chain_flow/chain_flow_support.c **** }
+ 925              		.loc 1 127 0
+ 926 0010 1846     		mov	r0, r3
+ 927 0012 0C37     		adds	r7, r7, #12
+ 928              		.cfi_def_cfa_offset 4
+ 929 0014 BD46     		mov	sp, r7
+ 930              		.cfi_def_cfa_register 13
+ 931              		@ sp needed
+ 932 0016 5DF8047B 		ldr	r7, [sp], #4
+ 933              		.cfi_restore 7
+ 934              		.cfi_def_cfa_offset 0
+ 935 001a 7047     		bx	lr
+ 936              	.L47:
+ 937              		.align	2
+ 938              	.L46:
+ 939 001c 00000000 		.word	link_data
+ 940              		.cfi_endproc
+ 941              	.LFE73:
+ 942              		.size	cf_get_cell_value, .-cf_get_cell_value
+ 943              		.section	.text.cf_store_cell_value,"ax",%progbits
+ 944              		.align	2
+ 945              		.global	cf_store_cell_value
+ 946              		.thumb
+ 947              		.thumb_func
+ 948              		.type	cf_store_cell_value, %function
+ 949              	cf_store_cell_value:
+ 950              	.LFB74:
+ 128:.\chain_flow/chain_flow_support.c **** 
+ 129:.\chain_flow/chain_flow_support.c **** void  cf_store_cell_value( unsigned link_id , unsigned value )
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 20
+
+
+ 130:.\chain_flow/chain_flow_support.c **** {
+ 951              		.loc 1 130 0
+ 952              		.cfi_startproc
+ 953              		@ args = 0, pretend = 0, frame = 8
+ 954              		@ frame_needed = 1, uses_anonymous_args = 0
+ 955              		@ link register save eliminated.
+ 956 0000 80B4     		push	{r7}
+ 957              		.cfi_def_cfa_offset 4
+ 958              		.cfi_offset 7, -4
+ 959 0002 83B0     		sub	sp, sp, #12
+ 960              		.cfi_def_cfa_offset 16
+ 961 0004 00AF     		add	r7, sp, #0
+ 962              		.cfi_def_cfa_register 7
+ 963 0006 7860     		str	r0, [r7, #4]
+ 964 0008 3960     		str	r1, [r7]
+ 131:.\chain_flow/chain_flow_support.c ****     link_data[link_id] = value;
+ 965              		.loc 1 131 0
+ 966 000a 0549     		ldr	r1, .L49
+ 967 000c 7B68     		ldr	r3, [r7, #4]
+ 968 000e 3A68     		ldr	r2, [r7]
+ 969 0010 41F82320 		str	r2, [r1, r3, lsl #2]
+ 132:.\chain_flow/chain_flow_support.c **** }
+ 970              		.loc 1 132 0
+ 971 0014 0C37     		adds	r7, r7, #12
+ 972              		.cfi_def_cfa_offset 4
+ 973 0016 BD46     		mov	sp, r7
+ 974              		.cfi_def_cfa_register 13
+ 975              		@ sp needed
+ 976 0018 5DF8047B 		ldr	r7, [sp], #4
+ 977              		.cfi_restore 7
+ 978              		.cfi_def_cfa_offset 0
+ 979 001c 7047     		bx	lr
+ 980              	.L50:
+ 981 001e 00BF     		.align	2
+ 982              	.L49:
+ 983 0020 00000000 		.word	link_data
+ 984              		.cfi_endproc
+ 985              	.LFE74:
+ 986              		.size	cf_store_cell_value, .-cf_store_cell_value
+ 987              		.section	.text.initialize_cf_system,"ax",%progbits
+ 988              		.align	2
+ 989              		.global	initialize_cf_system
+ 990              		.thumb
+ 991              		.thumb_func
+ 992              		.type	initialize_cf_system, %function
+ 993              	initialize_cf_system:
+ 994              	.LFB75:
+ 133:.\chain_flow/chain_flow_support.c **** 
+ 134:.\chain_flow/chain_flow_support.c **** 
+ 135:.\chain_flow/chain_flow_support.c **** void initialize_cf_system( void )
+ 136:.\chain_flow/chain_flow_support.c **** {
+ 995              		.loc 1 136 0
+ 996              		.cfi_startproc
+ 997              		@ args = 0, pretend = 0, frame = 8
+ 998              		@ frame_needed = 1, uses_anonymous_args = 0
+ 999 0000 80B5     		push	{r7, lr}
+ 1000              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 21
+
+
+ 1001              		.cfi_offset 7, -8
+ 1002              		.cfi_offset 14, -4
+ 1003 0002 82B0     		sub	sp, sp, #8
+ 1004              		.cfi_def_cfa_offset 16
+ 1005 0004 00AF     		add	r7, sp, #0
+ 1006              		.cfi_def_cfa_register 7
+ 137:.\chain_flow/chain_flow_support.c ****    int i;
+ 138:.\chain_flow/chain_flow_support.c ****    cf_initialize_event_manager();
+ 1007              		.loc 1 138 0
+ 1008 0006 FFF7FEFF 		bl	cf_initialize_event_manager
+ 139:.\chain_flow/chain_flow_support.c ****    memset(link_state,0,sizeof(link_state));
+ 1009              		.loc 1 139 0
+ 1010 000a 1648     		ldr	r0, .L56
+ 1011 000c 0021     		movs	r1, #0
+ 1012 000e 2F22     		movs	r2, #47
+ 1013 0010 FFF7FEFF 		bl	memset
+ 140:.\chain_flow/chain_flow_support.c ****    memset(link_data,0,sizeof(start_state));
+ 1014              		.loc 1 140 0
+ 1015 0014 1448     		ldr	r0, .L56+4
+ 1016 0016 0021     		movs	r1, #0
+ 1017 0018 2422     		movs	r2, #36
+ 1018 001a FFF7FEFF 		bl	memset
+ 141:.\chain_flow/chain_flow_support.c ****    for( i = 0; i < CHAIN_NUM; i++ )
+ 1019              		.loc 1 141 0
+ 1020 001e 0023     		movs	r3, #0
+ 1021 0020 7B60     		str	r3, [r7, #4]
+ 1022 0022 19E0     		b	.L52
+ 1023              	.L55:
+ 142:.\chain_flow/chain_flow_support.c ****    {
+ 143:.\chain_flow/chain_flow_support.c ****      if( start_state[i] != 0 )
+ 1024              		.loc 1 143 0
+ 1025 0024 114A     		ldr	r2, .L56+8
+ 1026 0026 7B68     		ldr	r3, [r7, #4]
+ 1027 0028 52F82330 		ldr	r3, [r2, r3, lsl #2]
+ 1028 002c 002B     		cmp	r3, #0
+ 1029 002e 04D0     		beq	.L53
+ 144:.\chain_flow/chain_flow_support.c ****      {
+ 145:.\chain_flow/chain_flow_support.c ****         cf_enable_chain( i );
+ 1030              		.loc 1 145 0
+ 1031 0030 7B68     		ldr	r3, [r7, #4]
+ 1032 0032 1846     		mov	r0, r3
+ 1033 0034 FFF7FEFF 		bl	cf_enable_chain
+ 1034 0038 0BE0     		b	.L54
+ 1035              	.L53:
+ 146:.\chain_flow/chain_flow_support.c ****         
+ 147:.\chain_flow/chain_flow_support.c ****      }
+ 148:.\chain_flow/chain_flow_support.c ****      else
+ 149:.\chain_flow/chain_flow_support.c ****      {
+ 150:.\chain_flow/chain_flow_support.c ****         chain_state[i] &= ~CHAIN_ACTIVE_MASK;
+ 1036              		.loc 1 150 0
+ 1037 003a 0D4A     		ldr	r2, .L56+12
+ 1038 003c 7B68     		ldr	r3, [r7, #4]
+ 1039 003e 1344     		add	r3, r3, r2
+ 1040 0040 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1041 0042 23F00303 		bic	r3, r3, #3
+ 1042 0046 D9B2     		uxtb	r1, r3
+ 1043 0048 094A     		ldr	r2, .L56+12
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 22
+
+
+ 1044 004a 7B68     		ldr	r3, [r7, #4]
+ 1045 004c 1344     		add	r3, r3, r2
+ 1046 004e 0A46     		mov	r2, r1
+ 1047 0050 1A70     		strb	r2, [r3]
+ 1048              	.L54:
+ 141:.\chain_flow/chain_flow_support.c ****    {
+ 1049              		.loc 1 141 0 discriminator 2
+ 1050 0052 7B68     		ldr	r3, [r7, #4]
+ 1051 0054 0133     		adds	r3, r3, #1
+ 1052 0056 7B60     		str	r3, [r7, #4]
+ 1053              	.L52:
+ 141:.\chain_flow/chain_flow_support.c ****    {
+ 1054              		.loc 1 141 0 is_stmt 0 discriminator 1
+ 1055 0058 7B68     		ldr	r3, [r7, #4]
+ 1056 005a 082B     		cmp	r3, #8
+ 1057 005c E2DD     		ble	.L55
+ 151:.\chain_flow/chain_flow_support.c ****      }
+ 152:.\chain_flow/chain_flow_support.c ****    }
+ 153:.\chain_flow/chain_flow_support.c **** }
+ 1058              		.loc 1 153 0 is_stmt 1
+ 1059 005e 0837     		adds	r7, r7, #8
+ 1060              		.cfi_def_cfa_offset 8
+ 1061 0060 BD46     		mov	sp, r7
+ 1062              		.cfi_def_cfa_register 13
+ 1063              		@ sp needed
+ 1064 0062 80BD     		pop	{r7, pc}
+ 1065              	.L57:
+ 1066              		.align	2
+ 1067              	.L56:
+ 1068 0064 00000000 		.word	link_state
+ 1069 0068 00000000 		.word	link_data
+ 1070 006c 00000000 		.word	start_state
+ 1071 0070 00000000 		.word	chain_state
+ 1072              		.cfi_endproc
+ 1073              	.LFE75:
+ 1074              		.size	initialize_cf_system, .-initialize_cf_system
+ 1075              		.section	.rodata
+ 1076              		.align	2
+ 1077              	.LC0:
+ 1078 0460 2E5C6368 		.ascii	".\\chain_flow\\chain_flow_support.c\000"
+ 1078      61696E5F 
+ 1078      666C6F77 
+ 1078      5C636861 
+ 1078      696E5F66 
+ 1079 0482 0000     		.align	2
+ 1080              	.LC1:
+ 1081 0484 63686169 		.ascii	"chain_id<CHAIN_NUM\000"
+ 1081      6E5F6964 
+ 1081      3C434841 
+ 1081      494E5F4E 
+ 1081      554D00
+ 1082              		.section	.text.cf_enable_chain,"ax",%progbits
+ 1083              		.align	2
+ 1084              		.global	cf_enable_chain
+ 1085              		.thumb
+ 1086              		.thumb_func
+ 1087              		.type	cf_enable_chain, %function
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 23
+
+
+ 1088              	cf_enable_chain:
+ 1089              	.LFB76:
+ 154:.\chain_flow/chain_flow_support.c **** 
+ 155:.\chain_flow/chain_flow_support.c **** void cf_enable_chain(unsigned chain_id )
+ 156:.\chain_flow/chain_flow_support.c **** {
+ 1090              		.loc 1 156 0
+ 1091              		.cfi_startproc
+ 1092              		@ args = 0, pretend = 0, frame = 8
+ 1093              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1094 0000 80B5     		push	{r7, lr}
+ 1095              		.cfi_def_cfa_offset 8
+ 1096              		.cfi_offset 7, -8
+ 1097              		.cfi_offset 14, -4
+ 1098 0002 82B0     		sub	sp, sp, #8
+ 1099              		.cfi_def_cfa_offset 16
+ 1100 0004 00AF     		add	r7, sp, #0
+ 1101              		.cfi_def_cfa_register 7
+ 1102 0006 7860     		str	r0, [r7, #4]
+ 157:.\chain_flow/chain_flow_support.c ****    assert(chain_id<CHAIN_NUM);
+ 1103              		.loc 1 157 0
+ 1104 0008 7B68     		ldr	r3, [r7, #4]
+ 1105 000a 082B     		cmp	r3, #8
+ 1106 000c 05D9     		bls	.L59
+ 1107              		.loc 1 157 0 is_stmt 0 discriminator 1
+ 1108 000e 0C48     		ldr	r0, .L60
+ 1109 0010 9D21     		movs	r1, #157
+ 1110 0012 0C4A     		ldr	r2, .L60+4
+ 1111 0014 0C4B     		ldr	r3, .L60+8
+ 1112 0016 FFF7FEFF 		bl	__assert_func
+ 1113              	.L59:
+ 158:.\chain_flow/chain_flow_support.c ****    chain_state[chain_id] |= CHAIN_ACTIVE_MASK;
+ 1114              		.loc 1 158 0 is_stmt 1
+ 1115 001a 0C4A     		ldr	r2, .L60+12
+ 1116 001c 7B68     		ldr	r3, [r7, #4]
+ 1117 001e 1344     		add	r3, r3, r2
+ 1118 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1119 0022 43F00303 		orr	r3, r3, #3
+ 1120 0026 D9B2     		uxtb	r1, r3
+ 1121 0028 084A     		ldr	r2, .L60+12
+ 1122 002a 7B68     		ldr	r3, [r7, #4]
+ 1123 002c 1344     		add	r3, r3, r2
+ 1124 002e 0A46     		mov	r2, r1
+ 1125 0030 1A70     		strb	r2, [r3]
+ 159:.\chain_flow/chain_flow_support.c ****    reset_all_links(chain_id);
+ 1126              		.loc 1 159 0
+ 1127 0032 7B68     		ldr	r3, [r7, #4]
+ 1128 0034 1846     		mov	r0, r3
+ 1129 0036 FFF7FEFF 		bl	reset_all_links
+ 160:.\chain_flow/chain_flow_support.c **** }
+ 1130              		.loc 1 160 0
+ 1131 003a 0837     		adds	r7, r7, #8
+ 1132              		.cfi_def_cfa_offset 8
+ 1133 003c BD46     		mov	sp, r7
+ 1134              		.cfi_def_cfa_register 13
+ 1135              		@ sp needed
+ 1136 003e 80BD     		pop	{r7, pc}
+ 1137              	.L61:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 24
+
+
+ 1138              		.align	2
+ 1139              	.L60:
+ 1140 0040 60040000 		.word	.LC0
+ 1141 0044 9C040000 		.word	__FUNCTION__.7612
+ 1142 0048 84040000 		.word	.LC1
+ 1143 004c 00000000 		.word	chain_state
+ 1144              		.cfi_endproc
+ 1145              	.LFE76:
+ 1146              		.size	cf_enable_chain, .-cf_enable_chain
+ 1147              		.section	.text.cf_disable_chain,"ax",%progbits
+ 1148              		.align	2
+ 1149              		.global	cf_disable_chain
+ 1150              		.thumb
+ 1151              		.thumb_func
+ 1152              		.type	cf_disable_chain, %function
+ 1153              	cf_disable_chain:
+ 1154              	.LFB77:
+ 161:.\chain_flow/chain_flow_support.c **** 
+ 162:.\chain_flow/chain_flow_support.c **** void cf_disable_chain(unsigned chain_id )
+ 163:.\chain_flow/chain_flow_support.c **** {
+ 1155              		.loc 1 163 0
+ 1156              		.cfi_startproc
+ 1157              		@ args = 0, pretend = 0, frame = 8
+ 1158              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1159 0000 80B5     		push	{r7, lr}
+ 1160              		.cfi_def_cfa_offset 8
+ 1161              		.cfi_offset 7, -8
+ 1162              		.cfi_offset 14, -4
+ 1163 0002 82B0     		sub	sp, sp, #8
+ 1164              		.cfi_def_cfa_offset 16
+ 1165 0004 00AF     		add	r7, sp, #0
+ 1166              		.cfi_def_cfa_register 7
+ 1167 0006 7860     		str	r0, [r7, #4]
+ 164:.\chain_flow/chain_flow_support.c ****    assert(chain_id<CHAIN_NUM);
+ 1168              		.loc 1 164 0
+ 1169 0008 7B68     		ldr	r3, [r7, #4]
+ 1170 000a 082B     		cmp	r3, #8
+ 1171 000c 05D9     		bls	.L63
+ 1172              		.loc 1 164 0 is_stmt 0 discriminator 1
+ 1173 000e 0A48     		ldr	r0, .L64
+ 1174 0010 A421     		movs	r1, #164
+ 1175 0012 0A4A     		ldr	r2, .L64+4
+ 1176 0014 0A4B     		ldr	r3, .L64+8
+ 1177 0016 FFF7FEFF 		bl	__assert_func
+ 1178              	.L63:
+ 165:.\chain_flow/chain_flow_support.c ****    chain_state[chain_id] &= ~CHAIN_ENABLE_MASK;
+ 1179              		.loc 1 165 0 is_stmt 1
+ 1180 001a 0A4A     		ldr	r2, .L64+12
+ 1181 001c 7B68     		ldr	r3, [r7, #4]
+ 1182 001e 1344     		add	r3, r3, r2
+ 1183 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1184 0022 23F00103 		bic	r3, r3, #1
+ 1185 0026 D9B2     		uxtb	r1, r3
+ 1186 0028 064A     		ldr	r2, .L64+12
+ 1187 002a 7B68     		ldr	r3, [r7, #4]
+ 1188 002c 1344     		add	r3, r3, r2
+ 1189 002e 0A46     		mov	r2, r1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 25
+
+
+ 1190 0030 1A70     		strb	r2, [r3]
+ 166:.\chain_flow/chain_flow_support.c ****    
+ 167:.\chain_flow/chain_flow_support.c **** }
+ 1191              		.loc 1 167 0
+ 1192 0032 0837     		adds	r7, r7, #8
+ 1193              		.cfi_def_cfa_offset 8
+ 1194 0034 BD46     		mov	sp, r7
+ 1195              		.cfi_def_cfa_register 13
+ 1196              		@ sp needed
+ 1197 0036 80BD     		pop	{r7, pc}
+ 1198              	.L65:
+ 1199              		.align	2
+ 1200              	.L64:
+ 1201 0038 60040000 		.word	.LC0
+ 1202 003c AC040000 		.word	__FUNCTION__.7616
+ 1203 0040 84040000 		.word	.LC1
+ 1204 0044 00000000 		.word	chain_state
+ 1205              		.cfi_endproc
+ 1206              	.LFE77:
+ 1207              		.size	cf_disable_chain, .-cf_disable_chain
+ 1208              		.section	.text.cf_resume_chain,"ax",%progbits
+ 1209              		.align	2
+ 1210              		.global	cf_resume_chain
+ 1211              		.thumb
+ 1212              		.thumb_func
+ 1213              		.type	cf_resume_chain, %function
+ 1214              	cf_resume_chain:
+ 1215              	.LFB78:
+ 168:.\chain_flow/chain_flow_support.c **** 
+ 169:.\chain_flow/chain_flow_support.c **** 
+ 170:.\chain_flow/chain_flow_support.c **** 
+ 171:.\chain_flow/chain_flow_support.c **** void cf_resume_chain(unsigned chain_id )
+ 172:.\chain_flow/chain_flow_support.c **** {
+ 1216              		.loc 1 172 0
+ 1217              		.cfi_startproc
+ 1218              		@ args = 0, pretend = 0, frame = 8
+ 1219              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1220 0000 80B5     		push	{r7, lr}
+ 1221              		.cfi_def_cfa_offset 8
+ 1222              		.cfi_offset 7, -8
+ 1223              		.cfi_offset 14, -4
+ 1224 0002 82B0     		sub	sp, sp, #8
+ 1225              		.cfi_def_cfa_offset 16
+ 1226 0004 00AF     		add	r7, sp, #0
+ 1227              		.cfi_def_cfa_register 7
+ 1228 0006 7860     		str	r0, [r7, #4]
+ 173:.\chain_flow/chain_flow_support.c ****     assert(chain_id<CHAIN_NUM);
+ 1229              		.loc 1 173 0
+ 1230 0008 7B68     		ldr	r3, [r7, #4]
+ 1231 000a 082B     		cmp	r3, #8
+ 1232 000c 05D9     		bls	.L67
+ 1233              		.loc 1 173 0 is_stmt 0 discriminator 1
+ 1234 000e 0A48     		ldr	r0, .L68
+ 1235 0010 AD21     		movs	r1, #173
+ 1236 0012 0A4A     		ldr	r2, .L68+4
+ 1237 0014 0A4B     		ldr	r3, .L68+8
+ 1238 0016 FFF7FEFF 		bl	__assert_func
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 26
+
+
+ 1239              	.L67:
+ 174:.\chain_flow/chain_flow_support.c ****    chain_state[chain_id] |= CHAIN_RESUME_MASK;
+ 1240              		.loc 1 174 0 is_stmt 1
+ 1241 001a 0A4A     		ldr	r2, .L68+12
+ 1242 001c 7B68     		ldr	r3, [r7, #4]
+ 1243 001e 1344     		add	r3, r3, r2
+ 1244 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1245 0022 43F00203 		orr	r3, r3, #2
+ 1246 0026 D9B2     		uxtb	r1, r3
+ 1247 0028 064A     		ldr	r2, .L68+12
+ 1248 002a 7B68     		ldr	r3, [r7, #4]
+ 1249 002c 1344     		add	r3, r3, r2
+ 1250 002e 0A46     		mov	r2, r1
+ 1251 0030 1A70     		strb	r2, [r3]
+ 175:.\chain_flow/chain_flow_support.c **** 
+ 176:.\chain_flow/chain_flow_support.c **** }
+ 1252              		.loc 1 176 0
+ 1253 0032 0837     		adds	r7, r7, #8
+ 1254              		.cfi_def_cfa_offset 8
+ 1255 0034 BD46     		mov	sp, r7
+ 1256              		.cfi_def_cfa_register 13
+ 1257              		@ sp needed
+ 1258 0036 80BD     		pop	{r7, pc}
+ 1259              	.L69:
+ 1260              		.align	2
+ 1261              	.L68:
+ 1262 0038 60040000 		.word	.LC0
+ 1263 003c C0040000 		.word	__FUNCTION__.7620
+ 1264 0040 84040000 		.word	.LC1
+ 1265 0044 00000000 		.word	chain_state
+ 1266              		.cfi_endproc
+ 1267              	.LFE78:
+ 1268              		.size	cf_resume_chain, .-cf_resume_chain
+ 1269              		.section	.text.cf_suspend_chain,"ax",%progbits
+ 1270              		.align	2
+ 1271              		.global	cf_suspend_chain
+ 1272              		.thumb
+ 1273              		.thumb_func
+ 1274              		.type	cf_suspend_chain, %function
+ 1275              	cf_suspend_chain:
+ 1276              	.LFB79:
+ 177:.\chain_flow/chain_flow_support.c **** 
+ 178:.\chain_flow/chain_flow_support.c **** void cf_suspend_chain(unsigned chain_id )
+ 179:.\chain_flow/chain_flow_support.c **** {
+ 1277              		.loc 1 179 0
+ 1278              		.cfi_startproc
+ 1279              		@ args = 0, pretend = 0, frame = 8
+ 1280              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1281 0000 80B5     		push	{r7, lr}
+ 1282              		.cfi_def_cfa_offset 8
+ 1283              		.cfi_offset 7, -8
+ 1284              		.cfi_offset 14, -4
+ 1285 0002 82B0     		sub	sp, sp, #8
+ 1286              		.cfi_def_cfa_offset 16
+ 1287 0004 00AF     		add	r7, sp, #0
+ 1288              		.cfi_def_cfa_register 7
+ 1289 0006 7860     		str	r0, [r7, #4]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 27
+
+
+ 180:.\chain_flow/chain_flow_support.c ****    assert(chain_id<CHAIN_NUM);
+ 1290              		.loc 1 180 0
+ 1291 0008 7B68     		ldr	r3, [r7, #4]
+ 1292 000a 082B     		cmp	r3, #8
+ 1293 000c 05D9     		bls	.L71
+ 1294              		.loc 1 180 0 is_stmt 0 discriminator 1
+ 1295 000e 0A48     		ldr	r0, .L72
+ 1296 0010 B421     		movs	r1, #180
+ 1297 0012 0A4A     		ldr	r2, .L72+4
+ 1298 0014 0A4B     		ldr	r3, .L72+8
+ 1299 0016 FFF7FEFF 		bl	__assert_func
+ 1300              	.L71:
+ 181:.\chain_flow/chain_flow_support.c ****    chain_state[chain_id] &= ~CHAIN_RESUME_MASK;
+ 1301              		.loc 1 181 0 is_stmt 1
+ 1302 001a 0A4A     		ldr	r2, .L72+12
+ 1303 001c 7B68     		ldr	r3, [r7, #4]
+ 1304 001e 1344     		add	r3, r3, r2
+ 1305 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1306 0022 23F00203 		bic	r3, r3, #2
+ 1307 0026 D9B2     		uxtb	r1, r3
+ 1308 0028 064A     		ldr	r2, .L72+12
+ 1309 002a 7B68     		ldr	r3, [r7, #4]
+ 1310 002c 1344     		add	r3, r3, r2
+ 1311 002e 0A46     		mov	r2, r1
+ 1312 0030 1A70     		strb	r2, [r3]
+ 182:.\chain_flow/chain_flow_support.c **** 
+ 183:.\chain_flow/chain_flow_support.c **** }
+ 1313              		.loc 1 183 0
+ 1314 0032 0837     		adds	r7, r7, #8
+ 1315              		.cfi_def_cfa_offset 8
+ 1316 0034 BD46     		mov	sp, r7
+ 1317              		.cfi_def_cfa_register 13
+ 1318              		@ sp needed
+ 1319 0036 80BD     		pop	{r7, pc}
+ 1320              	.L73:
+ 1321              		.align	2
+ 1322              	.L72:
+ 1323 0038 60040000 		.word	.LC0
+ 1324 003c D0040000 		.word	__FUNCTION__.7624
+ 1325 0040 84040000 		.word	.LC1
+ 1326 0044 00000000 		.word	chain_state
+ 1327              		.cfi_endproc
+ 1328              	.LFE79:
+ 1329              		.size	cf_suspend_chain, .-cf_suspend_chain
+ 1330              		.section	.text.cf_process_cf_event,"ax",%progbits
+ 1331              		.align	2
+ 1332              		.global	cf_process_cf_event
+ 1333              		.thumb
+ 1334              		.thumb_func
+ 1335              		.type	cf_process_cf_event, %function
+ 1336              	cf_process_cf_event:
+ 1337              	.LFB80:
+ 184:.\chain_flow/chain_flow_support.c **** 
+ 185:.\chain_flow/chain_flow_support.c **** 
+ 186:.\chain_flow/chain_flow_support.c **** 
+ 187:.\chain_flow/chain_flow_support.c **** void cf_process_cf_event( unsigned event, unsigned event_data )
+ 188:.\chain_flow/chain_flow_support.c **** {
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 28
+
+
+ 1338              		.loc 1 188 0
+ 1339              		.cfi_startproc
+ 1340              		@ args = 0, pretend = 0, frame = 16
+ 1341              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1342 0000 80B5     		push	{r7, lr}
+ 1343              		.cfi_def_cfa_offset 8
+ 1344              		.cfi_offset 7, -8
+ 1345              		.cfi_offset 14, -4
+ 1346 0002 84B0     		sub	sp, sp, #16
+ 1347              		.cfi_def_cfa_offset 24
+ 1348 0004 00AF     		add	r7, sp, #0
+ 1349              		.cfi_def_cfa_register 7
+ 1350 0006 7860     		str	r0, [r7, #4]
+ 1351 0008 3960     		str	r1, [r7]
+ 189:.\chain_flow/chain_flow_support.c ****    
+ 190:.\chain_flow/chain_flow_support.c ****    int i;
+ 191:.\chain_flow/chain_flow_support.c ****    for( i = 0; i < CHAIN_NUM; i++ )
+ 1352              		.loc 1 191 0
+ 1353 000a 0023     		movs	r3, #0
+ 1354 000c FB60     		str	r3, [r7, #12]
+ 1355 000e 0FE0     		b	.L75
+ 1356              	.L77:
+ 192:.\chain_flow/chain_flow_support.c ****    {
+ 193:.\chain_flow/chain_flow_support.c ****      if( chain_enable_for_event( i ) != 0 )
+ 1357              		.loc 1 193 0
+ 1358 0010 FB68     		ldr	r3, [r7, #12]
+ 1359 0012 1846     		mov	r0, r3
+ 1360 0014 FFF7FEFF 		bl	chain_enable_for_event
+ 1361 0018 0346     		mov	r3, r0
+ 1362 001a 002B     		cmp	r3, #0
+ 1363 001c 05D0     		beq	.L76
+ 194:.\chain_flow/chain_flow_support.c ****      {
+ 195:.\chain_flow/chain_flow_support.c ****             chain_execute_chain( i, event, event_data );
+ 1364              		.loc 1 195 0
+ 1365 001e FB68     		ldr	r3, [r7, #12]
+ 1366 0020 1846     		mov	r0, r3
+ 1367 0022 7968     		ldr	r1, [r7, #4]
+ 1368 0024 3A68     		ldr	r2, [r7]
+ 1369 0026 FFF7FEFF 		bl	chain_execute_chain
+ 1370              	.L76:
+ 191:.\chain_flow/chain_flow_support.c ****    {
+ 1371              		.loc 1 191 0 discriminator 2
+ 1372 002a FB68     		ldr	r3, [r7, #12]
+ 1373 002c 0133     		adds	r3, r3, #1
+ 1374 002e FB60     		str	r3, [r7, #12]
+ 1375              	.L75:
+ 191:.\chain_flow/chain_flow_support.c ****    {
+ 1376              		.loc 1 191 0 is_stmt 0 discriminator 1
+ 1377 0030 FB68     		ldr	r3, [r7, #12]
+ 1378 0032 082B     		cmp	r3, #8
+ 1379 0034 ECDD     		ble	.L77
+ 196:.\chain_flow/chain_flow_support.c ****      }
+ 197:.\chain_flow/chain_flow_support.c **** 
+ 198:.\chain_flow/chain_flow_support.c **** 
+ 199:.\chain_flow/chain_flow_support.c ****   }
+ 200:.\chain_flow/chain_flow_support.c **** 
+ 201:.\chain_flow/chain_flow_support.c ****   
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 29
+
+
+ 202:.\chain_flow/chain_flow_support.c **** }
+ 1380              		.loc 1 202 0 is_stmt 1
+ 1381 0036 1037     		adds	r7, r7, #16
+ 1382              		.cfi_def_cfa_offset 8
+ 1383 0038 BD46     		mov	sp, r7
+ 1384              		.cfi_def_cfa_register 13
+ 1385              		@ sp needed
+ 1386 003a 80BD     		pop	{r7, pc}
+ 1387              		.cfi_endproc
+ 1388              	.LFE80:
+ 1389              		.size	cf_process_cf_event, .-cf_process_cf_event
+ 1390              		.section	.text.chain_execute_chain,"ax",%progbits
+ 1391              		.align	2
+ 1392              		.thumb
+ 1393              		.thumb_func
+ 1394              		.type	chain_execute_chain, %function
+ 1395              	chain_execute_chain:
+ 1396              	.LFB81:
+ 203:.\chain_flow/chain_flow_support.c **** 
+ 204:.\chain_flow/chain_flow_support.c **** 
+ 205:.\chain_flow/chain_flow_support.c **** 
+ 206:.\chain_flow/chain_flow_support.c **** 
+ 207:.\chain_flow/chain_flow_support.c **** 
+ 208:.\chain_flow/chain_flow_support.c **** static void chain_execute_chain( unsigned chain_id, unsigned event, unsigned event_data )
+ 209:.\chain_flow/chain_flow_support.c **** {
+ 1397              		.loc 1 209 0
+ 1398              		.cfi_startproc
+ 1399              		@ args = 0, pretend = 0, frame = 40
+ 1400              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1401 0000 80B5     		push	{r7, lr}
+ 1402              		.cfi_def_cfa_offset 8
+ 1403              		.cfi_offset 7, -8
+ 1404              		.cfi_offset 14, -4
+ 1405 0002 8AB0     		sub	sp, sp, #40
+ 1406              		.cfi_def_cfa_offset 48
+ 1407 0004 00AF     		add	r7, sp, #0
+ 1408              		.cfi_def_cfa_register 7
+ 1409 0006 F860     		str	r0, [r7, #12]
+ 1410 0008 B960     		str	r1, [r7, #8]
+ 1411 000a 7A60     		str	r2, [r7, #4]
+ 210:.\chain_flow/chain_flow_support.c ****    unsigned        return_code;
+ 211:.\chain_flow/chain_flow_support.c ****    unsigned        link_number;
+ 212:.\chain_flow/chain_flow_support.c ****    unsigned        link_offset;
+ 213:.\chain_flow/chain_flow_support.c ****    unsigned        i;
+ 214:.\chain_flow/chain_flow_support.c ****    const LINK_CELL *cell_ptr;
+ 215:.\chain_flow/chain_flow_support.c **** 
+ 216:.\chain_flow/chain_flow_support.c ****    if( chain_enable_for_event( chain_id ) == 0 )
+ 1412              		.loc 1 216 0
+ 1413 000c F868     		ldr	r0, [r7, #12]
+ 1414 000e FFF7FEFF 		bl	chain_enable_for_event
+ 1415 0012 0346     		mov	r3, r0
+ 1416 0014 002B     		cmp	r3, #0
+ 1417 0016 00D1     		bne	.L79
+ 217:.\chain_flow/chain_flow_support.c ****    {
+ 218:.\chain_flow/chain_flow_support.c ****        return;
+ 1418              		.loc 1 218 0
+ 1419 0018 33E0     		b	.L78
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 30
+
+
+ 1420              	.L79:
+ 219:.\chain_flow/chain_flow_support.c ****    }
+ 220:.\chain_flow/chain_flow_support.c ****    link_number = chain_get_link_number( chain_id );
+ 1421              		.loc 1 220 0
+ 1422 001a F868     		ldr	r0, [r7, #12]
+ 1423 001c FFF7FEFF 		bl	chain_get_link_number
+ 1424 0020 0346     		mov	r3, r0
+ 1425 0022 BB61     		str	r3, [r7, #24]
+ 221:.\chain_flow/chain_flow_support.c ****    link_offset = chain_get_link_offset( chain_id );
+ 1426              		.loc 1 221 0
+ 1427 0024 F868     		ldr	r0, [r7, #12]
+ 1428 0026 FFF7FEFF 		bl	chain_get_link_offset
+ 1429 002a 0346     		mov	r3, r0
+ 1430 002c 7B62     		str	r3, [r7, #36]
+ 222:.\chain_flow/chain_flow_support.c ****    cell_ptr    = get_cell_pointer( chain_id );
+ 1431              		.loc 1 222 0
+ 1432 002e F868     		ldr	r0, [r7, #12]
+ 1433 0030 FFF7FEFF 		bl	get_cell_pointer
+ 1434 0034 F861     		str	r0, [r7, #28]
+ 223:.\chain_flow/chain_flow_support.c ****    for( i = 0; i < link_number; i++ )
+ 1435              		.loc 1 223 0
+ 1436 0036 0023     		movs	r3, #0
+ 1437 0038 3B62     		str	r3, [r7, #32]
+ 1438 003a 1EE0     		b	.L81
+ 1439              	.L83:
+ 224:.\chain_flow/chain_flow_support.c ****    {
+ 225:.\chain_flow/chain_flow_support.c ****       if( is_link_active( link_offset ) != 0 )
+ 1440              		.loc 1 225 0
+ 1441 003c 786A     		ldr	r0, [r7, #36]
+ 1442 003e FFF7FEFF 		bl	is_link_active
+ 1443 0042 0346     		mov	r3, r0
+ 1444 0044 002B     		cmp	r3, #0
+ 1445 0046 0FD0     		beq	.L82
+ 226:.\chain_flow/chain_flow_support.c ****       {
+ 227:.\chain_flow/chain_flow_support.c ****          return_code = execute_cell( link_offset, cell_ptr, event,event_data );
+ 1446              		.loc 1 227 0
+ 1447 0048 786A     		ldr	r0, [r7, #36]
+ 1448 004a F969     		ldr	r1, [r7, #28]
+ 1449 004c BA68     		ldr	r2, [r7, #8]
+ 1450 004e 7B68     		ldr	r3, [r7, #4]
+ 1451 0050 FFF7FEFF 		bl	execute_cell
+ 1452 0054 7861     		str	r0, [r7, #20]
+ 228:.\chain_flow/chain_flow_support.c ****          if( check_return_code( chain_id, link_offset,return_code ) == 0 )
+ 1453              		.loc 1 228 0
+ 1454 0056 F868     		ldr	r0, [r7, #12]
+ 1455 0058 796A     		ldr	r1, [r7, #36]
+ 1456 005a 7A69     		ldr	r2, [r7, #20]
+ 1457 005c FFF7FEFF 		bl	check_return_code
+ 1458 0060 0346     		mov	r3, r0
+ 1459 0062 002B     		cmp	r3, #0
+ 1460 0064 00D1     		bne	.L82
+ 229:.\chain_flow/chain_flow_support.c ****          {
+ 230:.\chain_flow/chain_flow_support.c ****             break;
+ 1461              		.loc 1 230 0
+ 1462 0066 0CE0     		b	.L78
+ 1463              	.L82:
+ 231:.\chain_flow/chain_flow_support.c ****          }
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 31
+
+
+ 232:.\chain_flow/chain_flow_support.c ****       }
+ 233:.\chain_flow/chain_flow_support.c ****       cell_ptr++;
+ 1464              		.loc 1 233 0 discriminator 2
+ 1465 0068 FB69     		ldr	r3, [r7, #28]
+ 1466 006a 1433     		adds	r3, r3, #20
+ 1467 006c FB61     		str	r3, [r7, #28]
+ 234:.\chain_flow/chain_flow_support.c ****       link_offset++;
+ 1468              		.loc 1 234 0 discriminator 2
+ 1469 006e 7B6A     		ldr	r3, [r7, #36]
+ 1470 0070 0133     		adds	r3, r3, #1
+ 1471 0072 7B62     		str	r3, [r7, #36]
+ 223:.\chain_flow/chain_flow_support.c ****    {
+ 1472              		.loc 1 223 0 discriminator 2
+ 1473 0074 3B6A     		ldr	r3, [r7, #32]
+ 1474 0076 0133     		adds	r3, r3, #1
+ 1475 0078 3B62     		str	r3, [r7, #32]
+ 1476              	.L81:
+ 223:.\chain_flow/chain_flow_support.c ****    {
+ 1477              		.loc 1 223 0 is_stmt 0 discriminator 1
+ 1478 007a 3A6A     		ldr	r2, [r7, #32]
+ 1479 007c BB69     		ldr	r3, [r7, #24]
+ 1480 007e 9A42     		cmp	r2, r3
+ 1481 0080 DCD3     		bcc	.L83
+ 1482              	.L78:
+ 235:.\chain_flow/chain_flow_support.c ****    }
+ 236:.\chain_flow/chain_flow_support.c **** }
+ 1483              		.loc 1 236 0 is_stmt 1
+ 1484 0082 2837     		adds	r7, r7, #40
+ 1485              		.cfi_def_cfa_offset 8
+ 1486 0084 BD46     		mov	sp, r7
+ 1487              		.cfi_def_cfa_register 13
+ 1488              		@ sp needed
+ 1489 0086 80BD     		pop	{r7, pc}
+ 1490              		.cfi_endproc
+ 1491              	.LFE81:
+ 1492              		.size	chain_execute_chain, .-chain_execute_chain
+ 1493              		.section	.text.execute_cell,"ax",%progbits
+ 1494              		.align	2
+ 1495              		.thumb
+ 1496              		.thumb_func
+ 1497              		.type	execute_cell, %function
+ 1498              	execute_cell:
+ 1499              	.LFB82:
+ 237:.\chain_flow/chain_flow_support.c **** 
+ 238:.\chain_flow/chain_flow_support.c **** 
+ 239:.\chain_flow/chain_flow_support.c **** static unsigned execute_cell(  unsigned link_index,  const LINK_CELL *cell_ptr, unsigned event, uns
+ 240:.\chain_flow/chain_flow_support.c **** {
+ 1500              		.loc 1 240 0
+ 1501              		.cfi_startproc
+ 1502              		@ args = 0, pretend = 0, frame = 24
+ 1503              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1504 0000 B0B5     		push	{r4, r5, r7, lr}
+ 1505              		.cfi_def_cfa_offset 16
+ 1506              		.cfi_offset 4, -16
+ 1507              		.cfi_offset 5, -12
+ 1508              		.cfi_offset 7, -8
+ 1509              		.cfi_offset 14, -4
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 32
+
+
+ 1510 0002 8AB0     		sub	sp, sp, #40
+ 1511              		.cfi_def_cfa_offset 56
+ 1512 0004 04AF     		add	r7, sp, #16
+ 1513              		.cfi_def_cfa 7, 40
+ 1514 0006 F860     		str	r0, [r7, #12]
+ 1515 0008 B960     		str	r1, [r7, #8]
+ 1516 000a 7A60     		str	r2, [r7, #4]
+ 1517 000c 3B60     		str	r3, [r7]
+ 241:.\chain_flow/chain_flow_support.c ****     unsigned return_code;
+ 242:.\chain_flow/chain_flow_support.c **** 
+ 243:.\chain_flow/chain_flow_support.c ****     if( is_link_initialized( link_index ) == 0 )
+ 1518              		.loc 1 243 0
+ 1519 000e F868     		ldr	r0, [r7, #12]
+ 1520 0010 FFF7FEFF 		bl	is_link_initialized
+ 1521 0014 0346     		mov	r3, r0
+ 1522 0016 002B     		cmp	r3, #0
+ 1523 0018 14D1     		bne	.L85
+ 244:.\chain_flow/chain_flow_support.c ****     {
+ 245:.\chain_flow/chain_flow_support.c ****        cell_ptr->func( link_index, cell_ptr->param_1, cell_ptr->param_2, 
+ 1524              		.loc 1 245 0
+ 1525 001a BB68     		ldr	r3, [r7, #8]
+ 1526 001c 1C68     		ldr	r4, [r3]
+ 1527 001e BB68     		ldr	r3, [r7, #8]
+ 1528 0020 5968     		ldr	r1, [r3, #4]
+ 1529 0022 BB68     		ldr	r3, [r7, #8]
+ 1530 0024 9A68     		ldr	r2, [r3, #8]
+ 1531 0026 BB68     		ldr	r3, [r7, #8]
+ 1532 0028 DD68     		ldr	r5, [r3, #12]
+ 1533 002a BB68     		ldr	r3, [r7, #8]
+ 1534 002c 1B69     		ldr	r3, [r3, #16]
+ 1535 002e 0093     		str	r3, [sp]
+ 1536 0030 0123     		movs	r3, #1
+ 1537 0032 0193     		str	r3, [sp, #4]
+ 1538 0034 0023     		movs	r3, #0
+ 1539 0036 0293     		str	r3, [sp, #8]
+ 1540 0038 F868     		ldr	r0, [r7, #12]
+ 1541 003a 2B46     		mov	r3, r5
+ 1542 003c A047     		blx	r4
+ 246:.\chain_flow/chain_flow_support.c ****         cell_ptr->param_3,cell_ptr->param_4, CF_INIT_EVENT, 0 );
+ 247:.\chain_flow/chain_flow_support.c ****        
+ 248:.\chain_flow/chain_flow_support.c ****        mark_initialize_link( link_index );
+ 1543              		.loc 1 248 0
+ 1544 003e F868     		ldr	r0, [r7, #12]
+ 1545 0040 FFF7FEFF 		bl	mark_initialize_link
+ 1546              	.L85:
+ 249:.\chain_flow/chain_flow_support.c ****     }
+ 250:.\chain_flow/chain_flow_support.c ****     return_code = cell_ptr->func( link_index, cell_ptr->param_1, cell_ptr->param_2,
+ 1547              		.loc 1 250 0
+ 1548 0044 BB68     		ldr	r3, [r7, #8]
+ 1549 0046 1C68     		ldr	r4, [r3]
+ 1550 0048 BB68     		ldr	r3, [r7, #8]
+ 1551 004a 5968     		ldr	r1, [r3, #4]
+ 1552 004c BB68     		ldr	r3, [r7, #8]
+ 1553 004e 9A68     		ldr	r2, [r3, #8]
+ 1554 0050 BB68     		ldr	r3, [r7, #8]
+ 1555 0052 DD68     		ldr	r5, [r3, #12]
+ 1556 0054 BB68     		ldr	r3, [r7, #8]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 33
+
+
+ 1557 0056 1B69     		ldr	r3, [r3, #16]
+ 1558 0058 0093     		str	r3, [sp]
+ 1559 005a 7B68     		ldr	r3, [r7, #4]
+ 1560 005c 0193     		str	r3, [sp, #4]
+ 1561 005e 3B68     		ldr	r3, [r7]
+ 1562 0060 0293     		str	r3, [sp, #8]
+ 1563 0062 F868     		ldr	r0, [r7, #12]
+ 1564 0064 2B46     		mov	r3, r5
+ 1565 0066 A047     		blx	r4
+ 1566 0068 0346     		mov	r3, r0
+ 1567 006a 7B61     		str	r3, [r7, #20]
+ 251:.\chain_flow/chain_flow_support.c ****         cell_ptr->param_3,cell_ptr->param_4, event, event_data );
+ 252:.\chain_flow/chain_flow_support.c **** 
+ 253:.\chain_flow/chain_flow_support.c ****     return return_code;
+ 1568              		.loc 1 253 0
+ 1569 006c 7B69     		ldr	r3, [r7, #20]
+ 254:.\chain_flow/chain_flow_support.c **** }
+ 1570              		.loc 1 254 0
+ 1571 006e 1846     		mov	r0, r3
+ 1572 0070 1837     		adds	r7, r7, #24
+ 1573              		.cfi_def_cfa_offset 16
+ 1574 0072 BD46     		mov	sp, r7
+ 1575              		.cfi_def_cfa_register 13
+ 1576              		@ sp needed
+ 1577 0074 B0BD     		pop	{r4, r5, r7, pc}
+ 1578              		.cfi_endproc
+ 1579              	.LFE82:
+ 1580              		.size	execute_cell, .-execute_cell
+ 1581 0076 00BF     		.section	.rodata
+ 1582 0497 00       		.align	2
+ 1583              	.LC2:
+ 1584 0498 3000     		.ascii	"0\000"
+ 1585              		.section	.text.check_return_code,"ax",%progbits
+ 1586              		.align	2
+ 1587              		.thumb
+ 1588              		.thumb_func
+ 1589              		.type	check_return_code, %function
+ 1590              	check_return_code:
+ 1591              	.LFB83:
+ 255:.\chain_flow/chain_flow_support.c **** 
+ 256:.\chain_flow/chain_flow_support.c **** static unsigned check_return_code( unsigned chain_id, unsigned link_offset, unsigned return_code )
+ 257:.\chain_flow/chain_flow_support.c **** {
+ 1592              		.loc 1 257 0
+ 1593              		.cfi_startproc
+ 1594              		@ args = 0, pretend = 0, frame = 24
+ 1595              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1596 0000 80B5     		push	{r7, lr}
+ 1597              		.cfi_def_cfa_offset 8
+ 1598              		.cfi_offset 7, -8
+ 1599              		.cfi_offset 14, -4
+ 1600 0002 86B0     		sub	sp, sp, #24
+ 1601              		.cfi_def_cfa_offset 32
+ 1602 0004 00AF     		add	r7, sp, #0
+ 1603              		.cfi_def_cfa_register 7
+ 1604 0006 F860     		str	r0, [r7, #12]
+ 1605 0008 B960     		str	r1, [r7, #8]
+ 1606 000a 7A60     		str	r2, [r7, #4]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 34
+
+
+ 258:.\chain_flow/chain_flow_support.c ****       unsigned return_value;
+ 259:.\chain_flow/chain_flow_support.c **** 
+ 260:.\chain_flow/chain_flow_support.c ****       switch( return_code )
+ 1607              		.loc 1 260 0
+ 1608 000c 7B68     		ldr	r3, [r7, #4]
+ 1609 000e 042B     		cmp	r3, #4
+ 1610 0010 25D8     		bhi	.L88
+ 1611 0012 01A2     		adr	r2, .L90
+ 1612 0014 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 1613              		.p2align 2
+ 1614              	.L90:
+ 1615 0018 2D000000 		.word	.L89+1
+ 1616 001c 33000000 		.word	.L91+1
+ 1617 0020 39000000 		.word	.L92+1
+ 1618 0024 45000000 		.word	.L93+1
+ 1619 0028 53000000 		.word	.L94+1
+ 1620              		.p2align 1
+ 1621              	.L89:
+ 261:.\chain_flow/chain_flow_support.c ****       {
+ 262:.\chain_flow/chain_flow_support.c ****           case CF_CONTINUE:
+ 263:.\chain_flow/chain_flow_support.c ****                 return_value = 1;
+ 1622              		.loc 1 263 0
+ 1623 002c 0123     		movs	r3, #1
+ 1624 002e 7B61     		str	r3, [r7, #20]
+ 264:.\chain_flow/chain_flow_support.c ****                 break;
+ 1625              		.loc 1 264 0
+ 1626 0030 1CE0     		b	.L95
+ 1627              	.L91:
+ 265:.\chain_flow/chain_flow_support.c **** 
+ 266:.\chain_flow/chain_flow_support.c ****           case CF_HALT:
+ 267:.\chain_flow/chain_flow_support.c ****                 return_value = 0;
+ 1628              		.loc 1 267 0
+ 1629 0032 0023     		movs	r3, #0
+ 1630 0034 7B61     		str	r3, [r7, #20]
+ 268:.\chain_flow/chain_flow_support.c ****                 break;
+ 1631              		.loc 1 268 0
+ 1632 0036 19E0     		b	.L95
+ 1633              	.L92:
+ 269:.\chain_flow/chain_flow_support.c **** 
+ 270:.\chain_flow/chain_flow_support.c ****           case CF_DISABLE:
+ 271:.\chain_flow/chain_flow_support.c ****                return_value = 1;
+ 1634              		.loc 1 271 0
+ 1635 0038 0123     		movs	r3, #1
+ 1636 003a 7B61     		str	r3, [r7, #20]
+ 272:.\chain_flow/chain_flow_support.c ****                mark_disable_link( link_offset );
+ 1637              		.loc 1 272 0
+ 1638 003c B868     		ldr	r0, [r7, #8]
+ 1639 003e FFF7FEFF 		bl	mark_disable_link
+ 273:.\chain_flow/chain_flow_support.c ****                break;
+ 1640              		.loc 1 273 0
+ 1641 0042 13E0     		b	.L95
+ 1642              	.L93:
+ 274:.\chain_flow/chain_flow_support.c **** 
+ 275:.\chain_flow/chain_flow_support.c ****           case CF_RESET:
+ 276:.\chain_flow/chain_flow_support.c ****                return_value = 0;
+ 1643              		.loc 1 276 0
+ 1644 0044 0023     		movs	r3, #0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 35
+
+
+ 1645 0046 7B61     		str	r3, [r7, #20]
+ 277:.\chain_flow/chain_flow_support.c ****                reset_all_links(chain_id);
+ 1646              		.loc 1 277 0
+ 1647 0048 FB68     		ldr	r3, [r7, #12]
+ 1648 004a 1846     		mov	r0, r3
+ 1649 004c FFF7FEFF 		bl	reset_all_links
+ 278:.\chain_flow/chain_flow_support.c ****                break;
+ 1650              		.loc 1 278 0
+ 1651 0050 0CE0     		b	.L95
+ 1652              	.L94:
+ 279:.\chain_flow/chain_flow_support.c **** 
+ 280:.\chain_flow/chain_flow_support.c ****            case CF_TERMINATE:
+ 281:.\chain_flow/chain_flow_support.c ****                return_value = 0;
+ 1653              		.loc 1 281 0
+ 1654 0052 0023     		movs	r3, #0
+ 1655 0054 7B61     		str	r3, [r7, #20]
+ 282:.\chain_flow/chain_flow_support.c ****                cf_disable_chain( chain_id );
+ 1656              		.loc 1 282 0
+ 1657 0056 F868     		ldr	r0, [r7, #12]
+ 1658 0058 FFF7FEFF 		bl	cf_disable_chain
+ 283:.\chain_flow/chain_flow_support.c ****                break;
+ 1659              		.loc 1 283 0
+ 1660 005c 06E0     		b	.L95
+ 1661              	.L88:
+ 284:.\chain_flow/chain_flow_support.c **** 
+ 285:.\chain_flow/chain_flow_support.c ****            default:
+ 286:.\chain_flow/chain_flow_support.c ****                 assert(0); // should not happen
+ 1662              		.loc 1 286 0
+ 1663 005e 0648     		ldr	r0, .L97
+ 1664 0060 4FF48F71 		mov	r1, #286
+ 1665 0064 054A     		ldr	r2, .L97+4
+ 1666 0066 064B     		ldr	r3, .L97+8
+ 1667 0068 FFF7FEFF 		bl	__assert_func
+ 1668              	.L95:
+ 287:.\chain_flow/chain_flow_support.c ****      }
+ 288:.\chain_flow/chain_flow_support.c ****      return return_value;
+ 1669              		.loc 1 288 0
+ 1670 006c 7B69     		ldr	r3, [r7, #20]
+ 289:.\chain_flow/chain_flow_support.c **** }
+ 1671              		.loc 1 289 0
+ 1672 006e 1846     		mov	r0, r3
+ 1673 0070 1837     		adds	r7, r7, #24
+ 1674              		.cfi_def_cfa_offset 8
+ 1675 0072 BD46     		mov	sp, r7
+ 1676              		.cfi_def_cfa_register 13
+ 1677              		@ sp needed
+ 1678 0074 80BD     		pop	{r7, pc}
+ 1679              	.L98:
+ 1680 0076 00BF     		.align	2
+ 1681              	.L97:
+ 1682 0078 60040000 		.word	.LC0
+ 1683 007c E4040000 		.word	__FUNCTION__.7666
+ 1684 0080 98040000 		.word	.LC2
+ 1685              		.cfi_endproc
+ 1686              	.LFE83:
+ 1687              		.size	check_return_code, .-check_return_code
+ 1688              		.section	.rodata
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 36
+
+
+ 1689 049a 0000     		.align	2
+ 1690              		.type	__FUNCTION__.7612, %object
+ 1691              		.size	__FUNCTION__.7612, 16
+ 1692              	__FUNCTION__.7612:
+ 1693 049c 63665F65 		.ascii	"cf_enable_chain\000"
+ 1693      6E61626C 
+ 1693      655F6368 
+ 1693      61696E00 
+ 1694              		.align	2
+ 1695              		.type	__FUNCTION__.7616, %object
+ 1696              		.size	__FUNCTION__.7616, 17
+ 1697              	__FUNCTION__.7616:
+ 1698 04ac 63665F64 		.ascii	"cf_disable_chain\000"
+ 1698      69736162 
+ 1698      6C655F63 
+ 1698      6861696E 
+ 1698      00
+ 1699 04bd 000000   		.align	2
+ 1700              		.type	__FUNCTION__.7620, %object
+ 1701              		.size	__FUNCTION__.7620, 16
+ 1702              	__FUNCTION__.7620:
+ 1703 04c0 63665F72 		.ascii	"cf_resume_chain\000"
+ 1703      6573756D 
+ 1703      655F6368 
+ 1703      61696E00 
+ 1704              		.align	2
+ 1705              		.type	__FUNCTION__.7624, %object
+ 1706              		.size	__FUNCTION__.7624, 17
+ 1707              	__FUNCTION__.7624:
+ 1708 04d0 63665F73 		.ascii	"cf_suspend_chain\000"
+ 1708      75737065 
+ 1708      6E645F63 
+ 1708      6861696E 
+ 1708      00
+ 1709 04e1 000000   		.align	2
+ 1710              		.type	__FUNCTION__.7666, %object
+ 1711              		.size	__FUNCTION__.7666, 18
+ 1712              	__FUNCTION__.7666:
+ 1713 04e4 63686563 		.ascii	"check_return_code\000"
+ 1713      6B5F7265 
+ 1713      7475726E 
+ 1713      5F636F64 
+ 1713      6500
+ 1714 04f6 0000     		.text
+ 1715              	.Letext0:
+ 1716              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 1717              		.file 3 ".\\chain_flow\\cf_chain_flow_support.h"
+ 1718              		.file 4 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 1719              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 1720              		.file 6 ".\\chain_flow\\chain_flow_assembler/cf_chain_flow_include.h"
+ 1721              		.section	.debug_info,"",%progbits
+ 1722              	.Ldebug_info0:
+ 1723 0000 8B080000 		.4byte	0x88b
+ 1724 0004 0400     		.2byte	0x4
+ 1725 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1726 000a 04       		.byte	0x4
+ 1727 000b 01       		.uleb128 0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 37
+
+
+ 1728 000c 70010000 		.4byte	.LASF74
+ 1729 0010 01       		.byte	0x1
+ 1730 0011 69040000 		.4byte	.LASF75
+ 1731 0015 E9020000 		.4byte	.LASF76
+ 1732 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1733 001d 00000000 		.4byte	0
+ 1734 0021 00000000 		.4byte	.Ldebug_line0
+ 1735 0025 02       		.uleb128 0x2
+ 1736 0026 01       		.byte	0x1
+ 1737 0027 06       		.byte	0x6
+ 1738 0028 18010000 		.4byte	.LASF0
+ 1739 002c 02       		.uleb128 0x2
+ 1740 002d 01       		.byte	0x1
+ 1741 002e 08       		.byte	0x8
+ 1742 002f 92020000 		.4byte	.LASF1
+ 1743 0033 02       		.uleb128 0x2
+ 1744 0034 02       		.byte	0x2
+ 1745 0035 05       		.byte	0x5
+ 1746 0036 46000000 		.4byte	.LASF2
+ 1747 003a 02       		.uleb128 0x2
+ 1748 003b 02       		.byte	0x2
+ 1749 003c 07       		.byte	0x7
+ 1750 003d BA030000 		.4byte	.LASF3
+ 1751 0041 03       		.uleb128 0x3
+ 1752 0042 B6040000 		.4byte	.LASF11
+ 1753 0046 02       		.byte	0x2
+ 1754 0047 3F       		.byte	0x3f
+ 1755 0048 4C000000 		.4byte	0x4c
+ 1756 004c 02       		.uleb128 0x2
+ 1757 004d 04       		.byte	0x4
+ 1758 004e 05       		.byte	0x5
+ 1759 004f 96030000 		.4byte	.LASF4
+ 1760 0053 02       		.uleb128 0x2
+ 1761 0054 04       		.byte	0x4
+ 1762 0055 07       		.byte	0x7
+ 1763 0056 44030000 		.4byte	.LASF5
+ 1764 005a 02       		.uleb128 0x2
+ 1765 005b 08       		.byte	0x8
+ 1766 005c 05       		.byte	0x5
+ 1767 005d 4B010000 		.4byte	.LASF6
+ 1768 0061 02       		.uleb128 0x2
+ 1769 0062 08       		.byte	0x8
+ 1770 0063 07       		.byte	0x7
+ 1771 0064 59010000 		.4byte	.LASF7
+ 1772 0068 04       		.uleb128 0x4
+ 1773 0069 04       		.byte	0x4
+ 1774 006a 05       		.byte	0x5
+ 1775 006b 696E7400 		.ascii	"int\000"
+ 1776 006f 02       		.uleb128 0x2
+ 1777 0070 04       		.byte	0x4
+ 1778 0071 07       		.byte	0x7
+ 1779 0072 27030000 		.4byte	.LASF8
+ 1780 0076 02       		.uleb128 0x2
+ 1781 0077 04       		.byte	0x4
+ 1782 0078 07       		.byte	0x7
+ 1783 0079 FC040000 		.4byte	.LASF9
+ 1784 007d 02       		.uleb128 0x2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 38
+
+
+ 1785 007e 01       		.byte	0x1
+ 1786 007f 08       		.byte	0x8
+ 1787 0080 91030000 		.4byte	.LASF10
+ 1788 0084 03       		.uleb128 0x3
+ 1789 0085 DE030000 		.4byte	.LASF12
+ 1790 0089 03       		.byte	0x3
+ 1791 008a 19       		.byte	0x19
+ 1792 008b 8F000000 		.4byte	0x8f
+ 1793 008f 05       		.uleb128 0x5
+ 1794 0090 04       		.byte	0x4
+ 1795 0091 95000000 		.4byte	0x95
+ 1796 0095 06       		.uleb128 0x6
+ 1797 0096 68000000 		.4byte	0x68
+ 1798 009a BD000000 		.4byte	0xbd
+ 1799 009e 07       		.uleb128 0x7
+ 1800 009f 6F000000 		.4byte	0x6f
+ 1801 00a3 07       		.uleb128 0x7
+ 1802 00a4 6F000000 		.4byte	0x6f
+ 1803 00a8 07       		.uleb128 0x7
+ 1804 00a9 6F000000 		.4byte	0x6f
+ 1805 00ad 07       		.uleb128 0x7
+ 1806 00ae 6F000000 		.4byte	0x6f
+ 1807 00b2 07       		.uleb128 0x7
+ 1808 00b3 6F000000 		.4byte	0x6f
+ 1809 00b7 07       		.uleb128 0x7
+ 1810 00b8 6F000000 		.4byte	0x6f
+ 1811 00bc 00       		.byte	0
+ 1812 00bd 03       		.uleb128 0x3
+ 1813 00be 4E020000 		.4byte	.LASF13
+ 1814 00c2 03       		.byte	0x3
+ 1815 00c3 1C       		.byte	0x1c
+ 1816 00c4 C8000000 		.4byte	0xc8
+ 1817 00c8 05       		.uleb128 0x5
+ 1818 00c9 04       		.byte	0x4
+ 1819 00ca CE000000 		.4byte	0xce
+ 1820 00ce 06       		.uleb128 0x6
+ 1821 00cf 68000000 		.4byte	0x68
+ 1822 00d3 FB000000 		.4byte	0xfb
+ 1823 00d7 07       		.uleb128 0x7
+ 1824 00d8 6F000000 		.4byte	0x6f
+ 1825 00dc 07       		.uleb128 0x7
+ 1826 00dd 84000000 		.4byte	0x84
+ 1827 00e1 07       		.uleb128 0x7
+ 1828 00e2 6F000000 		.4byte	0x6f
+ 1829 00e6 07       		.uleb128 0x7
+ 1830 00e7 6F000000 		.4byte	0x6f
+ 1831 00eb 07       		.uleb128 0x7
+ 1832 00ec 6F000000 		.4byte	0x6f
+ 1833 00f0 07       		.uleb128 0x7
+ 1834 00f1 6F000000 		.4byte	0x6f
+ 1835 00f5 07       		.uleb128 0x7
+ 1836 00f6 6F000000 		.4byte	0x6f
+ 1837 00fa 00       		.byte	0
+ 1838 00fb 08       		.uleb128 0x8
+ 1839 00fc 14       		.byte	0x14
+ 1840 00fd 03       		.byte	0x3
+ 1841 00fe 23       		.byte	0x23
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 39
+
+
+ 1842 00ff 40010000 		.4byte	0x140
+ 1843 0103 09       		.uleb128 0x9
+ 1844 0104 2A010000 		.4byte	.LASF14
+ 1845 0108 03       		.byte	0x3
+ 1846 0109 25       		.byte	0x25
+ 1847 010a BD000000 		.4byte	0xbd
+ 1848 010e 00       		.byte	0
+ 1849 010f 09       		.uleb128 0x9
+ 1850 0110 A6000000 		.4byte	.LASF15
+ 1851 0114 03       		.byte	0x3
+ 1852 0115 26       		.byte	0x26
+ 1853 0116 84000000 		.4byte	0x84
+ 1854 011a 04       		.byte	0x4
+ 1855 011b 09       		.uleb128 0x9
+ 1856 011c AE000000 		.4byte	.LASF16
+ 1857 0120 03       		.byte	0x3
+ 1858 0121 27       		.byte	0x27
+ 1859 0122 6F000000 		.4byte	0x6f
+ 1860 0126 08       		.byte	0x8
+ 1861 0127 09       		.uleb128 0x9
+ 1862 0128 3E000000 		.4byte	.LASF17
+ 1863 012c 03       		.byte	0x3
+ 1864 012d 28       		.byte	0x28
+ 1865 012e 6F000000 		.4byte	0x6f
+ 1866 0132 0C       		.byte	0xc
+ 1867 0133 09       		.uleb128 0x9
+ 1868 0134 BC000000 		.4byte	.LASF18
+ 1869 0138 03       		.byte	0x3
+ 1870 0139 29       		.byte	0x29
+ 1871 013a 6F000000 		.4byte	0x6f
+ 1872 013e 10       		.byte	0x10
+ 1873 013f 00       		.byte	0
+ 1874 0140 03       		.uleb128 0x3
+ 1875 0141 DF020000 		.4byte	.LASF19
+ 1876 0145 03       		.byte	0x3
+ 1877 0146 2A       		.byte	0x2a
+ 1878 0147 FB000000 		.4byte	0xfb
+ 1879 014b 08       		.uleb128 0x8
+ 1880 014c 10       		.byte	0x10
+ 1881 014d 03       		.byte	0x3
+ 1882 014e 2E       		.byte	0x2e
+ 1883 014f 84010000 		.4byte	0x184
+ 1884 0153 09       		.uleb128 0x9
+ 1885 0154 F7000000 		.4byte	.LASF20
+ 1886 0158 03       		.byte	0x3
+ 1887 0159 30       		.byte	0x30
+ 1888 015a 6F000000 		.4byte	0x6f
+ 1889 015e 00       		.byte	0
+ 1890 015f 09       		.uleb128 0x9
+ 1891 0160 19050000 		.4byte	.LASF21
+ 1892 0164 03       		.byte	0x3
+ 1893 0165 31       		.byte	0x31
+ 1894 0166 6F000000 		.4byte	0x6f
+ 1895 016a 04       		.byte	0x4
+ 1896 016b 09       		.uleb128 0x9
+ 1897 016c 49040000 		.4byte	.LASF22
+ 1898 0170 03       		.byte	0x3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 40
+
+
+ 1899 0171 32       		.byte	0x32
+ 1900 0172 6F000000 		.4byte	0x6f
+ 1901 0176 08       		.byte	0x8
+ 1902 0177 09       		.uleb128 0x9
+ 1903 0178 EC000000 		.4byte	.LASF23
+ 1904 017c 03       		.byte	0x3
+ 1905 017d 33       		.byte	0x33
+ 1906 017e 84010000 		.4byte	0x184
+ 1907 0182 0C       		.byte	0xc
+ 1908 0183 00       		.byte	0
+ 1909 0184 05       		.uleb128 0x5
+ 1910 0185 04       		.byte	0x4
+ 1911 0186 8A010000 		.4byte	0x18a
+ 1912 018a 0A       		.uleb128 0xa
+ 1913 018b 40010000 		.4byte	0x140
+ 1914 018f 03       		.uleb128 0x3
+ 1915 0190 D4020000 		.4byte	.LASF24
+ 1916 0194 03       		.byte	0x3
+ 1917 0195 34       		.byte	0x34
+ 1918 0196 4B010000 		.4byte	0x14b
+ 1919 019a 03       		.uleb128 0x3
+ 1920 019b 08020000 		.4byte	.LASF25
+ 1921 019f 04       		.byte	0x4
+ 1922 01a0 2C       		.byte	0x2c
+ 1923 01a1 41000000 		.4byte	0x41
+ 1924 01a5 02       		.uleb128 0x2
+ 1925 01a6 04       		.byte	0x4
+ 1926 01a7 04       		.byte	0x4
+ 1927 01a8 24010000 		.4byte	.LASF26
+ 1928 01ac 02       		.uleb128 0x2
+ 1929 01ad 08       		.byte	0x8
+ 1930 01ae 04       		.byte	0x4
+ 1931 01af 55040000 		.4byte	.LASF27
+ 1932 01b3 0B       		.uleb128 0xb
+ 1933 01b4 56030000 		.4byte	.LASF28
+ 1934 01b8 01       		.byte	0x1
+ 1935 01b9 25       		.byte	0x25
+ 1936 01ba 68000000 		.4byte	0x68
+ 1937 01be 00000000 		.4byte	.LFB63
+ 1938 01c2 30000000 		.4byte	.LFE63-.LFB63
+ 1939 01c6 01       		.uleb128 0x1
+ 1940 01c7 9C       		.byte	0x9c
+ 1941 01c8 E9010000 		.4byte	0x1e9
+ 1942 01cc 0C       		.uleb128 0xc
+ 1943 01cd 0D040000 		.4byte	.LASF30
+ 1944 01d1 01       		.byte	0x1
+ 1945 01d2 25       		.byte	0x25
+ 1946 01d3 6F000000 		.4byte	0x6f
+ 1947 01d7 02       		.uleb128 0x2
+ 1948 01d8 91       		.byte	0x91
+ 1949 01d9 6C       		.sleb128 -20
+ 1950 01da 0D       		.uleb128 0xd
+ 1951 01db A9040000 		.4byte	.LASF33
+ 1952 01df 01       		.byte	0x1
+ 1953 01e0 27       		.byte	0x27
+ 1954 01e1 68000000 		.4byte	0x68
+ 1955 01e5 02       		.uleb128 0x2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 41
+
+
+ 1956 01e6 91       		.byte	0x91
+ 1957 01e7 74       		.sleb128 -12
+ 1958 01e8 00       		.byte	0
+ 1959 01e9 0B       		.uleb128 0xb
+ 1960 01ea 02010000 		.4byte	.LASF29
+ 1961 01ee 01       		.byte	0x1
+ 1962 01ef 34       		.byte	0x34
+ 1963 01f0 68000000 		.4byte	0x68
+ 1964 01f4 00000000 		.4byte	.LFB64
+ 1965 01f8 24000000 		.4byte	.LFE64-.LFB64
+ 1966 01fc 01       		.uleb128 0x1
+ 1967 01fd 9C       		.byte	0x9c
+ 1968 01fe 11020000 		.4byte	0x211
+ 1969 0202 0C       		.uleb128 0xc
+ 1970 0203 0D040000 		.4byte	.LASF30
+ 1971 0207 01       		.byte	0x1
+ 1972 0208 34       		.byte	0x34
+ 1973 0209 6F000000 		.4byte	0x6f
+ 1974 020d 02       		.uleb128 0x2
+ 1975 020e 91       		.byte	0x91
+ 1976 020f 74       		.sleb128 -12
+ 1977 0210 00       		.byte	0
+ 1978 0211 0B       		.uleb128 0xb
+ 1979 0212 D6000000 		.4byte	.LASF31
+ 1980 0216 01       		.byte	0x1
+ 1981 0217 39       		.byte	0x39
+ 1982 0218 68000000 		.4byte	0x68
+ 1983 021c 00000000 		.4byte	.LFB65
+ 1984 0220 24000000 		.4byte	.LFE65-.LFB65
+ 1985 0224 01       		.uleb128 0x1
+ 1986 0225 9C       		.byte	0x9c
+ 1987 0226 39020000 		.4byte	0x239
+ 1988 022a 0C       		.uleb128 0xc
+ 1989 022b 0D040000 		.4byte	.LASF30
+ 1990 022f 01       		.byte	0x1
+ 1991 0230 39       		.byte	0x39
+ 1992 0231 6F000000 		.4byte	0x6f
+ 1993 0235 02       		.uleb128 0x2
+ 1994 0236 91       		.byte	0x91
+ 1995 0237 74       		.sleb128 -12
+ 1996 0238 00       		.byte	0
+ 1997 0239 0B       		.uleb128 0xb
+ 1998 023a 55020000 		.4byte	.LASF32
+ 1999 023e 01       		.byte	0x1
+ 2000 023f 3E       		.byte	0x3e
+ 2001 0240 84010000 		.4byte	0x184
+ 2002 0244 00000000 		.4byte	.LFB66
+ 2003 0248 24000000 		.4byte	.LFE66-.LFB66
+ 2004 024c 01       		.uleb128 0x1
+ 2005 024d 9C       		.byte	0x9c
+ 2006 024e 61020000 		.4byte	0x261
+ 2007 0252 0C       		.uleb128 0xc
+ 2008 0253 0D040000 		.4byte	.LASF30
+ 2009 0257 01       		.byte	0x1
+ 2010 0258 3E       		.byte	0x3e
+ 2011 0259 6F000000 		.4byte	0x6f
+ 2012 025d 02       		.uleb128 0x2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 42
+
+
+ 2013 025e 91       		.byte	0x91
+ 2014 025f 74       		.sleb128 -12
+ 2015 0260 00       		.byte	0
+ 2016 0261 0E       		.uleb128 0xe
+ 2017 0262 34030000 		.4byte	.LASF37
+ 2018 0266 01       		.byte	0x1
+ 2019 0267 43       		.byte	0x43
+ 2020 0268 00000000 		.4byte	.LFB67
+ 2021 026c 54000000 		.4byte	.LFE67-.LFB67
+ 2022 0270 01       		.uleb128 0x1
+ 2023 0271 9C       		.byte	0x9c
+ 2024 0272 AD020000 		.4byte	0x2ad
+ 2025 0276 0C       		.uleb128 0xc
+ 2026 0277 0D040000 		.4byte	.LASF30
+ 2027 027b 01       		.byte	0x1
+ 2028 027c 43       		.byte	0x43
+ 2029 027d 68000000 		.4byte	0x68
+ 2030 0281 02       		.uleb128 0x2
+ 2031 0282 91       		.byte	0x91
+ 2032 0283 64       		.sleb128 -28
+ 2033 0284 0D       		.uleb128 0xd
+ 2034 0285 49040000 		.4byte	.LASF22
+ 2035 0289 01       		.byte	0x1
+ 2036 028a 45       		.byte	0x45
+ 2037 028b 6F000000 		.4byte	0x6f
+ 2038 028f 02       		.uleb128 0x2
+ 2039 0290 91       		.byte	0x91
+ 2040 0291 6C       		.sleb128 -20
+ 2041 0292 0D       		.uleb128 0xd
+ 2042 0293 CA000000 		.4byte	.LASF34
+ 2043 0297 01       		.byte	0x1
+ 2044 0298 46       		.byte	0x46
+ 2045 0299 6F000000 		.4byte	0x6f
+ 2046 029d 02       		.uleb128 0x2
+ 2047 029e 91       		.byte	0x91
+ 2048 029f 74       		.sleb128 -12
+ 2049 02a0 0F       		.uleb128 0xf
+ 2050 02a1 6900     		.ascii	"i\000"
+ 2051 02a3 01       		.byte	0x1
+ 2052 02a4 47       		.byte	0x47
+ 2053 02a5 6F000000 		.4byte	0x6f
+ 2054 02a9 02       		.uleb128 0x2
+ 2055 02aa 91       		.byte	0x91
+ 2056 02ab 70       		.sleb128 -16
+ 2057 02ac 00       		.byte	0
+ 2058 02ad 0B       		.uleb128 0xb
+ 2059 02ae 6D030000 		.4byte	.LASF35
+ 2060 02b2 01       		.byte	0x1
+ 2061 02b3 52       		.byte	0x52
+ 2062 02b4 6F000000 		.4byte	0x6f
+ 2063 02b8 00000000 		.4byte	.LFB68
+ 2064 02bc 24000000 		.4byte	.LFE68-.LFB68
+ 2065 02c0 01       		.uleb128 0x1
+ 2066 02c1 9C       		.byte	0x9c
+ 2067 02c2 D5020000 		.4byte	0x2d5
+ 2068 02c6 0C       		.uleb128 0xc
+ 2069 02c7 CA000000 		.4byte	.LASF34
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 43
+
+
+ 2070 02cb 01       		.byte	0x1
+ 2071 02cc 52       		.byte	0x52
+ 2072 02cd 6F000000 		.4byte	0x6f
+ 2073 02d1 02       		.uleb128 0x2
+ 2074 02d2 91       		.byte	0x91
+ 2075 02d3 74       		.sleb128 -12
+ 2076 02d4 00       		.byte	0
+ 2077 02d5 0B       		.uleb128 0xb
+ 2078 02d6 25050000 		.4byte	.LASF36
+ 2079 02da 01       		.byte	0x1
+ 2080 02db 57       		.byte	0x57
+ 2081 02dc 6F000000 		.4byte	0x6f
+ 2082 02e0 00000000 		.4byte	.LFB69
+ 2083 02e4 24000000 		.4byte	.LFE69-.LFB69
+ 2084 02e8 01       		.uleb128 0x1
+ 2085 02e9 9C       		.byte	0x9c
+ 2086 02ea FD020000 		.4byte	0x2fd
+ 2087 02ee 0C       		.uleb128 0xc
+ 2088 02ef CA000000 		.4byte	.LASF34
+ 2089 02f3 01       		.byte	0x1
+ 2090 02f4 57       		.byte	0x57
+ 2091 02f5 6F000000 		.4byte	0x6f
+ 2092 02f9 02       		.uleb128 0x2
+ 2093 02fa 91       		.byte	0x91
+ 2094 02fb 74       		.sleb128 -12
+ 2095 02fc 00       		.byte	0
+ 2096 02fd 0E       		.uleb128 0xe
+ 2097 02fe 74020000 		.4byte	.LASF38
+ 2098 0302 01       		.byte	0x1
+ 2099 0303 5C       		.byte	0x5c
+ 2100 0304 00000000 		.4byte	.LFB70
+ 2101 0308 30000000 		.4byte	.LFE70-.LFB70
+ 2102 030c 01       		.uleb128 0x1
+ 2103 030d 9C       		.byte	0x9c
+ 2104 030e 21030000 		.4byte	0x321
+ 2105 0312 0C       		.uleb128 0xc
+ 2106 0313 CA000000 		.4byte	.LASF34
+ 2107 0317 01       		.byte	0x1
+ 2108 0318 5C       		.byte	0x5c
+ 2109 0319 6F000000 		.4byte	0x6f
+ 2110 031d 02       		.uleb128 0x2
+ 2111 031e 91       		.byte	0x91
+ 2112 031f 74       		.sleb128 -12
+ 2113 0320 00       		.byte	0
+ 2114 0321 0E       		.uleb128 0xe
+ 2115 0322 C0040000 		.4byte	.LASF39
+ 2116 0326 01       		.byte	0x1
+ 2117 0327 61       		.byte	0x61
+ 2118 0328 00000000 		.4byte	.LFB71
+ 2119 032c 30000000 		.4byte	.LFE71-.LFB71
+ 2120 0330 01       		.uleb128 0x1
+ 2121 0331 9C       		.byte	0x9c
+ 2122 0332 45030000 		.4byte	0x345
+ 2123 0336 0C       		.uleb128 0xc
+ 2124 0337 CA000000 		.4byte	.LASF34
+ 2125 033b 01       		.byte	0x1
+ 2126 033c 61       		.byte	0x61
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 44
+
+
+ 2127 033d 6F000000 		.4byte	0x6f
+ 2128 0341 02       		.uleb128 0x2
+ 2129 0342 91       		.byte	0x91
+ 2130 0343 74       		.sleb128 -12
+ 2131 0344 00       		.byte	0
+ 2132 0345 10       		.uleb128 0x10
+ 2133 0346 D5040000 		.4byte	.LASF42
+ 2134 034a 01       		.byte	0x1
+ 2135 034b 66       		.byte	0x66
+ 2136 034c 00000000 		.4byte	.LFB72
+ 2137 0350 70000000 		.4byte	.LFE72-.LFB72
+ 2138 0354 01       		.uleb128 0x1
+ 2139 0355 9C       		.byte	0x9c
+ 2140 0356 9F030000 		.4byte	0x39f
+ 2141 035a 0C       		.uleb128 0xc
+ 2142 035b 0D040000 		.4byte	.LASF30
+ 2143 035f 01       		.byte	0x1
+ 2144 0360 66       		.byte	0x66
+ 2145 0361 6F000000 		.4byte	0x6f
+ 2146 0365 02       		.uleb128 0x2
+ 2147 0366 91       		.byte	0x91
+ 2148 0367 64       		.sleb128 -28
+ 2149 0368 0C       		.uleb128 0xc
+ 2150 0369 F7000000 		.4byte	.LASF20
+ 2151 036d 01       		.byte	0x1
+ 2152 036e 66       		.byte	0x66
+ 2153 036f 6F000000 		.4byte	0x6f
+ 2154 0373 02       		.uleb128 0x2
+ 2155 0374 91       		.byte	0x91
+ 2156 0375 60       		.sleb128 -32
+ 2157 0376 0D       		.uleb128 0xd
+ 2158 0377 7C030000 		.4byte	.LASF40
+ 2159 037b 01       		.byte	0x1
+ 2160 037c 68       		.byte	0x68
+ 2161 037d 6F000000 		.4byte	0x6f
+ 2162 0381 02       		.uleb128 0x2
+ 2163 0382 91       		.byte	0x91
+ 2164 0383 70       		.sleb128 -16
+ 2165 0384 0D       		.uleb128 0xd
+ 2166 0385 49040000 		.4byte	.LASF22
+ 2167 0389 01       		.byte	0x1
+ 2168 038a 69       		.byte	0x69
+ 2169 038b 6F000000 		.4byte	0x6f
+ 2170 038f 02       		.uleb128 0x2
+ 2171 0390 91       		.byte	0x91
+ 2172 0391 6C       		.sleb128 -20
+ 2173 0392 0F       		.uleb128 0xf
+ 2174 0393 6900     		.ascii	"i\000"
+ 2175 0395 01       		.byte	0x1
+ 2176 0396 6A       		.byte	0x6a
+ 2177 0397 6F000000 		.4byte	0x6f
+ 2178 039b 02       		.uleb128 0x2
+ 2179 039c 91       		.byte	0x91
+ 2180 039d 74       		.sleb128 -12
+ 2181 039e 00       		.byte	0
+ 2182 039f 11       		.uleb128 0x11
+ 2183 03a0 37040000 		.4byte	.LASF77
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 45
+
+
+ 2184 03a4 01       		.byte	0x1
+ 2185 03a5 7C       		.byte	0x7c
+ 2186 03a6 6F000000 		.4byte	0x6f
+ 2187 03aa 00000000 		.4byte	.LFB73
+ 2188 03ae 20000000 		.4byte	.LFE73-.LFB73
+ 2189 03b2 01       		.uleb128 0x1
+ 2190 03b3 9C       		.byte	0x9c
+ 2191 03b4 C7030000 		.4byte	0x3c7
+ 2192 03b8 0C       		.uleb128 0xc
+ 2193 03b9 7A000000 		.4byte	.LASF41
+ 2194 03bd 01       		.byte	0x1
+ 2195 03be 7C       		.byte	0x7c
+ 2196 03bf 6F000000 		.4byte	0x6f
+ 2197 03c3 02       		.uleb128 0x2
+ 2198 03c4 91       		.byte	0x91
+ 2199 03c5 74       		.sleb128 -12
+ 2200 03c6 00       		.byte	0
+ 2201 03c7 12       		.uleb128 0x12
+ 2202 03c8 05050000 		.4byte	.LASF43
+ 2203 03cc 01       		.byte	0x1
+ 2204 03cd 81       		.byte	0x81
+ 2205 03ce 00000000 		.4byte	.LFB74
+ 2206 03d2 24000000 		.4byte	.LFE74-.LFB74
+ 2207 03d6 01       		.uleb128 0x1
+ 2208 03d7 9C       		.byte	0x9c
+ 2209 03d8 F9030000 		.4byte	0x3f9
+ 2210 03dc 0C       		.uleb128 0xc
+ 2211 03dd 7A000000 		.4byte	.LASF41
+ 2212 03e1 01       		.byte	0x1
+ 2213 03e2 81       		.byte	0x81
+ 2214 03e3 6F000000 		.4byte	0x6f
+ 2215 03e7 02       		.uleb128 0x2
+ 2216 03e8 91       		.byte	0x91
+ 2217 03e9 74       		.sleb128 -12
+ 2218 03ea 0C       		.uleb128 0xc
+ 2219 03eb C4000000 		.4byte	.LASF44
+ 2220 03ef 01       		.byte	0x1
+ 2221 03f0 81       		.byte	0x81
+ 2222 03f1 6F000000 		.4byte	0x6f
+ 2223 03f5 02       		.uleb128 0x2
+ 2224 03f6 91       		.byte	0x91
+ 2225 03f7 70       		.sleb128 -16
+ 2226 03f8 00       		.byte	0
+ 2227 03f9 10       		.uleb128 0x10
+ 2228 03fa BF020000 		.4byte	.LASF45
+ 2229 03fe 01       		.byte	0x1
+ 2230 03ff 87       		.byte	0x87
+ 2231 0400 00000000 		.4byte	.LFB75
+ 2232 0404 74000000 		.4byte	.LFE75-.LFB75
+ 2233 0408 01       		.uleb128 0x1
+ 2234 0409 9C       		.byte	0x9c
+ 2235 040a 1B040000 		.4byte	0x41b
+ 2236 040e 0F       		.uleb128 0xf
+ 2237 040f 6900     		.ascii	"i\000"
+ 2238 0411 01       		.byte	0x1
+ 2239 0412 89       		.byte	0x89
+ 2240 0413 68000000 		.4byte	0x68
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 46
+
+
+ 2241 0417 02       		.uleb128 0x2
+ 2242 0418 91       		.byte	0x91
+ 2243 0419 74       		.sleb128 -12
+ 2244 041a 00       		.byte	0
+ 2245 041b 10       		.uleb128 0x10
+ 2246 041c 00000000 		.4byte	.LASF46
+ 2247 0420 01       		.byte	0x1
+ 2248 0421 9B       		.byte	0x9b
+ 2249 0422 00000000 		.4byte	.LFB76
+ 2250 0426 50000000 		.4byte	.LFE76-.LFB76
+ 2251 042a 01       		.uleb128 0x1
+ 2252 042b 9C       		.byte	0x9c
+ 2253 042c 4E040000 		.4byte	0x44e
+ 2254 0430 0C       		.uleb128 0xc
+ 2255 0431 0D040000 		.4byte	.LASF30
+ 2256 0435 01       		.byte	0x1
+ 2257 0436 9B       		.byte	0x9b
+ 2258 0437 6F000000 		.4byte	0x6f
+ 2259 043b 02       		.uleb128 0x2
+ 2260 043c 91       		.byte	0x91
+ 2261 043d 74       		.sleb128 -12
+ 2262 043e 13       		.uleb128 0x13
+ 2263 043f 1C020000 		.4byte	.LASF48
+ 2264 0443 5E040000 		.4byte	0x45e
+ 2265 0447 05       		.uleb128 0x5
+ 2266 0448 03       		.byte	0x3
+ 2267 0449 9C040000 		.4byte	__FUNCTION__.7612
+ 2268 044d 00       		.byte	0
+ 2269 044e 14       		.uleb128 0x14
+ 2270 044f 7D000000 		.4byte	0x7d
+ 2271 0453 5E040000 		.4byte	0x45e
+ 2272 0457 15       		.uleb128 0x15
+ 2273 0458 76000000 		.4byte	0x76
+ 2274 045c 0F       		.byte	0xf
+ 2275 045d 00       		.byte	0
+ 2276 045e 0A       		.uleb128 0xa
+ 2277 045f 4E040000 		.4byte	0x44e
+ 2278 0463 10       		.uleb128 0x10
+ 2279 0464 10000000 		.4byte	.LASF47
+ 2280 0468 01       		.byte	0x1
+ 2281 0469 A2       		.byte	0xa2
+ 2282 046a 00000000 		.4byte	.LFB77
+ 2283 046e 48000000 		.4byte	.LFE77-.LFB77
+ 2284 0472 01       		.uleb128 0x1
+ 2285 0473 9C       		.byte	0x9c
+ 2286 0474 96040000 		.4byte	0x496
+ 2287 0478 0C       		.uleb128 0xc
+ 2288 0479 0D040000 		.4byte	.LASF30
+ 2289 047d 01       		.byte	0x1
+ 2290 047e A2       		.byte	0xa2
+ 2291 047f 6F000000 		.4byte	0x6f
+ 2292 0483 02       		.uleb128 0x2
+ 2293 0484 91       		.byte	0x91
+ 2294 0485 74       		.sleb128 -12
+ 2295 0486 13       		.uleb128 0x13
+ 2296 0487 1C020000 		.4byte	.LASF48
+ 2297 048b A6040000 		.4byte	0x4a6
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 47
+
+
+ 2298 048f 05       		.uleb128 0x5
+ 2299 0490 03       		.byte	0x3
+ 2300 0491 AC040000 		.4byte	__FUNCTION__.7616
+ 2301 0495 00       		.byte	0
+ 2302 0496 14       		.uleb128 0x14
+ 2303 0497 7D000000 		.4byte	0x7d
+ 2304 049b A6040000 		.4byte	0x4a6
+ 2305 049f 15       		.uleb128 0x15
+ 2306 04a0 76000000 		.4byte	0x76
+ 2307 04a4 10       		.byte	0x10
+ 2308 04a5 00       		.byte	0
+ 2309 04a6 0A       		.uleb128 0xa
+ 2310 04a7 96040000 		.4byte	0x496
+ 2311 04ab 10       		.uleb128 0x10
+ 2312 04ac 82000000 		.4byte	.LASF49
+ 2313 04b0 01       		.byte	0x1
+ 2314 04b1 AB       		.byte	0xab
+ 2315 04b2 00000000 		.4byte	.LFB78
+ 2316 04b6 48000000 		.4byte	.LFE78-.LFB78
+ 2317 04ba 01       		.uleb128 0x1
+ 2318 04bb 9C       		.byte	0x9c
+ 2319 04bc DE040000 		.4byte	0x4de
+ 2320 04c0 0C       		.uleb128 0xc
+ 2321 04c1 0D040000 		.4byte	.LASF30
+ 2322 04c5 01       		.byte	0x1
+ 2323 04c6 AB       		.byte	0xab
+ 2324 04c7 6F000000 		.4byte	0x6f
+ 2325 04cb 02       		.uleb128 0x2
+ 2326 04cc 91       		.byte	0x91
+ 2327 04cd 74       		.sleb128 -12
+ 2328 04ce 13       		.uleb128 0x13
+ 2329 04cf 1C020000 		.4byte	.LASF48
+ 2330 04d3 DE040000 		.4byte	0x4de
+ 2331 04d7 05       		.uleb128 0x5
+ 2332 04d8 03       		.byte	0x3
+ 2333 04d9 C0040000 		.4byte	__FUNCTION__.7620
+ 2334 04dd 00       		.byte	0
+ 2335 04de 0A       		.uleb128 0xa
+ 2336 04df 4E040000 		.4byte	0x44e
+ 2337 04e3 10       		.uleb128 0x10
+ 2338 04e4 CD030000 		.4byte	.LASF50
+ 2339 04e8 01       		.byte	0x1
+ 2340 04e9 B2       		.byte	0xb2
+ 2341 04ea 00000000 		.4byte	.LFB79
+ 2342 04ee 48000000 		.4byte	.LFE79-.LFB79
+ 2343 04f2 01       		.uleb128 0x1
+ 2344 04f3 9C       		.byte	0x9c
+ 2345 04f4 16050000 		.4byte	0x516
+ 2346 04f8 0C       		.uleb128 0xc
+ 2347 04f9 0D040000 		.4byte	.LASF30
+ 2348 04fd 01       		.byte	0x1
+ 2349 04fe B2       		.byte	0xb2
+ 2350 04ff 6F000000 		.4byte	0x6f
+ 2351 0503 02       		.uleb128 0x2
+ 2352 0504 91       		.byte	0x91
+ 2353 0505 74       		.sleb128 -12
+ 2354 0506 13       		.uleb128 0x13
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 48
+
+
+ 2355 0507 1C020000 		.4byte	.LASF48
+ 2356 050b 16050000 		.4byte	0x516
+ 2357 050f 05       		.uleb128 0x5
+ 2358 0510 03       		.byte	0x3
+ 2359 0511 D0040000 		.4byte	__FUNCTION__.7624
+ 2360 0515 00       		.byte	0
+ 2361 0516 0A       		.uleb128 0xa
+ 2362 0517 96040000 		.4byte	0x496
+ 2363 051b 10       		.uleb128 0x10
+ 2364 051c 2A000000 		.4byte	.LASF51
+ 2365 0520 01       		.byte	0x1
+ 2366 0521 BB       		.byte	0xbb
+ 2367 0522 00000000 		.4byte	.LFB80
+ 2368 0526 3C000000 		.4byte	.LFE80-.LFB80
+ 2369 052a 01       		.uleb128 0x1
+ 2370 052b 9C       		.byte	0x9c
+ 2371 052c 59050000 		.4byte	0x559
+ 2372 0530 0C       		.uleb128 0xc
+ 2373 0531 B6000000 		.4byte	.LASF52
+ 2374 0535 01       		.byte	0x1
+ 2375 0536 BB       		.byte	0xbb
+ 2376 0537 6F000000 		.4byte	0x6f
+ 2377 053b 02       		.uleb128 0x2
+ 2378 053c 91       		.byte	0x91
+ 2379 053d 6C       		.sleb128 -20
+ 2380 053e 0C       		.uleb128 0xc
+ 2381 053f 58050000 		.4byte	.LASF53
+ 2382 0543 01       		.byte	0x1
+ 2383 0544 BB       		.byte	0xbb
+ 2384 0545 6F000000 		.4byte	0x6f
+ 2385 0549 02       		.uleb128 0x2
+ 2386 054a 91       		.byte	0x91
+ 2387 054b 68       		.sleb128 -24
+ 2388 054c 0F       		.uleb128 0xf
+ 2389 054d 6900     		.ascii	"i\000"
+ 2390 054f 01       		.byte	0x1
+ 2391 0550 BE       		.byte	0xbe
+ 2392 0551 68000000 		.4byte	0x68
+ 2393 0555 02       		.uleb128 0x2
+ 2394 0556 91       		.byte	0x91
+ 2395 0557 74       		.sleb128 -12
+ 2396 0558 00       		.byte	0
+ 2397 0559 16       		.uleb128 0x16
+ 2398 055a 92000000 		.4byte	.LASF54
+ 2399 055e 01       		.byte	0x1
+ 2400 055f D0       		.byte	0xd0
+ 2401 0560 00000000 		.4byte	.LFB81
+ 2402 0564 88000000 		.4byte	.LFE81-.LFB81
+ 2403 0568 01       		.uleb128 0x1
+ 2404 0569 9C       		.byte	0x9c
+ 2405 056a DD050000 		.4byte	0x5dd
+ 2406 056e 0C       		.uleb128 0xc
+ 2407 056f 0D040000 		.4byte	.LASF30
+ 2408 0573 01       		.byte	0x1
+ 2409 0574 D0       		.byte	0xd0
+ 2410 0575 6F000000 		.4byte	0x6f
+ 2411 0579 02       		.uleb128 0x2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 49
+
+
+ 2412 057a 91       		.byte	0x91
+ 2413 057b 5C       		.sleb128 -36
+ 2414 057c 0C       		.uleb128 0xc
+ 2415 057d B6000000 		.4byte	.LASF52
+ 2416 0581 01       		.byte	0x1
+ 2417 0582 D0       		.byte	0xd0
+ 2418 0583 6F000000 		.4byte	0x6f
+ 2419 0587 02       		.uleb128 0x2
+ 2420 0588 91       		.byte	0x91
+ 2421 0589 58       		.sleb128 -40
+ 2422 058a 0C       		.uleb128 0xc
+ 2423 058b 58050000 		.4byte	.LASF53
+ 2424 058f 01       		.byte	0x1
+ 2425 0590 D0       		.byte	0xd0
+ 2426 0591 6F000000 		.4byte	0x6f
+ 2427 0595 02       		.uleb128 0x2
+ 2428 0596 91       		.byte	0x91
+ 2429 0597 54       		.sleb128 -44
+ 2430 0598 0D       		.uleb128 0xd
+ 2431 0599 10020000 		.4byte	.LASF55
+ 2432 059d 01       		.byte	0x1
+ 2433 059e D2       		.byte	0xd2
+ 2434 059f 6F000000 		.4byte	0x6f
+ 2435 05a3 02       		.uleb128 0x2
+ 2436 05a4 91       		.byte	0x91
+ 2437 05a5 64       		.sleb128 -28
+ 2438 05a6 0D       		.uleb128 0xd
+ 2439 05a7 49040000 		.4byte	.LASF22
+ 2440 05ab 01       		.byte	0x1
+ 2441 05ac D3       		.byte	0xd3
+ 2442 05ad 6F000000 		.4byte	0x6f
+ 2443 05b1 02       		.uleb128 0x2
+ 2444 05b2 91       		.byte	0x91
+ 2445 05b3 68       		.sleb128 -24
+ 2446 05b4 0D       		.uleb128 0xd
+ 2447 05b5 CA000000 		.4byte	.LASF34
+ 2448 05b9 01       		.byte	0x1
+ 2449 05ba D4       		.byte	0xd4
+ 2450 05bb 6F000000 		.4byte	0x6f
+ 2451 05bf 02       		.uleb128 0x2
+ 2452 05c0 91       		.byte	0x91
+ 2453 05c1 74       		.sleb128 -12
+ 2454 05c2 0F       		.uleb128 0xf
+ 2455 05c3 6900     		.ascii	"i\000"
+ 2456 05c5 01       		.byte	0x1
+ 2457 05c6 D5       		.byte	0xd5
+ 2458 05c7 6F000000 		.4byte	0x6f
+ 2459 05cb 02       		.uleb128 0x2
+ 2460 05cc 91       		.byte	0x91
+ 2461 05cd 70       		.sleb128 -16
+ 2462 05ce 0D       		.uleb128 0xd
+ 2463 05cf 21000000 		.4byte	.LASF56
+ 2464 05d3 01       		.byte	0x1
+ 2465 05d4 D6       		.byte	0xd6
+ 2466 05d5 84010000 		.4byte	0x184
+ 2467 05d9 02       		.uleb128 0x2
+ 2468 05da 91       		.byte	0x91
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 50
+
+
+ 2469 05db 6C       		.sleb128 -20
+ 2470 05dc 00       		.byte	0
+ 2471 05dd 17       		.uleb128 0x17
+ 2472 05de 5C040000 		.4byte	.LASF57
+ 2473 05e2 01       		.byte	0x1
+ 2474 05e3 EF       		.byte	0xef
+ 2475 05e4 6F000000 		.4byte	0x6f
+ 2476 05e8 00000000 		.4byte	.LFB82
+ 2477 05ec 76000000 		.4byte	.LFE82-.LFB82
+ 2478 05f0 01       		.uleb128 0x1
+ 2479 05f1 9C       		.byte	0x9c
+ 2480 05f2 3D060000 		.4byte	0x63d
+ 2481 05f6 0C       		.uleb128 0xc
+ 2482 05f7 F7000000 		.4byte	.LASF20
+ 2483 05fb 01       		.byte	0x1
+ 2484 05fc EF       		.byte	0xef
+ 2485 05fd 6F000000 		.4byte	0x6f
+ 2486 0601 02       		.uleb128 0x2
+ 2487 0602 91       		.byte	0x91
+ 2488 0603 64       		.sleb128 -28
+ 2489 0604 0C       		.uleb128 0xc
+ 2490 0605 21000000 		.4byte	.LASF56
+ 2491 0609 01       		.byte	0x1
+ 2492 060a EF       		.byte	0xef
+ 2493 060b 84010000 		.4byte	0x184
+ 2494 060f 02       		.uleb128 0x2
+ 2495 0610 91       		.byte	0x91
+ 2496 0611 60       		.sleb128 -32
+ 2497 0612 0C       		.uleb128 0xc
+ 2498 0613 B6000000 		.4byte	.LASF52
+ 2499 0617 01       		.byte	0x1
+ 2500 0618 EF       		.byte	0xef
+ 2501 0619 6F000000 		.4byte	0x6f
+ 2502 061d 02       		.uleb128 0x2
+ 2503 061e 91       		.byte	0x91
+ 2504 061f 5C       		.sleb128 -36
+ 2505 0620 0C       		.uleb128 0xc
+ 2506 0621 58050000 		.4byte	.LASF53
+ 2507 0625 01       		.byte	0x1
+ 2508 0626 EF       		.byte	0xef
+ 2509 0627 6F000000 		.4byte	0x6f
+ 2510 062b 02       		.uleb128 0x2
+ 2511 062c 91       		.byte	0x91
+ 2512 062d 58       		.sleb128 -40
+ 2513 062e 0D       		.uleb128 0xd
+ 2514 062f 10020000 		.4byte	.LASF55
+ 2515 0633 01       		.byte	0x1
+ 2516 0634 F1       		.byte	0xf1
+ 2517 0635 6F000000 		.4byte	0x6f
+ 2518 0639 02       		.uleb128 0x2
+ 2519 063a 91       		.byte	0x91
+ 2520 063b 6C       		.sleb128 -20
+ 2521 063c 00       		.byte	0
+ 2522 063d 18       		.uleb128 0x18
+ 2523 063e 39050000 		.4byte	.LASF58
+ 2524 0642 01       		.byte	0x1
+ 2525 0643 0001     		.2byte	0x100
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 51
+
+
+ 2526 0645 6F000000 		.4byte	0x6f
+ 2527 0649 00000000 		.4byte	.LFB83
+ 2528 064d 84000000 		.4byte	.LFE83-.LFB83
+ 2529 0651 01       		.uleb128 0x1
+ 2530 0652 9C       		.byte	0x9c
+ 2531 0653 A3060000 		.4byte	0x6a3
+ 2532 0657 19       		.uleb128 0x19
+ 2533 0658 0D040000 		.4byte	.LASF30
+ 2534 065c 01       		.byte	0x1
+ 2535 065d 0001     		.2byte	0x100
+ 2536 065f 6F000000 		.4byte	0x6f
+ 2537 0663 02       		.uleb128 0x2
+ 2538 0664 91       		.byte	0x91
+ 2539 0665 6C       		.sleb128 -20
+ 2540 0666 19       		.uleb128 0x19
+ 2541 0667 CA000000 		.4byte	.LASF34
+ 2542 066b 01       		.byte	0x1
+ 2543 066c 0001     		.2byte	0x100
+ 2544 066e 6F000000 		.4byte	0x6f
+ 2545 0672 02       		.uleb128 0x2
+ 2546 0673 91       		.byte	0x91
+ 2547 0674 68       		.sleb128 -24
+ 2548 0675 19       		.uleb128 0x19
+ 2549 0676 10020000 		.4byte	.LASF55
+ 2550 067a 01       		.byte	0x1
+ 2551 067b 0001     		.2byte	0x100
+ 2552 067d 6F000000 		.4byte	0x6f
+ 2553 0681 02       		.uleb128 0x2
+ 2554 0682 91       		.byte	0x91
+ 2555 0683 64       		.sleb128 -28
+ 2556 0684 1A       		.uleb128 0x1a
+ 2557 0685 A9040000 		.4byte	.LASF33
+ 2558 0689 01       		.byte	0x1
+ 2559 068a 0201     		.2byte	0x102
+ 2560 068c 6F000000 		.4byte	0x6f
+ 2561 0690 02       		.uleb128 0x2
+ 2562 0691 91       		.byte	0x91
+ 2563 0692 74       		.sleb128 -12
+ 2564 0693 13       		.uleb128 0x13
+ 2565 0694 1C020000 		.4byte	.LASF48
+ 2566 0698 B3060000 		.4byte	0x6b3
+ 2567 069c 05       		.uleb128 0x5
+ 2568 069d 03       		.byte	0x3
+ 2569 069e E4040000 		.4byte	__FUNCTION__.7666
+ 2570 06a2 00       		.byte	0
+ 2571 06a3 14       		.uleb128 0x14
+ 2572 06a4 7D000000 		.4byte	0x7d
+ 2573 06a8 B3060000 		.4byte	0x6b3
+ 2574 06ac 15       		.uleb128 0x15
+ 2575 06ad 76000000 		.4byte	0x76
+ 2576 06b1 11       		.byte	0x11
+ 2577 06b2 00       		.byte	0
+ 2578 06b3 0A       		.uleb128 0xa
+ 2579 06b4 A3060000 		.4byte	0x6a3
+ 2580 06b8 1B       		.uleb128 0x1b
+ 2581 06b9 4B050000 		.4byte	.LASF59
+ 2582 06bd 05       		.byte	0x5
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 52
+
+
+ 2583 06be 9606     		.2byte	0x696
+ 2584 06c0 C4060000 		.4byte	0x6c4
+ 2585 06c4 1C       		.uleb128 0x1c
+ 2586 06c5 9A010000 		.4byte	0x19a
+ 2587 06c9 14       		.uleb128 0x14
+ 2588 06ca 7D000000 		.4byte	0x7d
+ 2589 06ce D9060000 		.4byte	0x6d9
+ 2590 06d2 15       		.uleb128 0x15
+ 2591 06d3 76000000 		.4byte	0x76
+ 2592 06d7 08       		.byte	0x8
+ 2593 06d8 00       		.byte	0
+ 2594 06d9 1D       		.uleb128 0x1d
+ 2595 06da 86020000 		.4byte	.LASF60
+ 2596 06de 06       		.byte	0x6
+ 2597 06df 13       		.byte	0x13
+ 2598 06e0 C9060000 		.4byte	0x6c9
+ 2599 06e4 05       		.uleb128 0x5
+ 2600 06e5 03       		.byte	0x3
+ 2601 06e6 00000000 		.4byte	chain_state
+ 2602 06ea 14       		.uleb128 0x14
+ 2603 06eb 7D000000 		.4byte	0x7d
+ 2604 06ef FA060000 		.4byte	0x6fa
+ 2605 06f3 15       		.uleb128 0x15
+ 2606 06f4 76000000 		.4byte	0x76
+ 2607 06f8 2E       		.byte	0x2e
+ 2608 06f9 00       		.byte	0
+ 2609 06fa 1D       		.uleb128 0x1d
+ 2610 06fb 86030000 		.4byte	.LASF61
+ 2611 06ff 06       		.byte	0x6
+ 2612 0700 14       		.byte	0x14
+ 2613 0701 EA060000 		.4byte	0x6ea
+ 2614 0705 05       		.uleb128 0x5
+ 2615 0706 03       		.byte	0x3
+ 2616 0707 00000000 		.4byte	link_state
+ 2617 070b 14       		.uleb128 0x14
+ 2618 070c 6F000000 		.4byte	0x6f
+ 2619 0710 1B070000 		.4byte	0x71b
+ 2620 0714 15       		.uleb128 0x15
+ 2621 0715 76000000 		.4byte	0x76
+ 2622 0719 2E       		.byte	0x2e
+ 2623 071a 00       		.byte	0
+ 2624 071b 1D       		.uleb128 0x1d
+ 2625 071c FE010000 		.4byte	.LASF62
+ 2626 0720 06       		.byte	0x6
+ 2627 0721 15       		.byte	0x15
+ 2628 0722 0B070000 		.4byte	0x70b
+ 2629 0726 05       		.uleb128 0x5
+ 2630 0727 03       		.byte	0x3
+ 2631 0728 00000000 		.4byte	link_data
+ 2632 072c 14       		.uleb128 0x14
+ 2633 072d 6F000000 		.4byte	0x6f
+ 2634 0731 3C070000 		.4byte	0x73c
+ 2635 0735 15       		.uleb128 0x15
+ 2636 0736 76000000 		.4byte	0x76
+ 2637 073a 08       		.byte	0x8
+ 2638 073b 00       		.byte	0
+ 2639 073c 1D       		.uleb128 0x1d
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 53
+
+
+ 2640 073d 6E000000 		.4byte	.LASF63
+ 2641 0741 06       		.byte	0x6
+ 2642 0742 16       		.byte	0x16
+ 2643 0743 4D070000 		.4byte	0x74d
+ 2644 0747 05       		.uleb128 0x5
+ 2645 0748 03       		.byte	0x3
+ 2646 0749 00000000 		.4byte	start_state
+ 2647 074d 0A       		.uleb128 0xa
+ 2648 074e 2C070000 		.4byte	0x72c
+ 2649 0752 14       		.uleb128 0x14
+ 2650 0753 40010000 		.4byte	0x140
+ 2651 0757 62070000 		.4byte	0x762
+ 2652 075b 15       		.uleb128 0x15
+ 2653 075c 76000000 		.4byte	0x76
+ 2654 0760 0B       		.byte	0xb
+ 2655 0761 00       		.byte	0
+ 2656 0762 1D       		.uleb128 0x1d
+ 2657 0763 9F030000 		.4byte	.LASF64
+ 2658 0767 06       		.byte	0x6
+ 2659 0768 1A       		.byte	0x1a
+ 2660 0769 73070000 		.4byte	0x773
+ 2661 076d 05       		.uleb128 0x5
+ 2662 076e 03       		.byte	0x3
+ 2663 076f 00000000 		.4byte	CHAIN_initialization_LINKS
+ 2664 0773 0A       		.uleb128 0xa
+ 2665 0774 52070000 		.4byte	0x752
+ 2666 0778 14       		.uleb128 0x14
+ 2667 0779 40010000 		.4byte	0x140
+ 2668 077d 88070000 		.4byte	0x788
+ 2669 0781 15       		.uleb128 0x15
+ 2670 0782 76000000 		.4byte	0x76
+ 2671 0786 02       		.byte	0x2
+ 2672 0787 00       		.byte	0
+ 2673 0788 1D       		.uleb128 0x1d
+ 2674 0789 E9030000 		.4byte	.LASF65
+ 2675 078d 06       		.byte	0x6
+ 2676 078e 29       		.byte	0x29
+ 2677 078f 99070000 		.4byte	0x799
+ 2678 0793 05       		.uleb128 0x5
+ 2679 0794 03       		.byte	0x3
+ 2680 0795 00000000 		.4byte	CHAIN_measure_die_temperature_LINKS
+ 2681 0799 0A       		.uleb128 0xa
+ 2682 079a 78070000 		.4byte	0x778
+ 2683 079e 1D       		.uleb128 0x1d
+ 2684 079f A0020000 		.4byte	.LASF66
+ 2685 07a3 06       		.byte	0x6
+ 2686 07a4 2F       		.byte	0x2f
+ 2687 07a5 AF070000 		.4byte	0x7af
+ 2688 07a9 05       		.uleb128 0x5
+ 2689 07aa 03       		.byte	0x3
+ 2690 07ab 00000000 		.4byte	CHAIN_process_rtu_packet_LINKS
+ 2691 07af 0A       		.uleb128 0xa
+ 2692 07b0 78070000 		.4byte	0x778
+ 2693 07b4 14       		.uleb128 0x14
+ 2694 07b5 40010000 		.4byte	0x140
+ 2695 07b9 C4070000 		.4byte	0x7c4
+ 2696 07bd 15       		.uleb128 0x15
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 54
+
+
+ 2697 07be 76000000 		.4byte	0x76
+ 2698 07c2 04       		.byte	0x4
+ 2699 07c3 00       		.byte	0
+ 2700 07c4 1D       		.uleb128 0x1d
+ 2701 07c5 50000000 		.4byte	.LASF67
+ 2702 07c9 06       		.byte	0x6
+ 2703 07ca 35       		.byte	0x35
+ 2704 07cb D5070000 		.4byte	0x7d5
+ 2705 07cf 05       		.uleb128 0x5
+ 2706 07d0 03       		.byte	0x3
+ 2707 07d1 00000000 		.4byte	CHAIN_second_tick_chain_LINKS
+ 2708 07d5 0A       		.uleb128 0xa
+ 2709 07d6 B4070000 		.4byte	0x7b4
+ 2710 07da 14       		.uleb128 0x14
+ 2711 07db 40010000 		.4byte	0x140
+ 2712 07df EA070000 		.4byte	0x7ea
+ 2713 07e3 15       		.uleb128 0x15
+ 2714 07e4 76000000 		.4byte	0x76
+ 2715 07e8 01       		.byte	0x1
+ 2716 07e9 00       		.byte	0
+ 2717 07ea 1D       		.uleb128 0x1d
+ 2718 07eb 8B040000 		.4byte	.LASF68
+ 2719 07ef 06       		.byte	0x6
+ 2720 07f0 3D       		.byte	0x3d
+ 2721 07f1 FB070000 		.4byte	0x7fb
+ 2722 07f5 05       		.uleb128 0x5
+ 2723 07f6 03       		.byte	0x3
+ 2724 07f7 00000000 		.4byte	CHAIN_minute_tick_chain_LINKS
+ 2725 07fb 0A       		.uleb128 0xa
+ 2726 07fc DA070000 		.4byte	0x7da
+ 2727 0800 1D       		.uleb128 0x1d
+ 2728 0801 2F010000 		.4byte	.LASF69
+ 2729 0805 06       		.byte	0x6
+ 2730 0806 42       		.byte	0x42
+ 2731 0807 11080000 		.4byte	0x811
+ 2732 080b 05       		.uleb128 0x5
+ 2733 080c 03       		.byte	0x3
+ 2734 080d 00000000 		.4byte	CHAIN_hour_tick_chain_LINKS
+ 2735 0811 0A       		.uleb128 0xa
+ 2736 0812 DA070000 		.4byte	0x7da
+ 2737 0816 14       		.uleb128 0x14
+ 2738 0817 40010000 		.4byte	0x140
+ 2739 081b 26080000 		.4byte	0x826
+ 2740 081f 15       		.uleb128 0x15
+ 2741 0820 76000000 		.4byte	0x76
+ 2742 0824 03       		.byte	0x3
+ 2743 0825 00       		.byte	0
+ 2744 0826 1D       		.uleb128 0x1d
+ 2745 0827 29020000 		.4byte	.LASF70
+ 2746 082b 06       		.byte	0x6
+ 2747 082c 47       		.byte	0x47
+ 2748 082d 37080000 		.4byte	0x837
+ 2749 0831 05       		.uleb128 0x5
+ 2750 0832 03       		.byte	0x3
+ 2751 0833 00000000 		.4byte	CHAIN_commissioning_heart_beat_LINKS
+ 2752 0837 0A       		.uleb128 0xa
+ 2753 0838 16080000 		.4byte	0x816
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 55
+
+
+ 2754 083c 1D       		.uleb128 0x1d
+ 2755 083d E5040000 		.4byte	.LASF71
+ 2756 0841 06       		.byte	0x6
+ 2757 0842 4E       		.byte	0x4e
+ 2758 0843 4D080000 		.4byte	0x84d
+ 2759 0847 05       		.uleb128 0x5
+ 2760 0848 03       		.byte	0x3
+ 2761 0849 00000000 		.4byte	CHAIN_heart_beat_LINKS
+ 2762 084d 0A       		.uleb128 0xa
+ 2763 084e 16080000 		.4byte	0x816
+ 2764 0852 1D       		.uleb128 0x1d
+ 2765 0853 16040000 		.4byte	.LASF72
+ 2766 0857 06       		.byte	0x6
+ 2767 0858 55       		.byte	0x55
+ 2768 0859 63080000 		.4byte	0x863
+ 2769 085d 05       		.uleb128 0x5
+ 2770 085e 03       		.byte	0x3
+ 2771 085f 00000000 		.4byte	CHAIN_handle_commissioning_LINKS
+ 2772 0863 0A       		.uleb128 0xa
+ 2773 0864 52070000 		.4byte	0x752
+ 2774 0868 14       		.uleb128 0x14
+ 2775 0869 8F010000 		.4byte	0x18f
+ 2776 086d 78080000 		.4byte	0x878
+ 2777 0871 15       		.uleb128 0x15
+ 2778 0872 76000000 		.4byte	0x76
+ 2779 0876 08       		.byte	0x8
+ 2780 0877 00       		.byte	0
+ 2781 0878 1D       		.uleb128 0x1d
+ 2782 0879 66020000 		.4byte	.LASF73
+ 2783 087d 06       		.byte	0x6
+ 2784 087e 67       		.byte	0x67
+ 2785 087f 89080000 		.4byte	0x889
+ 2786 0883 05       		.uleb128 0x5
+ 2787 0884 03       		.byte	0x3
+ 2788 0885 00000000 		.4byte	chain_control
+ 2789 0889 0A       		.uleb128 0xa
+ 2790 088a 68080000 		.4byte	0x868
+ 2791 088e 00       		.byte	0
+ 2792              		.section	.debug_abbrev,"",%progbits
+ 2793              	.Ldebug_abbrev0:
+ 2794 0000 01       		.uleb128 0x1
+ 2795 0001 11       		.uleb128 0x11
+ 2796 0002 01       		.byte	0x1
+ 2797 0003 25       		.uleb128 0x25
+ 2798 0004 0E       		.uleb128 0xe
+ 2799 0005 13       		.uleb128 0x13
+ 2800 0006 0B       		.uleb128 0xb
+ 2801 0007 03       		.uleb128 0x3
+ 2802 0008 0E       		.uleb128 0xe
+ 2803 0009 1B       		.uleb128 0x1b
+ 2804 000a 0E       		.uleb128 0xe
+ 2805 000b 55       		.uleb128 0x55
+ 2806 000c 17       		.uleb128 0x17
+ 2807 000d 11       		.uleb128 0x11
+ 2808 000e 01       		.uleb128 0x1
+ 2809 000f 10       		.uleb128 0x10
+ 2810 0010 17       		.uleb128 0x17
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 56
+
+
+ 2811 0011 00       		.byte	0
+ 2812 0012 00       		.byte	0
+ 2813 0013 02       		.uleb128 0x2
+ 2814 0014 24       		.uleb128 0x24
+ 2815 0015 00       		.byte	0
+ 2816 0016 0B       		.uleb128 0xb
+ 2817 0017 0B       		.uleb128 0xb
+ 2818 0018 3E       		.uleb128 0x3e
+ 2819 0019 0B       		.uleb128 0xb
+ 2820 001a 03       		.uleb128 0x3
+ 2821 001b 0E       		.uleb128 0xe
+ 2822 001c 00       		.byte	0
+ 2823 001d 00       		.byte	0
+ 2824 001e 03       		.uleb128 0x3
+ 2825 001f 16       		.uleb128 0x16
+ 2826 0020 00       		.byte	0
+ 2827 0021 03       		.uleb128 0x3
+ 2828 0022 0E       		.uleb128 0xe
+ 2829 0023 3A       		.uleb128 0x3a
+ 2830 0024 0B       		.uleb128 0xb
+ 2831 0025 3B       		.uleb128 0x3b
+ 2832 0026 0B       		.uleb128 0xb
+ 2833 0027 49       		.uleb128 0x49
+ 2834 0028 13       		.uleb128 0x13
+ 2835 0029 00       		.byte	0
+ 2836 002a 00       		.byte	0
+ 2837 002b 04       		.uleb128 0x4
+ 2838 002c 24       		.uleb128 0x24
+ 2839 002d 00       		.byte	0
+ 2840 002e 0B       		.uleb128 0xb
+ 2841 002f 0B       		.uleb128 0xb
+ 2842 0030 3E       		.uleb128 0x3e
+ 2843 0031 0B       		.uleb128 0xb
+ 2844 0032 03       		.uleb128 0x3
+ 2845 0033 08       		.uleb128 0x8
+ 2846 0034 00       		.byte	0
+ 2847 0035 00       		.byte	0
+ 2848 0036 05       		.uleb128 0x5
+ 2849 0037 0F       		.uleb128 0xf
+ 2850 0038 00       		.byte	0
+ 2851 0039 0B       		.uleb128 0xb
+ 2852 003a 0B       		.uleb128 0xb
+ 2853 003b 49       		.uleb128 0x49
+ 2854 003c 13       		.uleb128 0x13
+ 2855 003d 00       		.byte	0
+ 2856 003e 00       		.byte	0
+ 2857 003f 06       		.uleb128 0x6
+ 2858 0040 15       		.uleb128 0x15
+ 2859 0041 01       		.byte	0x1
+ 2860 0042 27       		.uleb128 0x27
+ 2861 0043 19       		.uleb128 0x19
+ 2862 0044 49       		.uleb128 0x49
+ 2863 0045 13       		.uleb128 0x13
+ 2864 0046 01       		.uleb128 0x1
+ 2865 0047 13       		.uleb128 0x13
+ 2866 0048 00       		.byte	0
+ 2867 0049 00       		.byte	0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 57
+
+
+ 2868 004a 07       		.uleb128 0x7
+ 2869 004b 05       		.uleb128 0x5
+ 2870 004c 00       		.byte	0
+ 2871 004d 49       		.uleb128 0x49
+ 2872 004e 13       		.uleb128 0x13
+ 2873 004f 00       		.byte	0
+ 2874 0050 00       		.byte	0
+ 2875 0051 08       		.uleb128 0x8
+ 2876 0052 13       		.uleb128 0x13
+ 2877 0053 01       		.byte	0x1
+ 2878 0054 0B       		.uleb128 0xb
+ 2879 0055 0B       		.uleb128 0xb
+ 2880 0056 3A       		.uleb128 0x3a
+ 2881 0057 0B       		.uleb128 0xb
+ 2882 0058 3B       		.uleb128 0x3b
+ 2883 0059 0B       		.uleb128 0xb
+ 2884 005a 01       		.uleb128 0x1
+ 2885 005b 13       		.uleb128 0x13
+ 2886 005c 00       		.byte	0
+ 2887 005d 00       		.byte	0
+ 2888 005e 09       		.uleb128 0x9
+ 2889 005f 0D       		.uleb128 0xd
+ 2890 0060 00       		.byte	0
+ 2891 0061 03       		.uleb128 0x3
+ 2892 0062 0E       		.uleb128 0xe
+ 2893 0063 3A       		.uleb128 0x3a
+ 2894 0064 0B       		.uleb128 0xb
+ 2895 0065 3B       		.uleb128 0x3b
+ 2896 0066 0B       		.uleb128 0xb
+ 2897 0067 49       		.uleb128 0x49
+ 2898 0068 13       		.uleb128 0x13
+ 2899 0069 38       		.uleb128 0x38
+ 2900 006a 0B       		.uleb128 0xb
+ 2901 006b 00       		.byte	0
+ 2902 006c 00       		.byte	0
+ 2903 006d 0A       		.uleb128 0xa
+ 2904 006e 26       		.uleb128 0x26
+ 2905 006f 00       		.byte	0
+ 2906 0070 49       		.uleb128 0x49
+ 2907 0071 13       		.uleb128 0x13
+ 2908 0072 00       		.byte	0
+ 2909 0073 00       		.byte	0
+ 2910 0074 0B       		.uleb128 0xb
+ 2911 0075 2E       		.uleb128 0x2e
+ 2912 0076 01       		.byte	0x1
+ 2913 0077 03       		.uleb128 0x3
+ 2914 0078 0E       		.uleb128 0xe
+ 2915 0079 3A       		.uleb128 0x3a
+ 2916 007a 0B       		.uleb128 0xb
+ 2917 007b 3B       		.uleb128 0x3b
+ 2918 007c 0B       		.uleb128 0xb
+ 2919 007d 27       		.uleb128 0x27
+ 2920 007e 19       		.uleb128 0x19
+ 2921 007f 49       		.uleb128 0x49
+ 2922 0080 13       		.uleb128 0x13
+ 2923 0081 11       		.uleb128 0x11
+ 2924 0082 01       		.uleb128 0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 58
+
+
+ 2925 0083 12       		.uleb128 0x12
+ 2926 0084 06       		.uleb128 0x6
+ 2927 0085 40       		.uleb128 0x40
+ 2928 0086 18       		.uleb128 0x18
+ 2929 0087 9742     		.uleb128 0x2117
+ 2930 0089 19       		.uleb128 0x19
+ 2931 008a 01       		.uleb128 0x1
+ 2932 008b 13       		.uleb128 0x13
+ 2933 008c 00       		.byte	0
+ 2934 008d 00       		.byte	0
+ 2935 008e 0C       		.uleb128 0xc
+ 2936 008f 05       		.uleb128 0x5
+ 2937 0090 00       		.byte	0
+ 2938 0091 03       		.uleb128 0x3
+ 2939 0092 0E       		.uleb128 0xe
+ 2940 0093 3A       		.uleb128 0x3a
+ 2941 0094 0B       		.uleb128 0xb
+ 2942 0095 3B       		.uleb128 0x3b
+ 2943 0096 0B       		.uleb128 0xb
+ 2944 0097 49       		.uleb128 0x49
+ 2945 0098 13       		.uleb128 0x13
+ 2946 0099 02       		.uleb128 0x2
+ 2947 009a 18       		.uleb128 0x18
+ 2948 009b 00       		.byte	0
+ 2949 009c 00       		.byte	0
+ 2950 009d 0D       		.uleb128 0xd
+ 2951 009e 34       		.uleb128 0x34
+ 2952 009f 00       		.byte	0
+ 2953 00a0 03       		.uleb128 0x3
+ 2954 00a1 0E       		.uleb128 0xe
+ 2955 00a2 3A       		.uleb128 0x3a
+ 2956 00a3 0B       		.uleb128 0xb
+ 2957 00a4 3B       		.uleb128 0x3b
+ 2958 00a5 0B       		.uleb128 0xb
+ 2959 00a6 49       		.uleb128 0x49
+ 2960 00a7 13       		.uleb128 0x13
+ 2961 00a8 02       		.uleb128 0x2
+ 2962 00a9 18       		.uleb128 0x18
+ 2963 00aa 00       		.byte	0
+ 2964 00ab 00       		.byte	0
+ 2965 00ac 0E       		.uleb128 0xe
+ 2966 00ad 2E       		.uleb128 0x2e
+ 2967 00ae 01       		.byte	0x1
+ 2968 00af 03       		.uleb128 0x3
+ 2969 00b0 0E       		.uleb128 0xe
+ 2970 00b1 3A       		.uleb128 0x3a
+ 2971 00b2 0B       		.uleb128 0xb
+ 2972 00b3 3B       		.uleb128 0x3b
+ 2973 00b4 0B       		.uleb128 0xb
+ 2974 00b5 27       		.uleb128 0x27
+ 2975 00b6 19       		.uleb128 0x19
+ 2976 00b7 11       		.uleb128 0x11
+ 2977 00b8 01       		.uleb128 0x1
+ 2978 00b9 12       		.uleb128 0x12
+ 2979 00ba 06       		.uleb128 0x6
+ 2980 00bb 40       		.uleb128 0x40
+ 2981 00bc 18       		.uleb128 0x18
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 59
+
+
+ 2982 00bd 9742     		.uleb128 0x2117
+ 2983 00bf 19       		.uleb128 0x19
+ 2984 00c0 01       		.uleb128 0x1
+ 2985 00c1 13       		.uleb128 0x13
+ 2986 00c2 00       		.byte	0
+ 2987 00c3 00       		.byte	0
+ 2988 00c4 0F       		.uleb128 0xf
+ 2989 00c5 34       		.uleb128 0x34
+ 2990 00c6 00       		.byte	0
+ 2991 00c7 03       		.uleb128 0x3
+ 2992 00c8 08       		.uleb128 0x8
+ 2993 00c9 3A       		.uleb128 0x3a
+ 2994 00ca 0B       		.uleb128 0xb
+ 2995 00cb 3B       		.uleb128 0x3b
+ 2996 00cc 0B       		.uleb128 0xb
+ 2997 00cd 49       		.uleb128 0x49
+ 2998 00ce 13       		.uleb128 0x13
+ 2999 00cf 02       		.uleb128 0x2
+ 3000 00d0 18       		.uleb128 0x18
+ 3001 00d1 00       		.byte	0
+ 3002 00d2 00       		.byte	0
+ 3003 00d3 10       		.uleb128 0x10
+ 3004 00d4 2E       		.uleb128 0x2e
+ 3005 00d5 01       		.byte	0x1
+ 3006 00d6 3F       		.uleb128 0x3f
+ 3007 00d7 19       		.uleb128 0x19
+ 3008 00d8 03       		.uleb128 0x3
+ 3009 00d9 0E       		.uleb128 0xe
+ 3010 00da 3A       		.uleb128 0x3a
+ 3011 00db 0B       		.uleb128 0xb
+ 3012 00dc 3B       		.uleb128 0x3b
+ 3013 00dd 0B       		.uleb128 0xb
+ 3014 00de 27       		.uleb128 0x27
+ 3015 00df 19       		.uleb128 0x19
+ 3016 00e0 11       		.uleb128 0x11
+ 3017 00e1 01       		.uleb128 0x1
+ 3018 00e2 12       		.uleb128 0x12
+ 3019 00e3 06       		.uleb128 0x6
+ 3020 00e4 40       		.uleb128 0x40
+ 3021 00e5 18       		.uleb128 0x18
+ 3022 00e6 9642     		.uleb128 0x2116
+ 3023 00e8 19       		.uleb128 0x19
+ 3024 00e9 01       		.uleb128 0x1
+ 3025 00ea 13       		.uleb128 0x13
+ 3026 00eb 00       		.byte	0
+ 3027 00ec 00       		.byte	0
+ 3028 00ed 11       		.uleb128 0x11
+ 3029 00ee 2E       		.uleb128 0x2e
+ 3030 00ef 01       		.byte	0x1
+ 3031 00f0 3F       		.uleb128 0x3f
+ 3032 00f1 19       		.uleb128 0x19
+ 3033 00f2 03       		.uleb128 0x3
+ 3034 00f3 0E       		.uleb128 0xe
+ 3035 00f4 3A       		.uleb128 0x3a
+ 3036 00f5 0B       		.uleb128 0xb
+ 3037 00f6 3B       		.uleb128 0x3b
+ 3038 00f7 0B       		.uleb128 0xb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 60
+
+
+ 3039 00f8 27       		.uleb128 0x27
+ 3040 00f9 19       		.uleb128 0x19
+ 3041 00fa 49       		.uleb128 0x49
+ 3042 00fb 13       		.uleb128 0x13
+ 3043 00fc 11       		.uleb128 0x11
+ 3044 00fd 01       		.uleb128 0x1
+ 3045 00fe 12       		.uleb128 0x12
+ 3046 00ff 06       		.uleb128 0x6
+ 3047 0100 40       		.uleb128 0x40
+ 3048 0101 18       		.uleb128 0x18
+ 3049 0102 9742     		.uleb128 0x2117
+ 3050 0104 19       		.uleb128 0x19
+ 3051 0105 01       		.uleb128 0x1
+ 3052 0106 13       		.uleb128 0x13
+ 3053 0107 00       		.byte	0
+ 3054 0108 00       		.byte	0
+ 3055 0109 12       		.uleb128 0x12
+ 3056 010a 2E       		.uleb128 0x2e
+ 3057 010b 01       		.byte	0x1
+ 3058 010c 3F       		.uleb128 0x3f
+ 3059 010d 19       		.uleb128 0x19
+ 3060 010e 03       		.uleb128 0x3
+ 3061 010f 0E       		.uleb128 0xe
+ 3062 0110 3A       		.uleb128 0x3a
+ 3063 0111 0B       		.uleb128 0xb
+ 3064 0112 3B       		.uleb128 0x3b
+ 3065 0113 0B       		.uleb128 0xb
+ 3066 0114 27       		.uleb128 0x27
+ 3067 0115 19       		.uleb128 0x19
+ 3068 0116 11       		.uleb128 0x11
+ 3069 0117 01       		.uleb128 0x1
+ 3070 0118 12       		.uleb128 0x12
+ 3071 0119 06       		.uleb128 0x6
+ 3072 011a 40       		.uleb128 0x40
+ 3073 011b 18       		.uleb128 0x18
+ 3074 011c 9742     		.uleb128 0x2117
+ 3075 011e 19       		.uleb128 0x19
+ 3076 011f 01       		.uleb128 0x1
+ 3077 0120 13       		.uleb128 0x13
+ 3078 0121 00       		.byte	0
+ 3079 0122 00       		.byte	0
+ 3080 0123 13       		.uleb128 0x13
+ 3081 0124 34       		.uleb128 0x34
+ 3082 0125 00       		.byte	0
+ 3083 0126 03       		.uleb128 0x3
+ 3084 0127 0E       		.uleb128 0xe
+ 3085 0128 49       		.uleb128 0x49
+ 3086 0129 13       		.uleb128 0x13
+ 3087 012a 34       		.uleb128 0x34
+ 3088 012b 19       		.uleb128 0x19
+ 3089 012c 02       		.uleb128 0x2
+ 3090 012d 18       		.uleb128 0x18
+ 3091 012e 00       		.byte	0
+ 3092 012f 00       		.byte	0
+ 3093 0130 14       		.uleb128 0x14
+ 3094 0131 01       		.uleb128 0x1
+ 3095 0132 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 61
+
+
+ 3096 0133 49       		.uleb128 0x49
+ 3097 0134 13       		.uleb128 0x13
+ 3098 0135 01       		.uleb128 0x1
+ 3099 0136 13       		.uleb128 0x13
+ 3100 0137 00       		.byte	0
+ 3101 0138 00       		.byte	0
+ 3102 0139 15       		.uleb128 0x15
+ 3103 013a 21       		.uleb128 0x21
+ 3104 013b 00       		.byte	0
+ 3105 013c 49       		.uleb128 0x49
+ 3106 013d 13       		.uleb128 0x13
+ 3107 013e 2F       		.uleb128 0x2f
+ 3108 013f 0B       		.uleb128 0xb
+ 3109 0140 00       		.byte	0
+ 3110 0141 00       		.byte	0
+ 3111 0142 16       		.uleb128 0x16
+ 3112 0143 2E       		.uleb128 0x2e
+ 3113 0144 01       		.byte	0x1
+ 3114 0145 03       		.uleb128 0x3
+ 3115 0146 0E       		.uleb128 0xe
+ 3116 0147 3A       		.uleb128 0x3a
+ 3117 0148 0B       		.uleb128 0xb
+ 3118 0149 3B       		.uleb128 0x3b
+ 3119 014a 0B       		.uleb128 0xb
+ 3120 014b 27       		.uleb128 0x27
+ 3121 014c 19       		.uleb128 0x19
+ 3122 014d 11       		.uleb128 0x11
+ 3123 014e 01       		.uleb128 0x1
+ 3124 014f 12       		.uleb128 0x12
+ 3125 0150 06       		.uleb128 0x6
+ 3126 0151 40       		.uleb128 0x40
+ 3127 0152 18       		.uleb128 0x18
+ 3128 0153 9642     		.uleb128 0x2116
+ 3129 0155 19       		.uleb128 0x19
+ 3130 0156 01       		.uleb128 0x1
+ 3131 0157 13       		.uleb128 0x13
+ 3132 0158 00       		.byte	0
+ 3133 0159 00       		.byte	0
+ 3134 015a 17       		.uleb128 0x17
+ 3135 015b 2E       		.uleb128 0x2e
+ 3136 015c 01       		.byte	0x1
+ 3137 015d 03       		.uleb128 0x3
+ 3138 015e 0E       		.uleb128 0xe
+ 3139 015f 3A       		.uleb128 0x3a
+ 3140 0160 0B       		.uleb128 0xb
+ 3141 0161 3B       		.uleb128 0x3b
+ 3142 0162 0B       		.uleb128 0xb
+ 3143 0163 27       		.uleb128 0x27
+ 3144 0164 19       		.uleb128 0x19
+ 3145 0165 49       		.uleb128 0x49
+ 3146 0166 13       		.uleb128 0x13
+ 3147 0167 11       		.uleb128 0x11
+ 3148 0168 01       		.uleb128 0x1
+ 3149 0169 12       		.uleb128 0x12
+ 3150 016a 06       		.uleb128 0x6
+ 3151 016b 40       		.uleb128 0x40
+ 3152 016c 18       		.uleb128 0x18
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 62
+
+
+ 3153 016d 9642     		.uleb128 0x2116
+ 3154 016f 19       		.uleb128 0x19
+ 3155 0170 01       		.uleb128 0x1
+ 3156 0171 13       		.uleb128 0x13
+ 3157 0172 00       		.byte	0
+ 3158 0173 00       		.byte	0
+ 3159 0174 18       		.uleb128 0x18
+ 3160 0175 2E       		.uleb128 0x2e
+ 3161 0176 01       		.byte	0x1
+ 3162 0177 03       		.uleb128 0x3
+ 3163 0178 0E       		.uleb128 0xe
+ 3164 0179 3A       		.uleb128 0x3a
+ 3165 017a 0B       		.uleb128 0xb
+ 3166 017b 3B       		.uleb128 0x3b
+ 3167 017c 05       		.uleb128 0x5
+ 3168 017d 27       		.uleb128 0x27
+ 3169 017e 19       		.uleb128 0x19
+ 3170 017f 49       		.uleb128 0x49
+ 3171 0180 13       		.uleb128 0x13
+ 3172 0181 11       		.uleb128 0x11
+ 3173 0182 01       		.uleb128 0x1
+ 3174 0183 12       		.uleb128 0x12
+ 3175 0184 06       		.uleb128 0x6
+ 3176 0185 40       		.uleb128 0x40
+ 3177 0186 18       		.uleb128 0x18
+ 3178 0187 9642     		.uleb128 0x2116
+ 3179 0189 19       		.uleb128 0x19
+ 3180 018a 01       		.uleb128 0x1
+ 3181 018b 13       		.uleb128 0x13
+ 3182 018c 00       		.byte	0
+ 3183 018d 00       		.byte	0
+ 3184 018e 19       		.uleb128 0x19
+ 3185 018f 05       		.uleb128 0x5
+ 3186 0190 00       		.byte	0
+ 3187 0191 03       		.uleb128 0x3
+ 3188 0192 0E       		.uleb128 0xe
+ 3189 0193 3A       		.uleb128 0x3a
+ 3190 0194 0B       		.uleb128 0xb
+ 3191 0195 3B       		.uleb128 0x3b
+ 3192 0196 05       		.uleb128 0x5
+ 3193 0197 49       		.uleb128 0x49
+ 3194 0198 13       		.uleb128 0x13
+ 3195 0199 02       		.uleb128 0x2
+ 3196 019a 18       		.uleb128 0x18
+ 3197 019b 00       		.byte	0
+ 3198 019c 00       		.byte	0
+ 3199 019d 1A       		.uleb128 0x1a
+ 3200 019e 34       		.uleb128 0x34
+ 3201 019f 00       		.byte	0
+ 3202 01a0 03       		.uleb128 0x3
+ 3203 01a1 0E       		.uleb128 0xe
+ 3204 01a2 3A       		.uleb128 0x3a
+ 3205 01a3 0B       		.uleb128 0xb
+ 3206 01a4 3B       		.uleb128 0x3b
+ 3207 01a5 05       		.uleb128 0x5
+ 3208 01a6 49       		.uleb128 0x49
+ 3209 01a7 13       		.uleb128 0x13
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 63
+
+
+ 3210 01a8 02       		.uleb128 0x2
+ 3211 01a9 18       		.uleb128 0x18
+ 3212 01aa 00       		.byte	0
+ 3213 01ab 00       		.byte	0
+ 3214 01ac 1B       		.uleb128 0x1b
+ 3215 01ad 34       		.uleb128 0x34
+ 3216 01ae 00       		.byte	0
+ 3217 01af 03       		.uleb128 0x3
+ 3218 01b0 0E       		.uleb128 0xe
+ 3219 01b1 3A       		.uleb128 0x3a
+ 3220 01b2 0B       		.uleb128 0xb
+ 3221 01b3 3B       		.uleb128 0x3b
+ 3222 01b4 05       		.uleb128 0x5
+ 3223 01b5 49       		.uleb128 0x49
+ 3224 01b6 13       		.uleb128 0x13
+ 3225 01b7 3F       		.uleb128 0x3f
+ 3226 01b8 19       		.uleb128 0x19
+ 3227 01b9 3C       		.uleb128 0x3c
+ 3228 01ba 19       		.uleb128 0x19
+ 3229 01bb 00       		.byte	0
+ 3230 01bc 00       		.byte	0
+ 3231 01bd 1C       		.uleb128 0x1c
+ 3232 01be 35       		.uleb128 0x35
+ 3233 01bf 00       		.byte	0
+ 3234 01c0 49       		.uleb128 0x49
+ 3235 01c1 13       		.uleb128 0x13
+ 3236 01c2 00       		.byte	0
+ 3237 01c3 00       		.byte	0
+ 3238 01c4 1D       		.uleb128 0x1d
+ 3239 01c5 34       		.uleb128 0x34
+ 3240 01c6 00       		.byte	0
+ 3241 01c7 03       		.uleb128 0x3
+ 3242 01c8 0E       		.uleb128 0xe
+ 3243 01c9 3A       		.uleb128 0x3a
+ 3244 01ca 0B       		.uleb128 0xb
+ 3245 01cb 3B       		.uleb128 0x3b
+ 3246 01cc 0B       		.uleb128 0xb
+ 3247 01cd 49       		.uleb128 0x49
+ 3248 01ce 13       		.uleb128 0x13
+ 3249 01cf 3F       		.uleb128 0x3f
+ 3250 01d0 19       		.uleb128 0x19
+ 3251 01d1 02       		.uleb128 0x2
+ 3252 01d2 18       		.uleb128 0x18
+ 3253 01d3 00       		.byte	0
+ 3254 01d4 00       		.byte	0
+ 3255 01d5 00       		.byte	0
+ 3256              		.section	.debug_aranges,"",%progbits
+ 3257 0000 BC000000 		.4byte	0xbc
+ 3258 0004 0200     		.2byte	0x2
+ 3259 0006 00000000 		.4byte	.Ldebug_info0
+ 3260 000a 04       		.byte	0x4
+ 3261 000b 00       		.byte	0
+ 3262 000c 0000     		.2byte	0
+ 3263 000e 0000     		.2byte	0
+ 3264 0010 00000000 		.4byte	.LFB63
+ 3265 0014 30000000 		.4byte	.LFE63-.LFB63
+ 3266 0018 00000000 		.4byte	.LFB64
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 64
+
+
+ 3267 001c 24000000 		.4byte	.LFE64-.LFB64
+ 3268 0020 00000000 		.4byte	.LFB65
+ 3269 0024 24000000 		.4byte	.LFE65-.LFB65
+ 3270 0028 00000000 		.4byte	.LFB66
+ 3271 002c 24000000 		.4byte	.LFE66-.LFB66
+ 3272 0030 00000000 		.4byte	.LFB67
+ 3273 0034 54000000 		.4byte	.LFE67-.LFB67
+ 3274 0038 00000000 		.4byte	.LFB68
+ 3275 003c 24000000 		.4byte	.LFE68-.LFB68
+ 3276 0040 00000000 		.4byte	.LFB69
+ 3277 0044 24000000 		.4byte	.LFE69-.LFB69
+ 3278 0048 00000000 		.4byte	.LFB70
+ 3279 004c 30000000 		.4byte	.LFE70-.LFB70
+ 3280 0050 00000000 		.4byte	.LFB71
+ 3281 0054 30000000 		.4byte	.LFE71-.LFB71
+ 3282 0058 00000000 		.4byte	.LFB72
+ 3283 005c 70000000 		.4byte	.LFE72-.LFB72
+ 3284 0060 00000000 		.4byte	.LFB73
+ 3285 0064 20000000 		.4byte	.LFE73-.LFB73
+ 3286 0068 00000000 		.4byte	.LFB74
+ 3287 006c 24000000 		.4byte	.LFE74-.LFB74
+ 3288 0070 00000000 		.4byte	.LFB75
+ 3289 0074 74000000 		.4byte	.LFE75-.LFB75
+ 3290 0078 00000000 		.4byte	.LFB76
+ 3291 007c 50000000 		.4byte	.LFE76-.LFB76
+ 3292 0080 00000000 		.4byte	.LFB77
+ 3293 0084 48000000 		.4byte	.LFE77-.LFB77
+ 3294 0088 00000000 		.4byte	.LFB78
+ 3295 008c 48000000 		.4byte	.LFE78-.LFB78
+ 3296 0090 00000000 		.4byte	.LFB79
+ 3297 0094 48000000 		.4byte	.LFE79-.LFB79
+ 3298 0098 00000000 		.4byte	.LFB80
+ 3299 009c 3C000000 		.4byte	.LFE80-.LFB80
+ 3300 00a0 00000000 		.4byte	.LFB81
+ 3301 00a4 88000000 		.4byte	.LFE81-.LFB81
+ 3302 00a8 00000000 		.4byte	.LFB82
+ 3303 00ac 76000000 		.4byte	.LFE82-.LFB82
+ 3304 00b0 00000000 		.4byte	.LFB83
+ 3305 00b4 84000000 		.4byte	.LFE83-.LFB83
+ 3306 00b8 00000000 		.4byte	0
+ 3307 00bc 00000000 		.4byte	0
+ 3308              		.section	.debug_ranges,"",%progbits
+ 3309              	.Ldebug_ranges0:
+ 3310 0000 00000000 		.4byte	.LFB63
+ 3311 0004 30000000 		.4byte	.LFE63
+ 3312 0008 00000000 		.4byte	.LFB64
+ 3313 000c 24000000 		.4byte	.LFE64
+ 3314 0010 00000000 		.4byte	.LFB65
+ 3315 0014 24000000 		.4byte	.LFE65
+ 3316 0018 00000000 		.4byte	.LFB66
+ 3317 001c 24000000 		.4byte	.LFE66
+ 3318 0020 00000000 		.4byte	.LFB67
+ 3319 0024 54000000 		.4byte	.LFE67
+ 3320 0028 00000000 		.4byte	.LFB68
+ 3321 002c 24000000 		.4byte	.LFE68
+ 3322 0030 00000000 		.4byte	.LFB69
+ 3323 0034 24000000 		.4byte	.LFE69
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 65
+
+
+ 3324 0038 00000000 		.4byte	.LFB70
+ 3325 003c 30000000 		.4byte	.LFE70
+ 3326 0040 00000000 		.4byte	.LFB71
+ 3327 0044 30000000 		.4byte	.LFE71
+ 3328 0048 00000000 		.4byte	.LFB72
+ 3329 004c 70000000 		.4byte	.LFE72
+ 3330 0050 00000000 		.4byte	.LFB73
+ 3331 0054 20000000 		.4byte	.LFE73
+ 3332 0058 00000000 		.4byte	.LFB74
+ 3333 005c 24000000 		.4byte	.LFE74
+ 3334 0060 00000000 		.4byte	.LFB75
+ 3335 0064 74000000 		.4byte	.LFE75
+ 3336 0068 00000000 		.4byte	.LFB76
+ 3337 006c 50000000 		.4byte	.LFE76
+ 3338 0070 00000000 		.4byte	.LFB77
+ 3339 0074 48000000 		.4byte	.LFE77
+ 3340 0078 00000000 		.4byte	.LFB78
+ 3341 007c 48000000 		.4byte	.LFE78
+ 3342 0080 00000000 		.4byte	.LFB79
+ 3343 0084 48000000 		.4byte	.LFE79
+ 3344 0088 00000000 		.4byte	.LFB80
+ 3345 008c 3C000000 		.4byte	.LFE80
+ 3346 0090 00000000 		.4byte	.LFB81
+ 3347 0094 88000000 		.4byte	.LFE81
+ 3348 0098 00000000 		.4byte	.LFB82
+ 3349 009c 76000000 		.4byte	.LFE82
+ 3350 00a0 00000000 		.4byte	.LFB83
+ 3351 00a4 84000000 		.4byte	.LFE83
+ 3352 00a8 00000000 		.4byte	0
+ 3353 00ac 00000000 		.4byte	0
+ 3354              		.section	.debug_line,"",%progbits
+ 3355              	.Ldebug_line0:
+ 3356 0000 DA030000 		.section	.debug_str,"MS",%progbits,1
+ 3356      0200AD01 
+ 3356      00000201 
+ 3356      FB0E0D00 
+ 3356      01010101 
+ 3357              	.LASF46:
+ 3358 0000 63665F65 		.ascii	"cf_enable_chain\000"
+ 3358      6E61626C 
+ 3358      655F6368 
+ 3358      61696E00 
+ 3359              	.LASF47:
+ 3360 0010 63665F64 		.ascii	"cf_disable_chain\000"
+ 3360      69736162 
+ 3360      6C655F63 
+ 3360      6861696E 
+ 3360      00
+ 3361              	.LASF56:
+ 3362 0021 63656C6C 		.ascii	"cell_ptr\000"
+ 3362      5F707472 
+ 3362      00
+ 3363              	.LASF51:
+ 3364 002a 63665F70 		.ascii	"cf_process_cf_event\000"
+ 3364      726F6365 
+ 3364      73735F63 
+ 3364      665F6576 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 66
+
+
+ 3364      656E7400 
+ 3365              	.LASF17:
+ 3366 003e 70617261 		.ascii	"param_3\000"
+ 3366      6D5F3300 
+ 3367              	.LASF2:
+ 3368 0046 73686F72 		.ascii	"short int\000"
+ 3368      7420696E 
+ 3368      7400
+ 3369              	.LASF67:
+ 3370 0050 43484149 		.ascii	"CHAIN_second_tick_chain_LINKS\000"
+ 3370      4E5F7365 
+ 3370      636F6E64 
+ 3370      5F746963 
+ 3370      6B5F6368 
+ 3371              	.LASF63:
+ 3372 006e 73746172 		.ascii	"start_state\000"
+ 3372      745F7374 
+ 3372      61746500 
+ 3373              	.LASF41:
+ 3374 007a 6C696E6B 		.ascii	"link_id\000"
+ 3374      5F696400 
+ 3375              	.LASF49:
+ 3376 0082 63665F72 		.ascii	"cf_resume_chain\000"
+ 3376      6573756D 
+ 3376      655F6368 
+ 3376      61696E00 
+ 3377              	.LASF54:
+ 3378 0092 63686169 		.ascii	"chain_execute_chain\000"
+ 3378      6E5F6578 
+ 3378      65637574 
+ 3378      655F6368 
+ 3378      61696E00 
+ 3379              	.LASF15:
+ 3380 00a6 70617261 		.ascii	"param_1\000"
+ 3380      6D5F3100 
+ 3381              	.LASF16:
+ 3382 00ae 70617261 		.ascii	"param_2\000"
+ 3382      6D5F3200 
+ 3383              	.LASF52:
+ 3384 00b6 6576656E 		.ascii	"event\000"
+ 3384      7400
+ 3385              	.LASF18:
+ 3386 00bc 70617261 		.ascii	"param_4\000"
+ 3386      6D5F3400 
+ 3387              	.LASF44:
+ 3388 00c4 76616C75 		.ascii	"value\000"
+ 3388      6500
+ 3389              	.LASF34:
+ 3390 00ca 6C696E6B 		.ascii	"link_offset\000"
+ 3390      5F6F6666 
+ 3390      73657400 
+ 3391              	.LASF31:
+ 3392 00d6 63686169 		.ascii	"chain_get_link_offset\000"
+ 3392      6E5F6765 
+ 3392      745F6C69 
+ 3392      6E6B5F6F 
+ 3392      66667365 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 67
+
+
+ 3393              	.LASF23:
+ 3394 00ec 6C696E6B 		.ascii	"link_cells\000"
+ 3394      5F63656C 
+ 3394      6C7300
+ 3395              	.LASF20:
+ 3396 00f7 6C696E6B 		.ascii	"link_index\000"
+ 3396      5F696E64 
+ 3396      657800
+ 3397              	.LASF29:
+ 3398 0102 63686169 		.ascii	"chain_get_link_number\000"
+ 3398      6E5F6765 
+ 3398      745F6C69 
+ 3398      6E6B5F6E 
+ 3398      756D6265 
+ 3399              	.LASF0:
+ 3400 0118 7369676E 		.ascii	"signed char\000"
+ 3400      65642063 
+ 3400      68617200 
+ 3401              	.LASF26:
+ 3402 0124 666C6F61 		.ascii	"float\000"
+ 3402      7400
+ 3403              	.LASF14:
+ 3404 012a 66756E63 		.ascii	"func\000"
+ 3404      00
+ 3405              	.LASF69:
+ 3406 012f 43484149 		.ascii	"CHAIN_hour_tick_chain_LINKS\000"
+ 3406      4E5F686F 
+ 3406      75725F74 
+ 3406      69636B5F 
+ 3406      63686169 
+ 3407              	.LASF6:
+ 3408 014b 6C6F6E67 		.ascii	"long long int\000"
+ 3408      206C6F6E 
+ 3408      6720696E 
+ 3408      7400
+ 3409              	.LASF7:
+ 3410 0159 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 3410      206C6F6E 
+ 3410      6720756E 
+ 3410      7369676E 
+ 3410      65642069 
+ 3411              	.LASF74:
+ 3412 0170 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 3412      4320342E 
+ 3412      392E3320 
+ 3412      32303135 
+ 3412      30333033 
+ 3413 01a3 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 3413      20726576 
+ 3413      6973696F 
+ 3413      6E203232 
+ 3413      31323230 
+ 3414 01d6 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 3414      66756E63 
+ 3414      74696F6E 
+ 3414      2D736563 
+ 3414      74696F6E 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 68
+
+
+ 3415              	.LASF62:
+ 3416 01fe 6C696E6B 		.ascii	"link_data\000"
+ 3416      5F646174 
+ 3416      6100
+ 3417              	.LASF25:
+ 3418 0208 696E7433 		.ascii	"int32_t\000"
+ 3418      325F7400 
+ 3419              	.LASF55:
+ 3420 0210 72657475 		.ascii	"return_code\000"
+ 3420      726E5F63 
+ 3420      6F646500 
+ 3421              	.LASF48:
+ 3422 021c 5F5F4655 		.ascii	"__FUNCTION__\000"
+ 3422      4E435449 
+ 3422      4F4E5F5F 
+ 3422      00
+ 3423              	.LASF70:
+ 3424 0229 43484149 		.ascii	"CHAIN_commissioning_heart_beat_LINKS\000"
+ 3424      4E5F636F 
+ 3424      6D6D6973 
+ 3424      73696F6E 
+ 3424      696E675F 
+ 3425              	.LASF13:
+ 3426 024e 43465F46 		.ascii	"CF_FUN\000"
+ 3426      554E00
+ 3427              	.LASF32:
+ 3428 0255 6765745F 		.ascii	"get_cell_pointer\000"
+ 3428      63656C6C 
+ 3428      5F706F69 
+ 3428      6E746572 
+ 3428      00
+ 3429              	.LASF73:
+ 3430 0266 63686169 		.ascii	"chain_control\000"
+ 3430      6E5F636F 
+ 3430      6E74726F 
+ 3430      6C00
+ 3431              	.LASF38:
+ 3432 0274 6D61726B 		.ascii	"mark_disable_link\000"
+ 3432      5F646973 
+ 3432      61626C65 
+ 3432      5F6C696E 
+ 3432      6B00
+ 3433              	.LASF60:
+ 3434 0286 63686169 		.ascii	"chain_state\000"
+ 3434      6E5F7374 
+ 3434      61746500 
+ 3435              	.LASF1:
+ 3436 0292 756E7369 		.ascii	"unsigned char\000"
+ 3436      676E6564 
+ 3436      20636861 
+ 3436      7200
+ 3437              	.LASF66:
+ 3438 02a0 43484149 		.ascii	"CHAIN_process_rtu_packet_LINKS\000"
+ 3438      4E5F7072 
+ 3438      6F636573 
+ 3438      735F7274 
+ 3438      755F7061 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 69
+
+
+ 3439              	.LASF45:
+ 3440 02bf 696E6974 		.ascii	"initialize_cf_system\000"
+ 3440      69616C69 
+ 3440      7A655F63 
+ 3440      665F7379 
+ 3440      7374656D 
+ 3441              	.LASF24:
+ 3442 02d4 43484149 		.ascii	"CHAIN_LINK\000"
+ 3442      4E5F4C49 
+ 3442      4E4B00
+ 3443              	.LASF19:
+ 3444 02df 4C494E4B 		.ascii	"LINK_CELL\000"
+ 3444      5F43454C 
+ 3444      4C00
+ 3445              	.LASF76:
+ 3446 02e9 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 3446      73657273 
+ 3446      5C676C65 
+ 3446      6E6E5C4F 
+ 3446      6E654472 
+ 3447 0316 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ 3447      55415254 
+ 3447      30312E63 
+ 3447      7964736E 
+ 3447      00
+ 3448              	.LASF8:
+ 3449 0327 756E7369 		.ascii	"unsigned int\000"
+ 3449      676E6564 
+ 3449      20696E74 
+ 3449      00
+ 3450              	.LASF37:
+ 3451 0334 72657365 		.ascii	"reset_all_links\000"
+ 3451      745F616C 
+ 3451      6C5F6C69 
+ 3451      6E6B7300 
+ 3452              	.LASF5:
+ 3453 0344 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3453      20756E73 
+ 3453      69676E65 
+ 3453      6420696E 
+ 3453      7400
+ 3454              	.LASF28:
+ 3455 0356 63686169 		.ascii	"chain_enable_for_event\000"
+ 3455      6E5F656E 
+ 3455      61626C65 
+ 3455      5F666F72 
+ 3455      5F657665 
+ 3456              	.LASF35:
+ 3457 036d 69735F6C 		.ascii	"is_link_active\000"
+ 3457      696E6B5F 
+ 3457      61637469 
+ 3457      766500
+ 3458              	.LASF40:
+ 3459 037c 6C696E6B 		.ascii	"link_base\000"
+ 3459      5F626173 
+ 3459      6500
+ 3460              	.LASF61:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 70
+
+
+ 3461 0386 6C696E6B 		.ascii	"link_state\000"
+ 3461      5F737461 
+ 3461      746500
+ 3462              	.LASF10:
+ 3463 0391 63686172 		.ascii	"char\000"
+ 3463      00
+ 3464              	.LASF4:
+ 3465 0396 6C6F6E67 		.ascii	"long int\000"
+ 3465      20696E74 
+ 3465      00
+ 3466              	.LASF64:
+ 3467 039f 43484149 		.ascii	"CHAIN_initialization_LINKS\000"
+ 3467      4E5F696E 
+ 3467      69746961 
+ 3467      6C697A61 
+ 3467      74696F6E 
+ 3468              	.LASF3:
+ 3469 03ba 73686F72 		.ascii	"short unsigned int\000"
+ 3469      7420756E 
+ 3469      7369676E 
+ 3469      65642069 
+ 3469      6E7400
+ 3470              	.LASF50:
+ 3471 03cd 63665F73 		.ascii	"cf_suspend_chain\000"
+ 3471      75737065 
+ 3471      6E645F63 
+ 3471      6861696E 
+ 3471      00
+ 3472              	.LASF12:
+ 3473 03de 43465F46 		.ascii	"CF_FUN_AUX\000"
+ 3473      554E5F41 
+ 3473      555800
+ 3474              	.LASF65:
+ 3475 03e9 43484149 		.ascii	"CHAIN_measure_die_temperature_LINKS\000"
+ 3475      4E5F6D65 
+ 3475      61737572 
+ 3475      655F6469 
+ 3475      655F7465 
+ 3476              	.LASF30:
+ 3477 040d 63686169 		.ascii	"chain_id\000"
+ 3477      6E5F6964 
+ 3477      00
+ 3478              	.LASF72:
+ 3479 0416 43484149 		.ascii	"CHAIN_handle_commissioning_LINKS\000"
+ 3479      4E5F6861 
+ 3479      6E646C65 
+ 3479      5F636F6D 
+ 3479      6D697373 
+ 3480              	.LASF77:
+ 3481 0437 63665F67 		.ascii	"cf_get_cell_value\000"
+ 3481      65745F63 
+ 3481      656C6C5F 
+ 3481      76616C75 
+ 3481      6500
+ 3482              	.LASF22:
+ 3483 0449 6C696E6B 		.ascii	"link_number\000"
+ 3483      5F6E756D 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 71
+
+
+ 3483      62657200 
+ 3484              	.LASF27:
+ 3485 0455 646F7562 		.ascii	"double\000"
+ 3485      6C6500
+ 3486              	.LASF57:
+ 3487 045c 65786563 		.ascii	"execute_cell\000"
+ 3487      7574655F 
+ 3487      63656C6C 
+ 3487      00
+ 3488              	.LASF75:
+ 3489 0469 2E5C6368 		.ascii	".\\chain_flow\\chain_flow_support.c\000"
+ 3489      61696E5F 
+ 3489      666C6F77 
+ 3489      5C636861 
+ 3489      696E5F66 
+ 3490              	.LASF68:
+ 3491 048b 43484149 		.ascii	"CHAIN_minute_tick_chain_LINKS\000"
+ 3491      4E5F6D69 
+ 3491      6E757465 
+ 3491      5F746963 
+ 3491      6B5F6368 
+ 3492              	.LASF33:
+ 3493 04a9 72657475 		.ascii	"return_value\000"
+ 3493      726E5F76 
+ 3493      616C7565 
+ 3493      00
+ 3494              	.LASF11:
+ 3495 04b6 5F5F696E 		.ascii	"__int32_t\000"
+ 3495      7433325F 
+ 3495      7400
+ 3496              	.LASF39:
+ 3497 04c0 6D61726B 		.ascii	"mark_initialize_link\000"
+ 3497      5F696E69 
+ 3497      7469616C 
+ 3497      697A655F 
+ 3497      6C696E6B 
+ 3498              	.LASF42:
+ 3499 04d5 63665F63 		.ascii	"cf_change_state\000"
+ 3499      68616E67 
+ 3499      655F7374 
+ 3499      61746500 
+ 3500              	.LASF71:
+ 3501 04e5 43484149 		.ascii	"CHAIN_heart_beat_LINKS\000"
+ 3501      4E5F6865 
+ 3501      6172745F 
+ 3501      62656174 
+ 3501      5F4C494E 
+ 3502              	.LASF9:
+ 3503 04fc 73697A65 		.ascii	"sizetype\000"
+ 3503      74797065 
+ 3503      00
+ 3504              	.LASF43:
+ 3505 0505 63665F73 		.ascii	"cf_store_cell_value\000"
+ 3505      746F7265 
+ 3505      5F63656C 
+ 3505      6C5F7661 
+ 3505      6C756500 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cco2HHJ7.s 			page 72
+
+
+ 3506              	.LASF21:
+ 3507 0519 63686169 		.ascii	"chain_index\000"
+ 3507      6E5F696E 
+ 3507      64657800 
+ 3508              	.LASF36:
+ 3509 0525 69735F6C 		.ascii	"is_link_initialized\000"
+ 3509      696E6B5F 
+ 3509      696E6974 
+ 3509      69616C69 
+ 3509      7A656400 
+ 3510              	.LASF58:
+ 3511 0539 63686563 		.ascii	"check_return_code\000"
+ 3511      6B5F7265 
+ 3511      7475726E 
+ 3511      5F636F64 
+ 3511      6500
+ 3512              	.LASF59:
+ 3513 054b 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 3513      52784275 
+ 3513      66666572 
+ 3513      00
+ 3514              	.LASF53:
+ 3515 0558 6576656E 		.ascii	"event_data\000"
+ 3515      745F6461 
+ 3515      746100
+ 3516              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

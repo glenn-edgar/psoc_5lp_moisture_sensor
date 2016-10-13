@@ -182,7 +182,7 @@ extern volatile int16 ADC_SAR_Seq_1_SAR_shift;
                                      (CYDEV_VDDA / 2) : \
                                    (((ADC_SAR_Seq_1_SAR_DEFAULT_REFERENCE != (uint8)ADC_SAR_Seq_1_SAR__EXT_REF) && \
                                      (ADC_SAR_Seq_1_SAR_DEFAULT_RANGE == (uint8)ADC_SAR_Seq_1_SAR__VNEG_VDDA_2_DIFF)) ? \
-                                     CYDEV_VDDA : (1.65)))      /* ADC reference voltage. */
+                                     CYDEV_VDDA : (2.5)))      /* ADC reference voltage. */
 #define ADC_SAR_Seq_1_SAR_DEFAULT_REF_VOLTAGE_MV \
                                    (((ADC_SAR_Seq_1_SAR_DEFAULT_REFERENCE != (uint8)ADC_SAR_Seq_1_SAR__EXT_REF) && \
                                     ((ADC_SAR_Seq_1_SAR_DEFAULT_RANGE == (uint8)ADC_SAR_Seq_1_SAR__VSSA_TO_VDDA) || \
@@ -190,7 +190,7 @@ extern volatile int16 ADC_SAR_Seq_1_SAR_shift;
                                      (CYDEV_VDDA_MV / 2) : \
                                   (((ADC_SAR_Seq_1_SAR_DEFAULT_REFERENCE != (uint8)ADC_SAR_Seq_1_SAR__EXT_REF) && \
                                     (ADC_SAR_Seq_1_SAR_DEFAULT_RANGE == (uint8)ADC_SAR_Seq_1_SAR__VNEG_VDDA_2_DIFF)) ? \
-                                     CYDEV_VDDA_MV : (1650)))   /* ADC reference voltage in mV */
+                                     CYDEV_VDDA_MV : (2500)))   /* ADC reference voltage in mV */
 /* The power is set to normal power, 1/2, 1/4 power depend on the clock setting. */
 #define ADC_SAR_Seq_1_SAR_DEFAULT_POWER \
        ((ADC_SAR_Seq_1_SAR_NOMINAL_CLOCK_FREQ > (ADC_SAR_Seq_1_SAR_MAX_FREQUENCY / 4)) ? ADC_SAR_Seq_1_SAR__HIGHPOWER : \

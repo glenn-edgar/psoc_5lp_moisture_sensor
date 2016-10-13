@@ -1,0 +1,729 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"digitial_io.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.read_board_switch,"ax",%progbits
+  19              		.align	2
+  20              		.global	read_board_switch
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	read_board_switch, %function
+  24              	read_board_switch:
+  25              	.LFB63:
+  26              		.file 1 "..\\..\\utilities\\digitial_io.c"
+   1:..\..\utilities/digitial_io.c **** /*
+   2:..\..\utilities/digitial_io.c **** File: digital_io.c
+   3:..\..\utilities/digitial_io.c **** 
+   4:..\..\utilities/digitial_io.c **** Digital functions
+   5:..\..\utilities/digitial_io.c **** 
+   6:..\..\utilities/digitial_io.c **** */
+   7:..\..\utilities/digitial_io.c **** 
+   8:..\..\utilities/digitial_io.c **** 
+   9:..\..\utilities/digitial_io.c **** #include <device.h>
+  10:..\..\utilities/digitial_io.c **** #include "digitial_io.h"
+  11:..\..\utilities/digitial_io.c **** 
+  12:..\..\utilities/digitial_io.c **** // status registers bit definitions
+  13:..\..\utilities/digitial_io.c **** #define  LOG_PIN       1
+  14:..\..\utilities/digitial_io.c **** #define  BOARD_SWITCH  2
+  15:..\..\utilities/digitial_io.c **** #define  ACTIVE_PIN    4
+  16:..\..\utilities/digitial_io.c **** 
+  17:..\..\utilities/digitial_io.c **** 
+  18:..\..\utilities/digitial_io.c **** 
+  19:..\..\utilities/digitial_io.c **** 
+  20:..\..\utilities/digitial_io.c **** 
+  21:..\..\utilities/digitial_io.c **** 
+  22:..\..\utilities/digitial_io.c **** uint32 read_board_switch( void )
+  23:..\..\utilities/digitial_io.c **** {
+  27              		.loc 1 23 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 8
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31 0000 80B5     		push	{r7, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 7, -8
+  34              		.cfi_offset 14, -4
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 2
+
+
+  35 0002 82B0     		sub	sp, sp, #8
+  36              		.cfi_def_cfa_offset 16
+  37 0004 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+  24:..\..\utilities/digitial_io.c ****     uint32 return_value;
+  25:..\..\utilities/digitial_io.c ****     
+  26:..\..\utilities/digitial_io.c ****     if( Status_Reg_1_Read() & BOARD_SWITCH )
+  39              		.loc 1 26 0
+  40 0006 FFF7FEFF 		bl	Status_Reg_1_Read
+  41 000a 0346     		mov	r3, r0
+  42 000c 03F00203 		and	r3, r3, #2
+  43 0010 002B     		cmp	r3, #0
+  44 0012 02D0     		beq	.L2
+  27:..\..\utilities/digitial_io.c ****     {
+  28:..\..\utilities/digitial_io.c ****         return_value = 1;
+  45              		.loc 1 28 0
+  46 0014 0123     		movs	r3, #1
+  47 0016 7B60     		str	r3, [r7, #4]
+  48 0018 01E0     		b	.L3
+  49              	.L2:
+  29:..\..\utilities/digitial_io.c ****     }
+  30:..\..\utilities/digitial_io.c ****     else
+  31:..\..\utilities/digitial_io.c ****     {
+  32:..\..\utilities/digitial_io.c ****         return_value = 0;
+  50              		.loc 1 32 0
+  51 001a 0023     		movs	r3, #0
+  52 001c 7B60     		str	r3, [r7, #4]
+  53              	.L3:
+  33:..\..\utilities/digitial_io.c ****     }
+  34:..\..\utilities/digitial_io.c ****     return return_value;
+  54              		.loc 1 34 0
+  55 001e 7B68     		ldr	r3, [r7, #4]
+  35:..\..\utilities/digitial_io.c **** 
+  36:..\..\utilities/digitial_io.c ****     
+  37:..\..\utilities/digitial_io.c **** }
+  56              		.loc 1 37 0
+  57 0020 1846     		mov	r0, r3
+  58 0022 0837     		adds	r7, r7, #8
+  59              		.cfi_def_cfa_offset 8
+  60 0024 BD46     		mov	sp, r7
+  61              		.cfi_def_cfa_register 13
+  62              		@ sp needed
+  63 0026 80BD     		pop	{r7, pc}
+  64              		.cfi_endproc
+  65              	.LFE63:
+  66              		.size	read_board_switch, .-read_board_switch
+  67              		.section	.text.read_log_pin,"ax",%progbits
+  68              		.align	2
+  69              		.global	read_log_pin
+  70              		.thumb
+  71              		.thumb_func
+  72              		.type	read_log_pin, %function
+  73              	read_log_pin:
+  74              	.LFB64:
+  38:..\..\utilities/digitial_io.c **** 
+  39:..\..\utilities/digitial_io.c **** uint32 read_log_pin( void )
+  40:..\..\utilities/digitial_io.c **** {
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 3
+
+
+  75              		.loc 1 40 0
+  76              		.cfi_startproc
+  77              		@ args = 0, pretend = 0, frame = 8
+  78              		@ frame_needed = 1, uses_anonymous_args = 0
+  79 0000 80B5     		push	{r7, lr}
+  80              		.cfi_def_cfa_offset 8
+  81              		.cfi_offset 7, -8
+  82              		.cfi_offset 14, -4
+  83 0002 82B0     		sub	sp, sp, #8
+  84              		.cfi_def_cfa_offset 16
+  85 0004 00AF     		add	r7, sp, #0
+  86              		.cfi_def_cfa_register 7
+  41:..\..\utilities/digitial_io.c ****     uint32 return_value;
+  42:..\..\utilities/digitial_io.c ****     if( Status_Reg_1_Read() & LOG_PIN )
+  87              		.loc 1 42 0
+  88 0006 FFF7FEFF 		bl	Status_Reg_1_Read
+  89 000a 0346     		mov	r3, r0
+  90 000c 03F00103 		and	r3, r3, #1
+  91 0010 002B     		cmp	r3, #0
+  92 0012 02D0     		beq	.L6
+  43:..\..\utilities/digitial_io.c ****     {
+  44:..\..\utilities/digitial_io.c ****         return_value = 1;
+  93              		.loc 1 44 0
+  94 0014 0123     		movs	r3, #1
+  95 0016 7B60     		str	r3, [r7, #4]
+  96 0018 01E0     		b	.L7
+  97              	.L6:
+  45:..\..\utilities/digitial_io.c ****     }
+  46:..\..\utilities/digitial_io.c ****     else
+  47:..\..\utilities/digitial_io.c ****     {
+  48:..\..\utilities/digitial_io.c ****         return_value = 0;
+  98              		.loc 1 48 0
+  99 001a 0023     		movs	r3, #0
+ 100 001c 7B60     		str	r3, [r7, #4]
+ 101              	.L7:
+  49:..\..\utilities/digitial_io.c ****     }
+  50:..\..\utilities/digitial_io.c ****     return return_value;
+ 102              		.loc 1 50 0
+ 103 001e 7B68     		ldr	r3, [r7, #4]
+  51:..\..\utilities/digitial_io.c **** 
+  52:..\..\utilities/digitial_io.c ****     
+  53:..\..\utilities/digitial_io.c **** }
+ 104              		.loc 1 53 0
+ 105 0020 1846     		mov	r0, r3
+ 106 0022 0837     		adds	r7, r7, #8
+ 107              		.cfi_def_cfa_offset 8
+ 108 0024 BD46     		mov	sp, r7
+ 109              		.cfi_def_cfa_register 13
+ 110              		@ sp needed
+ 111 0026 80BD     		pop	{r7, pc}
+ 112              		.cfi_endproc
+ 113              	.LFE64:
+ 114              		.size	read_log_pin, .-read_log_pin
+ 115              		.section	.text.read_active_pin,"ax",%progbits
+ 116              		.align	2
+ 117              		.global	read_active_pin
+ 118              		.thumb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 4
+
+
+ 119              		.thumb_func
+ 120              		.type	read_active_pin, %function
+ 121              	read_active_pin:
+ 122              	.LFB65:
+  54:..\..\utilities/digitial_io.c **** 
+  55:..\..\utilities/digitial_io.c **** 
+  56:..\..\utilities/digitial_io.c **** 
+  57:..\..\utilities/digitial_io.c **** 
+  58:..\..\utilities/digitial_io.c **** uint32 read_active_pin( void )
+  59:..\..\utilities/digitial_io.c **** {
+ 123              		.loc 1 59 0
+ 124              		.cfi_startproc
+ 125              		@ args = 0, pretend = 0, frame = 8
+ 126              		@ frame_needed = 1, uses_anonymous_args = 0
+ 127 0000 80B5     		push	{r7, lr}
+ 128              		.cfi_def_cfa_offset 8
+ 129              		.cfi_offset 7, -8
+ 130              		.cfi_offset 14, -4
+ 131 0002 82B0     		sub	sp, sp, #8
+ 132              		.cfi_def_cfa_offset 16
+ 133 0004 00AF     		add	r7, sp, #0
+ 134              		.cfi_def_cfa_register 7
+  60:..\..\utilities/digitial_io.c ****     uint32 return_value;
+  61:..\..\utilities/digitial_io.c ****     if( Status_Reg_1_Read() & ACTIVE_PIN )
+ 135              		.loc 1 61 0
+ 136 0006 FFF7FEFF 		bl	Status_Reg_1_Read
+ 137 000a 0346     		mov	r3, r0
+ 138 000c 03F00403 		and	r3, r3, #4
+ 139 0010 002B     		cmp	r3, #0
+ 140 0012 02D0     		beq	.L10
+  62:..\..\utilities/digitial_io.c ****     {
+  63:..\..\utilities/digitial_io.c ****         return_value = 1;
+ 141              		.loc 1 63 0
+ 142 0014 0123     		movs	r3, #1
+ 143 0016 7B60     		str	r3, [r7, #4]
+ 144 0018 01E0     		b	.L11
+ 145              	.L10:
+  64:..\..\utilities/digitial_io.c ****     }
+  65:..\..\utilities/digitial_io.c ****     else
+  66:..\..\utilities/digitial_io.c ****     {
+  67:..\..\utilities/digitial_io.c ****         return_value = 0;
+ 146              		.loc 1 67 0
+ 147 001a 0023     		movs	r3, #0
+ 148 001c 7B60     		str	r3, [r7, #4]
+ 149              	.L11:
+  68:..\..\utilities/digitial_io.c ****     }
+  69:..\..\utilities/digitial_io.c ****     return return_value;
+ 150              		.loc 1 69 0
+ 151 001e 7B68     		ldr	r3, [r7, #4]
+  70:..\..\utilities/digitial_io.c **** 
+  71:..\..\utilities/digitial_io.c ****     
+  72:..\..\utilities/digitial_io.c **** }
+ 152              		.loc 1 72 0
+ 153 0020 1846     		mov	r0, r3
+ 154 0022 0837     		adds	r7, r7, #8
+ 155              		.cfi_def_cfa_offset 8
+ 156 0024 BD46     		mov	sp, r7
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 5
+
+
+ 157              		.cfi_def_cfa_register 13
+ 158              		@ sp needed
+ 159 0026 80BD     		pop	{r7, pc}
+ 160              		.cfi_endproc
+ 161              	.LFE65:
+ 162              		.size	read_active_pin, .-read_active_pin
+ 163              		.text
+ 164              	.Letext0:
+ 165              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 166              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 167              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 168              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 169              		.section	.debug_info,"",%progbits
+ 170              	.Ldebug_info0:
+ 171 0000 2F010000 		.4byte	0x12f
+ 172 0004 0400     		.2byte	0x4
+ 173 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 174 000a 04       		.byte	0x4
+ 175 000b 01       		.uleb128 0x1
+ 176 000c 02010000 		.4byte	.LASF20
+ 177 0010 01       		.byte	0x1
+ 178 0011 53000000 		.4byte	.LASF21
+ 179 0015 7E000000 		.4byte	.LASF22
+ 180 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 181 001d 00000000 		.4byte	0
+ 182 0021 00000000 		.4byte	.Ldebug_line0
+ 183 0025 02       		.uleb128 0x2
+ 184 0026 01       		.byte	0x1
+ 185 0027 06       		.byte	0x6
+ 186 0028 B7010000 		.4byte	.LASF0
+ 187 002c 02       		.uleb128 0x2
+ 188 002d 01       		.byte	0x1
+ 189 002e 08       		.byte	0x8
+ 190 002f E6000000 		.4byte	.LASF1
+ 191 0033 02       		.uleb128 0x2
+ 192 0034 02       		.byte	0x2
+ 193 0035 05       		.byte	0x5
+ 194 0036 E3010000 		.4byte	.LASF2
+ 195 003a 02       		.uleb128 0x2
+ 196 003b 02       		.byte	0x2
+ 197 003c 07       		.byte	0x7
+ 198 003d 97010000 		.4byte	.LASF3
+ 199 0041 03       		.uleb128 0x3
+ 200 0042 C3010000 		.4byte	.LASF9
+ 201 0046 02       		.byte	0x2
+ 202 0047 3F       		.byte	0x3f
+ 203 0048 4C000000 		.4byte	0x4c
+ 204 004c 02       		.uleb128 0x2
+ 205 004d 04       		.byte	0x4
+ 206 004e 05       		.byte	0x5
+ 207 004f F9000000 		.4byte	.LASF4
+ 208 0053 02       		.uleb128 0x2
+ 209 0054 04       		.byte	0x4
+ 210 0055 07       		.byte	0x7
+ 211 0056 2A000000 		.4byte	.LASF5
+ 212 005a 02       		.uleb128 0x2
+ 213 005b 08       		.byte	0x8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 6
+
+
+ 214 005c 05       		.byte	0x5
+ 215 005d 00000000 		.4byte	.LASF6
+ 216 0061 02       		.uleb128 0x2
+ 217 0062 08       		.byte	0x8
+ 218 0063 07       		.byte	0x7
+ 219 0064 3C000000 		.4byte	.LASF7
+ 220 0068 04       		.uleb128 0x4
+ 221 0069 04       		.byte	0x4
+ 222 006a 05       		.byte	0x5
+ 223 006b 696E7400 		.ascii	"int\000"
+ 224 006f 02       		.uleb128 0x2
+ 225 0070 04       		.byte	0x4
+ 226 0071 07       		.byte	0x7
+ 227 0072 15000000 		.4byte	.LASF8
+ 228 0076 03       		.uleb128 0x3
+ 229 0077 22000000 		.4byte	.LASF10
+ 230 007b 03       		.byte	0x3
+ 231 007c 2C       		.byte	0x2c
+ 232 007d 41000000 		.4byte	0x41
+ 233 0081 05       		.uleb128 0x5
+ 234 0082 0E000000 		.4byte	.LASF11
+ 235 0086 04       		.byte	0x4
+ 236 0087 9401     		.2byte	0x194
+ 237 0089 53000000 		.4byte	0x53
+ 238 008d 02       		.uleb128 0x2
+ 239 008e 04       		.byte	0x4
+ 240 008f 04       		.byte	0x4
+ 241 0090 DD010000 		.4byte	.LASF12
+ 242 0094 02       		.uleb128 0x2
+ 243 0095 08       		.byte	0x8
+ 244 0096 04       		.byte	0x4
+ 245 0097 90010000 		.4byte	.LASF13
+ 246 009b 02       		.uleb128 0x2
+ 247 009c 01       		.byte	0x1
+ 248 009d 08       		.byte	0x8
+ 249 009e F4000000 		.4byte	.LASF14
+ 250 00a2 02       		.uleb128 0x2
+ 251 00a3 04       		.byte	0x4
+ 252 00a4 07       		.byte	0x7
+ 253 00a5 0C020000 		.4byte	.LASF15
+ 254 00a9 06       		.uleb128 0x6
+ 255 00aa FA010000 		.4byte	.LASF16
+ 256 00ae 01       		.byte	0x1
+ 257 00af 16       		.byte	0x16
+ 258 00b0 81000000 		.4byte	0x81
+ 259 00b4 00000000 		.4byte	.LFB63
+ 260 00b8 28000000 		.4byte	.LFE63-.LFB63
+ 261 00bc 01       		.uleb128 0x1
+ 262 00bd 9C       		.byte	0x9c
+ 263 00be D1000000 		.4byte	0xd1
+ 264 00c2 07       		.uleb128 0x7
+ 265 00c3 71000000 		.4byte	.LASF18
+ 266 00c7 01       		.byte	0x1
+ 267 00c8 18       		.byte	0x18
+ 268 00c9 81000000 		.4byte	0x81
+ 269 00cd 02       		.uleb128 0x2
+ 270 00ce 91       		.byte	0x91
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 7
+
+
+ 271 00cf 74       		.sleb128 -12
+ 272 00d0 00       		.byte	0
+ 273 00d1 06       		.uleb128 0x6
+ 274 00d2 ED010000 		.4byte	.LASF17
+ 275 00d6 01       		.byte	0x1
+ 276 00d7 27       		.byte	0x27
+ 277 00d8 81000000 		.4byte	0x81
+ 278 00dc 00000000 		.4byte	.LFB64
+ 279 00e0 28000000 		.4byte	.LFE64-.LFB64
+ 280 00e4 01       		.uleb128 0x1
+ 281 00e5 9C       		.byte	0x9c
+ 282 00e6 F9000000 		.4byte	0xf9
+ 283 00ea 07       		.uleb128 0x7
+ 284 00eb 71000000 		.4byte	.LASF18
+ 285 00ef 01       		.byte	0x1
+ 286 00f0 29       		.byte	0x29
+ 287 00f1 81000000 		.4byte	0x81
+ 288 00f5 02       		.uleb128 0x2
+ 289 00f6 91       		.byte	0x91
+ 290 00f7 74       		.sleb128 -12
+ 291 00f8 00       		.byte	0
+ 292 00f9 06       		.uleb128 0x6
+ 293 00fa CD010000 		.4byte	.LASF19
+ 294 00fe 01       		.byte	0x1
+ 295 00ff 3A       		.byte	0x3a
+ 296 0100 81000000 		.4byte	0x81
+ 297 0104 00000000 		.4byte	.LFB65
+ 298 0108 28000000 		.4byte	.LFE65-.LFB65
+ 299 010c 01       		.uleb128 0x1
+ 300 010d 9C       		.byte	0x9c
+ 301 010e 21010000 		.4byte	0x121
+ 302 0112 07       		.uleb128 0x7
+ 303 0113 71000000 		.4byte	.LASF18
+ 304 0117 01       		.byte	0x1
+ 305 0118 3C       		.byte	0x3c
+ 306 0119 81000000 		.4byte	0x81
+ 307 011d 02       		.uleb128 0x2
+ 308 011e 91       		.byte	0x91
+ 309 011f 74       		.sleb128 -12
+ 310 0120 00       		.byte	0
+ 311 0121 08       		.uleb128 0x8
+ 312 0122 AA010000 		.4byte	.LASF23
+ 313 0126 05       		.byte	0x5
+ 314 0127 9606     		.2byte	0x696
+ 315 0129 2D010000 		.4byte	0x12d
+ 316 012d 09       		.uleb128 0x9
+ 317 012e 76000000 		.4byte	0x76
+ 318 0132 00       		.byte	0
+ 319              		.section	.debug_abbrev,"",%progbits
+ 320              	.Ldebug_abbrev0:
+ 321 0000 01       		.uleb128 0x1
+ 322 0001 11       		.uleb128 0x11
+ 323 0002 01       		.byte	0x1
+ 324 0003 25       		.uleb128 0x25
+ 325 0004 0E       		.uleb128 0xe
+ 326 0005 13       		.uleb128 0x13
+ 327 0006 0B       		.uleb128 0xb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 8
+
+
+ 328 0007 03       		.uleb128 0x3
+ 329 0008 0E       		.uleb128 0xe
+ 330 0009 1B       		.uleb128 0x1b
+ 331 000a 0E       		.uleb128 0xe
+ 332 000b 55       		.uleb128 0x55
+ 333 000c 17       		.uleb128 0x17
+ 334 000d 11       		.uleb128 0x11
+ 335 000e 01       		.uleb128 0x1
+ 336 000f 10       		.uleb128 0x10
+ 337 0010 17       		.uleb128 0x17
+ 338 0011 00       		.byte	0
+ 339 0012 00       		.byte	0
+ 340 0013 02       		.uleb128 0x2
+ 341 0014 24       		.uleb128 0x24
+ 342 0015 00       		.byte	0
+ 343 0016 0B       		.uleb128 0xb
+ 344 0017 0B       		.uleb128 0xb
+ 345 0018 3E       		.uleb128 0x3e
+ 346 0019 0B       		.uleb128 0xb
+ 347 001a 03       		.uleb128 0x3
+ 348 001b 0E       		.uleb128 0xe
+ 349 001c 00       		.byte	0
+ 350 001d 00       		.byte	0
+ 351 001e 03       		.uleb128 0x3
+ 352 001f 16       		.uleb128 0x16
+ 353 0020 00       		.byte	0
+ 354 0021 03       		.uleb128 0x3
+ 355 0022 0E       		.uleb128 0xe
+ 356 0023 3A       		.uleb128 0x3a
+ 357 0024 0B       		.uleb128 0xb
+ 358 0025 3B       		.uleb128 0x3b
+ 359 0026 0B       		.uleb128 0xb
+ 360 0027 49       		.uleb128 0x49
+ 361 0028 13       		.uleb128 0x13
+ 362 0029 00       		.byte	0
+ 363 002a 00       		.byte	0
+ 364 002b 04       		.uleb128 0x4
+ 365 002c 24       		.uleb128 0x24
+ 366 002d 00       		.byte	0
+ 367 002e 0B       		.uleb128 0xb
+ 368 002f 0B       		.uleb128 0xb
+ 369 0030 3E       		.uleb128 0x3e
+ 370 0031 0B       		.uleb128 0xb
+ 371 0032 03       		.uleb128 0x3
+ 372 0033 08       		.uleb128 0x8
+ 373 0034 00       		.byte	0
+ 374 0035 00       		.byte	0
+ 375 0036 05       		.uleb128 0x5
+ 376 0037 16       		.uleb128 0x16
+ 377 0038 00       		.byte	0
+ 378 0039 03       		.uleb128 0x3
+ 379 003a 0E       		.uleb128 0xe
+ 380 003b 3A       		.uleb128 0x3a
+ 381 003c 0B       		.uleb128 0xb
+ 382 003d 3B       		.uleb128 0x3b
+ 383 003e 05       		.uleb128 0x5
+ 384 003f 49       		.uleb128 0x49
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 9
+
+
+ 385 0040 13       		.uleb128 0x13
+ 386 0041 00       		.byte	0
+ 387 0042 00       		.byte	0
+ 388 0043 06       		.uleb128 0x6
+ 389 0044 2E       		.uleb128 0x2e
+ 390 0045 01       		.byte	0x1
+ 391 0046 3F       		.uleb128 0x3f
+ 392 0047 19       		.uleb128 0x19
+ 393 0048 03       		.uleb128 0x3
+ 394 0049 0E       		.uleb128 0xe
+ 395 004a 3A       		.uleb128 0x3a
+ 396 004b 0B       		.uleb128 0xb
+ 397 004c 3B       		.uleb128 0x3b
+ 398 004d 0B       		.uleb128 0xb
+ 399 004e 27       		.uleb128 0x27
+ 400 004f 19       		.uleb128 0x19
+ 401 0050 49       		.uleb128 0x49
+ 402 0051 13       		.uleb128 0x13
+ 403 0052 11       		.uleb128 0x11
+ 404 0053 01       		.uleb128 0x1
+ 405 0054 12       		.uleb128 0x12
+ 406 0055 06       		.uleb128 0x6
+ 407 0056 40       		.uleb128 0x40
+ 408 0057 18       		.uleb128 0x18
+ 409 0058 9642     		.uleb128 0x2116
+ 410 005a 19       		.uleb128 0x19
+ 411 005b 01       		.uleb128 0x1
+ 412 005c 13       		.uleb128 0x13
+ 413 005d 00       		.byte	0
+ 414 005e 00       		.byte	0
+ 415 005f 07       		.uleb128 0x7
+ 416 0060 34       		.uleb128 0x34
+ 417 0061 00       		.byte	0
+ 418 0062 03       		.uleb128 0x3
+ 419 0063 0E       		.uleb128 0xe
+ 420 0064 3A       		.uleb128 0x3a
+ 421 0065 0B       		.uleb128 0xb
+ 422 0066 3B       		.uleb128 0x3b
+ 423 0067 0B       		.uleb128 0xb
+ 424 0068 49       		.uleb128 0x49
+ 425 0069 13       		.uleb128 0x13
+ 426 006a 02       		.uleb128 0x2
+ 427 006b 18       		.uleb128 0x18
+ 428 006c 00       		.byte	0
+ 429 006d 00       		.byte	0
+ 430 006e 08       		.uleb128 0x8
+ 431 006f 34       		.uleb128 0x34
+ 432 0070 00       		.byte	0
+ 433 0071 03       		.uleb128 0x3
+ 434 0072 0E       		.uleb128 0xe
+ 435 0073 3A       		.uleb128 0x3a
+ 436 0074 0B       		.uleb128 0xb
+ 437 0075 3B       		.uleb128 0x3b
+ 438 0076 05       		.uleb128 0x5
+ 439 0077 49       		.uleb128 0x49
+ 440 0078 13       		.uleb128 0x13
+ 441 0079 3F       		.uleb128 0x3f
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 10
+
+
+ 442 007a 19       		.uleb128 0x19
+ 443 007b 3C       		.uleb128 0x3c
+ 444 007c 19       		.uleb128 0x19
+ 445 007d 00       		.byte	0
+ 446 007e 00       		.byte	0
+ 447 007f 09       		.uleb128 0x9
+ 448 0080 35       		.uleb128 0x35
+ 449 0081 00       		.byte	0
+ 450 0082 49       		.uleb128 0x49
+ 451 0083 13       		.uleb128 0x13
+ 452 0084 00       		.byte	0
+ 453 0085 00       		.byte	0
+ 454 0086 00       		.byte	0
+ 455              		.section	.debug_aranges,"",%progbits
+ 456 0000 2C000000 		.4byte	0x2c
+ 457 0004 0200     		.2byte	0x2
+ 458 0006 00000000 		.4byte	.Ldebug_info0
+ 459 000a 04       		.byte	0x4
+ 460 000b 00       		.byte	0
+ 461 000c 0000     		.2byte	0
+ 462 000e 0000     		.2byte	0
+ 463 0010 00000000 		.4byte	.LFB63
+ 464 0014 28000000 		.4byte	.LFE63-.LFB63
+ 465 0018 00000000 		.4byte	.LFB64
+ 466 001c 28000000 		.4byte	.LFE64-.LFB64
+ 467 0020 00000000 		.4byte	.LFB65
+ 468 0024 28000000 		.4byte	.LFE65-.LFB65
+ 469 0028 00000000 		.4byte	0
+ 470 002c 00000000 		.4byte	0
+ 471              		.section	.debug_ranges,"",%progbits
+ 472              	.Ldebug_ranges0:
+ 473 0000 00000000 		.4byte	.LFB63
+ 474 0004 28000000 		.4byte	.LFE63
+ 475 0008 00000000 		.4byte	.LFB64
+ 476 000c 28000000 		.4byte	.LFE64
+ 477 0010 00000000 		.4byte	.LFB65
+ 478 0014 28000000 		.4byte	.LFE65
+ 479 0018 00000000 		.4byte	0
+ 480 001c 00000000 		.4byte	0
+ 481              		.section	.debug_line,"",%progbits
+ 482              	.Ldebug_line0:
+ 483 0000 A0010000 		.section	.debug_str,"MS",%progbits,1
+ 483      02005E01 
+ 483      00000201 
+ 483      FB0E0D00 
+ 483      01010101 
+ 484              	.LASF6:
+ 485 0000 6C6F6E67 		.ascii	"long long int\000"
+ 485      206C6F6E 
+ 485      6720696E 
+ 485      7400
+ 486              	.LASF11:
+ 487 000e 75696E74 		.ascii	"uint32\000"
+ 487      333200
+ 488              	.LASF8:
+ 489 0015 756E7369 		.ascii	"unsigned int\000"
+ 489      676E6564 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 11
+
+
+ 489      20696E74 
+ 489      00
+ 490              	.LASF10:
+ 491 0022 696E7433 		.ascii	"int32_t\000"
+ 491      325F7400 
+ 492              	.LASF5:
+ 493 002a 6C6F6E67 		.ascii	"long unsigned int\000"
+ 493      20756E73 
+ 493      69676E65 
+ 493      6420696E 
+ 493      7400
+ 494              	.LASF7:
+ 495 003c 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 495      206C6F6E 
+ 495      6720756E 
+ 495      7369676E 
+ 495      65642069 
+ 496              	.LASF21:
+ 497 0053 2E2E5C2E 		.ascii	"..\\..\\utilities\\digitial_io.c\000"
+ 497      2E5C7574 
+ 497      696C6974 
+ 497      6965735C 
+ 497      64696769 
+ 498              	.LASF18:
+ 499 0071 72657475 		.ascii	"return_value\000"
+ 499      726E5F76 
+ 499      616C7565 
+ 499      00
+ 500              	.LASF22:
+ 501 007e 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 501      73657273 
+ 501      5C676C65 
+ 501      6E6E5C4F 
+ 501      6E654472 
+ 502 00ab 5553425F 		.ascii	"USB_UART01.cydsn\\chain_flow\\PSOC_5lp_moisture_sen"
+ 502      55415254 
+ 502      30312E63 
+ 502      7964736E 
+ 502      5C636861 
+ 503 00dc 736F722E 		.ascii	"sor.cydsn\000"
+ 503      63796473 
+ 503      6E00
+ 504              	.LASF1:
+ 505 00e6 756E7369 		.ascii	"unsigned char\000"
+ 505      676E6564 
+ 505      20636861 
+ 505      7200
+ 506              	.LASF14:
+ 507 00f4 63686172 		.ascii	"char\000"
+ 507      00
+ 508              	.LASF4:
+ 509 00f9 6C6F6E67 		.ascii	"long int\000"
+ 509      20696E74 
+ 509      00
+ 510              	.LASF20:
+ 511 0102 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 511      4320342E 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 12
+
+
+ 511      392E3320 
+ 511      32303135 
+ 511      30333033 
+ 512 0135 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 512      20726576 
+ 512      6973696F 
+ 512      6E203232 
+ 512      31323230 
+ 513 0168 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 513      66756E63 
+ 513      74696F6E 
+ 513      2D736563 
+ 513      74696F6E 
+ 514              	.LASF13:
+ 515 0190 646F7562 		.ascii	"double\000"
+ 515      6C6500
+ 516              	.LASF3:
+ 517 0197 73686F72 		.ascii	"short unsigned int\000"
+ 517      7420756E 
+ 517      7369676E 
+ 517      65642069 
+ 517      6E7400
+ 518              	.LASF23:
+ 519 01aa 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 519      52784275 
+ 519      66666572 
+ 519      00
+ 520              	.LASF0:
+ 521 01b7 7369676E 		.ascii	"signed char\000"
+ 521      65642063 
+ 521      68617200 
+ 522              	.LASF9:
+ 523 01c3 5F5F696E 		.ascii	"__int32_t\000"
+ 523      7433325F 
+ 523      7400
+ 524              	.LASF19:
+ 525 01cd 72656164 		.ascii	"read_active_pin\000"
+ 525      5F616374 
+ 525      6976655F 
+ 525      70696E00 
+ 526              	.LASF12:
+ 527 01dd 666C6F61 		.ascii	"float\000"
+ 527      7400
+ 528              	.LASF2:
+ 529 01e3 73686F72 		.ascii	"short int\000"
+ 529      7420696E 
+ 529      7400
+ 530              	.LASF17:
+ 531 01ed 72656164 		.ascii	"read_log_pin\000"
+ 531      5F6C6F67 
+ 531      5F70696E 
+ 531      00
+ 532              	.LASF16:
+ 533 01fa 72656164 		.ascii	"read_board_switch\000"
+ 533      5F626F61 
+ 533      72645F73 
+ 533      77697463 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccasp4sL.s 			page 13
+
+
+ 533      6800
+ 534              	.LASF15:
+ 535 020c 73697A65 		.ascii	"sizetype\000"
+ 535      74797065 
+ 535      00
+ 536              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

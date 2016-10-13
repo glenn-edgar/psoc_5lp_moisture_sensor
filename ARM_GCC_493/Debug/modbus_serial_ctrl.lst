@@ -1,0 +1,3261 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"modbus_serial_ctrl.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.get_modbus_address,"ax",%progbits
+  19              		.align	2
+  20              		.thumb
+  21              		.thumb_func
+  22              		.type	get_modbus_address, %function
+  23              	get_modbus_address:
+  24              	.LFB63:
+  25              		.file 1 ".\\rtu_modbus\\process_modbus_message.h"
+   1:.\rtu_modbus/process_modbus_message.h **** 
+   2:.\rtu_modbus/process_modbus_message.h **** /*
+   3:.\rtu_modbus/process_modbus_message.h **** **
+   4:.\rtu_modbus/process_modbus_message.h **** ** File: process_modbus_message.h
+   5:.\rtu_modbus/process_modbus_message.h **** **
+   6:.\rtu_modbus/process_modbus_message.h **** **/
+   7:.\rtu_modbus/process_modbus_message.h **** 
+   8:.\rtu_modbus/process_modbus_message.h **** #ifndef _PROCESS_MODBUS_MESSAGE_H_
+   9:.\rtu_modbus/process_modbus_message.h **** #define _PROCESS_MODBUS_MESSAGE_H_
+  10:.\rtu_modbus/process_modbus_message.h ****     
+  11:.\rtu_modbus/process_modbus_message.h **** #include <device.h>
+  12:.\rtu_modbus/process_modbus_message.h **** 
+  13:.\rtu_modbus/process_modbus_message.h ****     
+  14:.\rtu_modbus/process_modbus_message.h **** #define MODBUS_REGISTER_LENGTH 256
+  15:.\rtu_modbus/process_modbus_message.h **** 
+  16:.\rtu_modbus/process_modbus_message.h **** /*
+  17:.\rtu_modbus/process_modbus_message.h **** **
+  18:.\rtu_modbus/process_modbus_message.h **** ** Modbus Register Definitions
+  19:.\rtu_modbus/process_modbus_message.h **** **
+  20:.\rtu_modbus/process_modbus_message.h **** */ 
+  21:.\rtu_modbus/process_modbus_message.h **** 
+  22:.\rtu_modbus/process_modbus_message.h **** 
+  23:.\rtu_modbus/process_modbus_message.h ****     
+  24:.\rtu_modbus/process_modbus_message.h **** // System Definitions
+  25:.\rtu_modbus/process_modbus_message.h ****     
+  26:.\rtu_modbus/process_modbus_message.h **** #define MOD_UNIT_ID                     0
+  27:.\rtu_modbus/process_modbus_message.h **** #define MOD_UNIT_TEMP                   1
+  28:.\rtu_modbus/process_modbus_message.h **** #define MOD_RTU_WATCH_DOG_FLAG          2
+  29:.\rtu_modbus/process_modbus_message.h **** #define MOD_CONTROLLER_WATCH_DOG_FLAG   3
+  30:.\rtu_modbus/process_modbus_message.h **** #define MOD_COMMISSIONING_FLAG          4
+  31:.\rtu_modbus/process_modbus_message.h **** #define MOD_POWER_UP_EVENT              5
+  32:.\rtu_modbus/process_modbus_message.h **** #define MOD_MINUTE_ROLLOVER             6
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 2
+
+
+  33:.\rtu_modbus/process_modbus_message.h **** #define MOD_DISCRETE_IO_CHANGE          7
+  34:.\rtu_modbus/process_modbus_message.h **** #define MOD_YEAR                        8
+  35:.\rtu_modbus/process_modbus_message.h **** #define MOD_MONTH                       9
+  36:.\rtu_modbus/process_modbus_message.h **** #define MOD_DAY                        10
+  37:.\rtu_modbus/process_modbus_message.h **** #define MOD_HOUR                       11
+  38:.\rtu_modbus/process_modbus_message.h **** #define MOD_MINUTE                     12
+  39:.\rtu_modbus/process_modbus_message.h **** #define MOD_SECOND                     13
+  40:.\rtu_modbus/process_modbus_message.h **** 
+  41:.\rtu_modbus/process_modbus_message.h ****        
+  42:.\rtu_modbus/process_modbus_message.h ****          
+  43:.\rtu_modbus/process_modbus_message.h **** // Logging Control
+  44:.\rtu_modbus/process_modbus_message.h **** #define ACTIVE_FLAG                 30
+  45:.\rtu_modbus/process_modbus_message.h **** #define LOGGING_FLAG                31
+  46:.\rtu_modbus/process_modbus_message.h **** #define LOGGING_INDEX               32
+  47:.\rtu_modbus/process_modbus_message.h **** #define LOGGING_RATE                33
+  48:.\rtu_modbus/process_modbus_message.h **** #define NEW_MOISTURE_DATA           34
+  49:.\rtu_modbus/process_modbus_message.h **** 
+  50:.\rtu_modbus/process_modbus_message.h **** 
+  51:.\rtu_modbus/process_modbus_message.h **** //  Moisture Sensor Data
+  52:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_TEMP_DC_MIN_FLOAT      40
+  53:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_TEMP_AC_MIN_FLOAT      42
+  54:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_TEMP_DC_SEC_FLOAT      44
+  55:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_TEMP_AC_SEC_FLOAT      46
+  56:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_1_FLOAT         50
+  57:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_2_FLOAT         52
+  58:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_3_FLOAT         54
+  59:.\rtu_modbus/process_modbus_message.h **** #define MOISTRUE_SENSOR_4_FLOAT         56
+  60:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_5_FLOAT         58
+  61:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_6_FLOAT         60
+  62:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_7_FLOAT         62
+  63:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_8_FLOAT         64   
+  64:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_9_FLOAT         66
+  65:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_10_FLOAT         68
+  66:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_11_FLOAT         70
+  67:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_12_FLOAT         72
+  68:.\rtu_modbus/process_modbus_message.h **** #define MOISTRUE_SENSOR_13_FLOAT         74
+  69:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_14_FLOAT         76
+  70:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_15_FLOAT         78
+  71:.\rtu_modbus/process_modbus_message.h **** 
+  72:.\rtu_modbus/process_modbus_message.h **** 
+  73:.\rtu_modbus/process_modbus_message.h **** // CONFIGURATION DATA
+  74:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_1_CONFIGURATION    80
+  75:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_2_CONFIGURATION    81
+  76:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_3_CONFIGURATION    82 
+  77:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_4_CONFIGURATION    83
+  78:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_5_CONFIGURATION    84
+  79:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_6_CONFIGURATION    85
+  80:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_7_CONFIGURATION    86
+  81:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_8_CONFIGURATION    87
+  82:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_9_CONFIGURATION    88
+  83:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_10_CONFIGURATION    89
+  84:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_11_CONFIGURATION    90
+  85:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_12_CONFIGURATION    91 
+  86:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_13_CONFIGURATION    92
+  87:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_14_CONFIGURATION    93
+  88:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_15_CONFIGURATION    94
+  89:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_SENSOR_16_CONFIGURATION    95
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 3
+
+
+  90:.\rtu_modbus/process_modbus_message.h **** 
+  91:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_TEMP_CALIBRATION_A        100
+  92:.\rtu_modbus/process_modbus_message.h **** #define MOISTURE_TEMP_CALIBRATION_B        102
+  93:.\rtu_modbus/process_modbus_message.h **** 
+  94:.\rtu_modbus/process_modbus_message.h **** //  Moisture Sensor Data
+  95:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR_1_FLOAT         110
+  96:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR_2_FLOAT         112
+  97:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR__3_FLOAT        114
+  98:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR_4_FLOAT         116
+  99:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR_5_FLOAT         118
+ 100:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR_6_FLOAT         120
+ 101:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR_7_FLOAT         122
+ 102:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR_8_FLOAT         124   
+ 103:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR_9_FLOAT         126
+ 104:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR_10_FLOAT        128
+ 105:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR_11_FLOAT        130
+ 106:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR_12_FLOAT        132
+ 107:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR_13_FLOAT        134
+ 108:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR__14_FLOAT       136
+ 109:.\rtu_modbus/process_modbus_message.h **** #define REFERENCE_RESISTOR__15_FLOAT       138
+ 110:.\rtu_modbus/process_modbus_message.h **** 
+ 111:.\rtu_modbus/process_modbus_message.h **** 
+ 112:.\rtu_modbus/process_modbus_message.h ****     
+ 113:.\rtu_modbus/process_modbus_message.h **** 
+ 114:.\rtu_modbus/process_modbus_message.h **** 
+ 115:.\rtu_modbus/process_modbus_message.h **** 
+ 116:.\rtu_modbus/process_modbus_message.h **** #define MODBUS_ARRAY_LENGTH  sizeof( modbus_address_data)/sizeof(modbus_address_data)
+ 117:.\rtu_modbus/process_modbus_message.h **** 
+ 118:.\rtu_modbus/process_modbus_message.h **** 
+ 119:.\rtu_modbus/process_modbus_message.h **** extern const uint16 modbus_address_data[2];
+ 120:.\rtu_modbus/process_modbus_message.h **** 
+ 121:.\rtu_modbus/process_modbus_message.h **** static inline uint16 get_modbus_address( void )
+ 122:.\rtu_modbus/process_modbus_message.h **** {
+  26              		.loc 1 122 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 1, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31 0000 80B4     		push	{r7}
+  32              		.cfi_def_cfa_offset 4
+  33              		.cfi_offset 7, -4
+  34 0002 00AF     		add	r7, sp, #0
+  35              		.cfi_def_cfa_register 7
+ 123:.\rtu_modbus/process_modbus_message.h ****     return modbus_address_data[0];
+  36              		.loc 1 123 0
+  37 0004 034B     		ldr	r3, .L3
+  38 0006 1B88     		ldrh	r3, [r3]
+ 124:.\rtu_modbus/process_modbus_message.h **** }
+  39              		.loc 1 124 0
+  40 0008 1846     		mov	r0, r3
+  41 000a BD46     		mov	sp, r7
+  42              		.cfi_def_cfa_register 13
+  43              		@ sp needed
+  44 000c 5DF8047B 		ldr	r7, [sp], #4
+  45              		.cfi_restore 7
+  46              		.cfi_def_cfa_offset 0
+  47 0010 7047     		bx	lr
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 4
+
+
+  48              	.L4:
+  49 0012 00BF     		.align	2
+  50              	.L3:
+  51 0014 00000000 		.word	modbus_address_data
+  52              		.cfi_endproc
+  53              	.LFE63:
+  54              		.size	get_modbus_address, .-get_modbus_address
+  55              		.section	.text.get_commissioning_address,"ax",%progbits
+  56              		.align	2
+  57              		.thumb
+  58              		.thumb_func
+  59              		.type	get_commissioning_address, %function
+  60              	get_commissioning_address:
+  61              	.LFB64:
+ 125:.\rtu_modbus/process_modbus_message.h **** 
+ 126:.\rtu_modbus/process_modbus_message.h **** static inline uint16 get_commissioning_address( void )
+ 127:.\rtu_modbus/process_modbus_message.h **** {
+  62              		.loc 1 127 0
+  63              		.cfi_startproc
+  64              		@ args = 0, pretend = 0, frame = 0
+  65              		@ frame_needed = 1, uses_anonymous_args = 0
+  66              		@ link register save eliminated.
+  67 0000 80B4     		push	{r7}
+  68              		.cfi_def_cfa_offset 4
+  69              		.cfi_offset 7, -4
+  70 0002 00AF     		add	r7, sp, #0
+  71              		.cfi_def_cfa_register 7
+ 128:.\rtu_modbus/process_modbus_message.h ****     return modbus_address_data[1];
+  72              		.loc 1 128 0
+  73 0004 034B     		ldr	r3, .L7
+  74 0006 5B88     		ldrh	r3, [r3, #2]
+ 129:.\rtu_modbus/process_modbus_message.h **** }
+  75              		.loc 1 129 0
+  76 0008 1846     		mov	r0, r3
+  77 000a BD46     		mov	sp, r7
+  78              		.cfi_def_cfa_register 13
+  79              		@ sp needed
+  80 000c 5DF8047B 		ldr	r7, [sp], #4
+  81              		.cfi_restore 7
+  82              		.cfi_def_cfa_offset 0
+  83 0010 7047     		bx	lr
+  84              	.L8:
+  85 0012 00BF     		.align	2
+  86              	.L7:
+  87 0014 00000000 		.word	modbus_address_data
+  88              		.cfi_endproc
+  89              	.LFE64:
+  90              		.size	get_commissioning_address, .-get_commissioning_address
+  91              		.bss
+  92              		.align	2
+  93              	uart_timer_state:
+  94 0000 00000000 		.space	4
+  95              		.align	2
+  96              	uart_rx_state:
+  97 0004 00000000 		.space	4
+  98              		.align	2
+  99              	uart_tx_state:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 5
+
+
+ 100 0008 00000000 		.space	4
+ 101              		.align	2
+ 102              	rx_interval_count:
+ 103 000c 00000000 		.space	4
+ 104              		.align	1
+ 105              	modbus_address:
+ 106 0010 0000     		.space	2
+ 107 0012 0000     		.align	2
+ 108              	modbus_rx_index:
+ 109 0014 00000000 		.space	4
+ 110              		.align	2
+ 111              	modbus_in_buffer:
+ 112 0018 00000000 		.space	257
+ 112      00000000 
+ 112      00000000 
+ 112      00000000 
+ 112      00000000 
+ 113 0119 000000   		.align	2
+ 114              	modbus_tx_index:
+ 115 011c 00000000 		.space	4
+ 116              		.align	2
+ 117              	modbus_tx_message_count:
+ 118 0120 00000000 		.space	4
+ 119              		.align	2
+ 120              	modbus_out_buffer:
+ 121 0124 00000000 		.space	257
+ 121      00000000 
+ 121      00000000 
+ 121      00000000 
+ 121      00000000 
+ 122 0225 000000   		.align	2
+ 123              	read_status_value:
+ 124 0228 00000000 		.space	4
+ 125              		.section	.text.empty_rx_uart,"ax",%progbits
+ 126              		.align	2
+ 127              		.thumb
+ 128              		.thumb_func
+ 129              		.type	empty_rx_uart, %function
+ 130              	empty_rx_uart:
+ 131              	.LFB65:
+ 132              		.file 2 ".\\rtu_modbus\\modbus_serial_ctrl.c"
+   1:.\rtu_modbus/modbus_serial_ctrl.c **** /*
+   2:.\rtu_modbus/modbus_serial_ctrl.c **** ** File: modbus_srial_ctrl.c
+   3:.\rtu_modbus/modbus_serial_ctrl.c **** **
+   4:.\rtu_modbus/modbus_serial_ctrl.c **** **
+   5:.\rtu_modbus/modbus_serial_ctrl.c **** */
+   6:.\rtu_modbus/modbus_serial_ctrl.c **** 
+   7:.\rtu_modbus/modbus_serial_ctrl.c **** #include <device.h>
+   8:.\rtu_modbus/modbus_serial_ctrl.c **** #include "modbus_serial_ctrl.h"
+   9:.\rtu_modbus/modbus_serial_ctrl.c **** #include "process_modbus_message.h"
+  10:.\rtu_modbus/modbus_serial_ctrl.c **** #include "cf_events.h"
+  11:.\rtu_modbus/modbus_serial_ctrl.c **** #include "cf_status_bit.h"
+  12:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  13:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  14:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  15:.\rtu_modbus/modbus_serial_ctrl.c **** #define UART_RX_IDLE           0
+  16:.\rtu_modbus/modbus_serial_ctrl.c **** #define UART_RX_ACTIVE_RECEIVE 1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 6
+
+
+  17:.\rtu_modbus/modbus_serial_ctrl.c **** #define UART_RX_BAD_ADDRESS    2
+  18:.\rtu_modbus/modbus_serial_ctrl.c **** #define UART_RX_DUMP_STATE     3
+  19:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  20:.\rtu_modbus/modbus_serial_ctrl.c **** #define UART_TX_STATE_IDLE              0
+  21:.\rtu_modbus/modbus_serial_ctrl.c **** #define UART_TX_STATE_TRANSMITTING      1
+  22:.\rtu_modbus/modbus_serial_ctrl.c **** #define UART_TX_STATE_WAIT_FOR_EOT      2
+  23:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  24:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  25:.\rtu_modbus/modbus_serial_ctrl.c **** #define UART_TIMER_IDLE 0
+  26:.\rtu_modbus/modbus_serial_ctrl.c **** #define UART_TIMER_BAD_ADDRESS 1
+  27:.\rtu_modbus/modbus_serial_ctrl.c **** #define UART_TIMER_RX  2
+  28:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  29:.\rtu_modbus/modbus_serial_ctrl.c **** #define RX_FIFO_SIZE 16
+  30:.\rtu_modbus/modbus_serial_ctrl.c **** #define TX_FIFO_SIZE 16
+  31:.\rtu_modbus/modbus_serial_ctrl.c **** #define MODBUS_BUFFER_SIZE 256
+  32:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  33:.\rtu_modbus/modbus_serial_ctrl.c **** static int uart_timer_state;
+  34:.\rtu_modbus/modbus_serial_ctrl.c **** static int uart_rx_state;
+  35:.\rtu_modbus/modbus_serial_ctrl.c **** static int uart_tx_state;
+  36:.\rtu_modbus/modbus_serial_ctrl.c **** // process_rtu_message waits on CF_USB_RTU_EVENT event sent by rx interrupt handler
+  37:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  38:.\rtu_modbus/modbus_serial_ctrl.c **** static int rx_interval_count;
+  39:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  40:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  41:.\rtu_modbus/modbus_serial_ctrl.c **** static uint16 modbus_address;
+  42:.\rtu_modbus/modbus_serial_ctrl.c **** static int modbus_rx_index;
+  43:.\rtu_modbus/modbus_serial_ctrl.c **** static uint8 modbus_in_buffer[MODBUS_BUFFER_SIZE+1];
+  44:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  45:.\rtu_modbus/modbus_serial_ctrl.c **** static int modbus_tx_index;
+  46:.\rtu_modbus/modbus_serial_ctrl.c **** static int modbus_tx_message_count;
+  47:.\rtu_modbus/modbus_serial_ctrl.c **** static uint8 modbus_out_buffer[MODBUS_BUFFER_SIZE+1];
+  48:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  49:.\rtu_modbus/modbus_serial_ctrl.c **** static void init_rx_state( void );
+  50:.\rtu_modbus/modbus_serial_ctrl.c **** static void init_processing_state( void );
+  51:.\rtu_modbus/modbus_serial_ctrl.c **** static void init_tx_state( int tx_count );
+  52:.\rtu_modbus/modbus_serial_ctrl.c **** static void abort_rx_state( void );
+  53:.\rtu_modbus/modbus_serial_ctrl.c **** static volatile int read_status_value;
+  54:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  55:.\rtu_modbus/modbus_serial_ctrl.c **** static inline int empty_rx_uart( void )
+  56:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 133              		.loc 2 56 0
+ 134              		.cfi_startproc
+ 135              		@ args = 0, pretend = 0, frame = 8
+ 136              		@ frame_needed = 1, uses_anonymous_args = 0
+ 137 0000 90B5     		push	{r4, r7, lr}
+ 138              		.cfi_def_cfa_offset 12
+ 139              		.cfi_offset 4, -12
+ 140              		.cfi_offset 7, -8
+ 141              		.cfi_offset 14, -4
+ 142 0002 83B0     		sub	sp, sp, #12
+ 143              		.cfi_def_cfa_offset 24
+ 144 0004 00AF     		add	r7, sp, #0
+ 145              		.cfi_def_cfa_register 7
+  57:.\rtu_modbus/modbus_serial_ctrl.c ****     int i;
+  58:.\rtu_modbus/modbus_serial_ctrl.c ****     int return_value;
+  59:.\rtu_modbus/modbus_serial_ctrl.c ****     
+  60:.\rtu_modbus/modbus_serial_ctrl.c ****     return_value = 0;
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 7
+
+
+ 146              		.loc 2 60 0
+ 147 0006 0023     		movs	r3, #0
+ 148 0008 3B60     		str	r3, [r7]
+  61:.\rtu_modbus/modbus_serial_ctrl.c ****     for( i = 0; i < RX_FIFO_SIZE; i++ )
+ 149              		.loc 2 61 0
+ 150 000a 0023     		movs	r3, #0
+ 151 000c 7B60     		str	r3, [r7, #4]
+ 152 000e 26E0     		b	.L10
+ 153              	.L13:
+  62:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+  63:.\rtu_modbus/modbus_serial_ctrl.c ****         read_status_value = UART_1_ReadRxStatus();
+ 154              		.loc 2 63 0
+ 155 0010 FFF7FEFF 		bl	UART_1_ReadRxStatus
+ 156 0014 0346     		mov	r3, r0
+ 157 0016 1A46     		mov	r2, r3
+ 158 0018 154B     		ldr	r3, .L15
+ 159 001a 1A60     		str	r2, [r3]
+  64:.\rtu_modbus/modbus_serial_ctrl.c ****         if(  read_status_value & UART_1_RX_STS_FIFO_NOTEMPTY )
+ 160              		.loc 2 64 0
+ 161 001c 144B     		ldr	r3, .L15
+ 162 001e 1B68     		ldr	r3, [r3]
+ 163 0020 03F02003 		and	r3, r3, #32
+ 164 0024 002B     		cmp	r3, #0
+ 165 0026 17D0     		beq	.L11
+  65:.\rtu_modbus/modbus_serial_ctrl.c ****         {
+  66:.\rtu_modbus/modbus_serial_ctrl.c ****             return_value += 1;
+ 166              		.loc 2 66 0
+ 167 0028 3B68     		ldr	r3, [r7]
+ 168 002a 0133     		adds	r3, r3, #1
+ 169 002c 3B60     		str	r3, [r7]
+  67:.\rtu_modbus/modbus_serial_ctrl.c ****             modbus_in_buffer[ modbus_rx_index ] = UART_1_ReadRxData();
+ 170              		.loc 2 67 0
+ 171 002e 114B     		ldr	r3, .L15+4
+ 172 0030 1C68     		ldr	r4, [r3]
+ 173 0032 FFF7FEFF 		bl	UART_1_ReadRxData
+ 174 0036 0346     		mov	r3, r0
+ 175 0038 1A46     		mov	r2, r3
+ 176 003a 0F4B     		ldr	r3, .L15+8
+ 177 003c 1A55     		strb	r2, [r3, r4]
+  68:.\rtu_modbus/modbus_serial_ctrl.c ****             if( modbus_rx_index > MODBUS_BUFFER_SIZE )
+ 178              		.loc 2 68 0
+ 179 003e 0D4B     		ldr	r3, .L15+4
+ 180 0040 1B68     		ldr	r3, [r3]
+ 181 0042 B3F5807F 		cmp	r3, #256
+ 182 0046 02DD     		ble	.L12
+  69:.\rtu_modbus/modbus_serial_ctrl.c ****             {
+  70:.\rtu_modbus/modbus_serial_ctrl.c ****                 abort_rx_state();
+ 183              		.loc 2 70 0
+ 184 0048 FFF7FEFF 		bl	abort_rx_state
+ 185 004c 04E0     		b	.L11
+ 186              	.L12:
+  71:.\rtu_modbus/modbus_serial_ctrl.c ****             }
+  72:.\rtu_modbus/modbus_serial_ctrl.c ****             else
+  73:.\rtu_modbus/modbus_serial_ctrl.c ****             {
+  74:.\rtu_modbus/modbus_serial_ctrl.c ****                 modbus_rx_index += 1;
+ 187              		.loc 2 74 0
+ 188 004e 094B     		ldr	r3, .L15+4
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 8
+
+
+ 189 0050 1B68     		ldr	r3, [r3]
+ 190 0052 0133     		adds	r3, r3, #1
+ 191 0054 074A     		ldr	r2, .L15+4
+ 192 0056 1360     		str	r3, [r2]
+ 193              	.L11:
+  61:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 194              		.loc 2 61 0 discriminator 2
+ 195 0058 7B68     		ldr	r3, [r7, #4]
+ 196 005a 0133     		adds	r3, r3, #1
+ 197 005c 7B60     		str	r3, [r7, #4]
+ 198              	.L10:
+  61:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 199              		.loc 2 61 0 is_stmt 0 discriminator 1
+ 200 005e 7B68     		ldr	r3, [r7, #4]
+ 201 0060 0F2B     		cmp	r3, #15
+ 202 0062 D5DD     		ble	.L13
+  75:.\rtu_modbus/modbus_serial_ctrl.c ****             }
+  76:.\rtu_modbus/modbus_serial_ctrl.c ****         
+  77:.\rtu_modbus/modbus_serial_ctrl.c ****         }
+  78:.\rtu_modbus/modbus_serial_ctrl.c ****     }
+  79:.\rtu_modbus/modbus_serial_ctrl.c ****     return return_value;
+ 203              		.loc 2 79 0 is_stmt 1
+ 204 0064 3B68     		ldr	r3, [r7]
+  80:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 205              		.loc 2 80 0
+ 206 0066 1846     		mov	r0, r3
+ 207 0068 0C37     		adds	r7, r7, #12
+ 208              		.cfi_def_cfa_offset 12
+ 209 006a BD46     		mov	sp, r7
+ 210              		.cfi_def_cfa_register 13
+ 211              		@ sp needed
+ 212 006c 90BD     		pop	{r4, r7, pc}
+ 213              	.L16:
+ 214 006e 00BF     		.align	2
+ 215              	.L15:
+ 216 0070 28020000 		.word	read_status_value
+ 217 0074 14000000 		.word	modbus_rx_index
+ 218 0078 18000000 		.word	modbus_in_buffer
+ 219              		.cfi_endproc
+ 220              	.LFE65:
+ 221              		.size	empty_rx_uart, .-empty_rx_uart
+ 222              		.section	.text.dump_rx_uart,"ax",%progbits
+ 223              		.align	2
+ 224              		.thumb
+ 225              		.thumb_func
+ 226              		.type	dump_rx_uart, %function
+ 227              	dump_rx_uart:
+ 228              	.LFB66:
+  81:.\rtu_modbus/modbus_serial_ctrl.c **** 
+  82:.\rtu_modbus/modbus_serial_ctrl.c **** static inline void dump_rx_uart( void )
+  83:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 229              		.loc 2 83 0
+ 230              		.cfi_startproc
+ 231              		@ args = 0, pretend = 0, frame = 8
+ 232              		@ frame_needed = 1, uses_anonymous_args = 0
+ 233 0000 80B5     		push	{r7, lr}
+ 234              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 9
+
+
+ 235              		.cfi_offset 7, -8
+ 236              		.cfi_offset 14, -4
+ 237 0002 82B0     		sub	sp, sp, #8
+ 238              		.cfi_def_cfa_offset 16
+ 239 0004 00AF     		add	r7, sp, #0
+ 240              		.cfi_def_cfa_register 7
+  84:.\rtu_modbus/modbus_serial_ctrl.c ****     int i;
+  85:.\rtu_modbus/modbus_serial_ctrl.c ****    
+  86:.\rtu_modbus/modbus_serial_ctrl.c ****     for( i = 0; i < RX_FIFO_SIZE; i++ )
+ 241              		.loc 2 86 0
+ 242 0006 0023     		movs	r3, #0
+ 243 0008 7B60     		str	r3, [r7, #4]
+ 244 000a 12E0     		b	.L18
+ 245              	.L22:
+  87:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+  88:.\rtu_modbus/modbus_serial_ctrl.c ****         read_status_value = UART_1_ReadRxStatus();
+ 246              		.loc 2 88 0
+ 247 000c FFF7FEFF 		bl	UART_1_ReadRxStatus
+ 248 0010 0346     		mov	r3, r0
+ 249 0012 1A46     		mov	r2, r3
+ 250 0014 0A4B     		ldr	r3, .L24
+ 251 0016 1A60     		str	r2, [r3]
+  89:.\rtu_modbus/modbus_serial_ctrl.c ****         if(  read_status_value & UART_1_RX_STS_FIFO_NOTEMPTY )
+ 252              		.loc 2 89 0
+ 253 0018 094B     		ldr	r3, .L24
+ 254 001a 1B68     		ldr	r3, [r3]
+ 255 001c 03F02003 		and	r3, r3, #32
+ 256 0020 002B     		cmp	r3, #0
+ 257 0022 02D0     		beq	.L19
+  90:.\rtu_modbus/modbus_serial_ctrl.c ****         {
+  91:.\rtu_modbus/modbus_serial_ctrl.c ****              UART_1_ReadRxData();
+ 258              		.loc 2 91 0
+ 259 0024 FFF7FEFF 		bl	UART_1_ReadRxData
+ 260 0028 00E0     		b	.L23
+ 261              	.L19:
+  92:.\rtu_modbus/modbus_serial_ctrl.c ****          
+  93:.\rtu_modbus/modbus_serial_ctrl.c ****         }
+  94:.\rtu_modbus/modbus_serial_ctrl.c ****         else
+  95:.\rtu_modbus/modbus_serial_ctrl.c ****         {
+  96:.\rtu_modbus/modbus_serial_ctrl.c ****             break;
+ 262              		.loc 2 96 0
+ 263 002a 05E0     		b	.L17
+ 264              	.L23:
+  86:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 265              		.loc 2 86 0 discriminator 2
+ 266 002c 7B68     		ldr	r3, [r7, #4]
+ 267 002e 0133     		adds	r3, r3, #1
+ 268 0030 7B60     		str	r3, [r7, #4]
+ 269              	.L18:
+  86:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 270              		.loc 2 86 0 is_stmt 0 discriminator 1
+ 271 0032 7B68     		ldr	r3, [r7, #4]
+ 272 0034 0F2B     		cmp	r3, #15
+ 273 0036 E9DD     		ble	.L22
+ 274              	.L17:
+  97:.\rtu_modbus/modbus_serial_ctrl.c ****         }
+  98:.\rtu_modbus/modbus_serial_ctrl.c ****     }
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 10
+
+
+  99:.\rtu_modbus/modbus_serial_ctrl.c ****     
+ 100:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 275              		.loc 2 100 0 is_stmt 1
+ 276 0038 0837     		adds	r7, r7, #8
+ 277              		.cfi_def_cfa_offset 8
+ 278 003a BD46     		mov	sp, r7
+ 279              		.cfi_def_cfa_register 13
+ 280              		@ sp needed
+ 281 003c 80BD     		pop	{r7, pc}
+ 282              	.L25:
+ 283 003e 00BF     		.align	2
+ 284              	.L24:
+ 285 0040 28020000 		.word	read_status_value
+ 286              		.cfi_endproc
+ 287              	.LFE66:
+ 288              		.size	dump_rx_uart, .-dump_rx_uart
+ 289              		.section	.text.check_modbus_address,"ax",%progbits
+ 290              		.align	2
+ 291              		.thumb
+ 292              		.thumb_func
+ 293              		.type	check_modbus_address, %function
+ 294              	check_modbus_address:
+ 295              	.LFB67:
+ 101:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 102:.\rtu_modbus/modbus_serial_ctrl.c **** static inline int check_modbus_address( void )
+ 103:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 296              		.loc 2 103 0
+ 297              		.cfi_startproc
+ 298              		@ args = 0, pretend = 0, frame = 8
+ 299              		@ frame_needed = 1, uses_anonymous_args = 0
+ 300              		@ link register save eliminated.
+ 301 0000 80B4     		push	{r7}
+ 302              		.cfi_def_cfa_offset 4
+ 303              		.cfi_offset 7, -4
+ 304 0002 83B0     		sub	sp, sp, #12
+ 305              		.cfi_def_cfa_offset 16
+ 306 0004 00AF     		add	r7, sp, #0
+ 307              		.cfi_def_cfa_register 7
+ 104:.\rtu_modbus/modbus_serial_ctrl.c ****     int return_value;
+ 105:.\rtu_modbus/modbus_serial_ctrl.c ****     if( modbus_in_buffer[0] == modbus_address )
+ 308              		.loc 2 105 0
+ 309 0006 094B     		ldr	r3, .L30
+ 310 0008 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 311 000a 9AB2     		uxth	r2, r3
+ 312 000c 084B     		ldr	r3, .L30+4
+ 313 000e 1B88     		ldrh	r3, [r3]
+ 314 0010 9A42     		cmp	r2, r3
+ 315 0012 02D1     		bne	.L27
+ 106:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 107:.\rtu_modbus/modbus_serial_ctrl.c ****         return_value = 1;
+ 316              		.loc 2 107 0
+ 317 0014 0123     		movs	r3, #1
+ 318 0016 7B60     		str	r3, [r7, #4]
+ 319 0018 01E0     		b	.L28
+ 320              	.L27:
+ 108:.\rtu_modbus/modbus_serial_ctrl.c ****     }
+ 109:.\rtu_modbus/modbus_serial_ctrl.c ****     else
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 11
+
+
+ 110:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 111:.\rtu_modbus/modbus_serial_ctrl.c ****         return_value = 0;
+ 321              		.loc 2 111 0
+ 322 001a 0023     		movs	r3, #0
+ 323 001c 7B60     		str	r3, [r7, #4]
+ 324              	.L28:
+ 112:.\rtu_modbus/modbus_serial_ctrl.c ****     }
+ 113:.\rtu_modbus/modbus_serial_ctrl.c ****     return return_value;
+ 325              		.loc 2 113 0
+ 326 001e 7B68     		ldr	r3, [r7, #4]
+ 114:.\rtu_modbus/modbus_serial_ctrl.c ****     
+ 115:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 327              		.loc 2 115 0
+ 328 0020 1846     		mov	r0, r3
+ 329 0022 0C37     		adds	r7, r7, #12
+ 330              		.cfi_def_cfa_offset 4
+ 331 0024 BD46     		mov	sp, r7
+ 332              		.cfi_def_cfa_register 13
+ 333              		@ sp needed
+ 334 0026 5DF8047B 		ldr	r7, [sp], #4
+ 335              		.cfi_restore 7
+ 336              		.cfi_def_cfa_offset 0
+ 337 002a 7047     		bx	lr
+ 338              	.L31:
+ 339              		.align	2
+ 340              	.L30:
+ 341 002c 18000000 		.word	modbus_in_buffer
+ 342 0030 10000000 		.word	modbus_address
+ 343              		.cfi_endproc
+ 344              	.LFE67:
+ 345              		.size	check_modbus_address, .-check_modbus_address
+ 346              		.section	.text.rx_interrupt,"ax",%progbits
+ 347              		.align	2
+ 348              		.global	rx_interrupt
+ 349              		.thumb
+ 350              		.thumb_func
+ 351              		.type	rx_interrupt, %function
+ 352              	rx_interrupt:
+ 353              	.LFB68:
+ 116:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 117:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 118:.\rtu_modbus/modbus_serial_ctrl.c **** CY_ISR_PROTO( rx_interrupt )
+ 119:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 354              		.loc 2 119 0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 0
+ 357              		@ frame_needed = 1, uses_anonymous_args = 0
+ 358 0000 80B5     		push	{r7, lr}
+ 359              		.cfi_def_cfa_offset 8
+ 360              		.cfi_offset 7, -8
+ 361              		.cfi_offset 14, -4
+ 362 0002 00AF     		add	r7, sp, #0
+ 363              		.cfi_def_cfa_register 7
+ 120:.\rtu_modbus/modbus_serial_ctrl.c ****    
+ 121:.\rtu_modbus/modbus_serial_ctrl.c ****     switch( uart_rx_state )
+ 364              		.loc 2 121 0
+ 365 0004 1F4B     		ldr	r3, .L41
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 12
+
+
+ 366 0006 1B68     		ldr	r3, [r3]
+ 367 0008 032B     		cmp	r3, #3
+ 368 000a 3AD8     		bhi	.L32
+ 369 000c 01A2     		adr	r2, .L35
+ 370 000e 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 371 0012 00BF     		.p2align 2
+ 372              	.L35:
+ 373 0014 25000000 		.word	.L34+1
+ 374 0018 5F000000 		.word	.L36+1
+ 375 001c 6B000000 		.word	.L37+1
+ 376 0020 7D000000 		.word	.L38+1
+ 377              		.p2align 1
+ 378              	.L34:
+ 122:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 123:.\rtu_modbus/modbus_serial_ctrl.c ****         case UART_RX_IDLE:
+ 124:.\rtu_modbus/modbus_serial_ctrl.c ****            rx_interval_count = empty_rx_uart();
+ 379              		.loc 2 124 0
+ 380 0024 FFF7FEFF 		bl	empty_rx_uart
+ 381 0028 0246     		mov	r2, r0
+ 382 002a 174B     		ldr	r3, .L41+4
+ 383 002c 1A60     		str	r2, [r3]
+ 125:.\rtu_modbus/modbus_serial_ctrl.c ****            if( rx_interval_count > 0 )
+ 384              		.loc 2 125 0
+ 385 002e 164B     		ldr	r3, .L41+4
+ 386 0030 1B68     		ldr	r3, [r3]
+ 387 0032 002B     		cmp	r3, #0
+ 388 0034 12DD     		ble	.L39
+ 126:.\rtu_modbus/modbus_serial_ctrl.c ****            {
+ 127:.\rtu_modbus/modbus_serial_ctrl.c ****               
+ 128:.\rtu_modbus/modbus_serial_ctrl.c ****               if( check_modbus_address() > 0 )
+ 389              		.loc 2 128 0
+ 390 0036 FFF7FEFF 		bl	check_modbus_address
+ 391 003a 0346     		mov	r3, r0
+ 392 003c 002B     		cmp	r3, #0
+ 393 003e 06DD     		ble	.L40
+ 129:.\rtu_modbus/modbus_serial_ctrl.c ****               {
+ 130:.\rtu_modbus/modbus_serial_ctrl.c ****                  uart_rx_state     = UART_RX_ACTIVE_RECEIVE;
+ 394              		.loc 2 130 0
+ 395 0040 104B     		ldr	r3, .L41
+ 396 0042 0122     		movs	r2, #1
+ 397 0044 1A60     		str	r2, [r3]
+ 131:.\rtu_modbus/modbus_serial_ctrl.c ****                  uart_timer_state  = UART_TIMER_RX;
+ 398              		.loc 2 131 0
+ 399 0046 114B     		ldr	r3, .L41+8
+ 400 0048 0222     		movs	r2, #2
+ 401 004a 1A60     		str	r2, [r3]
+ 402 004c 06E0     		b	.L39
+ 403              	.L40:
+ 132:.\rtu_modbus/modbus_serial_ctrl.c ****               }
+ 133:.\rtu_modbus/modbus_serial_ctrl.c ****               else
+ 134:.\rtu_modbus/modbus_serial_ctrl.c ****               {
+ 135:.\rtu_modbus/modbus_serial_ctrl.c ****                 uart_rx_state = UART_RX_BAD_ADDRESS;
+ 404              		.loc 2 135 0
+ 405 004e 0D4B     		ldr	r3, .L41
+ 406 0050 0222     		movs	r2, #2
+ 407 0052 1A60     		str	r2, [r3]
+ 136:.\rtu_modbus/modbus_serial_ctrl.c ****                 uart_timer_state = UART_TIMER_BAD_ADDRESS;
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 13
+
+
+ 408              		.loc 2 136 0
+ 409 0054 0D4B     		ldr	r3, .L41+8
+ 410 0056 0122     		movs	r2, #1
+ 411 0058 1A60     		str	r2, [r3]
+ 137:.\rtu_modbus/modbus_serial_ctrl.c ****                
+ 138:.\rtu_modbus/modbus_serial_ctrl.c ****               }
+ 139:.\rtu_modbus/modbus_serial_ctrl.c ****            }     
+ 140:.\rtu_modbus/modbus_serial_ctrl.c ****            break;
+ 412              		.loc 2 140 0
+ 413 005a 12E0     		b	.L32
+ 414              	.L39:
+ 415 005c 11E0     		b	.L32
+ 416              	.L36:
+ 141:.\rtu_modbus/modbus_serial_ctrl.c ****         
+ 142:.\rtu_modbus/modbus_serial_ctrl.c ****         case UART_RX_ACTIVE_RECEIVE:
+ 143:.\rtu_modbus/modbus_serial_ctrl.c ****             rx_interval_count = empty_rx_uart();
+ 417              		.loc 2 143 0
+ 418 005e FFF7FEFF 		bl	empty_rx_uart
+ 419 0062 0246     		mov	r2, r0
+ 420 0064 084B     		ldr	r3, .L41+4
+ 421 0066 1A60     		str	r2, [r3]
+ 144:.\rtu_modbus/modbus_serial_ctrl.c ****             break;
+ 422              		.loc 2 144 0
+ 423 0068 0BE0     		b	.L32
+ 424              	.L37:
+ 145:.\rtu_modbus/modbus_serial_ctrl.c ****         
+ 146:.\rtu_modbus/modbus_serial_ctrl.c ****         case UART_RX_BAD_ADDRESS:
+ 147:.\rtu_modbus/modbus_serial_ctrl.c ****             rx_interval_count = empty_rx_uart();
+ 425              		.loc 2 147 0
+ 426 006a FFF7FEFF 		bl	empty_rx_uart
+ 427 006e 0246     		mov	r2, r0
+ 428 0070 054B     		ldr	r3, .L41+4
+ 429 0072 1A60     		str	r2, [r3]
+ 148:.\rtu_modbus/modbus_serial_ctrl.c ****             
+ 149:.\rtu_modbus/modbus_serial_ctrl.c ****             modbus_rx_index = 0;
+ 430              		.loc 2 149 0
+ 431 0074 064B     		ldr	r3, .L41+12
+ 432 0076 0022     		movs	r2, #0
+ 433 0078 1A60     		str	r2, [r3]
+ 150:.\rtu_modbus/modbus_serial_ctrl.c ****             break;
+ 434              		.loc 2 150 0
+ 435 007a 02E0     		b	.L32
+ 436              	.L38:
+ 151:.\rtu_modbus/modbus_serial_ctrl.c ****             
+ 152:.\rtu_modbus/modbus_serial_ctrl.c ****        case UART_RX_DUMP_STATE:
+ 153:.\rtu_modbus/modbus_serial_ctrl.c ****             dump_rx_uart();
+ 437              		.loc 2 153 0
+ 438 007c FFF7FEFF 		bl	dump_rx_uart
+ 154:.\rtu_modbus/modbus_serial_ctrl.c ****             break;
+ 439              		.loc 2 154 0
+ 440 0080 00BF     		nop
+ 441              	.L32:
+ 155:.\rtu_modbus/modbus_serial_ctrl.c ****             
+ 156:.\rtu_modbus/modbus_serial_ctrl.c ****     }
+ 157:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 158:.\rtu_modbus/modbus_serial_ctrl.c ****     
+ 159:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 14
+
+
+ 442              		.loc 2 159 0
+ 443 0082 80BD     		pop	{r7, pc}
+ 444              	.L42:
+ 445              		.align	2
+ 446              	.L41:
+ 447 0084 04000000 		.word	uart_rx_state
+ 448 0088 0C000000 		.word	rx_interval_count
+ 449 008c 00000000 		.word	uart_timer_state
+ 450 0090 14000000 		.word	modbus_rx_index
+ 451              		.cfi_endproc
+ 452              	.LFE68:
+ 453              		.size	rx_interrupt, .-rx_interrupt
+ 454              		.section	.text.fill_transmitter,"ax",%progbits
+ 455              		.align	2
+ 456              		.thumb
+ 457              		.thumb_func
+ 458              		.type	fill_transmitter, %function
+ 459              	fill_transmitter:
+ 460              	.LFB69:
+ 160:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 161:.\rtu_modbus/modbus_serial_ctrl.c **** static inline int fill_transmitter( void )
+ 162:.\rtu_modbus/modbus_serial_ctrl.c **** { 
+ 461              		.loc 2 162 0
+ 462              		.cfi_startproc
+ 463              		@ args = 0, pretend = 0, frame = 0
+ 464              		@ frame_needed = 1, uses_anonymous_args = 0
+ 465 0000 80B5     		push	{r7, lr}
+ 466              		.cfi_def_cfa_offset 8
+ 467              		.cfi_offset 7, -8
+ 468              		.cfi_offset 14, -4
+ 469 0002 00AF     		add	r7, sp, #0
+ 470              		.cfi_def_cfa_register 7
+ 163:.\rtu_modbus/modbus_serial_ctrl.c ****     while( ( UART_1_ReadTxStatus() & UART_1_TX_STS_FIFO_NOT_FULL ) && ( modbus_tx_message_count > 0
+ 471              		.loc 2 163 0
+ 472 0004 10E0     		b	.L44
+ 473              	.L46:
+ 164:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 165:.\rtu_modbus/modbus_serial_ctrl.c ****         UART_1_WriteTxData(modbus_out_buffer[modbus_tx_index]);
+ 474              		.loc 2 165 0
+ 475 0006 104B     		ldr	r3, .L48
+ 476 0008 1B68     		ldr	r3, [r3]
+ 477 000a 104A     		ldr	r2, .L48+4
+ 478 000c D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 479 000e 1846     		mov	r0, r3
+ 480 0010 FFF7FEFF 		bl	UART_1_WriteTxData
+ 166:.\rtu_modbus/modbus_serial_ctrl.c ****         modbus_tx_index +=1;
+ 481              		.loc 2 166 0
+ 482 0014 0C4B     		ldr	r3, .L48
+ 483 0016 1B68     		ldr	r3, [r3]
+ 484 0018 0133     		adds	r3, r3, #1
+ 485 001a 0B4A     		ldr	r2, .L48
+ 486 001c 1360     		str	r3, [r2]
+ 167:.\rtu_modbus/modbus_serial_ctrl.c ****         modbus_tx_message_count -= 1;
+ 487              		.loc 2 167 0
+ 488 001e 0C4B     		ldr	r3, .L48+8
+ 489 0020 1B68     		ldr	r3, [r3]
+ 490 0022 013B     		subs	r3, r3, #1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 15
+
+
+ 491 0024 0A4A     		ldr	r2, .L48+8
+ 492 0026 1360     		str	r3, [r2]
+ 493              	.L44:
+ 163:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 494              		.loc 2 163 0
+ 495 0028 FFF7FEFF 		bl	UART_1_ReadTxStatus
+ 496 002c 0346     		mov	r3, r0
+ 497 002e 03F00803 		and	r3, r3, #8
+ 498 0032 002B     		cmp	r3, #0
+ 499 0034 03D0     		beq	.L45
+ 163:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 500              		.loc 2 163 0 is_stmt 0 discriminator 1
+ 501 0036 064B     		ldr	r3, .L48+8
+ 502 0038 1B68     		ldr	r3, [r3]
+ 503 003a 002B     		cmp	r3, #0
+ 504 003c E3DC     		bgt	.L46
+ 505              	.L45:
+ 168:.\rtu_modbus/modbus_serial_ctrl.c ****     }
+ 169:.\rtu_modbus/modbus_serial_ctrl.c ****     return modbus_tx_message_count;
+ 506              		.loc 2 169 0 is_stmt 1
+ 507 003e 044B     		ldr	r3, .L48+8
+ 508 0040 1B68     		ldr	r3, [r3]
+ 170:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 509              		.loc 2 170 0
+ 510 0042 1846     		mov	r0, r3
+ 511 0044 80BD     		pop	{r7, pc}
+ 512              	.L49:
+ 513 0046 00BF     		.align	2
+ 514              	.L48:
+ 515 0048 1C010000 		.word	modbus_tx_index
+ 516 004c 24010000 		.word	modbus_out_buffer
+ 517 0050 20010000 		.word	modbus_tx_message_count
+ 518              		.cfi_endproc
+ 519              	.LFE69:
+ 520              		.size	fill_transmitter, .-fill_transmitter
+ 521              		.section	.text.tx_interrupt,"ax",%progbits
+ 522              		.align	2
+ 523              		.global	tx_interrupt
+ 524              		.thumb
+ 525              		.thumb_func
+ 526              		.type	tx_interrupt, %function
+ 527              	tx_interrupt:
+ 528              	.LFB70:
+ 171:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 172:.\rtu_modbus/modbus_serial_ctrl.c **** CY_ISR_PROTO( tx_interrupt )
+ 173:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 529              		.loc 2 173 0
+ 530              		.cfi_startproc
+ 531              		@ args = 0, pretend = 0, frame = 8
+ 532              		@ frame_needed = 1, uses_anonymous_args = 0
+ 533 0000 80B5     		push	{r7, lr}
+ 534              		.cfi_def_cfa_offset 8
+ 535              		.cfi_offset 7, -8
+ 536              		.cfi_offset 14, -4
+ 537 0002 82B0     		sub	sp, sp, #8
+ 538              		.cfi_def_cfa_offset 16
+ 539 0004 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 16
+
+
+ 540              		.cfi_def_cfa_register 7
+ 174:.\rtu_modbus/modbus_serial_ctrl.c ****     int status;
+ 175:.\rtu_modbus/modbus_serial_ctrl.c ****     switch( uart_tx_state )
+ 541              		.loc 2 175 0
+ 542 0006 154B     		ldr	r3, .L56
+ 543 0008 1B68     		ldr	r3, [r3]
+ 544 000a 012B     		cmp	r3, #1
+ 545 000c 07D0     		beq	.L52
+ 546 000e 022B     		cmp	r3, #2
+ 547 0010 16D0     		beq	.L53
+ 548 0012 002B     		cmp	r3, #0
+ 549 0014 1ED1     		bne	.L50
+ 176:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 177:.\rtu_modbus/modbus_serial_ctrl.c ****         case UART_TX_STATE_IDLE:
+ 178:.\rtu_modbus/modbus_serial_ctrl.c ****             UART_1_DisableTxInt();
+ 550              		.loc 2 178 0
+ 551 0016 124B     		ldr	r3, .L56+4
+ 552 0018 2022     		movs	r2, #32
+ 553 001a 1A60     		str	r2, [r3]
+ 179:.\rtu_modbus/modbus_serial_ctrl.c ****             break;
+ 554              		.loc 2 179 0
+ 555 001c 1AE0     		b	.L50
+ 556              	.L52:
+ 180:.\rtu_modbus/modbus_serial_ctrl.c ****         
+ 181:.\rtu_modbus/modbus_serial_ctrl.c ****         case UART_TX_STATE_TRANSMITTING:
+ 182:.\rtu_modbus/modbus_serial_ctrl.c ****             status = fill_transmitter();
+ 557              		.loc 2 182 0
+ 558 001e FFF7FEFF 		bl	fill_transmitter
+ 559 0022 7860     		str	r0, [r7, #4]
+ 183:.\rtu_modbus/modbus_serial_ctrl.c ****             if( status == 0 )
+ 560              		.loc 2 183 0
+ 561 0024 7B68     		ldr	r3, [r7, #4]
+ 562 0026 002B     		cmp	r3, #0
+ 563 0028 09D1     		bne	.L55
+ 184:.\rtu_modbus/modbus_serial_ctrl.c ****             {
+ 185:.\rtu_modbus/modbus_serial_ctrl.c ****                 uart_tx_state = UART_TX_STATE_WAIT_FOR_EOT;
+ 564              		.loc 2 185 0
+ 565 002a 0C4B     		ldr	r3, .L56
+ 566 002c 0222     		movs	r2, #2
+ 567 002e 1A60     		str	r2, [r3]
+ 186:.\rtu_modbus/modbus_serial_ctrl.c ****                  UART_1_SetTxInterruptMode( UART_1_TX_STS_COMPLETE   );
+ 568              		.loc 2 186 0
+ 569 0030 0120     		movs	r0, #1
+ 570 0032 FFF7FEFF 		bl	UART_1_SetTxInterruptMode
+ 187:.\rtu_modbus/modbus_serial_ctrl.c ****                 UART_1_SetTxInterruptMode(UART_1_TX_STS_COMPLETE );
+ 571              		.loc 2 187 0
+ 572 0036 0120     		movs	r0, #1
+ 573 0038 FFF7FEFF 		bl	UART_1_SetTxInterruptMode
+ 188:.\rtu_modbus/modbus_serial_ctrl.c ****             }
+ 189:.\rtu_modbus/modbus_serial_ctrl.c ****             break;
+ 574              		.loc 2 189 0
+ 575 003c 0AE0     		b	.L50
+ 576              	.L55:
+ 577 003e 09E0     		b	.L50
+ 578              	.L53:
+ 190:.\rtu_modbus/modbus_serial_ctrl.c ****         
+ 191:.\rtu_modbus/modbus_serial_ctrl.c ****         case UART_TX_STATE_WAIT_FOR_EOT:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 17
+
+
+ 192:.\rtu_modbus/modbus_serial_ctrl.c ****               UART_1_Stop();
+ 579              		.loc 2 192 0
+ 580 0040 FFF7FEFF 		bl	UART_1_Stop
+ 193:.\rtu_modbus/modbus_serial_ctrl.c ****               UART_1_Start();
+ 581              		.loc 2 193 0
+ 582 0044 FFF7FEFF 		bl	UART_1_Start
+ 194:.\rtu_modbus/modbus_serial_ctrl.c ****               UART_1_DisableTxInt();
+ 583              		.loc 2 194 0
+ 584 0048 054B     		ldr	r3, .L56+4
+ 585 004a 2022     		movs	r2, #32
+ 586 004c 1A60     		str	r2, [r3]
+ 195:.\rtu_modbus/modbus_serial_ctrl.c ****               init_rx_state();
+ 587              		.loc 2 195 0
+ 588 004e FFF7FEFF 		bl	init_rx_state
+ 196:.\rtu_modbus/modbus_serial_ctrl.c ****               break;
+ 589              		.loc 2 196 0
+ 590 0052 00BF     		nop
+ 591              	.L50:
+ 197:.\rtu_modbus/modbus_serial_ctrl.c ****     }
+ 198:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 592              		.loc 2 198 0
+ 593 0054 0837     		adds	r7, r7, #8
+ 594              		.cfi_def_cfa_offset 8
+ 595 0056 BD46     		mov	sp, r7
+ 596              		.cfi_def_cfa_register 13
+ 597              		@ sp needed
+ 598 0058 80BD     		pop	{r7, pc}
+ 599              	.L57:
+ 600 005a 00BF     		.align	2
+ 601              	.L56:
+ 602 005c 08000000 		.word	uart_tx_state
+ 603 0060 80E100E0 		.word	-536813184
+ 604              		.cfi_endproc
+ 605              	.LFE70:
+ 606              		.size	tx_interrupt, .-tx_interrupt
+ 607              		.section	.text.timer_interrupt,"ax",%progbits
+ 608              		.align	2
+ 609              		.global	timer_interrupt
+ 610              		.thumb
+ 611              		.thumb_func
+ 612              		.type	timer_interrupt, %function
+ 613              	timer_interrupt:
+ 614              	.LFB71:
+ 199:.\rtu_modbus/modbus_serial_ctrl.c **** CY_ISR_PROTO( timer_interrupt )
+ 200:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 615              		.loc 2 200 0
+ 616              		.cfi_startproc
+ 617              		@ args = 0, pretend = 0, frame = 0
+ 618              		@ frame_needed = 1, uses_anonymous_args = 0
+ 619 0000 80B5     		push	{r7, lr}
+ 620              		.cfi_def_cfa_offset 8
+ 621              		.cfi_offset 7, -8
+ 622              		.cfi_offset 14, -4
+ 623 0002 00AF     		add	r7, sp, #0
+ 624              		.cfi_def_cfa_register 7
+ 201:.\rtu_modbus/modbus_serial_ctrl.c ****     modbus_symbol_timer_ClearPending();
+ 625              		.loc 2 201 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 18
+
+
+ 626 0004 FFF7FEFF 		bl	modbus_symbol_timer_ClearPending
+ 202:.\rtu_modbus/modbus_serial_ctrl.c ****     switch( uart_timer_state )
+ 627              		.loc 2 202 0
+ 628 0008 0F4B     		ldr	r3, .L67
+ 629 000a 1B68     		ldr	r3, [r3]
+ 630 000c 012B     		cmp	r3, #1
+ 631 000e 03D0     		beq	.L60
+ 632 0010 022B     		cmp	r3, #2
+ 633 0012 0CD0     		beq	.L61
+ 634 0014 002B     		cmp	r3, #0
+ 203:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 204:.\rtu_modbus/modbus_serial_ctrl.c ****        case UART_TIMER_IDLE:
+ 205:.\rtu_modbus/modbus_serial_ctrl.c ****            break; 
+ 635              		.loc 2 205 0
+ 636 0016 15E0     		b	.L58
+ 637              	.L60:
+ 206:.\rtu_modbus/modbus_serial_ctrl.c ****         
+ 207:.\rtu_modbus/modbus_serial_ctrl.c ****        case UART_TIMER_BAD_ADDRESS:  // wait for link to become idle and then reenable modbus rx
+ 208:.\rtu_modbus/modbus_serial_ctrl.c ****             if( rx_interval_count == 0 )
+ 638              		.loc 2 208 0
+ 639 0018 0C4B     		ldr	r3, .L67+4
+ 640 001a 1B68     		ldr	r3, [r3]
+ 641 001c 002B     		cmp	r3, #0
+ 642 001e 02D1     		bne	.L63
+ 209:.\rtu_modbus/modbus_serial_ctrl.c ****             {
+ 210:.\rtu_modbus/modbus_serial_ctrl.c ****                 init_rx_state();
+ 643              		.loc 2 210 0
+ 644 0020 FFF7FEFF 		bl	init_rx_state
+ 211:.\rtu_modbus/modbus_serial_ctrl.c ****             }
+ 212:.\rtu_modbus/modbus_serial_ctrl.c ****             else
+ 213:.\rtu_modbus/modbus_serial_ctrl.c ****             {
+ 214:.\rtu_modbus/modbus_serial_ctrl.c ****                 rx_interval_count = 0;
+ 215:.\rtu_modbus/modbus_serial_ctrl.c ****             }
+ 216:.\rtu_modbus/modbus_serial_ctrl.c ****             break;
+ 645              		.loc 2 216 0
+ 646 0024 0EE0     		b	.L58
+ 647              	.L63:
+ 214:.\rtu_modbus/modbus_serial_ctrl.c ****             }
+ 648              		.loc 2 214 0
+ 649 0026 094B     		ldr	r3, .L67+4
+ 650 0028 0022     		movs	r2, #0
+ 651 002a 1A60     		str	r2, [r3]
+ 652              		.loc 2 216 0
+ 653 002c 0AE0     		b	.L58
+ 654              	.L61:
+ 217:.\rtu_modbus/modbus_serial_ctrl.c ****             
+ 218:.\rtu_modbus/modbus_serial_ctrl.c ****        case UART_TIMER_RX:
+ 219:.\rtu_modbus/modbus_serial_ctrl.c ****             if( rx_interval_count == 0 )
+ 655              		.loc 2 219 0
+ 656 002e 074B     		ldr	r3, .L67+4
+ 657 0030 1B68     		ldr	r3, [r3]
+ 658 0032 002B     		cmp	r3, #0
+ 659 0034 02D1     		bne	.L65
+ 220:.\rtu_modbus/modbus_serial_ctrl.c ****             {
+ 221:.\rtu_modbus/modbus_serial_ctrl.c ****                 init_processing_state();
+ 660              		.loc 2 221 0
+ 661 0036 FFF7FEFF 		bl	init_processing_state
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 19
+
+
+ 662 003a 02E0     		b	.L66
+ 663              	.L65:
+ 222:.\rtu_modbus/modbus_serial_ctrl.c ****             }
+ 223:.\rtu_modbus/modbus_serial_ctrl.c ****             else
+ 224:.\rtu_modbus/modbus_serial_ctrl.c ****             {
+ 225:.\rtu_modbus/modbus_serial_ctrl.c ****                 rx_interval_count = 0;
+ 664              		.loc 2 225 0
+ 665 003c 034B     		ldr	r3, .L67+4
+ 666 003e 0022     		movs	r2, #0
+ 667 0040 1A60     		str	r2, [r3]
+ 668              	.L66:
+ 226:.\rtu_modbus/modbus_serial_ctrl.c ****             }
+ 227:.\rtu_modbus/modbus_serial_ctrl.c ****             break;
+ 669              		.loc 2 227 0
+ 670 0042 00BF     		nop
+ 671              	.L58:
+ 228:.\rtu_modbus/modbus_serial_ctrl.c ****     }
+ 229:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 672              		.loc 2 229 0
+ 673 0044 80BD     		pop	{r7, pc}
+ 674              	.L68:
+ 675 0046 00BF     		.align	2
+ 676              	.L67:
+ 677 0048 00000000 		.word	uart_timer_state
+ 678 004c 0C000000 		.word	rx_interval_count
+ 679              		.cfi_endproc
+ 680              	.LFE71:
+ 681              		.size	timer_interrupt, .-timer_interrupt
+ 682              		.section	.text.abort_rx_state,"ax",%progbits
+ 683              		.align	2
+ 684              		.thumb
+ 685              		.thumb_func
+ 686              		.type	abort_rx_state, %function
+ 687              	abort_rx_state:
+ 688              	.LFB72:
+ 230:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 231:.\rtu_modbus/modbus_serial_ctrl.c **** static inline void abort_rx_state( void )
+ 232:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 689              		.loc 2 232 0
+ 690              		.cfi_startproc
+ 691              		@ args = 0, pretend = 0, frame = 0
+ 692              		@ frame_needed = 1, uses_anonymous_args = 0
+ 693              		@ link register save eliminated.
+ 694 0000 80B4     		push	{r7}
+ 695              		.cfi_def_cfa_offset 4
+ 696              		.cfi_offset 7, -4
+ 697 0002 00AF     		add	r7, sp, #0
+ 698              		.cfi_def_cfa_register 7
+ 233:.\rtu_modbus/modbus_serial_ctrl.c ****      uart_rx_state     =  UART_RX_BAD_ADDRESS;
+ 699              		.loc 2 233 0
+ 700 0004 074B     		ldr	r3, .L70
+ 701 0006 0222     		movs	r2, #2
+ 702 0008 1A60     		str	r2, [r3]
+ 234:.\rtu_modbus/modbus_serial_ctrl.c ****      uart_timer_state  =  UART_RX_IDLE;
+ 703              		.loc 2 234 0
+ 704 000a 074B     		ldr	r3, .L70+4
+ 705 000c 0022     		movs	r2, #0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 20
+
+
+ 706 000e 1A60     		str	r2, [r3]
+ 235:.\rtu_modbus/modbus_serial_ctrl.c ****      modbus_rx_index   = 0;
+ 707              		.loc 2 235 0
+ 708 0010 064B     		ldr	r3, .L70+8
+ 709 0012 0022     		movs	r2, #0
+ 710 0014 1A60     		str	r2, [r3]
+ 236:.\rtu_modbus/modbus_serial_ctrl.c ****      uart_tx_state     =  UART_TX_STATE_IDLE;
+ 711              		.loc 2 236 0
+ 712 0016 064B     		ldr	r3, .L70+12
+ 713 0018 0022     		movs	r2, #0
+ 714 001a 1A60     		str	r2, [r3]
+ 237:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 715              		.loc 2 237 0
+ 716 001c BD46     		mov	sp, r7
+ 717              		.cfi_def_cfa_register 13
+ 718              		@ sp needed
+ 719 001e 5DF8047B 		ldr	r7, [sp], #4
+ 720              		.cfi_restore 7
+ 721              		.cfi_def_cfa_offset 0
+ 722 0022 7047     		bx	lr
+ 723              	.L71:
+ 724              		.align	2
+ 725              	.L70:
+ 726 0024 04000000 		.word	uart_rx_state
+ 727 0028 00000000 		.word	uart_timer_state
+ 728 002c 14000000 		.word	modbus_rx_index
+ 729 0030 08000000 		.word	uart_tx_state
+ 730              		.cfi_endproc
+ 731              	.LFE72:
+ 732              		.size	abort_rx_state, .-abort_rx_state
+ 733              		.section	.text.init_rx_state,"ax",%progbits
+ 734              		.align	2
+ 735              		.thumb
+ 736              		.thumb_func
+ 737              		.type	init_rx_state, %function
+ 738              	init_rx_state:
+ 739              	.LFB73:
+ 238:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 239:.\rtu_modbus/modbus_serial_ctrl.c **** static inline void init_rx_state( void )
+ 240:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 740              		.loc 2 240 0
+ 741              		.cfi_startproc
+ 742              		@ args = 0, pretend = 0, frame = 0
+ 743              		@ frame_needed = 1, uses_anonymous_args = 0
+ 744 0000 80B5     		push	{r7, lr}
+ 745              		.cfi_def_cfa_offset 8
+ 746              		.cfi_offset 7, -8
+ 747              		.cfi_offset 14, -4
+ 748 0002 00AF     		add	r7, sp, #0
+ 749              		.cfi_def_cfa_register 7
+ 241:.\rtu_modbus/modbus_serial_ctrl.c ****     
+ 242:.\rtu_modbus/modbus_serial_ctrl.c ****    rx_interval_count  = 0;
+ 750              		.loc 2 242 0
+ 751 0004 0A4B     		ldr	r3, .L73
+ 752 0006 0022     		movs	r2, #0
+ 753 0008 1A60     		str	r2, [r3]
+ 243:.\rtu_modbus/modbus_serial_ctrl.c ****    modbus_rx_index    = 0;
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 21
+
+
+ 754              		.loc 2 243 0
+ 755 000a 0A4B     		ldr	r3, .L73+4
+ 756 000c 0022     		movs	r2, #0
+ 757 000e 1A60     		str	r2, [r3]
+ 244:.\rtu_modbus/modbus_serial_ctrl.c ****    uart_rx_state      =  UART_RX_IDLE;
+ 758              		.loc 2 244 0
+ 759 0010 094B     		ldr	r3, .L73+8
+ 760 0012 0022     		movs	r2, #0
+ 761 0014 1A60     		str	r2, [r3]
+ 245:.\rtu_modbus/modbus_serial_ctrl.c ****    uart_timer_state   =  UART_TIMER_IDLE;
+ 762              		.loc 2 245 0
+ 763 0016 094B     		ldr	r3, .L73+12
+ 764 0018 0022     		movs	r2, #0
+ 765 001a 1A60     		str	r2, [r3]
+ 246:.\rtu_modbus/modbus_serial_ctrl.c ****    uart_tx_state      =  UART_TX_STATE_IDLE;
+ 766              		.loc 2 246 0
+ 767 001c 084B     		ldr	r3, .L73+16
+ 768 001e 0022     		movs	r2, #0
+ 769 0020 1A60     		str	r2, [r3]
+ 247:.\rtu_modbus/modbus_serial_ctrl.c ****    UART_1_SetTxInterruptMode(  0 );
+ 770              		.loc 2 247 0
+ 771 0022 0020     		movs	r0, #0
+ 772 0024 FFF7FEFF 		bl	UART_1_SetTxInterruptMode
+ 248:.\rtu_modbus/modbus_serial_ctrl.c ****    UART_1_ClearTxBuffer(); 
+ 773              		.loc 2 248 0
+ 774 0028 FFF7FEFF 		bl	UART_1_ClearTxBuffer
+ 249:.\rtu_modbus/modbus_serial_ctrl.c ****    
+ 250:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 775              		.loc 2 250 0
+ 776 002c 80BD     		pop	{r7, pc}
+ 777              	.L74:
+ 778 002e 00BF     		.align	2
+ 779              	.L73:
+ 780 0030 0C000000 		.word	rx_interval_count
+ 781 0034 14000000 		.word	modbus_rx_index
+ 782 0038 04000000 		.word	uart_rx_state
+ 783 003c 00000000 		.word	uart_timer_state
+ 784 0040 08000000 		.word	uart_tx_state
+ 785              		.cfi_endproc
+ 786              	.LFE73:
+ 787              		.size	init_rx_state, .-init_rx_state
+ 788              		.section	.text.init_processing_state,"ax",%progbits
+ 789              		.align	2
+ 790              		.thumb
+ 791              		.thumb_func
+ 792              		.type	init_processing_state, %function
+ 793              	init_processing_state:
+ 794              	.LFB74:
+ 251:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 252:.\rtu_modbus/modbus_serial_ctrl.c **** static inline void init_processing_state( void )
+ 253:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 795              		.loc 2 253 0
+ 796              		.cfi_startproc
+ 797              		@ args = 0, pretend = 0, frame = 0
+ 798              		@ frame_needed = 1, uses_anonymous_args = 0
+ 799 0000 80B5     		push	{r7, lr}
+ 800              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 22
+
+
+ 801              		.cfi_offset 7, -8
+ 802              		.cfi_offset 14, -4
+ 803 0002 00AF     		add	r7, sp, #0
+ 804              		.cfi_def_cfa_register 7
+ 254:.\rtu_modbus/modbus_serial_ctrl.c ****     cf_set_interrupt_status_bit( CF_PROCESS_MODBUS );
+ 805              		.loc 2 254 0
+ 806 0004 0220     		movs	r0, #2
+ 807 0006 FFF7FEFF 		bl	cf_set_interrupt_status_bit
+ 255:.\rtu_modbus/modbus_serial_ctrl.c ****     uart_rx_state      =  UART_RX_DUMP_STATE;
+ 808              		.loc 2 255 0
+ 809 000a 024B     		ldr	r3, .L76
+ 810 000c 0322     		movs	r2, #3
+ 811 000e 1A60     		str	r2, [r3]
+ 256:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 812              		.loc 2 256 0
+ 813 0010 80BD     		pop	{r7, pc}
+ 814              	.L77:
+ 815 0012 00BF     		.align	2
+ 816              	.L76:
+ 817 0014 04000000 		.word	uart_rx_state
+ 818              		.cfi_endproc
+ 819              	.LFE74:
+ 820              		.size	init_processing_state, .-init_processing_state
+ 821              		.section	.text.init_tx_state,"ax",%progbits
+ 822              		.align	2
+ 823              		.thumb
+ 824              		.thumb_func
+ 825              		.type	init_tx_state, %function
+ 826              	init_tx_state:
+ 827              	.LFB75:
+ 257:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 258:.\rtu_modbus/modbus_serial_ctrl.c **** static inline void init_tx_state( int out_count )
+ 259:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 828              		.loc 2 259 0
+ 829              		.cfi_startproc
+ 830              		@ args = 0, pretend = 0, frame = 8
+ 831              		@ frame_needed = 1, uses_anonymous_args = 0
+ 832 0000 80B5     		push	{r7, lr}
+ 833              		.cfi_def_cfa_offset 8
+ 834              		.cfi_offset 7, -8
+ 835              		.cfi_offset 14, -4
+ 836 0002 82B0     		sub	sp, sp, #8
+ 837              		.cfi_def_cfa_offset 16
+ 838 0004 00AF     		add	r7, sp, #0
+ 839              		.cfi_def_cfa_register 7
+ 840 0006 7860     		str	r0, [r7, #4]
+ 260:.\rtu_modbus/modbus_serial_ctrl.c ****    if( out_count > 200)
+ 841              		.loc 2 260 0
+ 842 0008 7B68     		ldr	r3, [r7, #4]
+ 843 000a C82B     		cmp	r3, #200
+ 844 000c 02DD     		ble	.L79
+ 261:.\rtu_modbus/modbus_serial_ctrl.c ****    {
+ 262:.\rtu_modbus/modbus_serial_ctrl.c ****      CYASSERT(0);  // this should not happen
+ 845              		.loc 2 262 0 discriminator 1
+ 846 000e 0020     		movs	r0, #0
+ 847 0010 FFF7FEFF 		bl	CyHalt
+ 848              	.L79:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 23
+
+
+ 263:.\rtu_modbus/modbus_serial_ctrl.c ****    }
+ 264:.\rtu_modbus/modbus_serial_ctrl.c ****    modbus_tx_index  = 0;
+ 849              		.loc 2 264 0
+ 850 0014 094B     		ldr	r3, .L80
+ 851 0016 0022     		movs	r2, #0
+ 852 0018 1A60     		str	r2, [r3]
+ 265:.\rtu_modbus/modbus_serial_ctrl.c ****    modbus_tx_message_count = out_count;
+ 853              		.loc 2 265 0
+ 854 001a 094A     		ldr	r2, .L80+4
+ 855 001c 7B68     		ldr	r3, [r7, #4]
+ 856 001e 1360     		str	r3, [r2]
+ 266:.\rtu_modbus/modbus_serial_ctrl.c ****    uart_timer_state   = UART_TIMER_IDLE;
+ 857              		.loc 2 266 0
+ 858 0020 084B     		ldr	r3, .L80+8
+ 859 0022 0022     		movs	r2, #0
+ 860 0024 1A60     		str	r2, [r3]
+ 267:.\rtu_modbus/modbus_serial_ctrl.c ****    uart_tx_state     =  UART_TX_STATE_TRANSMITTING;
+ 861              		.loc 2 267 0
+ 862 0026 084B     		ldr	r3, .L80+12
+ 863 0028 0122     		movs	r2, #1
+ 864 002a 1A60     		str	r2, [r3]
+ 268:.\rtu_modbus/modbus_serial_ctrl.c ****    UART_1_SetTxInterruptMode(  UART_1_TX_STS_FIFO_NOT_FULL  );
+ 865              		.loc 2 268 0
+ 866 002c 0820     		movs	r0, #8
+ 867 002e FFF7FEFF 		bl	UART_1_SetTxInterruptMode
+ 269:.\rtu_modbus/modbus_serial_ctrl.c ****    
+ 270:.\rtu_modbus/modbus_serial_ctrl.c ****    fill_transmitter();
+ 868              		.loc 2 270 0
+ 869 0032 FFF7FEFF 		bl	fill_transmitter
+ 271:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 870              		.loc 2 271 0
+ 871 0036 0837     		adds	r7, r7, #8
+ 872              		.cfi_def_cfa_offset 8
+ 873 0038 BD46     		mov	sp, r7
+ 874              		.cfi_def_cfa_register 13
+ 875              		@ sp needed
+ 876 003a 80BD     		pop	{r7, pc}
+ 877              	.L81:
+ 878              		.align	2
+ 879              	.L80:
+ 880 003c 1C010000 		.word	modbus_tx_index
+ 881 0040 20010000 		.word	modbus_tx_message_count
+ 882 0044 00000000 		.word	uart_timer_state
+ 883 0048 08000000 		.word	uart_tx_state
+ 884              		.cfi_endproc
+ 885              	.LFE75:
+ 886              		.size	init_tx_state, .-init_tx_state
+ 887              		.section	.text.initialize_modbus_rtu,"ax",%progbits
+ 888              		.align	2
+ 889              		.global	initialize_modbus_rtu
+ 890              		.thumb
+ 891              		.thumb_func
+ 892              		.type	initialize_modbus_rtu, %function
+ 893              	initialize_modbus_rtu:
+ 894              	.LFB76:
+ 272:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 273:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 24
+
+
+ 274:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 275:.\rtu_modbus/modbus_serial_ctrl.c **** int initialize_modbus_rtu(unsigned link_id, unsigned param_1,
+ 276:.\rtu_modbus/modbus_serial_ctrl.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 277:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 895              		.loc 2 277 0
+ 896              		.cfi_startproc
+ 897              		@ args = 8, pretend = 0, frame = 16
+ 898              		@ frame_needed = 1, uses_anonymous_args = 0
+ 899 0000 80B5     		push	{r7, lr}
+ 900              		.cfi_def_cfa_offset 8
+ 901              		.cfi_offset 7, -8
+ 902              		.cfi_offset 14, -4
+ 903 0002 84B0     		sub	sp, sp, #16
+ 904              		.cfi_def_cfa_offset 24
+ 905 0004 00AF     		add	r7, sp, #0
+ 906              		.cfi_def_cfa_register 7
+ 907 0006 F860     		str	r0, [r7, #12]
+ 908 0008 B960     		str	r1, [r7, #8]
+ 909 000a 7A60     		str	r2, [r7, #4]
+ 910 000c 3B60     		str	r3, [r7]
+ 278:.\rtu_modbus/modbus_serial_ctrl.c ****     uart_timer_state = UART_TIMER_IDLE;
+ 911              		.loc 2 278 0
+ 912 000e 144B     		ldr	r3, .L84
+ 913 0010 0022     		movs	r2, #0
+ 914 0012 1A60     		str	r2, [r3]
+ 279:.\rtu_modbus/modbus_serial_ctrl.c ****     uart_rx_state    = UART_RX_IDLE;
+ 915              		.loc 2 279 0
+ 916 0014 134B     		ldr	r3, .L84+4
+ 917 0016 0022     		movs	r2, #0
+ 918 0018 1A60     		str	r2, [r3]
+ 280:.\rtu_modbus/modbus_serial_ctrl.c ****     uart_timer_state = UART_TIMER_IDLE;
+ 919              		.loc 2 280 0
+ 920 001a 114B     		ldr	r3, .L84
+ 921 001c 0022     		movs	r2, #0
+ 922 001e 1A60     		str	r2, [r3]
+ 281:.\rtu_modbus/modbus_serial_ctrl.c ****     
+ 282:.\rtu_modbus/modbus_serial_ctrl.c ****     initialize_modbus_registers();
+ 923              		.loc 2 282 0
+ 924 0020 FFF7FEFF 		bl	initialize_modbus_registers
+ 283:.\rtu_modbus/modbus_serial_ctrl.c ****     UART_RX_INTERRUPT_StartEx(rx_interrupt); 
+ 925              		.loc 2 283 0
+ 926 0024 1048     		ldr	r0, .L84+8
+ 927 0026 FFF7FEFF 		bl	UART_RX_INTERRUPT_StartEx
+ 284:.\rtu_modbus/modbus_serial_ctrl.c ****     UART_1_SetTxInterruptMode(  0 );
+ 928              		.loc 2 284 0
+ 929 002a 0020     		movs	r0, #0
+ 930 002c FFF7FEFF 		bl	UART_1_SetTxInterruptMode
+ 285:.\rtu_modbus/modbus_serial_ctrl.c ****     UART_TX_INTERRUPT_StartEx(tx_interrupt); 
+ 931              		.loc 2 285 0
+ 932 0030 0E48     		ldr	r0, .L84+12
+ 933 0032 FFF7FEFF 		bl	UART_TX_INTERRUPT_StartEx
+ 286:.\rtu_modbus/modbus_serial_ctrl.c ****     UART_1_DisableTxInt();
+ 934              		.loc 2 286 0
+ 935 0036 0E4B     		ldr	r3, .L84+16
+ 936 0038 2022     		movs	r2, #32
+ 937 003a 1A60     		str	r2, [r3]
+ 287:.\rtu_modbus/modbus_serial_ctrl.c ****     modbus_symbol_timer_StartEx(timer_interrupt);
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 25
+
+
+ 938              		.loc 2 287 0
+ 939 003c 0D48     		ldr	r0, .L84+20
+ 940 003e FFF7FEFF 		bl	modbus_symbol_timer_StartEx
+ 288:.\rtu_modbus/modbus_serial_ctrl.c ****     // find modbus address
+ 289:.\rtu_modbus/modbus_serial_ctrl.c ****     modbus_address = get_modbus_address();
+ 941              		.loc 2 289 0
+ 942 0042 FFF7FEFF 		bl	get_modbus_address
+ 943 0046 0346     		mov	r3, r0
+ 944 0048 1A46     		mov	r2, r3
+ 945 004a 0B4B     		ldr	r3, .L84+24
+ 946 004c 1A80     		strh	r2, [r3]	@ movhi
+ 290:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 291:.\rtu_modbus/modbus_serial_ctrl.c ****     init_rx_state();
+ 947              		.loc 2 291 0
+ 948 004e FFF7FEFF 		bl	init_rx_state
+ 292:.\rtu_modbus/modbus_serial_ctrl.c ****     UART_1_Start();
+ 949              		.loc 2 292 0
+ 950 0052 FFF7FEFF 		bl	UART_1_Start
+ 293:.\rtu_modbus/modbus_serial_ctrl.c ****     return CF_DISABLE; // TBD Right now
+ 951              		.loc 2 293 0
+ 952 0056 0223     		movs	r3, #2
+ 294:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 953              		.loc 2 294 0
+ 954 0058 1846     		mov	r0, r3
+ 955 005a 1037     		adds	r7, r7, #16
+ 956              		.cfi_def_cfa_offset 8
+ 957 005c BD46     		mov	sp, r7
+ 958              		.cfi_def_cfa_register 13
+ 959              		@ sp needed
+ 960 005e 80BD     		pop	{r7, pc}
+ 961              	.L85:
+ 962              		.align	2
+ 963              	.L84:
+ 964 0060 00000000 		.word	uart_timer_state
+ 965 0064 04000000 		.word	uart_rx_state
+ 966 0068 00000000 		.word	rx_interrupt
+ 967 006c 00000000 		.word	tx_interrupt
+ 968 0070 80E100E0 		.word	-536813184
+ 969 0074 00000000 		.word	timer_interrupt
+ 970 0078 10000000 		.word	modbus_address
+ 971              		.cfi_endproc
+ 972              	.LFE76:
+ 973              		.size	initialize_modbus_rtu, .-initialize_modbus_rtu
+ 974              		.section	.text.process_rx_modbus_rtu_message,"ax",%progbits
+ 975              		.align	2
+ 976              		.global	process_rx_modbus_rtu_message
+ 977              		.thumb
+ 978              		.thumb_func
+ 979              		.type	process_rx_modbus_rtu_message, %function
+ 980              	process_rx_modbus_rtu_message:
+ 981              	.LFB77:
+ 295:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 296:.\rtu_modbus/modbus_serial_ctrl.c **** int process_rx_modbus_rtu_message(void )
+ 297:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 982              		.loc 2 297 0
+ 983              		.cfi_startproc
+ 984              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 26
+
+
+ 985              		@ frame_needed = 1, uses_anonymous_args = 0
+ 986 0000 80B5     		push	{r7, lr}
+ 987              		.cfi_def_cfa_offset 8
+ 988              		.cfi_offset 7, -8
+ 989              		.cfi_offset 14, -4
+ 990 0002 82B0     		sub	sp, sp, #8
+ 991              		.cfi_def_cfa_offset 16
+ 992 0004 00AF     		add	r7, sp, #0
+ 993              		.cfi_def_cfa_register 7
+ 298:.\rtu_modbus/modbus_serial_ctrl.c ****     int out_count;
+ 299:.\rtu_modbus/modbus_serial_ctrl.c ****     
+ 300:.\rtu_modbus/modbus_serial_ctrl.c ****     out_count =  process_modbus_message( modbus_rx_index, &modbus_in_buffer[0], sizeof(modbus_out_b
+ 994              		.loc 2 300 0
+ 995 0006 0C4B     		ldr	r3, .L90
+ 996 0008 1B68     		ldr	r3, [r3]
+ 997 000a 1846     		mov	r0, r3
+ 998 000c 0B49     		ldr	r1, .L90+4
+ 999 000e 40F20112 		movw	r2, #257
+ 1000 0012 0B4B     		ldr	r3, .L90+8
+ 1001 0014 FFF7FEFF 		bl	process_modbus_message
+ 1002 0018 7860     		str	r0, [r7, #4]
+ 301:.\rtu_modbus/modbus_serial_ctrl.c ****                            
+ 302:.\rtu_modbus/modbus_serial_ctrl.c ****     
+ 303:.\rtu_modbus/modbus_serial_ctrl.c ****     if( out_count > 0 )
+ 1003              		.loc 2 303 0
+ 1004 001a 7B68     		ldr	r3, [r7, #4]
+ 1005 001c 002B     		cmp	r3, #0
+ 1006 001e 03DD     		ble	.L87
+ 304:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 305:.\rtu_modbus/modbus_serial_ctrl.c ****         init_tx_state( out_count );
+ 1007              		.loc 2 305 0
+ 1008 0020 7868     		ldr	r0, [r7, #4]
+ 1009 0022 FFF7FEFF 		bl	init_tx_state
+ 1010 0026 01E0     		b	.L88
+ 1011              	.L87:
+ 306:.\rtu_modbus/modbus_serial_ctrl.c ****     }
+ 307:.\rtu_modbus/modbus_serial_ctrl.c ****     else
+ 308:.\rtu_modbus/modbus_serial_ctrl.c ****     {
+ 309:.\rtu_modbus/modbus_serial_ctrl.c ****         init_rx_state();
+ 1012              		.loc 2 309 0
+ 1013 0028 FFF7FEFF 		bl	init_rx_state
+ 1014              	.L88:
+ 310:.\rtu_modbus/modbus_serial_ctrl.c ****     }
+ 311:.\rtu_modbus/modbus_serial_ctrl.c ****     return CF_TERMINATE; // TBD Right now
+ 1015              		.loc 2 311 0
+ 1016 002c 0423     		movs	r3, #4
+ 312:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 1017              		.loc 2 312 0
+ 1018 002e 1846     		mov	r0, r3
+ 1019 0030 0837     		adds	r7, r7, #8
+ 1020              		.cfi_def_cfa_offset 8
+ 1021 0032 BD46     		mov	sp, r7
+ 1022              		.cfi_def_cfa_register 13
+ 1023              		@ sp needed
+ 1024 0034 80BD     		pop	{r7, pc}
+ 1025              	.L91:
+ 1026 0036 00BF     		.align	2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 27
+
+
+ 1027              	.L90:
+ 1028 0038 14000000 		.word	modbus_rx_index
+ 1029 003c 18000000 		.word	modbus_in_buffer
+ 1030 0040 24010000 		.word	modbus_out_buffer
+ 1031              		.cfi_endproc
+ 1032              	.LFE77:
+ 1033              		.size	process_rx_modbus_rtu_message, .-process_rx_modbus_rtu_message
+ 1034              		.section	.text.set_normal_modbus_address,"ax",%progbits
+ 1035              		.align	2
+ 1036              		.global	set_normal_modbus_address
+ 1037              		.thumb
+ 1038              		.thumb_func
+ 1039              		.type	set_normal_modbus_address, %function
+ 1040              	set_normal_modbus_address:
+ 1041              	.LFB78:
+ 313:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 314:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 315:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 316:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 317:.\rtu_modbus/modbus_serial_ctrl.c **** int set_normal_modbus_address(unsigned link_id, unsigned param_1,
+ 318:.\rtu_modbus/modbus_serial_ctrl.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 319:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 1042              		.loc 2 319 0
+ 1043              		.cfi_startproc
+ 1044              		@ args = 8, pretend = 0, frame = 24
+ 1045              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1046 0000 80B5     		push	{r7, lr}
+ 1047              		.cfi_def_cfa_offset 8
+ 1048              		.cfi_offset 7, -8
+ 1049              		.cfi_offset 14, -4
+ 1050 0002 86B0     		sub	sp, sp, #24
+ 1051              		.cfi_def_cfa_offset 32
+ 1052 0004 00AF     		add	r7, sp, #0
+ 1053              		.cfi_def_cfa_register 7
+ 1054 0006 F860     		str	r0, [r7, #12]
+ 1055 0008 B960     		str	r1, [r7, #8]
+ 1056 000a 7A60     		str	r2, [r7, #4]
+ 1057 000c 3B60     		str	r3, [r7]
+ 320:.\rtu_modbus/modbus_serial_ctrl.c ****       uint16 temp;
+ 321:.\rtu_modbus/modbus_serial_ctrl.c ****       temp = 0;
+ 1058              		.loc 2 321 0
+ 1059 000e 0023     		movs	r3, #0
+ 1060 0010 FB82     		strh	r3, [r7, #22]	@ movhi
+ 322:.\rtu_modbus/modbus_serial_ctrl.c ****     
+ 323:.\rtu_modbus/modbus_serial_ctrl.c ****       store_modbus_data_registers( MOD_COMMISSIONING_FLAG, 1 , &temp );
+ 1061              		.loc 2 323 0
+ 1062 0012 07F11603 		add	r3, r7, #22
+ 1063 0016 0420     		movs	r0, #4
+ 1064 0018 0121     		movs	r1, #1
+ 1065 001a 1A46     		mov	r2, r3
+ 1066 001c FFF7FEFF 		bl	store_modbus_data_registers
+ 324:.\rtu_modbus/modbus_serial_ctrl.c ****       modbus_address = get_modbus_address();
+ 1067              		.loc 2 324 0
+ 1068 0020 FFF7FEFF 		bl	get_modbus_address
+ 1069 0024 0346     		mov	r3, r0
+ 1070 0026 1A46     		mov	r2, r3
+ 1071 0028 034B     		ldr	r3, .L94
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 28
+
+
+ 1072 002a 1A80     		strh	r2, [r3]	@ movhi
+ 325:.\rtu_modbus/modbus_serial_ctrl.c ****       return 0;
+ 1073              		.loc 2 325 0
+ 1074 002c 0023     		movs	r3, #0
+ 326:.\rtu_modbus/modbus_serial_ctrl.c **** }
+ 1075              		.loc 2 326 0
+ 1076 002e 1846     		mov	r0, r3
+ 1077 0030 1837     		adds	r7, r7, #24
+ 1078              		.cfi_def_cfa_offset 8
+ 1079 0032 BD46     		mov	sp, r7
+ 1080              		.cfi_def_cfa_register 13
+ 1081              		@ sp needed
+ 1082 0034 80BD     		pop	{r7, pc}
+ 1083              	.L95:
+ 1084 0036 00BF     		.align	2
+ 1085              	.L94:
+ 1086 0038 10000000 		.word	modbus_address
+ 1087              		.cfi_endproc
+ 1088              	.LFE78:
+ 1089              		.size	set_normal_modbus_address, .-set_normal_modbus_address
+ 1090              		.section	.text.set_commissiong_address,"ax",%progbits
+ 1091              		.align	2
+ 1092              		.global	set_commissiong_address
+ 1093              		.thumb
+ 1094              		.thumb_func
+ 1095              		.type	set_commissiong_address, %function
+ 1096              	set_commissiong_address:
+ 1097              	.LFB79:
+ 327:.\rtu_modbus/modbus_serial_ctrl.c **** 
+ 328:.\rtu_modbus/modbus_serial_ctrl.c **** int set_commissiong_address(unsigned link_id, unsigned param_1,
+ 329:.\rtu_modbus/modbus_serial_ctrl.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 330:.\rtu_modbus/modbus_serial_ctrl.c **** {
+ 1098              		.loc 2 330 0
+ 1099              		.cfi_startproc
+ 1100              		@ args = 8, pretend = 0, frame = 24
+ 1101              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1102 0000 80B5     		push	{r7, lr}
+ 1103              		.cfi_def_cfa_offset 8
+ 1104              		.cfi_offset 7, -8
+ 1105              		.cfi_offset 14, -4
+ 1106 0002 86B0     		sub	sp, sp, #24
+ 1107              		.cfi_def_cfa_offset 32
+ 1108 0004 00AF     		add	r7, sp, #0
+ 1109              		.cfi_def_cfa_register 7
+ 1110 0006 F860     		str	r0, [r7, #12]
+ 1111 0008 B960     		str	r1, [r7, #8]
+ 1112 000a 7A60     		str	r2, [r7, #4]
+ 1113 000c 3B60     		str	r3, [r7]
+ 331:.\rtu_modbus/modbus_serial_ctrl.c ****       uint16 temp;
+ 332:.\rtu_modbus/modbus_serial_ctrl.c ****       temp = 1;
+ 1114              		.loc 2 332 0
+ 1115 000e 0123     		movs	r3, #1
+ 1116 0010 FB82     		strh	r3, [r7, #22]	@ movhi
+ 333:.\rtu_modbus/modbus_serial_ctrl.c ****     
+ 334:.\rtu_modbus/modbus_serial_ctrl.c ****        store_modbus_data_registers( MOD_COMMISSIONING_FLAG, 1 , &temp );
+ 1117              		.loc 2 334 0
+ 1118 0012 07F11603 		add	r3, r7, #22
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 29
+
+
+ 1119 0016 0420     		movs	r0, #4
+ 1120 0018 0121     		movs	r1, #1
+ 1121 001a 1A46     		mov	r2, r3
+ 1122 001c FFF7FEFF 		bl	store_modbus_data_registers
+ 335:.\rtu_modbus/modbus_serial_ctrl.c ****        modbus_address = get_commissioning_address();
+ 1123              		.loc 2 335 0
+ 1124 0020 FFF7FEFF 		bl	get_commissioning_address
+ 1125 0024 0346     		mov	r3, r0
+ 1126 0026 1A46     		mov	r2, r3
+ 1127 0028 034B     		ldr	r3, .L98
+ 1128 002a 1A80     		strh	r2, [r3]	@ movhi
+ 336:.\rtu_modbus/modbus_serial_ctrl.c ****       
+ 337:.\rtu_modbus/modbus_serial_ctrl.c ****       return 0;
+ 1129              		.loc 2 337 0
+ 1130 002c 0023     		movs	r3, #0
+ 338:.\rtu_modbus/modbus_serial_ctrl.c **** }...
+ 1131              		.loc 2 338 0
+ 1132 002e 1846     		mov	r0, r3
+ 1133 0030 1837     		adds	r7, r7, #24
+ 1134              		.cfi_def_cfa_offset 8
+ 1135 0032 BD46     		mov	sp, r7
+ 1136              		.cfi_def_cfa_register 13
+ 1137              		@ sp needed
+ 1138 0034 80BD     		pop	{r7, pc}
+ 1139              	.L99:
+ 1140 0036 00BF     		.align	2
+ 1141              	.L98:
+ 1142 0038 10000000 		.word	modbus_address
+ 1143              		.cfi_endproc
+ 1144              	.LFE79:
+ 1145              		.size	set_commissiong_address, .-set_commissiong_address
+ 1146              		.text
+ 1147              	.Letext0:
+ 1148              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 1149              		.file 4 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 1150              		.file 5 "Generated_Source\\PSoC5/cytypes.h"
+ 1151              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 1152              		.section	.debug_info,"",%progbits
+ 1153              	.Ldebug_info0:
+ 1154 0000 D4040000 		.4byte	0x4d4
+ 1155 0004 0400     		.2byte	0x4
+ 1156 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1157 000a 04       		.byte	0x4
+ 1158 000b 01       		.uleb128 0x1
+ 1159 000c 30010000 		.4byte	.LASF58
+ 1160 0010 01       		.byte	0x1
+ 1161 0011 44030000 		.4byte	.LASF59
+ 1162 0015 68020000 		.4byte	.LASF60
+ 1163 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1164 001d 00000000 		.4byte	0
+ 1165 0021 00000000 		.4byte	.Ldebug_line0
+ 1166 0025 02       		.uleb128 0x2
+ 1167 0026 01       		.byte	0x1
+ 1168 0027 06       		.byte	0x6
+ 1169 0028 3D020000 		.4byte	.LASF0
+ 1170 002c 02       		.uleb128 0x2
+ 1171 002d 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 30
+
+
+ 1172 002e 08       		.byte	0x8
+ 1173 002f DC010000 		.4byte	.LASF1
+ 1174 0033 02       		.uleb128 0x2
+ 1175 0034 02       		.byte	0x2
+ 1176 0035 05       		.byte	0x5
+ 1177 0036 48000000 		.4byte	.LASF2
+ 1178 003a 02       		.uleb128 0x2
+ 1179 003b 02       		.byte	0x2
+ 1180 003c 07       		.byte	0x7
+ 1181 003d F3020000 		.4byte	.LASF3
+ 1182 0041 03       		.uleb128 0x3
+ 1183 0042 35030000 		.4byte	.LASF9
+ 1184 0046 03       		.byte	0x3
+ 1185 0047 3F       		.byte	0x3f
+ 1186 0048 4C000000 		.4byte	0x4c
+ 1187 004c 02       		.uleb128 0x2
+ 1188 004d 04       		.byte	0x4
+ 1189 004e 05       		.byte	0x5
+ 1190 004f 12030000 		.4byte	.LASF4
+ 1191 0053 02       		.uleb128 0x2
+ 1192 0054 04       		.byte	0x4
+ 1193 0055 07       		.byte	0x7
+ 1194 0056 80030000 		.4byte	.LASF5
+ 1195 005a 02       		.uleb128 0x2
+ 1196 005b 08       		.byte	0x8
+ 1197 005c 05       		.byte	0x5
+ 1198 005d 22010000 		.4byte	.LASF6
+ 1199 0061 02       		.uleb128 0x2
+ 1200 0062 08       		.byte	0x8
+ 1201 0063 07       		.byte	0x7
+ 1202 0064 51020000 		.4byte	.LASF7
+ 1203 0068 04       		.uleb128 0x4
+ 1204 0069 04       		.byte	0x4
+ 1205 006a 05       		.byte	0x5
+ 1206 006b 696E7400 		.ascii	"int\000"
+ 1207 006f 02       		.uleb128 0x2
+ 1208 0070 04       		.byte	0x4
+ 1209 0071 07       		.byte	0x7
+ 1210 0072 A6020000 		.4byte	.LASF8
+ 1211 0076 03       		.uleb128 0x3
+ 1212 0077 49020000 		.4byte	.LASF10
+ 1213 007b 04       		.byte	0x4
+ 1214 007c 2C       		.byte	0x2c
+ 1215 007d 41000000 		.4byte	0x41
+ 1216 0081 05       		.uleb128 0x5
+ 1217 0082 C7000000 		.4byte	.LASF11
+ 1218 0086 05       		.byte	0x5
+ 1219 0087 9201     		.2byte	0x192
+ 1220 0089 2C000000 		.4byte	0x2c
+ 1221 008d 05       		.uleb128 0x5
+ 1222 008e C0000000 		.4byte	.LASF12
+ 1223 0092 05       		.byte	0x5
+ 1224 0093 9301     		.2byte	0x193
+ 1225 0095 3A000000 		.4byte	0x3a
+ 1226 0099 05       		.uleb128 0x5
+ 1227 009a 79030000 		.4byte	.LASF13
+ 1228 009e 05       		.byte	0x5
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 31
+
+
+ 1229 009f 9401     		.2byte	0x194
+ 1230 00a1 53000000 		.4byte	0x53
+ 1231 00a5 02       		.uleb128 0x2
+ 1232 00a6 04       		.byte	0x4
+ 1233 00a7 04       		.byte	0x4
+ 1234 00a8 04010000 		.4byte	.LASF14
+ 1235 00ac 02       		.uleb128 0x2
+ 1236 00ad 08       		.byte	0x8
+ 1237 00ae 04       		.byte	0x4
+ 1238 00af 92030000 		.4byte	.LASF15
+ 1239 00b3 02       		.uleb128 0x2
+ 1240 00b4 01       		.byte	0x1
+ 1241 00b5 08       		.byte	0x8
+ 1242 00b6 0D030000 		.4byte	.LASF16
+ 1243 00ba 05       		.uleb128 0x5
+ 1244 00bb ED020000 		.4byte	.LASF17
+ 1245 00bf 05       		.byte	0x5
+ 1246 00c0 3E02     		.2byte	0x23e
+ 1247 00c2 C6000000 		.4byte	0xc6
+ 1248 00c6 06       		.uleb128 0x6
+ 1249 00c7 99000000 		.4byte	0x99
+ 1250 00cb 02       		.uleb128 0x2
+ 1251 00cc 04       		.byte	0x4
+ 1252 00cd 07       		.byte	0x7
+ 1253 00ce 52000000 		.4byte	.LASF18
+ 1254 00d2 07       		.uleb128 0x7
+ 1255 00d3 66030000 		.4byte	.LASF19
+ 1256 00d7 01       		.byte	0x1
+ 1257 00d8 79       		.byte	0x79
+ 1258 00d9 8D000000 		.4byte	0x8d
+ 1259 00dd 00000000 		.4byte	.LFB63
+ 1260 00e1 18000000 		.4byte	.LFE63-.LFB63
+ 1261 00e5 01       		.uleb128 0x1
+ 1262 00e6 9C       		.byte	0x9c
+ 1263 00e7 07       		.uleb128 0x7
+ 1264 00e8 1B030000 		.4byte	.LASF20
+ 1265 00ec 01       		.byte	0x1
+ 1266 00ed 7E       		.byte	0x7e
+ 1267 00ee 8D000000 		.4byte	0x8d
+ 1268 00f2 00000000 		.4byte	.LFB64
+ 1269 00f6 18000000 		.4byte	.LFE64-.LFB64
+ 1270 00fa 01       		.uleb128 0x1
+ 1271 00fb 9C       		.byte	0x9c
+ 1272 00fc 08       		.uleb128 0x8
+ 1273 00fd E2030000 		.4byte	.LASF22
+ 1274 0101 02       		.byte	0x2
+ 1275 0102 37       		.byte	0x37
+ 1276 0103 68000000 		.4byte	0x68
+ 1277 0107 00000000 		.4byte	.LFB65
+ 1278 010b 7C000000 		.4byte	.LFE65-.LFB65
+ 1279 010f 01       		.uleb128 0x1
+ 1280 0110 9C       		.byte	0x9c
+ 1281 0111 30010000 		.4byte	0x130
+ 1282 0115 09       		.uleb128 0x9
+ 1283 0116 6900     		.ascii	"i\000"
+ 1284 0118 02       		.byte	0x2
+ 1285 0119 39       		.byte	0x39
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 32
+
+
+ 1286 011a 68000000 		.4byte	0x68
+ 1287 011e 02       		.uleb128 0x2
+ 1288 011f 91       		.byte	0x91
+ 1289 0120 6C       		.sleb128 -20
+ 1290 0121 0A       		.uleb128 0xa
+ 1291 0122 E0020000 		.4byte	.LASF21
+ 1292 0126 02       		.byte	0x2
+ 1293 0127 3A       		.byte	0x3a
+ 1294 0128 68000000 		.4byte	0x68
+ 1295 012c 02       		.uleb128 0x2
+ 1296 012d 91       		.byte	0x91
+ 1297 012e 68       		.sleb128 -24
+ 1298 012f 00       		.byte	0
+ 1299 0130 0B       		.uleb128 0xb
+ 1300 0131 8F000000 		.4byte	.LASF31
+ 1301 0135 02       		.byte	0x2
+ 1302 0136 52       		.byte	0x52
+ 1303 0137 00000000 		.4byte	.LFB66
+ 1304 013b 44000000 		.4byte	.LFE66-.LFB66
+ 1305 013f 01       		.uleb128 0x1
+ 1306 0140 9C       		.byte	0x9c
+ 1307 0141 52010000 		.4byte	0x152
+ 1308 0145 09       		.uleb128 0x9
+ 1309 0146 6900     		.ascii	"i\000"
+ 1310 0148 02       		.byte	0x2
+ 1311 0149 54       		.byte	0x54
+ 1312 014a 68000000 		.4byte	0x68
+ 1313 014e 02       		.uleb128 0x2
+ 1314 014f 91       		.byte	0x91
+ 1315 0150 74       		.sleb128 -12
+ 1316 0151 00       		.byte	0
+ 1317 0152 0C       		.uleb128 0xc
+ 1318 0153 EA010000 		.4byte	.LASF23
+ 1319 0157 02       		.byte	0x2
+ 1320 0158 66       		.byte	0x66
+ 1321 0159 68000000 		.4byte	0x68
+ 1322 015d 00000000 		.4byte	.LFB67
+ 1323 0161 34000000 		.4byte	.LFE67-.LFB67
+ 1324 0165 01       		.uleb128 0x1
+ 1325 0166 9C       		.byte	0x9c
+ 1326 0167 7A010000 		.4byte	0x17a
+ 1327 016b 0A       		.uleb128 0xa
+ 1328 016c E0020000 		.4byte	.LASF21
+ 1329 0170 02       		.byte	0x2
+ 1330 0171 68       		.byte	0x68
+ 1331 0172 68000000 		.4byte	0x68
+ 1332 0176 02       		.uleb128 0x2
+ 1333 0177 91       		.byte	0x91
+ 1334 0178 74       		.sleb128 -12
+ 1335 0179 00       		.byte	0
+ 1336 017a 0D       		.uleb128 0xd
+ 1337 017b CF010000 		.4byte	.LASF26
+ 1338 017f 02       		.byte	0x2
+ 1339 0180 76       		.byte	0x76
+ 1340 0181 00000000 		.4byte	.LFB68
+ 1341 0185 94000000 		.4byte	.LFE68-.LFB68
+ 1342 0189 01       		.uleb128 0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 33
+
+
+ 1343 018a 9C       		.byte	0x9c
+ 1344 018b 0E       		.uleb128 0xe
+ 1345 018c 99030000 		.4byte	.LASF24
+ 1346 0190 02       		.byte	0x2
+ 1347 0191 A1       		.byte	0xa1
+ 1348 0192 68000000 		.4byte	0x68
+ 1349 0196 00000000 		.4byte	.LFB69
+ 1350 019a 54000000 		.4byte	.LFE69-.LFB69
+ 1351 019e 01       		.uleb128 0x1
+ 1352 019f 9C       		.byte	0x9c
+ 1353 01a0 0F       		.uleb128 0xf
+ 1354 01a1 0B040000 		.4byte	.LASF61
+ 1355 01a5 02       		.byte	0x2
+ 1356 01a6 AC       		.byte	0xac
+ 1357 01a7 00000000 		.4byte	.LFB70
+ 1358 01ab 64000000 		.4byte	.LFE70-.LFB70
+ 1359 01af 01       		.uleb128 0x1
+ 1360 01b0 9C       		.byte	0x9c
+ 1361 01b1 C4010000 		.4byte	0x1c4
+ 1362 01b5 0A       		.uleb128 0xa
+ 1363 01b6 06030000 		.4byte	.LASF25
+ 1364 01ba 02       		.byte	0x2
+ 1365 01bb AE       		.byte	0xae
+ 1366 01bc 68000000 		.4byte	0x68
+ 1367 01c0 02       		.uleb128 0x2
+ 1368 01c1 91       		.byte	0x91
+ 1369 01c2 74       		.sleb128 -12
+ 1370 01c3 00       		.byte	0
+ 1371 01c4 0D       		.uleb128 0xd
+ 1372 01c5 D2030000 		.4byte	.LASF27
+ 1373 01c9 02       		.byte	0x2
+ 1374 01ca C7       		.byte	0xc7
+ 1375 01cb 00000000 		.4byte	.LFB71
+ 1376 01cf 50000000 		.4byte	.LFE71-.LFB71
+ 1377 01d3 01       		.uleb128 0x1
+ 1378 01d4 9C       		.byte	0x9c
+ 1379 01d5 10       		.uleb128 0x10
+ 1380 01d6 C1020000 		.4byte	.LASF28
+ 1381 01da 02       		.byte	0x2
+ 1382 01db E7       		.byte	0xe7
+ 1383 01dc 00000000 		.4byte	.LFB72
+ 1384 01e0 34000000 		.4byte	.LFE72-.LFB72
+ 1385 01e4 01       		.uleb128 0x1
+ 1386 01e5 9C       		.byte	0x9c
+ 1387 01e6 11       		.uleb128 0x11
+ 1388 01e7 FD030000 		.4byte	.LASF29
+ 1389 01eb 02       		.byte	0x2
+ 1390 01ec EF       		.byte	0xef
+ 1391 01ed 00000000 		.4byte	.LFB73
+ 1392 01f1 44000000 		.4byte	.LFE73-.LFB73
+ 1393 01f5 01       		.uleb128 0x1
+ 1394 01f6 9C       		.byte	0x9c
+ 1395 01f7 11       		.uleb128 0x11
+ 1396 01f8 5B000000 		.4byte	.LASF30
+ 1397 01fc 02       		.byte	0x2
+ 1398 01fd FC       		.byte	0xfc
+ 1399 01fe 00000000 		.4byte	.LFB74
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 34
+
+
+ 1400 0202 18000000 		.4byte	.LFE74-.LFB74
+ 1401 0206 01       		.uleb128 0x1
+ 1402 0207 9C       		.byte	0x9c
+ 1403 0208 12       		.uleb128 0x12
+ 1404 0209 B3020000 		.4byte	.LASF32
+ 1405 020d 02       		.byte	0x2
+ 1406 020e 0201     		.2byte	0x102
+ 1407 0210 00000000 		.4byte	.LFB75
+ 1408 0214 4C000000 		.4byte	.LFE75-.LFB75
+ 1409 0218 01       		.uleb128 0x1
+ 1410 0219 9C       		.byte	0x9c
+ 1411 021a 2E020000 		.4byte	0x22e
+ 1412 021e 13       		.uleb128 0x13
+ 1413 021f 18040000 		.4byte	.LASF33
+ 1414 0223 02       		.byte	0x2
+ 1415 0224 0201     		.2byte	0x102
+ 1416 0226 68000000 		.4byte	0x68
+ 1417 022a 02       		.uleb128 0x2
+ 1418 022b 91       		.byte	0x91
+ 1419 022c 74       		.sleb128 -12
+ 1420 022d 00       		.byte	0
+ 1421 022e 14       		.uleb128 0x14
+ 1422 022f DD000000 		.4byte	.LASF40
+ 1423 0233 02       		.byte	0x2
+ 1424 0234 1301     		.2byte	0x113
+ 1425 0236 68000000 		.4byte	0x68
+ 1426 023a 00000000 		.4byte	.LFB76
+ 1427 023e 7C000000 		.4byte	.LFE76-.LFB76
+ 1428 0242 01       		.uleb128 0x1
+ 1429 0243 9C       		.byte	0x9c
+ 1430 0244 A3020000 		.4byte	0x2a3
+ 1431 0248 13       		.uleb128 0x13
+ 1432 0249 71000000 		.4byte	.LASF34
+ 1433 024d 02       		.byte	0x2
+ 1434 024e 1301     		.2byte	0x113
+ 1435 0250 6F000000 		.4byte	0x6f
+ 1436 0254 02       		.uleb128 0x2
+ 1437 0255 91       		.byte	0x91
+ 1438 0256 74       		.sleb128 -12
+ 1439 0257 13       		.uleb128 0x13
+ 1440 0258 79000000 		.4byte	.LASF35
+ 1441 025c 02       		.byte	0x2
+ 1442 025d 1301     		.2byte	0x113
+ 1443 025f 6F000000 		.4byte	0x6f
+ 1444 0263 02       		.uleb128 0x2
+ 1445 0264 91       		.byte	0x91
+ 1446 0265 70       		.sleb128 -16
+ 1447 0266 13       		.uleb128 0x13
+ 1448 0267 81000000 		.4byte	.LASF36
+ 1449 026b 02       		.byte	0x2
+ 1450 026c 1401     		.2byte	0x114
+ 1451 026e 6F000000 		.4byte	0x6f
+ 1452 0272 02       		.uleb128 0x2
+ 1453 0273 91       		.byte	0x91
+ 1454 0274 6C       		.sleb128 -20
+ 1455 0275 13       		.uleb128 0x13
+ 1456 0276 14000000 		.4byte	.LASF37
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 35
+
+
+ 1457 027a 02       		.byte	0x2
+ 1458 027b 1401     		.2byte	0x114
+ 1459 027d 6F000000 		.4byte	0x6f
+ 1460 0281 02       		.uleb128 0x2
+ 1461 0282 91       		.byte	0x91
+ 1462 0283 68       		.sleb128 -24
+ 1463 0284 13       		.uleb128 0x13
+ 1464 0285 89000000 		.4byte	.LASF38
+ 1465 0289 02       		.byte	0x2
+ 1466 028a 1401     		.2byte	0x114
+ 1467 028c 6F000000 		.4byte	0x6f
+ 1468 0290 02       		.uleb128 0x2
+ 1469 0291 91       		.byte	0x91
+ 1470 0292 00       		.sleb128 0
+ 1471 0293 13       		.uleb128 0x13
+ 1472 0294 3F030000 		.4byte	.LASF39
+ 1473 0298 02       		.byte	0x2
+ 1474 0299 1401     		.2byte	0x114
+ 1475 029b 6F000000 		.4byte	0x6f
+ 1476 029f 02       		.uleb128 0x2
+ 1477 02a0 91       		.byte	0x91
+ 1478 02a1 04       		.sleb128 4
+ 1479 02a2 00       		.byte	0
+ 1480 02a3 14       		.uleb128 0x14
+ 1481 02a4 FF010000 		.4byte	.LASF41
+ 1482 02a8 02       		.byte	0x2
+ 1483 02a9 2801     		.2byte	0x128
+ 1484 02ab 68000000 		.4byte	0x68
+ 1485 02af 00000000 		.4byte	.LFB77
+ 1486 02b3 44000000 		.4byte	.LFE77-.LFB77
+ 1487 02b7 01       		.uleb128 0x1
+ 1488 02b8 9C       		.byte	0x9c
+ 1489 02b9 CD020000 		.4byte	0x2cd
+ 1490 02bd 15       		.uleb128 0x15
+ 1491 02be 18040000 		.4byte	.LASF33
+ 1492 02c2 02       		.byte	0x2
+ 1493 02c3 2A01     		.2byte	0x12a
+ 1494 02c5 68000000 		.4byte	0x68
+ 1495 02c9 02       		.uleb128 0x2
+ 1496 02ca 91       		.byte	0x91
+ 1497 02cb 74       		.sleb128 -12
+ 1498 02cc 00       		.byte	0
+ 1499 02cd 14       		.uleb128 0x14
+ 1500 02ce B8030000 		.4byte	.LASF42
+ 1501 02d2 02       		.byte	0x2
+ 1502 02d3 3D01     		.2byte	0x13d
+ 1503 02d5 68000000 		.4byte	0x68
+ 1504 02d9 00000000 		.4byte	.LFB78
+ 1505 02dd 3C000000 		.4byte	.LFE78-.LFB78
+ 1506 02e1 01       		.uleb128 0x1
+ 1507 02e2 9C       		.byte	0x9c
+ 1508 02e3 51030000 		.4byte	0x351
+ 1509 02e7 13       		.uleb128 0x13
+ 1510 02e8 71000000 		.4byte	.LASF34
+ 1511 02ec 02       		.byte	0x2
+ 1512 02ed 3D01     		.2byte	0x13d
+ 1513 02ef 6F000000 		.4byte	0x6f
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 36
+
+
+ 1514 02f3 02       		.uleb128 0x2
+ 1515 02f4 91       		.byte	0x91
+ 1516 02f5 6C       		.sleb128 -20
+ 1517 02f6 13       		.uleb128 0x13
+ 1518 02f7 79000000 		.4byte	.LASF35
+ 1519 02fb 02       		.byte	0x2
+ 1520 02fc 3D01     		.2byte	0x13d
+ 1521 02fe 6F000000 		.4byte	0x6f
+ 1522 0302 02       		.uleb128 0x2
+ 1523 0303 91       		.byte	0x91
+ 1524 0304 68       		.sleb128 -24
+ 1525 0305 13       		.uleb128 0x13
+ 1526 0306 81000000 		.4byte	.LASF36
+ 1527 030a 02       		.byte	0x2
+ 1528 030b 3E01     		.2byte	0x13e
+ 1529 030d 6F000000 		.4byte	0x6f
+ 1530 0311 02       		.uleb128 0x2
+ 1531 0312 91       		.byte	0x91
+ 1532 0313 64       		.sleb128 -28
+ 1533 0314 13       		.uleb128 0x13
+ 1534 0315 14000000 		.4byte	.LASF37
+ 1535 0319 02       		.byte	0x2
+ 1536 031a 3E01     		.2byte	0x13e
+ 1537 031c 6F000000 		.4byte	0x6f
+ 1538 0320 02       		.uleb128 0x2
+ 1539 0321 91       		.byte	0x91
+ 1540 0322 60       		.sleb128 -32
+ 1541 0323 13       		.uleb128 0x13
+ 1542 0324 89000000 		.4byte	.LASF38
+ 1543 0328 02       		.byte	0x2
+ 1544 0329 3E01     		.2byte	0x13e
+ 1545 032b 6F000000 		.4byte	0x6f
+ 1546 032f 02       		.uleb128 0x2
+ 1547 0330 91       		.byte	0x91
+ 1548 0331 00       		.sleb128 0
+ 1549 0332 13       		.uleb128 0x13
+ 1550 0333 3F030000 		.4byte	.LASF39
+ 1551 0337 02       		.byte	0x2
+ 1552 0338 3E01     		.2byte	0x13e
+ 1553 033a 6F000000 		.4byte	0x6f
+ 1554 033e 02       		.uleb128 0x2
+ 1555 033f 91       		.byte	0x91
+ 1556 0340 04       		.sleb128 4
+ 1557 0341 15       		.uleb128 0x15
+ 1558 0342 43000000 		.4byte	.LASF43
+ 1559 0346 02       		.byte	0x2
+ 1560 0347 4001     		.2byte	0x140
+ 1561 0349 8D000000 		.4byte	0x8d
+ 1562 034d 02       		.uleb128 0x2
+ 1563 034e 91       		.byte	0x91
+ 1564 034f 76       		.sleb128 -10
+ 1565 0350 00       		.byte	0
+ 1566 0351 14       		.uleb128 0x14
+ 1567 0352 2B000000 		.4byte	.LASF44
+ 1568 0356 02       		.byte	0x2
+ 1569 0357 4801     		.2byte	0x148
+ 1570 0359 68000000 		.4byte	0x68
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 37
+
+
+ 1571 035d 00000000 		.4byte	.LFB79
+ 1572 0361 3C000000 		.4byte	.LFE79-.LFB79
+ 1573 0365 01       		.uleb128 0x1
+ 1574 0366 9C       		.byte	0x9c
+ 1575 0367 D5030000 		.4byte	0x3d5
+ 1576 036b 13       		.uleb128 0x13
+ 1577 036c 71000000 		.4byte	.LASF34
+ 1578 0370 02       		.byte	0x2
+ 1579 0371 4801     		.2byte	0x148
+ 1580 0373 6F000000 		.4byte	0x6f
+ 1581 0377 02       		.uleb128 0x2
+ 1582 0378 91       		.byte	0x91
+ 1583 0379 6C       		.sleb128 -20
+ 1584 037a 13       		.uleb128 0x13
+ 1585 037b 79000000 		.4byte	.LASF35
+ 1586 037f 02       		.byte	0x2
+ 1587 0380 4801     		.2byte	0x148
+ 1588 0382 6F000000 		.4byte	0x6f
+ 1589 0386 02       		.uleb128 0x2
+ 1590 0387 91       		.byte	0x91
+ 1591 0388 68       		.sleb128 -24
+ 1592 0389 13       		.uleb128 0x13
+ 1593 038a 81000000 		.4byte	.LASF36
+ 1594 038e 02       		.byte	0x2
+ 1595 038f 4901     		.2byte	0x149
+ 1596 0391 6F000000 		.4byte	0x6f
+ 1597 0395 02       		.uleb128 0x2
+ 1598 0396 91       		.byte	0x91
+ 1599 0397 64       		.sleb128 -28
+ 1600 0398 13       		.uleb128 0x13
+ 1601 0399 14000000 		.4byte	.LASF37
+ 1602 039d 02       		.byte	0x2
+ 1603 039e 4901     		.2byte	0x149
+ 1604 03a0 6F000000 		.4byte	0x6f
+ 1605 03a4 02       		.uleb128 0x2
+ 1606 03a5 91       		.byte	0x91
+ 1607 03a6 60       		.sleb128 -32
+ 1608 03a7 13       		.uleb128 0x13
+ 1609 03a8 89000000 		.4byte	.LASF38
+ 1610 03ac 02       		.byte	0x2
+ 1611 03ad 4901     		.2byte	0x149
+ 1612 03af 6F000000 		.4byte	0x6f
+ 1613 03b3 02       		.uleb128 0x2
+ 1614 03b4 91       		.byte	0x91
+ 1615 03b5 00       		.sleb128 0
+ 1616 03b6 13       		.uleb128 0x13
+ 1617 03b7 3F030000 		.4byte	.LASF39
+ 1618 03bb 02       		.byte	0x2
+ 1619 03bc 4901     		.2byte	0x149
+ 1620 03be 6F000000 		.4byte	0x6f
+ 1621 03c2 02       		.uleb128 0x2
+ 1622 03c3 91       		.byte	0x91
+ 1623 03c4 04       		.sleb128 4
+ 1624 03c5 15       		.uleb128 0x15
+ 1625 03c6 43000000 		.4byte	.LASF43
+ 1626 03ca 02       		.byte	0x2
+ 1627 03cb 4B01     		.2byte	0x14b
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 38
+
+
+ 1628 03cd 8D000000 		.4byte	0x8d
+ 1629 03d1 02       		.uleb128 0x2
+ 1630 03d2 91       		.byte	0x91
+ 1631 03d3 76       		.sleb128 -10
+ 1632 03d4 00       		.byte	0
+ 1633 03d5 0A       		.uleb128 0xa
+ 1634 03d6 F3000000 		.4byte	.LASF45
+ 1635 03da 02       		.byte	0x2
+ 1636 03db 21       		.byte	0x21
+ 1637 03dc 68000000 		.4byte	0x68
+ 1638 03e0 05       		.uleb128 0x5
+ 1639 03e1 03       		.byte	0x3
+ 1640 03e2 00000000 		.4byte	uart_timer_state
+ 1641 03e6 0A       		.uleb128 0xa
+ 1642 03e7 AA030000 		.4byte	.LASF46
+ 1643 03eb 02       		.byte	0x2
+ 1644 03ec 22       		.byte	0x22
+ 1645 03ed 68000000 		.4byte	0x68
+ 1646 03f1 05       		.uleb128 0x5
+ 1647 03f2 03       		.byte	0x3
+ 1648 03f3 04000000 		.4byte	uart_rx_state
+ 1649 03f7 0A       		.uleb128 0xa
+ 1650 03f8 1D020000 		.4byte	.LASF47
+ 1651 03fc 02       		.byte	0x2
+ 1652 03fd 23       		.byte	0x23
+ 1653 03fe 68000000 		.4byte	0x68
+ 1654 0402 05       		.uleb128 0x5
+ 1655 0403 03       		.byte	0x3
+ 1656 0404 08000000 		.4byte	uart_tx_state
+ 1657 0408 0A       		.uleb128 0xa
+ 1658 0409 2B020000 		.4byte	.LASF48
+ 1659 040d 02       		.byte	0x2
+ 1660 040e 26       		.byte	0x26
+ 1661 040f 68000000 		.4byte	0x68
+ 1662 0413 05       		.uleb128 0x5
+ 1663 0414 03       		.byte	0x3
+ 1664 0415 0C000000 		.4byte	rx_interval_count
+ 1665 0419 0A       		.uleb128 0xa
+ 1666 041a 1C000000 		.4byte	.LASF49
+ 1667 041e 02       		.byte	0x2
+ 1668 041f 29       		.byte	0x29
+ 1669 0420 8D000000 		.4byte	0x8d
+ 1670 0424 05       		.uleb128 0x5
+ 1671 0425 03       		.byte	0x3
+ 1672 0426 10000000 		.4byte	modbus_address
+ 1673 042a 0A       		.uleb128 0xa
+ 1674 042b D0020000 		.4byte	.LASF50
+ 1675 042f 02       		.byte	0x2
+ 1676 0430 2A       		.byte	0x2a
+ 1677 0431 68000000 		.4byte	0x68
+ 1678 0435 05       		.uleb128 0x5
+ 1679 0436 03       		.byte	0x3
+ 1680 0437 14000000 		.4byte	modbus_rx_index
+ 1681 043b 16       		.uleb128 0x16
+ 1682 043c 81000000 		.4byte	0x81
+ 1683 0440 4C040000 		.4byte	0x44c
+ 1684 0444 17       		.uleb128 0x17
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 39
+
+
+ 1685 0445 CB000000 		.4byte	0xcb
+ 1686 0449 0001     		.2byte	0x100
+ 1687 044b 00       		.byte	0
+ 1688 044c 0A       		.uleb128 0xa
+ 1689 044d BE010000 		.4byte	.LASF51
+ 1690 0451 02       		.byte	0x2
+ 1691 0452 2B       		.byte	0x2b
+ 1692 0453 3B040000 		.4byte	0x43b
+ 1693 0457 05       		.uleb128 0x5
+ 1694 0458 03       		.byte	0x3
+ 1695 0459 18000000 		.4byte	modbus_in_buffer
+ 1696 045d 0A       		.uleb128 0xa
+ 1697 045e CD000000 		.4byte	.LASF52
+ 1698 0462 02       		.byte	0x2
+ 1699 0463 2D       		.byte	0x2d
+ 1700 0464 68000000 		.4byte	0x68
+ 1701 0468 05       		.uleb128 0x5
+ 1702 0469 03       		.byte	0x3
+ 1703 046a 1C010000 		.4byte	modbus_tx_index
+ 1704 046e 0A       		.uleb128 0xa
+ 1705 046f 0A010000 		.4byte	.LASF53
+ 1706 0473 02       		.byte	0x2
+ 1707 0474 2E       		.byte	0x2e
+ 1708 0475 68000000 		.4byte	0x68
+ 1709 0479 05       		.uleb128 0x5
+ 1710 047a 03       		.byte	0x3
+ 1711 047b 20010000 		.4byte	modbus_tx_message_count
+ 1712 047f 0A       		.uleb128 0xa
+ 1713 0480 9C000000 		.4byte	.LASF54
+ 1714 0484 02       		.byte	0x2
+ 1715 0485 2F       		.byte	0x2f
+ 1716 0486 3B040000 		.4byte	0x43b
+ 1717 048a 05       		.uleb128 0x5
+ 1718 048b 03       		.byte	0x3
+ 1719 048c 24010000 		.4byte	modbus_out_buffer
+ 1720 0490 0A       		.uleb128 0xa
+ 1721 0491 AE000000 		.4byte	.LASF55
+ 1722 0495 02       		.byte	0x2
+ 1723 0496 35       		.byte	0x35
+ 1724 0497 A1040000 		.4byte	0x4a1
+ 1725 049b 05       		.uleb128 0x5
+ 1726 049c 03       		.byte	0x3
+ 1727 049d 28020000 		.4byte	read_status_value
+ 1728 04a1 06       		.uleb128 0x6
+ 1729 04a2 68000000 		.4byte	0x68
+ 1730 04a6 18       		.uleb128 0x18
+ 1731 04a7 F0030000 		.4byte	.LASF56
+ 1732 04ab 06       		.byte	0x6
+ 1733 04ac 9606     		.2byte	0x696
+ 1734 04ae B2040000 		.4byte	0x4b2
+ 1735 04b2 06       		.uleb128 0x6
+ 1736 04b3 76000000 		.4byte	0x76
+ 1737 04b7 16       		.uleb128 0x16
+ 1738 04b8 8D000000 		.4byte	0x8d
+ 1739 04bc C7040000 		.4byte	0x4c7
+ 1740 04c0 19       		.uleb128 0x19
+ 1741 04c1 CB000000 		.4byte	0xcb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 40
+
+
+ 1742 04c5 01       		.byte	0x1
+ 1743 04c6 00       		.byte	0
+ 1744 04c7 1A       		.uleb128 0x1a
+ 1745 04c8 00000000 		.4byte	.LASF57
+ 1746 04cc 01       		.byte	0x1
+ 1747 04cd 77       		.byte	0x77
+ 1748 04ce D2040000 		.4byte	0x4d2
+ 1749 04d2 1B       		.uleb128 0x1b
+ 1750 04d3 B7040000 		.4byte	0x4b7
+ 1751 04d7 00       		.byte	0
+ 1752              		.section	.debug_abbrev,"",%progbits
+ 1753              	.Ldebug_abbrev0:
+ 1754 0000 01       		.uleb128 0x1
+ 1755 0001 11       		.uleb128 0x11
+ 1756 0002 01       		.byte	0x1
+ 1757 0003 25       		.uleb128 0x25
+ 1758 0004 0E       		.uleb128 0xe
+ 1759 0005 13       		.uleb128 0x13
+ 1760 0006 0B       		.uleb128 0xb
+ 1761 0007 03       		.uleb128 0x3
+ 1762 0008 0E       		.uleb128 0xe
+ 1763 0009 1B       		.uleb128 0x1b
+ 1764 000a 0E       		.uleb128 0xe
+ 1765 000b 55       		.uleb128 0x55
+ 1766 000c 17       		.uleb128 0x17
+ 1767 000d 11       		.uleb128 0x11
+ 1768 000e 01       		.uleb128 0x1
+ 1769 000f 10       		.uleb128 0x10
+ 1770 0010 17       		.uleb128 0x17
+ 1771 0011 00       		.byte	0
+ 1772 0012 00       		.byte	0
+ 1773 0013 02       		.uleb128 0x2
+ 1774 0014 24       		.uleb128 0x24
+ 1775 0015 00       		.byte	0
+ 1776 0016 0B       		.uleb128 0xb
+ 1777 0017 0B       		.uleb128 0xb
+ 1778 0018 3E       		.uleb128 0x3e
+ 1779 0019 0B       		.uleb128 0xb
+ 1780 001a 03       		.uleb128 0x3
+ 1781 001b 0E       		.uleb128 0xe
+ 1782 001c 00       		.byte	0
+ 1783 001d 00       		.byte	0
+ 1784 001e 03       		.uleb128 0x3
+ 1785 001f 16       		.uleb128 0x16
+ 1786 0020 00       		.byte	0
+ 1787 0021 03       		.uleb128 0x3
+ 1788 0022 0E       		.uleb128 0xe
+ 1789 0023 3A       		.uleb128 0x3a
+ 1790 0024 0B       		.uleb128 0xb
+ 1791 0025 3B       		.uleb128 0x3b
+ 1792 0026 0B       		.uleb128 0xb
+ 1793 0027 49       		.uleb128 0x49
+ 1794 0028 13       		.uleb128 0x13
+ 1795 0029 00       		.byte	0
+ 1796 002a 00       		.byte	0
+ 1797 002b 04       		.uleb128 0x4
+ 1798 002c 24       		.uleb128 0x24
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 41
+
+
+ 1799 002d 00       		.byte	0
+ 1800 002e 0B       		.uleb128 0xb
+ 1801 002f 0B       		.uleb128 0xb
+ 1802 0030 3E       		.uleb128 0x3e
+ 1803 0031 0B       		.uleb128 0xb
+ 1804 0032 03       		.uleb128 0x3
+ 1805 0033 08       		.uleb128 0x8
+ 1806 0034 00       		.byte	0
+ 1807 0035 00       		.byte	0
+ 1808 0036 05       		.uleb128 0x5
+ 1809 0037 16       		.uleb128 0x16
+ 1810 0038 00       		.byte	0
+ 1811 0039 03       		.uleb128 0x3
+ 1812 003a 0E       		.uleb128 0xe
+ 1813 003b 3A       		.uleb128 0x3a
+ 1814 003c 0B       		.uleb128 0xb
+ 1815 003d 3B       		.uleb128 0x3b
+ 1816 003e 05       		.uleb128 0x5
+ 1817 003f 49       		.uleb128 0x49
+ 1818 0040 13       		.uleb128 0x13
+ 1819 0041 00       		.byte	0
+ 1820 0042 00       		.byte	0
+ 1821 0043 06       		.uleb128 0x6
+ 1822 0044 35       		.uleb128 0x35
+ 1823 0045 00       		.byte	0
+ 1824 0046 49       		.uleb128 0x49
+ 1825 0047 13       		.uleb128 0x13
+ 1826 0048 00       		.byte	0
+ 1827 0049 00       		.byte	0
+ 1828 004a 07       		.uleb128 0x7
+ 1829 004b 2E       		.uleb128 0x2e
+ 1830 004c 00       		.byte	0
+ 1831 004d 03       		.uleb128 0x3
+ 1832 004e 0E       		.uleb128 0xe
+ 1833 004f 3A       		.uleb128 0x3a
+ 1834 0050 0B       		.uleb128 0xb
+ 1835 0051 3B       		.uleb128 0x3b
+ 1836 0052 0B       		.uleb128 0xb
+ 1837 0053 27       		.uleb128 0x27
+ 1838 0054 19       		.uleb128 0x19
+ 1839 0055 49       		.uleb128 0x49
+ 1840 0056 13       		.uleb128 0x13
+ 1841 0057 11       		.uleb128 0x11
+ 1842 0058 01       		.uleb128 0x1
+ 1843 0059 12       		.uleb128 0x12
+ 1844 005a 06       		.uleb128 0x6
+ 1845 005b 40       		.uleb128 0x40
+ 1846 005c 18       		.uleb128 0x18
+ 1847 005d 9742     		.uleb128 0x2117
+ 1848 005f 19       		.uleb128 0x19
+ 1849 0060 00       		.byte	0
+ 1850 0061 00       		.byte	0
+ 1851 0062 08       		.uleb128 0x8
+ 1852 0063 2E       		.uleb128 0x2e
+ 1853 0064 01       		.byte	0x1
+ 1854 0065 03       		.uleb128 0x3
+ 1855 0066 0E       		.uleb128 0xe
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 42
+
+
+ 1856 0067 3A       		.uleb128 0x3a
+ 1857 0068 0B       		.uleb128 0xb
+ 1858 0069 3B       		.uleb128 0x3b
+ 1859 006a 0B       		.uleb128 0xb
+ 1860 006b 27       		.uleb128 0x27
+ 1861 006c 19       		.uleb128 0x19
+ 1862 006d 49       		.uleb128 0x49
+ 1863 006e 13       		.uleb128 0x13
+ 1864 006f 11       		.uleb128 0x11
+ 1865 0070 01       		.uleb128 0x1
+ 1866 0071 12       		.uleb128 0x12
+ 1867 0072 06       		.uleb128 0x6
+ 1868 0073 40       		.uleb128 0x40
+ 1869 0074 18       		.uleb128 0x18
+ 1870 0075 9642     		.uleb128 0x2116
+ 1871 0077 19       		.uleb128 0x19
+ 1872 0078 01       		.uleb128 0x1
+ 1873 0079 13       		.uleb128 0x13
+ 1874 007a 00       		.byte	0
+ 1875 007b 00       		.byte	0
+ 1876 007c 09       		.uleb128 0x9
+ 1877 007d 34       		.uleb128 0x34
+ 1878 007e 00       		.byte	0
+ 1879 007f 03       		.uleb128 0x3
+ 1880 0080 08       		.uleb128 0x8
+ 1881 0081 3A       		.uleb128 0x3a
+ 1882 0082 0B       		.uleb128 0xb
+ 1883 0083 3B       		.uleb128 0x3b
+ 1884 0084 0B       		.uleb128 0xb
+ 1885 0085 49       		.uleb128 0x49
+ 1886 0086 13       		.uleb128 0x13
+ 1887 0087 02       		.uleb128 0x2
+ 1888 0088 18       		.uleb128 0x18
+ 1889 0089 00       		.byte	0
+ 1890 008a 00       		.byte	0
+ 1891 008b 0A       		.uleb128 0xa
+ 1892 008c 34       		.uleb128 0x34
+ 1893 008d 00       		.byte	0
+ 1894 008e 03       		.uleb128 0x3
+ 1895 008f 0E       		.uleb128 0xe
+ 1896 0090 3A       		.uleb128 0x3a
+ 1897 0091 0B       		.uleb128 0xb
+ 1898 0092 3B       		.uleb128 0x3b
+ 1899 0093 0B       		.uleb128 0xb
+ 1900 0094 49       		.uleb128 0x49
+ 1901 0095 13       		.uleb128 0x13
+ 1902 0096 02       		.uleb128 0x2
+ 1903 0097 18       		.uleb128 0x18
+ 1904 0098 00       		.byte	0
+ 1905 0099 00       		.byte	0
+ 1906 009a 0B       		.uleb128 0xb
+ 1907 009b 2E       		.uleb128 0x2e
+ 1908 009c 01       		.byte	0x1
+ 1909 009d 03       		.uleb128 0x3
+ 1910 009e 0E       		.uleb128 0xe
+ 1911 009f 3A       		.uleb128 0x3a
+ 1912 00a0 0B       		.uleb128 0xb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 43
+
+
+ 1913 00a1 3B       		.uleb128 0x3b
+ 1914 00a2 0B       		.uleb128 0xb
+ 1915 00a3 27       		.uleb128 0x27
+ 1916 00a4 19       		.uleb128 0x19
+ 1917 00a5 11       		.uleb128 0x11
+ 1918 00a6 01       		.uleb128 0x1
+ 1919 00a7 12       		.uleb128 0x12
+ 1920 00a8 06       		.uleb128 0x6
+ 1921 00a9 40       		.uleb128 0x40
+ 1922 00aa 18       		.uleb128 0x18
+ 1923 00ab 9642     		.uleb128 0x2116
+ 1924 00ad 19       		.uleb128 0x19
+ 1925 00ae 01       		.uleb128 0x1
+ 1926 00af 13       		.uleb128 0x13
+ 1927 00b0 00       		.byte	0
+ 1928 00b1 00       		.byte	0
+ 1929 00b2 0C       		.uleb128 0xc
+ 1930 00b3 2E       		.uleb128 0x2e
+ 1931 00b4 01       		.byte	0x1
+ 1932 00b5 03       		.uleb128 0x3
+ 1933 00b6 0E       		.uleb128 0xe
+ 1934 00b7 3A       		.uleb128 0x3a
+ 1935 00b8 0B       		.uleb128 0xb
+ 1936 00b9 3B       		.uleb128 0x3b
+ 1937 00ba 0B       		.uleb128 0xb
+ 1938 00bb 27       		.uleb128 0x27
+ 1939 00bc 19       		.uleb128 0x19
+ 1940 00bd 49       		.uleb128 0x49
+ 1941 00be 13       		.uleb128 0x13
+ 1942 00bf 11       		.uleb128 0x11
+ 1943 00c0 01       		.uleb128 0x1
+ 1944 00c1 12       		.uleb128 0x12
+ 1945 00c2 06       		.uleb128 0x6
+ 1946 00c3 40       		.uleb128 0x40
+ 1947 00c4 18       		.uleb128 0x18
+ 1948 00c5 9742     		.uleb128 0x2117
+ 1949 00c7 19       		.uleb128 0x19
+ 1950 00c8 01       		.uleb128 0x1
+ 1951 00c9 13       		.uleb128 0x13
+ 1952 00ca 00       		.byte	0
+ 1953 00cb 00       		.byte	0
+ 1954 00cc 0D       		.uleb128 0xd
+ 1955 00cd 2E       		.uleb128 0x2e
+ 1956 00ce 00       		.byte	0
+ 1957 00cf 3F       		.uleb128 0x3f
+ 1958 00d0 19       		.uleb128 0x19
+ 1959 00d1 03       		.uleb128 0x3
+ 1960 00d2 0E       		.uleb128 0xe
+ 1961 00d3 3A       		.uleb128 0x3a
+ 1962 00d4 0B       		.uleb128 0xb
+ 1963 00d5 3B       		.uleb128 0x3b
+ 1964 00d6 0B       		.uleb128 0xb
+ 1965 00d7 27       		.uleb128 0x27
+ 1966 00d8 19       		.uleb128 0x19
+ 1967 00d9 11       		.uleb128 0x11
+ 1968 00da 01       		.uleb128 0x1
+ 1969 00db 12       		.uleb128 0x12
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 44
+
+
+ 1970 00dc 06       		.uleb128 0x6
+ 1971 00dd 40       		.uleb128 0x40
+ 1972 00de 18       		.uleb128 0x18
+ 1973 00df 9642     		.uleb128 0x2116
+ 1974 00e1 19       		.uleb128 0x19
+ 1975 00e2 00       		.byte	0
+ 1976 00e3 00       		.byte	0
+ 1977 00e4 0E       		.uleb128 0xe
+ 1978 00e5 2E       		.uleb128 0x2e
+ 1979 00e6 00       		.byte	0
+ 1980 00e7 03       		.uleb128 0x3
+ 1981 00e8 0E       		.uleb128 0xe
+ 1982 00e9 3A       		.uleb128 0x3a
+ 1983 00ea 0B       		.uleb128 0xb
+ 1984 00eb 3B       		.uleb128 0x3b
+ 1985 00ec 0B       		.uleb128 0xb
+ 1986 00ed 27       		.uleb128 0x27
+ 1987 00ee 19       		.uleb128 0x19
+ 1988 00ef 49       		.uleb128 0x49
+ 1989 00f0 13       		.uleb128 0x13
+ 1990 00f1 11       		.uleb128 0x11
+ 1991 00f2 01       		.uleb128 0x1
+ 1992 00f3 12       		.uleb128 0x12
+ 1993 00f4 06       		.uleb128 0x6
+ 1994 00f5 40       		.uleb128 0x40
+ 1995 00f6 18       		.uleb128 0x18
+ 1996 00f7 9642     		.uleb128 0x2116
+ 1997 00f9 19       		.uleb128 0x19
+ 1998 00fa 00       		.byte	0
+ 1999 00fb 00       		.byte	0
+ 2000 00fc 0F       		.uleb128 0xf
+ 2001 00fd 2E       		.uleb128 0x2e
+ 2002 00fe 01       		.byte	0x1
+ 2003 00ff 3F       		.uleb128 0x3f
+ 2004 0100 19       		.uleb128 0x19
+ 2005 0101 03       		.uleb128 0x3
+ 2006 0102 0E       		.uleb128 0xe
+ 2007 0103 3A       		.uleb128 0x3a
+ 2008 0104 0B       		.uleb128 0xb
+ 2009 0105 3B       		.uleb128 0x3b
+ 2010 0106 0B       		.uleb128 0xb
+ 2011 0107 27       		.uleb128 0x27
+ 2012 0108 19       		.uleb128 0x19
+ 2013 0109 11       		.uleb128 0x11
+ 2014 010a 01       		.uleb128 0x1
+ 2015 010b 12       		.uleb128 0x12
+ 2016 010c 06       		.uleb128 0x6
+ 2017 010d 40       		.uleb128 0x40
+ 2018 010e 18       		.uleb128 0x18
+ 2019 010f 9642     		.uleb128 0x2116
+ 2020 0111 19       		.uleb128 0x19
+ 2021 0112 01       		.uleb128 0x1
+ 2022 0113 13       		.uleb128 0x13
+ 2023 0114 00       		.byte	0
+ 2024 0115 00       		.byte	0
+ 2025 0116 10       		.uleb128 0x10
+ 2026 0117 2E       		.uleb128 0x2e
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 45
+
+
+ 2027 0118 00       		.byte	0
+ 2028 0119 03       		.uleb128 0x3
+ 2029 011a 0E       		.uleb128 0xe
+ 2030 011b 3A       		.uleb128 0x3a
+ 2031 011c 0B       		.uleb128 0xb
+ 2032 011d 3B       		.uleb128 0x3b
+ 2033 011e 0B       		.uleb128 0xb
+ 2034 011f 27       		.uleb128 0x27
+ 2035 0120 19       		.uleb128 0x19
+ 2036 0121 11       		.uleb128 0x11
+ 2037 0122 01       		.uleb128 0x1
+ 2038 0123 12       		.uleb128 0x12
+ 2039 0124 06       		.uleb128 0x6
+ 2040 0125 40       		.uleb128 0x40
+ 2041 0126 18       		.uleb128 0x18
+ 2042 0127 9742     		.uleb128 0x2117
+ 2043 0129 19       		.uleb128 0x19
+ 2044 012a 00       		.byte	0
+ 2045 012b 00       		.byte	0
+ 2046 012c 11       		.uleb128 0x11
+ 2047 012d 2E       		.uleb128 0x2e
+ 2048 012e 00       		.byte	0
+ 2049 012f 03       		.uleb128 0x3
+ 2050 0130 0E       		.uleb128 0xe
+ 2051 0131 3A       		.uleb128 0x3a
+ 2052 0132 0B       		.uleb128 0xb
+ 2053 0133 3B       		.uleb128 0x3b
+ 2054 0134 0B       		.uleb128 0xb
+ 2055 0135 27       		.uleb128 0x27
+ 2056 0136 19       		.uleb128 0x19
+ 2057 0137 11       		.uleb128 0x11
+ 2058 0138 01       		.uleb128 0x1
+ 2059 0139 12       		.uleb128 0x12
+ 2060 013a 06       		.uleb128 0x6
+ 2061 013b 40       		.uleb128 0x40
+ 2062 013c 18       		.uleb128 0x18
+ 2063 013d 9642     		.uleb128 0x2116
+ 2064 013f 19       		.uleb128 0x19
+ 2065 0140 00       		.byte	0
+ 2066 0141 00       		.byte	0
+ 2067 0142 12       		.uleb128 0x12
+ 2068 0143 2E       		.uleb128 0x2e
+ 2069 0144 01       		.byte	0x1
+ 2070 0145 03       		.uleb128 0x3
+ 2071 0146 0E       		.uleb128 0xe
+ 2072 0147 3A       		.uleb128 0x3a
+ 2073 0148 0B       		.uleb128 0xb
+ 2074 0149 3B       		.uleb128 0x3b
+ 2075 014a 05       		.uleb128 0x5
+ 2076 014b 27       		.uleb128 0x27
+ 2077 014c 19       		.uleb128 0x19
+ 2078 014d 11       		.uleb128 0x11
+ 2079 014e 01       		.uleb128 0x1
+ 2080 014f 12       		.uleb128 0x12
+ 2081 0150 06       		.uleb128 0x6
+ 2082 0151 40       		.uleb128 0x40
+ 2083 0152 18       		.uleb128 0x18
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 46
+
+
+ 2084 0153 9642     		.uleb128 0x2116
+ 2085 0155 19       		.uleb128 0x19
+ 2086 0156 01       		.uleb128 0x1
+ 2087 0157 13       		.uleb128 0x13
+ 2088 0158 00       		.byte	0
+ 2089 0159 00       		.byte	0
+ 2090 015a 13       		.uleb128 0x13
+ 2091 015b 05       		.uleb128 0x5
+ 2092 015c 00       		.byte	0
+ 2093 015d 03       		.uleb128 0x3
+ 2094 015e 0E       		.uleb128 0xe
+ 2095 015f 3A       		.uleb128 0x3a
+ 2096 0160 0B       		.uleb128 0xb
+ 2097 0161 3B       		.uleb128 0x3b
+ 2098 0162 05       		.uleb128 0x5
+ 2099 0163 49       		.uleb128 0x49
+ 2100 0164 13       		.uleb128 0x13
+ 2101 0165 02       		.uleb128 0x2
+ 2102 0166 18       		.uleb128 0x18
+ 2103 0167 00       		.byte	0
+ 2104 0168 00       		.byte	0
+ 2105 0169 14       		.uleb128 0x14
+ 2106 016a 2E       		.uleb128 0x2e
+ 2107 016b 01       		.byte	0x1
+ 2108 016c 3F       		.uleb128 0x3f
+ 2109 016d 19       		.uleb128 0x19
+ 2110 016e 03       		.uleb128 0x3
+ 2111 016f 0E       		.uleb128 0xe
+ 2112 0170 3A       		.uleb128 0x3a
+ 2113 0171 0B       		.uleb128 0xb
+ 2114 0172 3B       		.uleb128 0x3b
+ 2115 0173 05       		.uleb128 0x5
+ 2116 0174 27       		.uleb128 0x27
+ 2117 0175 19       		.uleb128 0x19
+ 2118 0176 49       		.uleb128 0x49
+ 2119 0177 13       		.uleb128 0x13
+ 2120 0178 11       		.uleb128 0x11
+ 2121 0179 01       		.uleb128 0x1
+ 2122 017a 12       		.uleb128 0x12
+ 2123 017b 06       		.uleb128 0x6
+ 2124 017c 40       		.uleb128 0x40
+ 2125 017d 18       		.uleb128 0x18
+ 2126 017e 9642     		.uleb128 0x2116
+ 2127 0180 19       		.uleb128 0x19
+ 2128 0181 01       		.uleb128 0x1
+ 2129 0182 13       		.uleb128 0x13
+ 2130 0183 00       		.byte	0
+ 2131 0184 00       		.byte	0
+ 2132 0185 15       		.uleb128 0x15
+ 2133 0186 34       		.uleb128 0x34
+ 2134 0187 00       		.byte	0
+ 2135 0188 03       		.uleb128 0x3
+ 2136 0189 0E       		.uleb128 0xe
+ 2137 018a 3A       		.uleb128 0x3a
+ 2138 018b 0B       		.uleb128 0xb
+ 2139 018c 3B       		.uleb128 0x3b
+ 2140 018d 05       		.uleb128 0x5
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 47
+
+
+ 2141 018e 49       		.uleb128 0x49
+ 2142 018f 13       		.uleb128 0x13
+ 2143 0190 02       		.uleb128 0x2
+ 2144 0191 18       		.uleb128 0x18
+ 2145 0192 00       		.byte	0
+ 2146 0193 00       		.byte	0
+ 2147 0194 16       		.uleb128 0x16
+ 2148 0195 01       		.uleb128 0x1
+ 2149 0196 01       		.byte	0x1
+ 2150 0197 49       		.uleb128 0x49
+ 2151 0198 13       		.uleb128 0x13
+ 2152 0199 01       		.uleb128 0x1
+ 2153 019a 13       		.uleb128 0x13
+ 2154 019b 00       		.byte	0
+ 2155 019c 00       		.byte	0
+ 2156 019d 17       		.uleb128 0x17
+ 2157 019e 21       		.uleb128 0x21
+ 2158 019f 00       		.byte	0
+ 2159 01a0 49       		.uleb128 0x49
+ 2160 01a1 13       		.uleb128 0x13
+ 2161 01a2 2F       		.uleb128 0x2f
+ 2162 01a3 05       		.uleb128 0x5
+ 2163 01a4 00       		.byte	0
+ 2164 01a5 00       		.byte	0
+ 2165 01a6 18       		.uleb128 0x18
+ 2166 01a7 34       		.uleb128 0x34
+ 2167 01a8 00       		.byte	0
+ 2168 01a9 03       		.uleb128 0x3
+ 2169 01aa 0E       		.uleb128 0xe
+ 2170 01ab 3A       		.uleb128 0x3a
+ 2171 01ac 0B       		.uleb128 0xb
+ 2172 01ad 3B       		.uleb128 0x3b
+ 2173 01ae 05       		.uleb128 0x5
+ 2174 01af 49       		.uleb128 0x49
+ 2175 01b0 13       		.uleb128 0x13
+ 2176 01b1 3F       		.uleb128 0x3f
+ 2177 01b2 19       		.uleb128 0x19
+ 2178 01b3 3C       		.uleb128 0x3c
+ 2179 01b4 19       		.uleb128 0x19
+ 2180 01b5 00       		.byte	0
+ 2181 01b6 00       		.byte	0
+ 2182 01b7 19       		.uleb128 0x19
+ 2183 01b8 21       		.uleb128 0x21
+ 2184 01b9 00       		.byte	0
+ 2185 01ba 49       		.uleb128 0x49
+ 2186 01bb 13       		.uleb128 0x13
+ 2187 01bc 2F       		.uleb128 0x2f
+ 2188 01bd 0B       		.uleb128 0xb
+ 2189 01be 00       		.byte	0
+ 2190 01bf 00       		.byte	0
+ 2191 01c0 1A       		.uleb128 0x1a
+ 2192 01c1 34       		.uleb128 0x34
+ 2193 01c2 00       		.byte	0
+ 2194 01c3 03       		.uleb128 0x3
+ 2195 01c4 0E       		.uleb128 0xe
+ 2196 01c5 3A       		.uleb128 0x3a
+ 2197 01c6 0B       		.uleb128 0xb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 48
+
+
+ 2198 01c7 3B       		.uleb128 0x3b
+ 2199 01c8 0B       		.uleb128 0xb
+ 2200 01c9 49       		.uleb128 0x49
+ 2201 01ca 13       		.uleb128 0x13
+ 2202 01cb 3F       		.uleb128 0x3f
+ 2203 01cc 19       		.uleb128 0x19
+ 2204 01cd 3C       		.uleb128 0x3c
+ 2205 01ce 19       		.uleb128 0x19
+ 2206 01cf 00       		.byte	0
+ 2207 01d0 00       		.byte	0
+ 2208 01d1 1B       		.uleb128 0x1b
+ 2209 01d2 26       		.uleb128 0x26
+ 2210 01d3 00       		.byte	0
+ 2211 01d4 49       		.uleb128 0x49
+ 2212 01d5 13       		.uleb128 0x13
+ 2213 01d6 00       		.byte	0
+ 2214 01d7 00       		.byte	0
+ 2215 01d8 00       		.byte	0
+ 2216              		.section	.debug_aranges,"",%progbits
+ 2217 0000 9C000000 		.4byte	0x9c
+ 2218 0004 0200     		.2byte	0x2
+ 2219 0006 00000000 		.4byte	.Ldebug_info0
+ 2220 000a 04       		.byte	0x4
+ 2221 000b 00       		.byte	0
+ 2222 000c 0000     		.2byte	0
+ 2223 000e 0000     		.2byte	0
+ 2224 0010 00000000 		.4byte	.LFB63
+ 2225 0014 18000000 		.4byte	.LFE63-.LFB63
+ 2226 0018 00000000 		.4byte	.LFB64
+ 2227 001c 18000000 		.4byte	.LFE64-.LFB64
+ 2228 0020 00000000 		.4byte	.LFB65
+ 2229 0024 7C000000 		.4byte	.LFE65-.LFB65
+ 2230 0028 00000000 		.4byte	.LFB66
+ 2231 002c 44000000 		.4byte	.LFE66-.LFB66
+ 2232 0030 00000000 		.4byte	.LFB67
+ 2233 0034 34000000 		.4byte	.LFE67-.LFB67
+ 2234 0038 00000000 		.4byte	.LFB68
+ 2235 003c 94000000 		.4byte	.LFE68-.LFB68
+ 2236 0040 00000000 		.4byte	.LFB69
+ 2237 0044 54000000 		.4byte	.LFE69-.LFB69
+ 2238 0048 00000000 		.4byte	.LFB70
+ 2239 004c 64000000 		.4byte	.LFE70-.LFB70
+ 2240 0050 00000000 		.4byte	.LFB71
+ 2241 0054 50000000 		.4byte	.LFE71-.LFB71
+ 2242 0058 00000000 		.4byte	.LFB72
+ 2243 005c 34000000 		.4byte	.LFE72-.LFB72
+ 2244 0060 00000000 		.4byte	.LFB73
+ 2245 0064 44000000 		.4byte	.LFE73-.LFB73
+ 2246 0068 00000000 		.4byte	.LFB74
+ 2247 006c 18000000 		.4byte	.LFE74-.LFB74
+ 2248 0070 00000000 		.4byte	.LFB75
+ 2249 0074 4C000000 		.4byte	.LFE75-.LFB75
+ 2250 0078 00000000 		.4byte	.LFB76
+ 2251 007c 7C000000 		.4byte	.LFE76-.LFB76
+ 2252 0080 00000000 		.4byte	.LFB77
+ 2253 0084 44000000 		.4byte	.LFE77-.LFB77
+ 2254 0088 00000000 		.4byte	.LFB78
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 49
+
+
+ 2255 008c 3C000000 		.4byte	.LFE78-.LFB78
+ 2256 0090 00000000 		.4byte	.LFB79
+ 2257 0094 3C000000 		.4byte	.LFE79-.LFB79
+ 2258 0098 00000000 		.4byte	0
+ 2259 009c 00000000 		.4byte	0
+ 2260              		.section	.debug_ranges,"",%progbits
+ 2261              	.Ldebug_ranges0:
+ 2262 0000 00000000 		.4byte	.LFB63
+ 2263 0004 18000000 		.4byte	.LFE63
+ 2264 0008 00000000 		.4byte	.LFB64
+ 2265 000c 18000000 		.4byte	.LFE64
+ 2266 0010 00000000 		.4byte	.LFB65
+ 2267 0014 7C000000 		.4byte	.LFE65
+ 2268 0018 00000000 		.4byte	.LFB66
+ 2269 001c 44000000 		.4byte	.LFE66
+ 2270 0020 00000000 		.4byte	.LFB67
+ 2271 0024 34000000 		.4byte	.LFE67
+ 2272 0028 00000000 		.4byte	.LFB68
+ 2273 002c 94000000 		.4byte	.LFE68
+ 2274 0030 00000000 		.4byte	.LFB69
+ 2275 0034 54000000 		.4byte	.LFE69
+ 2276 0038 00000000 		.4byte	.LFB70
+ 2277 003c 64000000 		.4byte	.LFE70
+ 2278 0040 00000000 		.4byte	.LFB71
+ 2279 0044 50000000 		.4byte	.LFE71
+ 2280 0048 00000000 		.4byte	.LFB72
+ 2281 004c 34000000 		.4byte	.LFE72
+ 2282 0050 00000000 		.4byte	.LFB73
+ 2283 0054 44000000 		.4byte	.LFE73
+ 2284 0058 00000000 		.4byte	.LFB74
+ 2285 005c 18000000 		.4byte	.LFE74
+ 2286 0060 00000000 		.4byte	.LFB75
+ 2287 0064 4C000000 		.4byte	.LFE75
+ 2288 0068 00000000 		.4byte	.LFB76
+ 2289 006c 7C000000 		.4byte	.LFE76
+ 2290 0070 00000000 		.4byte	.LFB77
+ 2291 0074 44000000 		.4byte	.LFE77
+ 2292 0078 00000000 		.4byte	.LFB78
+ 2293 007c 3C000000 		.4byte	.LFE78
+ 2294 0080 00000000 		.4byte	.LFB79
+ 2295 0084 3C000000 		.4byte	.LFE79
+ 2296 0088 00000000 		.4byte	0
+ 2297 008c 00000000 		.4byte	0
+ 2298              		.section	.debug_line,"",%progbits
+ 2299              	.Ldebug_line0:
+ 2300 0000 61030000 		.section	.debug_str,"MS",%progbits,1
+ 2300      02007E01 
+ 2300      00000201 
+ 2300      FB0E0D00 
+ 2300      01010101 
+ 2301              	.LASF57:
+ 2302 0000 6D6F6462 		.ascii	"modbus_address_data\000"
+ 2302      75735F61 
+ 2302      64647265 
+ 2302      73735F64 
+ 2302      61746100 
+ 2303              	.LASF37:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 50
+
+
+ 2304 0014 70617261 		.ascii	"param_3\000"
+ 2304      6D5F3300 
+ 2305              	.LASF49:
+ 2306 001c 6D6F6462 		.ascii	"modbus_address\000"
+ 2306      75735F61 
+ 2306      64647265 
+ 2306      737300
+ 2307              	.LASF44:
+ 2308 002b 7365745F 		.ascii	"set_commissiong_address\000"
+ 2308      636F6D6D 
+ 2308      69737369 
+ 2308      6F6E675F 
+ 2308      61646472 
+ 2309              	.LASF43:
+ 2310 0043 74656D70 		.ascii	"temp\000"
+ 2310      00
+ 2311              	.LASF2:
+ 2312 0048 73686F72 		.ascii	"short int\000"
+ 2312      7420696E 
+ 2312      7400
+ 2313              	.LASF18:
+ 2314 0052 73697A65 		.ascii	"sizetype\000"
+ 2314      74797065 
+ 2314      00
+ 2315              	.LASF30:
+ 2316 005b 696E6974 		.ascii	"init_processing_state\000"
+ 2316      5F70726F 
+ 2316      63657373 
+ 2316      696E675F 
+ 2316      73746174 
+ 2317              	.LASF34:
+ 2318 0071 6C696E6B 		.ascii	"link_id\000"
+ 2318      5F696400 
+ 2319              	.LASF35:
+ 2320 0079 70617261 		.ascii	"param_1\000"
+ 2320      6D5F3100 
+ 2321              	.LASF36:
+ 2322 0081 70617261 		.ascii	"param_2\000"
+ 2322      6D5F3200 
+ 2323              	.LASF38:
+ 2324 0089 6576656E 		.ascii	"event\000"
+ 2324      7400
+ 2325              	.LASF31:
+ 2326 008f 64756D70 		.ascii	"dump_rx_uart\000"
+ 2326      5F72785F 
+ 2326      75617274 
+ 2326      00
+ 2327              	.LASF54:
+ 2328 009c 6D6F6462 		.ascii	"modbus_out_buffer\000"
+ 2328      75735F6F 
+ 2328      75745F62 
+ 2328      75666665 
+ 2328      7200
+ 2329              	.LASF55:
+ 2330 00ae 72656164 		.ascii	"read_status_value\000"
+ 2330      5F737461 
+ 2330      7475735F 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 51
+
+
+ 2330      76616C75 
+ 2330      6500
+ 2331              	.LASF12:
+ 2332 00c0 75696E74 		.ascii	"uint16\000"
+ 2332      313600
+ 2333              	.LASF11:
+ 2334 00c7 75696E74 		.ascii	"uint8\000"
+ 2334      3800
+ 2335              	.LASF52:
+ 2336 00cd 6D6F6462 		.ascii	"modbus_tx_index\000"
+ 2336      75735F74 
+ 2336      785F696E 
+ 2336      64657800 
+ 2337              	.LASF40:
+ 2338 00dd 696E6974 		.ascii	"initialize_modbus_rtu\000"
+ 2338      69616C69 
+ 2338      7A655F6D 
+ 2338      6F646275 
+ 2338      735F7274 
+ 2339              	.LASF45:
+ 2340 00f3 75617274 		.ascii	"uart_timer_state\000"
+ 2340      5F74696D 
+ 2340      65725F73 
+ 2340      74617465 
+ 2340      00
+ 2341              	.LASF14:
+ 2342 0104 666C6F61 		.ascii	"float\000"
+ 2342      7400
+ 2343              	.LASF53:
+ 2344 010a 6D6F6462 		.ascii	"modbus_tx_message_count\000"
+ 2344      75735F74 
+ 2344      785F6D65 
+ 2344      73736167 
+ 2344      655F636F 
+ 2345              	.LASF6:
+ 2346 0122 6C6F6E67 		.ascii	"long long int\000"
+ 2346      206C6F6E 
+ 2346      6720696E 
+ 2346      7400
+ 2347              	.LASF58:
+ 2348 0130 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 2348      4320342E 
+ 2348      392E3320 
+ 2348      32303135 
+ 2348      30333033 
+ 2349 0163 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 2349      20726576 
+ 2349      6973696F 
+ 2349      6E203232 
+ 2349      31323230 
+ 2350 0196 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 2350      66756E63 
+ 2350      74696F6E 
+ 2350      2D736563 
+ 2350      74696F6E 
+ 2351              	.LASF51:
+ 2352 01be 6D6F6462 		.ascii	"modbus_in_buffer\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 52
+
+
+ 2352      75735F69 
+ 2352      6E5F6275 
+ 2352      66666572 
+ 2352      00
+ 2353              	.LASF26:
+ 2354 01cf 72785F69 		.ascii	"rx_interrupt\000"
+ 2354      6E746572 
+ 2354      72757074 
+ 2354      00
+ 2355              	.LASF1:
+ 2356 01dc 756E7369 		.ascii	"unsigned char\000"
+ 2356      676E6564 
+ 2356      20636861 
+ 2356      7200
+ 2357              	.LASF23:
+ 2358 01ea 63686563 		.ascii	"check_modbus_address\000"
+ 2358      6B5F6D6F 
+ 2358      64627573 
+ 2358      5F616464 
+ 2358      72657373 
+ 2359              	.LASF41:
+ 2360 01ff 70726F63 		.ascii	"process_rx_modbus_rtu_message\000"
+ 2360      6573735F 
+ 2360      72785F6D 
+ 2360      6F646275 
+ 2360      735F7274 
+ 2361              	.LASF47:
+ 2362 021d 75617274 		.ascii	"uart_tx_state\000"
+ 2362      5F74785F 
+ 2362      73746174 
+ 2362      6500
+ 2363              	.LASF48:
+ 2364 022b 72785F69 		.ascii	"rx_interval_count\000"
+ 2364      6E746572 
+ 2364      76616C5F 
+ 2364      636F756E 
+ 2364      7400
+ 2365              	.LASF0:
+ 2366 023d 7369676E 		.ascii	"signed char\000"
+ 2366      65642063 
+ 2366      68617200 
+ 2367              	.LASF10:
+ 2368 0249 696E7433 		.ascii	"int32_t\000"
+ 2368      325F7400 
+ 2369              	.LASF7:
+ 2370 0251 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2370      206C6F6E 
+ 2370      6720756E 
+ 2370      7369676E 
+ 2370      65642069 
+ 2371              	.LASF60:
+ 2372 0268 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 2372      73657273 
+ 2372      5C676C65 
+ 2372      6E6E5C4F 
+ 2372      6E654472 
+ 2373 0295 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 53
+
+
+ 2373      55415254 
+ 2373      30312E63 
+ 2373      7964736E 
+ 2373      00
+ 2374              	.LASF8:
+ 2375 02a6 756E7369 		.ascii	"unsigned int\000"
+ 2375      676E6564 
+ 2375      20696E74 
+ 2375      00
+ 2376              	.LASF32:
+ 2377 02b3 696E6974 		.ascii	"init_tx_state\000"
+ 2377      5F74785F 
+ 2377      73746174 
+ 2377      6500
+ 2378              	.LASF28:
+ 2379 02c1 61626F72 		.ascii	"abort_rx_state\000"
+ 2379      745F7278 
+ 2379      5F737461 
+ 2379      746500
+ 2380              	.LASF50:
+ 2381 02d0 6D6F6462 		.ascii	"modbus_rx_index\000"
+ 2381      75735F72 
+ 2381      785F696E 
+ 2381      64657800 
+ 2382              	.LASF21:
+ 2383 02e0 72657475 		.ascii	"return_value\000"
+ 2383      726E5F76 
+ 2383      616C7565 
+ 2383      00
+ 2384              	.LASF17:
+ 2385 02ed 72656733 		.ascii	"reg32\000"
+ 2385      3200
+ 2386              	.LASF3:
+ 2387 02f3 73686F72 		.ascii	"short unsigned int\000"
+ 2387      7420756E 
+ 2387      7369676E 
+ 2387      65642069 
+ 2387      6E7400
+ 2388              	.LASF25:
+ 2389 0306 73746174 		.ascii	"status\000"
+ 2389      757300
+ 2390              	.LASF16:
+ 2391 030d 63686172 		.ascii	"char\000"
+ 2391      00
+ 2392              	.LASF4:
+ 2393 0312 6C6F6E67 		.ascii	"long int\000"
+ 2393      20696E74 
+ 2393      00
+ 2394              	.LASF20:
+ 2395 031b 6765745F 		.ascii	"get_commissioning_address\000"
+ 2395      636F6D6D 
+ 2395      69737369 
+ 2395      6F6E696E 
+ 2395      675F6164 
+ 2396              	.LASF9:
+ 2397 0335 5F5F696E 		.ascii	"__int32_t\000"
+ 2397      7433325F 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 54
+
+
+ 2397      7400
+ 2398              	.LASF39:
+ 2399 033f 64617461 		.ascii	"data\000"
+ 2399      00
+ 2400              	.LASF59:
+ 2401 0344 2E5C7274 		.ascii	".\\rtu_modbus\\modbus_serial_ctrl.c\000"
+ 2401      755F6D6F 
+ 2401      64627573 
+ 2401      5C6D6F64 
+ 2401      6275735F 
+ 2402              	.LASF19:
+ 2403 0366 6765745F 		.ascii	"get_modbus_address\000"
+ 2403      6D6F6462 
+ 2403      75735F61 
+ 2403      64647265 
+ 2403      737300
+ 2404              	.LASF13:
+ 2405 0379 75696E74 		.ascii	"uint32\000"
+ 2405      333200
+ 2406              	.LASF5:
+ 2407 0380 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2407      20756E73 
+ 2407      69676E65 
+ 2407      6420696E 
+ 2407      7400
+ 2408              	.LASF15:
+ 2409 0392 646F7562 		.ascii	"double\000"
+ 2409      6C6500
+ 2410              	.LASF24:
+ 2411 0399 66696C6C 		.ascii	"fill_transmitter\000"
+ 2411      5F747261 
+ 2411      6E736D69 
+ 2411      74746572 
+ 2411      00
+ 2412              	.LASF46:
+ 2413 03aa 75617274 		.ascii	"uart_rx_state\000"
+ 2413      5F72785F 
+ 2413      73746174 
+ 2413      6500
+ 2414              	.LASF42:
+ 2415 03b8 7365745F 		.ascii	"set_normal_modbus_address\000"
+ 2415      6E6F726D 
+ 2415      616C5F6D 
+ 2415      6F646275 
+ 2415      735F6164 
+ 2416              	.LASF27:
+ 2417 03d2 74696D65 		.ascii	"timer_interrupt\000"
+ 2417      725F696E 
+ 2417      74657272 
+ 2417      75707400 
+ 2418              	.LASF22:
+ 2419 03e2 656D7074 		.ascii	"empty_rx_uart\000"
+ 2419      795F7278 
+ 2419      5F756172 
+ 2419      7400
+ 2420              	.LASF56:
+ 2421 03f0 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc0I1j3r.s 			page 55
+
+
+ 2421      52784275 
+ 2421      66666572 
+ 2421      00
+ 2422              	.LASF29:
+ 2423 03fd 696E6974 		.ascii	"init_rx_state\000"
+ 2423      5F72785F 
+ 2423      73746174 
+ 2423      6500
+ 2424              	.LASF61:
+ 2425 040b 74785F69 		.ascii	"tx_interrupt\000"
+ 2425      6E746572 
+ 2425      72757074 
+ 2425      00
+ 2426              	.LASF33:
+ 2427 0418 6F75745F 		.ascii	"out_count\000"
+ 2427      636F756E 
+ 2427      7400
+ 2428              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

@@ -1,0 +1,967 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"moving_average.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	__aeabi_fsub
+  19              		.section	.text.ma_initialize,"ax",%progbits
+  20              		.align	2
+  21              		.global	ma_initialize
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	ma_initialize, %function
+  25              	ma_initialize:
+  26              	.LFB63:
+  27              		.file 1 ".\\utilities\\moving_average.c"
+   1:.\utilities/moving_average.c **** /*
+   2:.\utilities/moving_average.c **** **
+   3:.\utilities/moving_average.c **** ** File: moving_average.c
+   4:.\utilities/moving_average.c **** **
+   5:.\utilities/moving_average.c **** **
+   6:.\utilities/moving_average.c **** */
+   7:.\utilities/moving_average.c **** 
+   8:.\utilities/moving_average.c **** #include "moving_average.h"
+   9:.\utilities/moving_average.c **** 
+  10:.\utilities/moving_average.c **** 
+  11:.\utilities/moving_average.c **** 
+  12:.\utilities/moving_average.c **** void ma_initialize( MOVING_AVERAGE_STRUCT *ma, float alpha , float init_average )
+  13:.\utilities/moving_average.c **** {
+  28              		.loc 1 13 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 16
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+  35              		.cfi_offset 14, -4
+  36 0002 84B0     		sub	sp, sp, #16
+  37              		.cfi_def_cfa_offset 24
+  38 0004 00AF     		add	r7, sp, #0
+  39              		.cfi_def_cfa_register 7
+  40 0006 F860     		str	r0, [r7, #12]
+  41 0008 B960     		str	r1, [r7, #8]	@ float
+  42 000a 7A60     		str	r2, [r7, #4]	@ float
+  14:.\utilities/moving_average.c **** 	ma->alpha = alpha;
+  43              		.loc 1 14 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 2
+
+
+  44 000c FB68     		ldr	r3, [r7, #12]
+  45 000e BA68     		ldr	r2, [r7, #8]	@ float
+  46 0010 1A60     		str	r2, [r3]	@ float
+  15:.\utilities/moving_average.c ****     ma->minus_alpha = 1.0 - alpha;
+  47              		.loc 1 15 0
+  48 0012 4FF07E50 		mov	r0, #1065353216
+  49 0016 B968     		ldr	r1, [r7, #8]	@ float
+  50 0018 FFF7FEFF 		bl	__aeabi_fsub
+  51 001c 0346     		mov	r3, r0
+  52 001e 1A46     		mov	r2, r3
+  53 0020 FB68     		ldr	r3, [r7, #12]
+  54 0022 5A60     		str	r2, [r3, #4]	@ float
+  16:.\utilities/moving_average.c ****     ma->average     = init_average;
+  55              		.loc 1 16 0
+  56 0024 FB68     		ldr	r3, [r7, #12]
+  57 0026 7A68     		ldr	r2, [r7, #4]	@ float
+  58 0028 9A60     		str	r2, [r3, #8]	@ float
+  17:.\utilities/moving_average.c **** }
+  59              		.loc 1 17 0
+  60 002a 1037     		adds	r7, r7, #16
+  61              		.cfi_def_cfa_offset 8
+  62 002c BD46     		mov	sp, r7
+  63              		.cfi_def_cfa_register 13
+  64              		@ sp needed
+  65 002e 80BD     		pop	{r7, pc}
+  66              		.cfi_endproc
+  67              	.LFE63:
+  68              		.size	ma_initialize, .-ma_initialize
+  69              		.global	__aeabi_fmul
+  70              		.global	__aeabi_fadd
+  71              		.section	.text.ma_update,"ax",%progbits
+  72              		.align	2
+  73              		.global	ma_update
+  74              		.thumb
+  75              		.thumb_func
+  76              		.type	ma_update, %function
+  77              	ma_update:
+  78              	.LFB64:
+  18:.\utilities/moving_average.c **** 
+  19:.\utilities/moving_average.c **** float ma_update( MOVING_AVERAGE_STRUCT *ma, float new_sample)
+  20:.\utilities/moving_average.c **** {
+  79              		.loc 1 20 0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 8
+  82              		@ frame_needed = 1, uses_anonymous_args = 0
+  83 0000 90B5     		push	{r4, r7, lr}
+  84              		.cfi_def_cfa_offset 12
+  85              		.cfi_offset 4, -12
+  86              		.cfi_offset 7, -8
+  87              		.cfi_offset 14, -4
+  88 0002 83B0     		sub	sp, sp, #12
+  89              		.cfi_def_cfa_offset 24
+  90 0004 00AF     		add	r7, sp, #0
+  91              		.cfi_def_cfa_register 7
+  92 0006 7860     		str	r0, [r7, #4]
+  93 0008 3960     		str	r1, [r7]	@ float
+  21:.\utilities/moving_average.c ****     ma->average *= ma->minus_alpha;
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 3
+
+
+  94              		.loc 1 21 0
+  95 000a 7B68     		ldr	r3, [r7, #4]
+  96 000c 9A68     		ldr	r2, [r3, #8]	@ float
+  97 000e 7B68     		ldr	r3, [r7, #4]
+  98 0010 5B68     		ldr	r3, [r3, #4]	@ float
+  99 0012 1046     		mov	r0, r2
+ 100 0014 1946     		mov	r1, r3
+ 101 0016 FFF7FEFF 		bl	__aeabi_fmul
+ 102 001a 0346     		mov	r3, r0
+ 103 001c 1A46     		mov	r2, r3
+ 104 001e 7B68     		ldr	r3, [r7, #4]
+ 105 0020 9A60     		str	r2, [r3, #8]	@ float
+  22:.\utilities/moving_average.c ****     ma->average += ((float) new_sample)*ma->alpha;
+ 106              		.loc 1 22 0
+ 107 0022 7B68     		ldr	r3, [r7, #4]
+ 108 0024 9C68     		ldr	r4, [r3, #8]	@ float
+ 109 0026 7B68     		ldr	r3, [r7, #4]
+ 110 0028 1B68     		ldr	r3, [r3]	@ float
+ 111 002a 1846     		mov	r0, r3
+ 112 002c 3968     		ldr	r1, [r7]	@ float
+ 113 002e FFF7FEFF 		bl	__aeabi_fmul
+ 114 0032 0346     		mov	r3, r0
+ 115 0034 2046     		mov	r0, r4
+ 116 0036 1946     		mov	r1, r3
+ 117 0038 FFF7FEFF 		bl	__aeabi_fadd
+ 118 003c 0346     		mov	r3, r0
+ 119 003e 1A46     		mov	r2, r3
+ 120 0040 7B68     		ldr	r3, [r7, #4]
+ 121 0042 9A60     		str	r2, [r3, #8]	@ float
+  23:.\utilities/moving_average.c ****     return ma->average;
+ 122              		.loc 1 23 0
+ 123 0044 7B68     		ldr	r3, [r7, #4]
+ 124 0046 9B68     		ldr	r3, [r3, #8]	@ float
+  24:.\utilities/moving_average.c ****  
+  25:.\utilities/moving_average.c **** }
+ 125              		.loc 1 25 0
+ 126 0048 1846     		mov	r0, r3
+ 127 004a 0C37     		adds	r7, r7, #12
+ 128              		.cfi_def_cfa_offset 12
+ 129 004c BD46     		mov	sp, r7
+ 130              		.cfi_def_cfa_register 13
+ 131              		@ sp needed
+ 132 004e 90BD     		pop	{r4, r7, pc}
+ 133              		.cfi_endproc
+ 134              	.LFE64:
+ 135              		.size	ma_update, .-ma_update
+ 136              		.section	.text.ma_get_value,"ax",%progbits
+ 137              		.align	2
+ 138              		.global	ma_get_value
+ 139              		.thumb
+ 140              		.thumb_func
+ 141              		.type	ma_get_value, %function
+ 142              	ma_get_value:
+ 143              	.LFB65:
+  26:.\utilities/moving_average.c **** 
+  27:.\utilities/moving_average.c **** float ma_get_value( MOVING_AVERAGE_STRUCT *ma )
+  28:.\utilities/moving_average.c **** {
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 4
+
+
+ 144              		.loc 1 28 0
+ 145              		.cfi_startproc
+ 146              		@ args = 0, pretend = 0, frame = 8
+ 147              		@ frame_needed = 1, uses_anonymous_args = 0
+ 148              		@ link register save eliminated.
+ 149 0000 80B4     		push	{r7}
+ 150              		.cfi_def_cfa_offset 4
+ 151              		.cfi_offset 7, -4
+ 152 0002 83B0     		sub	sp, sp, #12
+ 153              		.cfi_def_cfa_offset 16
+ 154 0004 00AF     		add	r7, sp, #0
+ 155              		.cfi_def_cfa_register 7
+ 156 0006 7860     		str	r0, [r7, #4]
+  29:.\utilities/moving_average.c ****     return ma->average;
+ 157              		.loc 1 29 0
+ 158 0008 7B68     		ldr	r3, [r7, #4]
+ 159 000a 9B68     		ldr	r3, [r3, #8]	@ float
+  30:.\utilities/moving_average.c **** }
+ 160              		.loc 1 30 0
+ 161 000c 1846     		mov	r0, r3
+ 162 000e 0C37     		adds	r7, r7, #12
+ 163              		.cfi_def_cfa_offset 4
+ 164 0010 BD46     		mov	sp, r7
+ 165              		.cfi_def_cfa_register 13
+ 166              		@ sp needed
+ 167 0012 5DF8047B 		ldr	r7, [sp], #4
+ 168              		.cfi_restore 7
+ 169              		.cfi_def_cfa_offset 0
+ 170 0016 7047     		bx	lr
+ 171              		.cfi_endproc
+ 172              	.LFE65:
+ 173              		.size	ma_get_value, .-ma_get_value
+ 174              		.section	.text.ma_store_value,"ax",%progbits
+ 175              		.align	2
+ 176              		.global	ma_store_value
+ 177              		.thumb
+ 178              		.thumb_func
+ 179              		.type	ma_store_value, %function
+ 180              	ma_store_value:
+ 181              	.LFB66:
+  31:.\utilities/moving_average.c **** 
+  32:.\utilities/moving_average.c **** void  ma_store_value( MOVING_AVERAGE_STRUCT *ma, float new_sample )
+  33:.\utilities/moving_average.c **** {
+ 182              		.loc 1 33 0
+ 183              		.cfi_startproc
+ 184              		@ args = 0, pretend = 0, frame = 8
+ 185              		@ frame_needed = 1, uses_anonymous_args = 0
+ 186              		@ link register save eliminated.
+ 187 0000 80B4     		push	{r7}
+ 188              		.cfi_def_cfa_offset 4
+ 189              		.cfi_offset 7, -4
+ 190 0002 83B0     		sub	sp, sp, #12
+ 191              		.cfi_def_cfa_offset 16
+ 192 0004 00AF     		add	r7, sp, #0
+ 193              		.cfi_def_cfa_register 7
+ 194 0006 7860     		str	r0, [r7, #4]
+ 195 0008 3960     		str	r1, [r7]	@ float
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 5
+
+
+  34:.\utilities/moving_average.c ****     ma->average = new_sample;
+ 196              		.loc 1 34 0
+ 197 000a 7B68     		ldr	r3, [r7, #4]
+ 198 000c 3A68     		ldr	r2, [r7]	@ float
+ 199 000e 9A60     		str	r2, [r3, #8]	@ float
+  35:.\utilities/moving_average.c **** }...
+ 200              		.loc 1 35 0
+ 201 0010 0C37     		adds	r7, r7, #12
+ 202              		.cfi_def_cfa_offset 4
+ 203 0012 BD46     		mov	sp, r7
+ 204              		.cfi_def_cfa_register 13
+ 205              		@ sp needed
+ 206 0014 5DF8047B 		ldr	r7, [sp], #4
+ 207              		.cfi_restore 7
+ 208              		.cfi_def_cfa_offset 0
+ 209 0018 7047     		bx	lr
+ 210              		.cfi_endproc
+ 211              	.LFE66:
+ 212              		.size	ma_store_value, .-ma_store_value
+ 213 001a 00BF     		.text
+ 214              	.Letext0:
+ 215              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 216              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 217              		.file 4 ".\\utilities\\moving_average.h"
+ 218              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 219              		.section	.debug_info,"",%progbits
+ 220              	.Ldebug_info0:
+ 221 0000 B5010000 		.4byte	0x1b5
+ 222 0004 0400     		.2byte	0x4
+ 223 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 224 000a 04       		.byte	0x4
+ 225 000b 01       		.uleb128 0x1
+ 226 000c 14000000 		.4byte	.LASF25
+ 227 0010 01       		.byte	0x1
+ 228 0011 E7010000 		.4byte	.LASF26
+ 229 0015 BE000000 		.4byte	.LASF27
+ 230 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 231 001d 00000000 		.4byte	0
+ 232 0021 00000000 		.4byte	.Ldebug_line0
+ 233 0025 02       		.uleb128 0x2
+ 234 0026 01       		.byte	0x1
+ 235 0027 06       		.byte	0x6
+ 236 0028 8A010000 		.4byte	.LASF0
+ 237 002c 02       		.uleb128 0x2
+ 238 002d 01       		.byte	0x1
+ 239 002e 08       		.byte	0x8
+ 240 002f 3A010000 		.4byte	.LASF1
+ 241 0033 02       		.uleb128 0x2
+ 242 0034 02       		.byte	0x2
+ 243 0035 05       		.byte	0x5
+ 244 0036 D4010000 		.4byte	.LASF2
+ 245 003a 02       		.uleb128 0x2
+ 246 003b 02       		.byte	0x2
+ 247 003c 07       		.byte	0x7
+ 248 003d 1A010000 		.4byte	.LASF3
+ 249 0041 03       		.uleb128 0x3
+ 250 0042 00000000 		.4byte	.LASF9
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 6
+
+
+ 251 0046 02       		.byte	0x2
+ 252 0047 3F       		.byte	0x3f
+ 253 0048 4C000000 		.4byte	0x4c
+ 254 004c 02       		.uleb128 0x2
+ 255 004d 04       		.byte	0x4
+ 256 004e 05       		.byte	0x5
+ 257 004f DE010000 		.4byte	.LASF4
+ 258 0053 02       		.uleb128 0x2
+ 259 0054 04       		.byte	0x4
+ 260 0055 07       		.byte	0x7
+ 261 0056 08010000 		.4byte	.LASF5
+ 262 005a 02       		.uleb128 0x2
+ 263 005b 08       		.byte	0x8
+ 264 005c 05       		.byte	0x5
+ 265 005d B4010000 		.4byte	.LASF6
+ 266 0061 02       		.uleb128 0x2
+ 267 0062 08       		.byte	0x8
+ 268 0063 07       		.byte	0x7
+ 269 0064 6B010000 		.4byte	.LASF7
+ 270 0068 04       		.uleb128 0x4
+ 271 0069 04       		.byte	0x4
+ 272 006a 05       		.byte	0x5
+ 273 006b 696E7400 		.ascii	"int\000"
+ 274 006f 02       		.uleb128 0x2
+ 275 0070 04       		.byte	0x4
+ 276 0071 07       		.byte	0x7
+ 277 0072 5E010000 		.4byte	.LASF8
+ 278 0076 03       		.uleb128 0x3
+ 279 0077 96010000 		.4byte	.LASF10
+ 280 007b 03       		.byte	0x3
+ 281 007c 2C       		.byte	0x2c
+ 282 007d 41000000 		.4byte	0x41
+ 283 0081 02       		.uleb128 0x2
+ 284 0082 04       		.byte	0x4
+ 285 0083 04       		.byte	0x4
+ 286 0084 B8000000 		.4byte	.LASF11
+ 287 0088 02       		.uleb128 0x2
+ 288 0089 08       		.byte	0x8
+ 289 008a 04       		.byte	0x4
+ 290 008b 48010000 		.4byte	.LASF12
+ 291 008f 02       		.uleb128 0x2
+ 292 0090 01       		.byte	0x1
+ 293 0091 08       		.byte	0x8
+ 294 0092 C2010000 		.4byte	.LASF13
+ 295 0096 02       		.uleb128 0x2
+ 296 0097 04       		.byte	0x4
+ 297 0098 07       		.byte	0x7
+ 298 0099 AB010000 		.4byte	.LASF14
+ 299 009d 05       		.uleb128 0x5
+ 300 009e 0C       		.byte	0xc
+ 301 009f 04       		.byte	0x4
+ 302 00a0 0C       		.byte	0xc
+ 303 00a1 CA000000 		.4byte	0xca
+ 304 00a5 06       		.uleb128 0x6
+ 305 00a6 12020000 		.4byte	.LASF15
+ 306 00aa 04       		.byte	0x4
+ 307 00ab 0E       		.byte	0xe
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 7
+
+
+ 308 00ac 81000000 		.4byte	0x81
+ 309 00b0 00       		.byte	0
+ 310 00b1 06       		.uleb128 0x6
+ 311 00b2 FC000000 		.4byte	.LASF16
+ 312 00b6 04       		.byte	0x4
+ 313 00b7 0F       		.byte	0xf
+ 314 00b8 81000000 		.4byte	0x81
+ 315 00bc 04       		.byte	0x4
+ 316 00bd 06       		.uleb128 0x6
+ 317 00be 82010000 		.4byte	.LASF17
+ 318 00c2 04       		.byte	0x4
+ 319 00c3 10       		.byte	0x10
+ 320 00c4 81000000 		.4byte	0x81
+ 321 00c8 08       		.byte	0x8
+ 322 00c9 00       		.byte	0
+ 323 00ca 03       		.uleb128 0x3
+ 324 00cb A2000000 		.4byte	.LASF18
+ 325 00cf 04       		.byte	0x4
+ 326 00d0 11       		.byte	0x11
+ 327 00d1 9D000000 		.4byte	0x9d
+ 328 00d5 07       		.uleb128 0x7
+ 329 00d6 04020000 		.4byte	.LASF23
+ 330 00da 01       		.byte	0x1
+ 331 00db 0C       		.byte	0xc
+ 332 00dc 00000000 		.4byte	.LFB63
+ 333 00e0 30000000 		.4byte	.LFE63-.LFB63
+ 334 00e4 01       		.uleb128 0x1
+ 335 00e5 9C       		.byte	0x9c
+ 336 00e6 14010000 		.4byte	0x114
+ 337 00ea 08       		.uleb128 0x8
+ 338 00eb 6D6100   		.ascii	"ma\000"
+ 339 00ee 01       		.byte	0x1
+ 340 00ef 0C       		.byte	0xc
+ 341 00f0 14010000 		.4byte	0x114
+ 342 00f4 02       		.uleb128 0x2
+ 343 00f5 91       		.byte	0x91
+ 344 00f6 74       		.sleb128 -12
+ 345 00f7 09       		.uleb128 0x9
+ 346 00f8 12020000 		.4byte	.LASF15
+ 347 00fc 01       		.byte	0x1
+ 348 00fd 0C       		.byte	0xc
+ 349 00fe 81000000 		.4byte	0x81
+ 350 0102 02       		.uleb128 0x2
+ 351 0103 91       		.byte	0x91
+ 352 0104 70       		.sleb128 -16
+ 353 0105 09       		.uleb128 0x9
+ 354 0106 9E010000 		.4byte	.LASF19
+ 355 010a 01       		.byte	0x1
+ 356 010b 0C       		.byte	0xc
+ 357 010c 81000000 		.4byte	0x81
+ 358 0110 02       		.uleb128 0x2
+ 359 0111 91       		.byte	0x91
+ 360 0112 6C       		.sleb128 -20
+ 361 0113 00       		.byte	0
+ 362 0114 0A       		.uleb128 0xa
+ 363 0115 04       		.byte	0x4
+ 364 0116 CA000000 		.4byte	0xca
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 8
+
+
+ 365 011a 0B       		.uleb128 0xb
+ 366 011b 0A000000 		.4byte	.LASF21
+ 367 011f 01       		.byte	0x1
+ 368 0120 13       		.byte	0x13
+ 369 0121 81000000 		.4byte	0x81
+ 370 0125 00000000 		.4byte	.LFB64
+ 371 0129 50000000 		.4byte	.LFE64-.LFB64
+ 372 012d 01       		.uleb128 0x1
+ 373 012e 9C       		.byte	0x9c
+ 374 012f 4F010000 		.4byte	0x14f
+ 375 0133 08       		.uleb128 0x8
+ 376 0134 6D6100   		.ascii	"ma\000"
+ 377 0137 01       		.byte	0x1
+ 378 0138 13       		.byte	0x13
+ 379 0139 14010000 		.4byte	0x114
+ 380 013d 02       		.uleb128 0x2
+ 381 013e 91       		.byte	0x91
+ 382 013f 6C       		.sleb128 -20
+ 383 0140 09       		.uleb128 0x9
+ 384 0141 18020000 		.4byte	.LASF20
+ 385 0145 01       		.byte	0x1
+ 386 0146 13       		.byte	0x13
+ 387 0147 81000000 		.4byte	0x81
+ 388 014b 02       		.uleb128 0x2
+ 389 014c 91       		.byte	0x91
+ 390 014d 68       		.sleb128 -24
+ 391 014e 00       		.byte	0
+ 392 014f 0C       		.uleb128 0xc
+ 393 0150 C7010000 		.4byte	.LASF22
+ 394 0154 01       		.byte	0x1
+ 395 0155 1B       		.byte	0x1b
+ 396 0156 81000000 		.4byte	0x81
+ 397 015a 00000000 		.4byte	.LFB65
+ 398 015e 18000000 		.4byte	.LFE65-.LFB65
+ 399 0162 01       		.uleb128 0x1
+ 400 0163 9C       		.byte	0x9c
+ 401 0164 76010000 		.4byte	0x176
+ 402 0168 08       		.uleb128 0x8
+ 403 0169 6D6100   		.ascii	"ma\000"
+ 404 016c 01       		.byte	0x1
+ 405 016d 1B       		.byte	0x1b
+ 406 016e 14010000 		.4byte	0x114
+ 407 0172 02       		.uleb128 0x2
+ 408 0173 91       		.byte	0x91
+ 409 0174 74       		.sleb128 -12
+ 410 0175 00       		.byte	0
+ 411 0176 0D       		.uleb128 0xd
+ 412 0177 4F010000 		.4byte	.LASF24
+ 413 017b 01       		.byte	0x1
+ 414 017c 20       		.byte	0x20
+ 415 017d 00000000 		.4byte	.LFB66
+ 416 0181 1A000000 		.4byte	.LFE66-.LFB66
+ 417 0185 01       		.uleb128 0x1
+ 418 0186 9C       		.byte	0x9c
+ 419 0187 A7010000 		.4byte	0x1a7
+ 420 018b 08       		.uleb128 0x8
+ 421 018c 6D6100   		.ascii	"ma\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 9
+
+
+ 422 018f 01       		.byte	0x1
+ 423 0190 20       		.byte	0x20
+ 424 0191 14010000 		.4byte	0x114
+ 425 0195 02       		.uleb128 0x2
+ 426 0196 91       		.byte	0x91
+ 427 0197 74       		.sleb128 -12
+ 428 0198 09       		.uleb128 0x9
+ 429 0199 18020000 		.4byte	.LASF20
+ 430 019d 01       		.byte	0x1
+ 431 019e 20       		.byte	0x20
+ 432 019f 81000000 		.4byte	0x81
+ 433 01a3 02       		.uleb128 0x2
+ 434 01a4 91       		.byte	0x91
+ 435 01a5 70       		.sleb128 -16
+ 436 01a6 00       		.byte	0
+ 437 01a7 0E       		.uleb128 0xe
+ 438 01a8 2D010000 		.4byte	.LASF28
+ 439 01ac 05       		.byte	0x5
+ 440 01ad 9606     		.2byte	0x696
+ 441 01af B3010000 		.4byte	0x1b3
+ 442 01b3 0F       		.uleb128 0xf
+ 443 01b4 76000000 		.4byte	0x76
+ 444 01b8 00       		.byte	0
+ 445              		.section	.debug_abbrev,"",%progbits
+ 446              	.Ldebug_abbrev0:
+ 447 0000 01       		.uleb128 0x1
+ 448 0001 11       		.uleb128 0x11
+ 449 0002 01       		.byte	0x1
+ 450 0003 25       		.uleb128 0x25
+ 451 0004 0E       		.uleb128 0xe
+ 452 0005 13       		.uleb128 0x13
+ 453 0006 0B       		.uleb128 0xb
+ 454 0007 03       		.uleb128 0x3
+ 455 0008 0E       		.uleb128 0xe
+ 456 0009 1B       		.uleb128 0x1b
+ 457 000a 0E       		.uleb128 0xe
+ 458 000b 55       		.uleb128 0x55
+ 459 000c 17       		.uleb128 0x17
+ 460 000d 11       		.uleb128 0x11
+ 461 000e 01       		.uleb128 0x1
+ 462 000f 10       		.uleb128 0x10
+ 463 0010 17       		.uleb128 0x17
+ 464 0011 00       		.byte	0
+ 465 0012 00       		.byte	0
+ 466 0013 02       		.uleb128 0x2
+ 467 0014 24       		.uleb128 0x24
+ 468 0015 00       		.byte	0
+ 469 0016 0B       		.uleb128 0xb
+ 470 0017 0B       		.uleb128 0xb
+ 471 0018 3E       		.uleb128 0x3e
+ 472 0019 0B       		.uleb128 0xb
+ 473 001a 03       		.uleb128 0x3
+ 474 001b 0E       		.uleb128 0xe
+ 475 001c 00       		.byte	0
+ 476 001d 00       		.byte	0
+ 477 001e 03       		.uleb128 0x3
+ 478 001f 16       		.uleb128 0x16
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 10
+
+
+ 479 0020 00       		.byte	0
+ 480 0021 03       		.uleb128 0x3
+ 481 0022 0E       		.uleb128 0xe
+ 482 0023 3A       		.uleb128 0x3a
+ 483 0024 0B       		.uleb128 0xb
+ 484 0025 3B       		.uleb128 0x3b
+ 485 0026 0B       		.uleb128 0xb
+ 486 0027 49       		.uleb128 0x49
+ 487 0028 13       		.uleb128 0x13
+ 488 0029 00       		.byte	0
+ 489 002a 00       		.byte	0
+ 490 002b 04       		.uleb128 0x4
+ 491 002c 24       		.uleb128 0x24
+ 492 002d 00       		.byte	0
+ 493 002e 0B       		.uleb128 0xb
+ 494 002f 0B       		.uleb128 0xb
+ 495 0030 3E       		.uleb128 0x3e
+ 496 0031 0B       		.uleb128 0xb
+ 497 0032 03       		.uleb128 0x3
+ 498 0033 08       		.uleb128 0x8
+ 499 0034 00       		.byte	0
+ 500 0035 00       		.byte	0
+ 501 0036 05       		.uleb128 0x5
+ 502 0037 13       		.uleb128 0x13
+ 503 0038 01       		.byte	0x1
+ 504 0039 0B       		.uleb128 0xb
+ 505 003a 0B       		.uleb128 0xb
+ 506 003b 3A       		.uleb128 0x3a
+ 507 003c 0B       		.uleb128 0xb
+ 508 003d 3B       		.uleb128 0x3b
+ 509 003e 0B       		.uleb128 0xb
+ 510 003f 01       		.uleb128 0x1
+ 511 0040 13       		.uleb128 0x13
+ 512 0041 00       		.byte	0
+ 513 0042 00       		.byte	0
+ 514 0043 06       		.uleb128 0x6
+ 515 0044 0D       		.uleb128 0xd
+ 516 0045 00       		.byte	0
+ 517 0046 03       		.uleb128 0x3
+ 518 0047 0E       		.uleb128 0xe
+ 519 0048 3A       		.uleb128 0x3a
+ 520 0049 0B       		.uleb128 0xb
+ 521 004a 3B       		.uleb128 0x3b
+ 522 004b 0B       		.uleb128 0xb
+ 523 004c 49       		.uleb128 0x49
+ 524 004d 13       		.uleb128 0x13
+ 525 004e 38       		.uleb128 0x38
+ 526 004f 0B       		.uleb128 0xb
+ 527 0050 00       		.byte	0
+ 528 0051 00       		.byte	0
+ 529 0052 07       		.uleb128 0x7
+ 530 0053 2E       		.uleb128 0x2e
+ 531 0054 01       		.byte	0x1
+ 532 0055 3F       		.uleb128 0x3f
+ 533 0056 19       		.uleb128 0x19
+ 534 0057 03       		.uleb128 0x3
+ 535 0058 0E       		.uleb128 0xe
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 11
+
+
+ 536 0059 3A       		.uleb128 0x3a
+ 537 005a 0B       		.uleb128 0xb
+ 538 005b 3B       		.uleb128 0x3b
+ 539 005c 0B       		.uleb128 0xb
+ 540 005d 27       		.uleb128 0x27
+ 541 005e 19       		.uleb128 0x19
+ 542 005f 11       		.uleb128 0x11
+ 543 0060 01       		.uleb128 0x1
+ 544 0061 12       		.uleb128 0x12
+ 545 0062 06       		.uleb128 0x6
+ 546 0063 40       		.uleb128 0x40
+ 547 0064 18       		.uleb128 0x18
+ 548 0065 9642     		.uleb128 0x2116
+ 549 0067 19       		.uleb128 0x19
+ 550 0068 01       		.uleb128 0x1
+ 551 0069 13       		.uleb128 0x13
+ 552 006a 00       		.byte	0
+ 553 006b 00       		.byte	0
+ 554 006c 08       		.uleb128 0x8
+ 555 006d 05       		.uleb128 0x5
+ 556 006e 00       		.byte	0
+ 557 006f 03       		.uleb128 0x3
+ 558 0070 08       		.uleb128 0x8
+ 559 0071 3A       		.uleb128 0x3a
+ 560 0072 0B       		.uleb128 0xb
+ 561 0073 3B       		.uleb128 0x3b
+ 562 0074 0B       		.uleb128 0xb
+ 563 0075 49       		.uleb128 0x49
+ 564 0076 13       		.uleb128 0x13
+ 565 0077 02       		.uleb128 0x2
+ 566 0078 18       		.uleb128 0x18
+ 567 0079 00       		.byte	0
+ 568 007a 00       		.byte	0
+ 569 007b 09       		.uleb128 0x9
+ 570 007c 05       		.uleb128 0x5
+ 571 007d 00       		.byte	0
+ 572 007e 03       		.uleb128 0x3
+ 573 007f 0E       		.uleb128 0xe
+ 574 0080 3A       		.uleb128 0x3a
+ 575 0081 0B       		.uleb128 0xb
+ 576 0082 3B       		.uleb128 0x3b
+ 577 0083 0B       		.uleb128 0xb
+ 578 0084 49       		.uleb128 0x49
+ 579 0085 13       		.uleb128 0x13
+ 580 0086 02       		.uleb128 0x2
+ 581 0087 18       		.uleb128 0x18
+ 582 0088 00       		.byte	0
+ 583 0089 00       		.byte	0
+ 584 008a 0A       		.uleb128 0xa
+ 585 008b 0F       		.uleb128 0xf
+ 586 008c 00       		.byte	0
+ 587 008d 0B       		.uleb128 0xb
+ 588 008e 0B       		.uleb128 0xb
+ 589 008f 49       		.uleb128 0x49
+ 590 0090 13       		.uleb128 0x13
+ 591 0091 00       		.byte	0
+ 592 0092 00       		.byte	0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 12
+
+
+ 593 0093 0B       		.uleb128 0xb
+ 594 0094 2E       		.uleb128 0x2e
+ 595 0095 01       		.byte	0x1
+ 596 0096 3F       		.uleb128 0x3f
+ 597 0097 19       		.uleb128 0x19
+ 598 0098 03       		.uleb128 0x3
+ 599 0099 0E       		.uleb128 0xe
+ 600 009a 3A       		.uleb128 0x3a
+ 601 009b 0B       		.uleb128 0xb
+ 602 009c 3B       		.uleb128 0x3b
+ 603 009d 0B       		.uleb128 0xb
+ 604 009e 27       		.uleb128 0x27
+ 605 009f 19       		.uleb128 0x19
+ 606 00a0 49       		.uleb128 0x49
+ 607 00a1 13       		.uleb128 0x13
+ 608 00a2 11       		.uleb128 0x11
+ 609 00a3 01       		.uleb128 0x1
+ 610 00a4 12       		.uleb128 0x12
+ 611 00a5 06       		.uleb128 0x6
+ 612 00a6 40       		.uleb128 0x40
+ 613 00a7 18       		.uleb128 0x18
+ 614 00a8 9642     		.uleb128 0x2116
+ 615 00aa 19       		.uleb128 0x19
+ 616 00ab 01       		.uleb128 0x1
+ 617 00ac 13       		.uleb128 0x13
+ 618 00ad 00       		.byte	0
+ 619 00ae 00       		.byte	0
+ 620 00af 0C       		.uleb128 0xc
+ 621 00b0 2E       		.uleb128 0x2e
+ 622 00b1 01       		.byte	0x1
+ 623 00b2 3F       		.uleb128 0x3f
+ 624 00b3 19       		.uleb128 0x19
+ 625 00b4 03       		.uleb128 0x3
+ 626 00b5 0E       		.uleb128 0xe
+ 627 00b6 3A       		.uleb128 0x3a
+ 628 00b7 0B       		.uleb128 0xb
+ 629 00b8 3B       		.uleb128 0x3b
+ 630 00b9 0B       		.uleb128 0xb
+ 631 00ba 27       		.uleb128 0x27
+ 632 00bb 19       		.uleb128 0x19
+ 633 00bc 49       		.uleb128 0x49
+ 634 00bd 13       		.uleb128 0x13
+ 635 00be 11       		.uleb128 0x11
+ 636 00bf 01       		.uleb128 0x1
+ 637 00c0 12       		.uleb128 0x12
+ 638 00c1 06       		.uleb128 0x6
+ 639 00c2 40       		.uleb128 0x40
+ 640 00c3 18       		.uleb128 0x18
+ 641 00c4 9742     		.uleb128 0x2117
+ 642 00c6 19       		.uleb128 0x19
+ 643 00c7 01       		.uleb128 0x1
+ 644 00c8 13       		.uleb128 0x13
+ 645 00c9 00       		.byte	0
+ 646 00ca 00       		.byte	0
+ 647 00cb 0D       		.uleb128 0xd
+ 648 00cc 2E       		.uleb128 0x2e
+ 649 00cd 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 13
+
+
+ 650 00ce 3F       		.uleb128 0x3f
+ 651 00cf 19       		.uleb128 0x19
+ 652 00d0 03       		.uleb128 0x3
+ 653 00d1 0E       		.uleb128 0xe
+ 654 00d2 3A       		.uleb128 0x3a
+ 655 00d3 0B       		.uleb128 0xb
+ 656 00d4 3B       		.uleb128 0x3b
+ 657 00d5 0B       		.uleb128 0xb
+ 658 00d6 27       		.uleb128 0x27
+ 659 00d7 19       		.uleb128 0x19
+ 660 00d8 11       		.uleb128 0x11
+ 661 00d9 01       		.uleb128 0x1
+ 662 00da 12       		.uleb128 0x12
+ 663 00db 06       		.uleb128 0x6
+ 664 00dc 40       		.uleb128 0x40
+ 665 00dd 18       		.uleb128 0x18
+ 666 00de 9742     		.uleb128 0x2117
+ 667 00e0 19       		.uleb128 0x19
+ 668 00e1 01       		.uleb128 0x1
+ 669 00e2 13       		.uleb128 0x13
+ 670 00e3 00       		.byte	0
+ 671 00e4 00       		.byte	0
+ 672 00e5 0E       		.uleb128 0xe
+ 673 00e6 34       		.uleb128 0x34
+ 674 00e7 00       		.byte	0
+ 675 00e8 03       		.uleb128 0x3
+ 676 00e9 0E       		.uleb128 0xe
+ 677 00ea 3A       		.uleb128 0x3a
+ 678 00eb 0B       		.uleb128 0xb
+ 679 00ec 3B       		.uleb128 0x3b
+ 680 00ed 05       		.uleb128 0x5
+ 681 00ee 49       		.uleb128 0x49
+ 682 00ef 13       		.uleb128 0x13
+ 683 00f0 3F       		.uleb128 0x3f
+ 684 00f1 19       		.uleb128 0x19
+ 685 00f2 3C       		.uleb128 0x3c
+ 686 00f3 19       		.uleb128 0x19
+ 687 00f4 00       		.byte	0
+ 688 00f5 00       		.byte	0
+ 689 00f6 0F       		.uleb128 0xf
+ 690 00f7 35       		.uleb128 0x35
+ 691 00f8 00       		.byte	0
+ 692 00f9 49       		.uleb128 0x49
+ 693 00fa 13       		.uleb128 0x13
+ 694 00fb 00       		.byte	0
+ 695 00fc 00       		.byte	0
+ 696 00fd 00       		.byte	0
+ 697              		.section	.debug_aranges,"",%progbits
+ 698 0000 34000000 		.4byte	0x34
+ 699 0004 0200     		.2byte	0x2
+ 700 0006 00000000 		.4byte	.Ldebug_info0
+ 701 000a 04       		.byte	0x4
+ 702 000b 00       		.byte	0
+ 703 000c 0000     		.2byte	0
+ 704 000e 0000     		.2byte	0
+ 705 0010 00000000 		.4byte	.LFB63
+ 706 0014 30000000 		.4byte	.LFE63-.LFB63
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 14
+
+
+ 707 0018 00000000 		.4byte	.LFB64
+ 708 001c 50000000 		.4byte	.LFE64-.LFB64
+ 709 0020 00000000 		.4byte	.LFB65
+ 710 0024 18000000 		.4byte	.LFE65-.LFB65
+ 711 0028 00000000 		.4byte	.LFB66
+ 712 002c 1A000000 		.4byte	.LFE66-.LFB66
+ 713 0030 00000000 		.4byte	0
+ 714 0034 00000000 		.4byte	0
+ 715              		.section	.debug_ranges,"",%progbits
+ 716              	.Ldebug_ranges0:
+ 717 0000 00000000 		.4byte	.LFB63
+ 718 0004 30000000 		.4byte	.LFE63
+ 719 0008 00000000 		.4byte	.LFB64
+ 720 000c 50000000 		.4byte	.LFE64
+ 721 0010 00000000 		.4byte	.LFB65
+ 722 0014 18000000 		.4byte	.LFE65
+ 723 0018 00000000 		.4byte	.LFB66
+ 724 001c 1A000000 		.4byte	.LFE66
+ 725 0020 00000000 		.4byte	0
+ 726 0024 00000000 		.4byte	0
+ 727              		.section	.debug_line,"",%progbits
+ 728              	.Ldebug_line0:
+ 729 0000 B3010000 		.section	.debug_str,"MS",%progbits,1
+ 729      02006401 
+ 729      00000201 
+ 729      FB0E0D00 
+ 729      01010101 
+ 730              	.LASF9:
+ 731 0000 5F5F696E 		.ascii	"__int32_t\000"
+ 731      7433325F 
+ 731      7400
+ 732              	.LASF21:
+ 733 000a 6D615F75 		.ascii	"ma_update\000"
+ 733      70646174 
+ 733      6500
+ 734              	.LASF25:
+ 735 0014 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 735      4320342E 
+ 735      392E3320 
+ 735      32303135 
+ 735      30333033 
+ 736 0047 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 736      20726576 
+ 736      6973696F 
+ 736      6E203232 
+ 736      31323230 
+ 737 007a 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 737      66756E63 
+ 737      74696F6E 
+ 737      2D736563 
+ 737      74696F6E 
+ 738              	.LASF18:
+ 739 00a2 4D4F5649 		.ascii	"MOVING_AVERAGE_STRUCT\000"
+ 739      4E475F41 
+ 739      56455241 
+ 739      47455F53 
+ 739      54525543 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 15
+
+
+ 740              	.LASF11:
+ 741 00b8 666C6F61 		.ascii	"float\000"
+ 741      7400
+ 742              	.LASF27:
+ 743 00be 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 743      73657273 
+ 743      5C676C65 
+ 743      6E6E5C4F 
+ 743      6E654472 
+ 744 00eb 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ 744      55415254 
+ 744      30312E63 
+ 744      7964736E 
+ 744      00
+ 745              	.LASF16:
+ 746 00fc 6D696E75 		.ascii	"minus_alpha\000"
+ 746      735F616C 
+ 746      70686100 
+ 747              	.LASF5:
+ 748 0108 6C6F6E67 		.ascii	"long unsigned int\000"
+ 748      20756E73 
+ 748      69676E65 
+ 748      6420696E 
+ 748      7400
+ 749              	.LASF3:
+ 750 011a 73686F72 		.ascii	"short unsigned int\000"
+ 750      7420756E 
+ 750      7369676E 
+ 750      65642069 
+ 750      6E7400
+ 751              	.LASF28:
+ 752 012d 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 752      52784275 
+ 752      66666572 
+ 752      00
+ 753              	.LASF1:
+ 754 013a 756E7369 		.ascii	"unsigned char\000"
+ 754      676E6564 
+ 754      20636861 
+ 754      7200
+ 755              	.LASF12:
+ 756 0148 646F7562 		.ascii	"double\000"
+ 756      6C6500
+ 757              	.LASF24:
+ 758 014f 6D615F73 		.ascii	"ma_store_value\000"
+ 758      746F7265 
+ 758      5F76616C 
+ 758      756500
+ 759              	.LASF8:
+ 760 015e 756E7369 		.ascii	"unsigned int\000"
+ 760      676E6564 
+ 760      20696E74 
+ 760      00
+ 761              	.LASF7:
+ 762 016b 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 762      206C6F6E 
+ 762      6720756E 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 16
+
+
+ 762      7369676E 
+ 762      65642069 
+ 763              	.LASF17:
+ 764 0182 61766572 		.ascii	"average\000"
+ 764      61676500 
+ 765              	.LASF0:
+ 766 018a 7369676E 		.ascii	"signed char\000"
+ 766      65642063 
+ 766      68617200 
+ 767              	.LASF10:
+ 768 0196 696E7433 		.ascii	"int32_t\000"
+ 768      325F7400 
+ 769              	.LASF19:
+ 770 019e 696E6974 		.ascii	"init_average\000"
+ 770      5F617665 
+ 770      72616765 
+ 770      00
+ 771              	.LASF14:
+ 772 01ab 73697A65 		.ascii	"sizetype\000"
+ 772      74797065 
+ 772      00
+ 773              	.LASF6:
+ 774 01b4 6C6F6E67 		.ascii	"long long int\000"
+ 774      206C6F6E 
+ 774      6720696E 
+ 774      7400
+ 775              	.LASF13:
+ 776 01c2 63686172 		.ascii	"char\000"
+ 776      00
+ 777              	.LASF22:
+ 778 01c7 6D615F67 		.ascii	"ma_get_value\000"
+ 778      65745F76 
+ 778      616C7565 
+ 778      00
+ 779              	.LASF2:
+ 780 01d4 73686F72 		.ascii	"short int\000"
+ 780      7420696E 
+ 780      7400
+ 781              	.LASF4:
+ 782 01de 6C6F6E67 		.ascii	"long int\000"
+ 782      20696E74 
+ 782      00
+ 783              	.LASF26:
+ 784 01e7 2E5C7574 		.ascii	".\\utilities\\moving_average.c\000"
+ 784      696C6974 
+ 784      6965735C 
+ 784      6D6F7669 
+ 784      6E675F61 
+ 785              	.LASF23:
+ 786 0204 6D615F69 		.ascii	"ma_initialize\000"
+ 786      6E697469 
+ 786      616C697A 
+ 786      6500
+ 787              	.LASF15:
+ 788 0212 616C7068 		.ascii	"alpha\000"
+ 788      6100
+ 789              	.LASF20:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccnHzLQc.s 			page 17
+
+
+ 790 0218 6E65775F 		.ascii	"new_sample\000"
+ 790      73616D70 
+ 790      6C6500
+ 791              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

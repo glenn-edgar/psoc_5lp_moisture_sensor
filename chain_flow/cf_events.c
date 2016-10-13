@@ -82,6 +82,3 @@ int cf_rx_event( unsigned *event, unsigned *data )
 }
              
   
-
-
-

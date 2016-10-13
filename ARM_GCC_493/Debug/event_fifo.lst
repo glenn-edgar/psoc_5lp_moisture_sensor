@@ -1,0 +1,1358 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"event_fifo.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.comm	queue_structure,76,4
+  19              		.section	.text.EF_initialize,"ax",%progbits
+  20              		.align	2
+  21              		.global	EF_initialize
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	EF_initialize, %function
+  25              	EF_initialize:
+  26              	.LFB63:
+  27              		.file 1 ".\\event_fifo\\event_fifo.c"
+   1:.\event_fifo/event_fifo.c **** /*
+   2:.\event_fifo/event_fifo.c **** **
+   3:.\event_fifo/event_fifo.c **** **
+   4:.\event_fifo/event_fifo.c **** ** File: event_fifo.c
+   5:.\event_fifo/event_fifo.c **** **
+   6:.\event_fifo/event_fifo.c **** **
+   7:.\event_fifo/event_fifo.c **** **
+   8:.\event_fifo/event_fifo.c **** **
+   9:.\event_fifo/event_fifo.c **** */
+  10:.\event_fifo/event_fifo.c **** 
+  11:.\event_fifo/event_fifo.c **** #include <assert.h>
+  12:.\event_fifo/event_fifo.c **** #include <device.h>
+  13:.\event_fifo/event_fifo.c **** #include "sigma_mux.h"
+  14:.\event_fifo/event_fifo.c **** 
+  15:.\event_fifo/event_fifo.c **** #include "event_fifo.h"
+  16:.\event_fifo/event_fifo.c **** 
+  17:.\event_fifo/event_fifo.c **** 
+  18:.\event_fifo/event_fifo.c **** #define NUMBER_OF_QUEUES  1
+  19:.\event_fifo/event_fifo.c **** // QUEUE number must be a multiple of 2
+  20:.\event_fifo/event_fifo.c **** #define QUEUE_NUMBER 16  
+  21:.\event_fifo/event_fifo.c **** #define QUEUE_MASK   15
+  22:.\event_fifo/event_fifo.c **** 
+  23:.\event_fifo/event_fifo.c **** typedef struct
+  24:.\event_fifo/event_fifo.c **** {
+  25:.\event_fifo/event_fifo.c ****     uint16 event;
+  26:.\event_fifo/event_fifo.c ****     uint16 data;
+  27:.\event_fifo/event_fifo.c ****     
+  28:.\event_fifo/event_fifo.c **** }QUEUE_DATA;
+  29:.\event_fifo/event_fifo.c **** 
+  30:.\event_fifo/event_fifo.c **** typedef struct
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 2
+
+
+  31:.\event_fifo/event_fifo.c **** {
+  32:.\event_fifo/event_fifo.c ****     int number;
+  33:.\event_fifo/event_fifo.c ****     int read_index;
+  34:.\event_fifo/event_fifo.c ****     int write_index;
+  35:.\event_fifo/event_fifo.c ****     QUEUE_DATA queue_data[ QUEUE_NUMBER ];
+  36:.\event_fifo/event_fifo.c **** }QUEUE_STRUCTURE;
+  37:.\event_fifo/event_fifo.c **** 
+  38:.\event_fifo/event_fifo.c **** QUEUE_STRUCTURE queue_structure[NUMBER_OF_QUEUES];
+  39:.\event_fifo/event_fifo.c **** 
+  40:.\event_fifo/event_fifo.c **** void EF_initialize( void )
+  41:.\event_fifo/event_fifo.c **** {
+  28              		.loc 1 41 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+  35              		.cfi_offset 14, -4
+  36 0002 00AF     		add	r7, sp, #0
+  37              		.cfi_def_cfa_register 7
+  42:.\event_fifo/event_fifo.c ****     memset( queue_structure, 0, sizeof(queue_structure ));
+  38              		.loc 1 42 0
+  39 0004 0548     		ldr	r0, .L2
+  40 0006 0021     		movs	r1, #0
+  41 0008 4C22     		movs	r2, #76
+  42 000a FFF7FEFF 		bl	memset
+  43:.\event_fifo/event_fifo.c ****     // add in start up event
+  44:.\event_fifo/event_fifo.c ****     EF_enqueue_elemement( 0, EVENTS_SYSTEM_REBOOT, 0 );
+  43              		.loc 1 44 0
+  44 000e 0020     		movs	r0, #0
+  45 0010 0021     		movs	r1, #0
+  46 0012 0022     		movs	r2, #0
+  47 0014 FFF7FEFF 		bl	EF_enqueue_elemement
+  45:.\event_fifo/event_fifo.c **** }
+  48              		.loc 1 45 0
+  49 0018 80BD     		pop	{r7, pc}
+  50              	.L3:
+  51 001a 00BF     		.align	2
+  52              	.L2:
+  53 001c 00000000 		.word	queue_structure
+  54              		.cfi_endproc
+  55              	.LFE63:
+  56              		.size	EF_initialize, .-EF_initialize
+  57              		.section	.text.EF_number_of_queues,"ax",%progbits
+  58              		.align	2
+  59              		.global	EF_number_of_queues
+  60              		.thumb
+  61              		.thumb_func
+  62              		.type	EF_number_of_queues, %function
+  63              	EF_number_of_queues:
+  64              	.LFB64:
+  46:.\event_fifo/event_fifo.c **** 
+  47:.\event_fifo/event_fifo.c **** unsigned EF_number_of_queues( void )
+  48:.\event_fifo/event_fifo.c **** {
+  65              		.loc 1 48 0
+  66              		.cfi_startproc
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 3
+
+
+  67              		@ args = 0, pretend = 0, frame = 0
+  68              		@ frame_needed = 1, uses_anonymous_args = 0
+  69              		@ link register save eliminated.
+  70 0000 80B4     		push	{r7}
+  71              		.cfi_def_cfa_offset 4
+  72              		.cfi_offset 7, -4
+  73 0002 00AF     		add	r7, sp, #0
+  74              		.cfi_def_cfa_register 7
+  49:.\event_fifo/event_fifo.c ****     return NUMBER_OF_QUEUES;
+  75              		.loc 1 49 0
+  76 0004 0123     		movs	r3, #1
+  50:.\event_fifo/event_fifo.c **** }
+  77              		.loc 1 50 0
+  78 0006 1846     		mov	r0, r3
+  79 0008 BD46     		mov	sp, r7
+  80              		.cfi_def_cfa_register 13
+  81              		@ sp needed
+  82 000a 5DF8047B 		ldr	r7, [sp], #4
+  83              		.cfi_restore 7
+  84              		.cfi_def_cfa_offset 0
+  85 000e 7047     		bx	lr
+  86              		.cfi_endproc
+  87              	.LFE64:
+  88              		.size	EF_number_of_queues, .-EF_number_of_queues
+  89              		.section	.text.EF_elements_in_queue,"ax",%progbits
+  90              		.align	2
+  91              		.global	EF_elements_in_queue
+  92              		.thumb
+  93              		.thumb_func
+  94              		.type	EF_elements_in_queue, %function
+  95              	EF_elements_in_queue:
+  96              	.LFB65:
+  51:.\event_fifo/event_fifo.c **** 
+  52:.\event_fifo/event_fifo.c **** int EF_elements_in_queue( unsigned queue_id )
+  53:.\event_fifo/event_fifo.c **** {
+  97              		.loc 1 53 0
+  98              		.cfi_startproc
+  99              		@ args = 0, pretend = 0, frame = 8
+ 100              		@ frame_needed = 1, uses_anonymous_args = 0
+ 101              		@ link register save eliminated.
+ 102 0000 80B4     		push	{r7}
+ 103              		.cfi_def_cfa_offset 4
+ 104              		.cfi_offset 7, -4
+ 105 0002 83B0     		sub	sp, sp, #12
+ 106              		.cfi_def_cfa_offset 16
+ 107 0004 00AF     		add	r7, sp, #0
+ 108              		.cfi_def_cfa_register 7
+ 109 0006 7860     		str	r0, [r7, #4]
+  54:.\event_fifo/event_fifo.c ****     if( queue_id < NUMBER_OF_QUEUES )
+ 110              		.loc 1 54 0
+ 111 0008 7B68     		ldr	r3, [r7, #4]
+ 112 000a 002B     		cmp	r3, #0
+ 113 000c 07D1     		bne	.L7
+  55:.\event_fifo/event_fifo.c ****     {
+  56:.\event_fifo/event_fifo.c ****         return queue_structure[queue_id].number;
+ 114              		.loc 1 56 0
+ 115 000e 084A     		ldr	r2, .L9
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 4
+
+
+ 116 0010 7B68     		ldr	r3, [r7, #4]
+ 117 0012 4C21     		movs	r1, #76
+ 118 0014 01FB03F3 		mul	r3, r1, r3
+ 119 0018 1344     		add	r3, r3, r2
+ 120 001a 1B68     		ldr	r3, [r3]
+ 121 001c 01E0     		b	.L8
+ 122              	.L7:
+  57:.\event_fifo/event_fifo.c ****     }
+  58:.\event_fifo/event_fifo.c ****     return -1;  
+ 123              		.loc 1 58 0
+ 124 001e 4FF0FF33 		mov	r3, #-1
+ 125              	.L8:
+  59:.\event_fifo/event_fifo.c **** }
+ 126              		.loc 1 59 0
+ 127 0022 1846     		mov	r0, r3
+ 128 0024 0C37     		adds	r7, r7, #12
+ 129              		.cfi_def_cfa_offset 4
+ 130 0026 BD46     		mov	sp, r7
+ 131              		.cfi_def_cfa_register 13
+ 132              		@ sp needed
+ 133 0028 5DF8047B 		ldr	r7, [sp], #4
+ 134              		.cfi_restore 7
+ 135              		.cfi_def_cfa_offset 0
+ 136 002c 7047     		bx	lr
+ 137              	.L10:
+ 138 002e 00BF     		.align	2
+ 139              	.L9:
+ 140 0030 00000000 		.word	queue_structure
+ 141              		.cfi_endproc
+ 142              	.LFE65:
+ 143              		.size	EF_elements_in_queue, .-EF_elements_in_queue
+ 144              		.section	.text.EF_enqueue_elemement,"ax",%progbits
+ 145              		.align	2
+ 146              		.global	EF_enqueue_elemement
+ 147              		.thumb
+ 148              		.thumb_func
+ 149              		.type	EF_enqueue_elemement, %function
+ 150              	EF_enqueue_elemement:
+ 151              	.LFB66:
+  60:.\event_fifo/event_fifo.c ****     
+  61:.\event_fifo/event_fifo.c **** // returns number of elements in queue -1 means bad queue_id
+  62:.\event_fifo/event_fifo.c **** int  EF_enqueue_elemement( unsigned queue_id, uint16 event_id, uint16 event_data )
+  63:.\event_fifo/event_fifo.c **** {
+ 152              		.loc 1 63 0
+ 153              		.cfi_startproc
+ 154              		@ args = 0, pretend = 0, frame = 16
+ 155              		@ frame_needed = 1, uses_anonymous_args = 0
+ 156              		@ link register save eliminated.
+ 157 0000 80B4     		push	{r7}
+ 158              		.cfi_def_cfa_offset 4
+ 159              		.cfi_offset 7, -4
+ 160 0002 85B0     		sub	sp, sp, #20
+ 161              		.cfi_def_cfa_offset 24
+ 162 0004 00AF     		add	r7, sp, #0
+ 163              		.cfi_def_cfa_register 7
+ 164 0006 7860     		str	r0, [r7, #4]
+ 165 0008 0B46     		mov	r3, r1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 5
+
+
+ 166 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 167 000c 1346     		mov	r3, r2	@ movhi
+ 168 000e 3B80     		strh	r3, [r7]	@ movhi
+  64:.\event_fifo/event_fifo.c ****     QUEUE_STRUCTURE *queue_str;
+  65:.\event_fifo/event_fifo.c ****     if( queue_id > NUMBER_OF_QUEUES )
+ 169              		.loc 1 65 0
+ 170 0010 7B68     		ldr	r3, [r7, #4]
+ 171 0012 012B     		cmp	r3, #1
+ 172 0014 02D9     		bls	.L12
+  66:.\event_fifo/event_fifo.c ****     {
+  67:.\event_fifo/event_fifo.c ****         return -1;
+ 173              		.loc 1 67 0
+ 174 0016 4FF0FF33 		mov	r3, #-1
+ 175 001a 38E0     		b	.L13
+ 176              	.L12:
+  68:.\event_fifo/event_fifo.c ****     }
+  69:.\event_fifo/event_fifo.c ****     queue_str = &queue_structure[ queue_id ];
+ 177              		.loc 1 69 0
+ 178 001c 7B68     		ldr	r3, [r7, #4]
+ 179 001e 4C22     		movs	r2, #76
+ 180 0020 02FB03F3 		mul	r3, r2, r3
+ 181 0024 1D4A     		ldr	r2, .L16
+ 182 0026 1344     		add	r3, r3, r2
+ 183 0028 FB60     		str	r3, [r7, #12]
+  70:.\event_fifo/event_fifo.c **** 
+  71:.\event_fifo/event_fifo.c ****     queue_str->queue_data[queue_str->write_index].event = event_id;
+ 184              		.loc 1 71 0
+ 185 002a FB68     		ldr	r3, [r7, #12]
+ 186 002c 9B68     		ldr	r3, [r3, #8]
+ 187 002e FA68     		ldr	r2, [r7, #12]
+ 188 0030 0233     		adds	r3, r3, #2
+ 189 0032 9B00     		lsls	r3, r3, #2
+ 190 0034 1344     		add	r3, r3, r2
+ 191 0036 7A88     		ldrh	r2, [r7, #2]	@ movhi
+ 192 0038 9A80     		strh	r2, [r3, #4]	@ movhi
+  72:.\event_fifo/event_fifo.c ****     queue_str->queue_data[queue_str->write_index].data = event_data;
+ 193              		.loc 1 72 0
+ 194 003a FB68     		ldr	r3, [r7, #12]
+ 195 003c 9B68     		ldr	r3, [r3, #8]
+ 196 003e FA68     		ldr	r2, [r7, #12]
+ 197 0040 0233     		adds	r3, r3, #2
+ 198 0042 9B00     		lsls	r3, r3, #2
+ 199 0044 1344     		add	r3, r3, r2
+ 200 0046 3A88     		ldrh	r2, [r7]	@ movhi
+ 201 0048 DA80     		strh	r2, [r3, #6]	@ movhi
+  73:.\event_fifo/event_fifo.c ****     
+  74:.\event_fifo/event_fifo.c ****     queue_str->write_index +=1;
+ 202              		.loc 1 74 0
+ 203 004a FB68     		ldr	r3, [r7, #12]
+ 204 004c 9B68     		ldr	r3, [r3, #8]
+ 205 004e 5A1C     		adds	r2, r3, #1
+ 206 0050 FB68     		ldr	r3, [r7, #12]
+ 207 0052 9A60     		str	r2, [r3, #8]
+  75:.\event_fifo/event_fifo.c ****     queue_str->write_index &= QUEUE_MASK;
+ 208              		.loc 1 75 0
+ 209 0054 FB68     		ldr	r3, [r7, #12]
+ 210 0056 9B68     		ldr	r3, [r3, #8]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 6
+
+
+ 211 0058 03F00F02 		and	r2, r3, #15
+ 212 005c FB68     		ldr	r3, [r7, #12]
+ 213 005e 9A60     		str	r2, [r3, #8]
+  76:.\event_fifo/event_fifo.c ****     
+  77:.\event_fifo/event_fifo.c ****     if( queue_str->number >= QUEUE_NUMBER)
+ 214              		.loc 1 77 0
+ 215 0060 FB68     		ldr	r3, [r7, #12]
+ 216 0062 1B68     		ldr	r3, [r3]
+ 217 0064 0F2B     		cmp	r3, #15
+ 218 0066 0BDD     		ble	.L14
+  78:.\event_fifo/event_fifo.c ****     {
+  79:.\event_fifo/event_fifo.c ****          
+  80:.\event_fifo/event_fifo.c ****          queue_str->read_index +=1;
+ 219              		.loc 1 80 0
+ 220 0068 FB68     		ldr	r3, [r7, #12]
+ 221 006a 5B68     		ldr	r3, [r3, #4]
+ 222 006c 5A1C     		adds	r2, r3, #1
+ 223 006e FB68     		ldr	r3, [r7, #12]
+ 224 0070 5A60     		str	r2, [r3, #4]
+  81:.\event_fifo/event_fifo.c ****          queue_str->read_index &= QUEUE_MASK;
+ 225              		.loc 1 81 0
+ 226 0072 FB68     		ldr	r3, [r7, #12]
+ 227 0074 5B68     		ldr	r3, [r3, #4]
+ 228 0076 03F00F02 		and	r2, r3, #15
+ 229 007a FB68     		ldr	r3, [r7, #12]
+ 230 007c 5A60     		str	r2, [r3, #4]
+ 231 007e 04E0     		b	.L15
+ 232              	.L14:
+  82:.\event_fifo/event_fifo.c ****     }
+  83:.\event_fifo/event_fifo.c ****     else
+  84:.\event_fifo/event_fifo.c ****     {
+  85:.\event_fifo/event_fifo.c ****         queue_str->number += 1;
+ 233              		.loc 1 85 0
+ 234 0080 FB68     		ldr	r3, [r7, #12]
+ 235 0082 1B68     		ldr	r3, [r3]
+ 236 0084 5A1C     		adds	r2, r3, #1
+ 237 0086 FB68     		ldr	r3, [r7, #12]
+ 238 0088 1A60     		str	r2, [r3]
+ 239              	.L15:
+  86:.\event_fifo/event_fifo.c ****     }
+  87:.\event_fifo/event_fifo.c ****     return queue_str->number;
+ 240              		.loc 1 87 0
+ 241 008a FB68     		ldr	r3, [r7, #12]
+ 242 008c 1B68     		ldr	r3, [r3]
+ 243              	.L13:
+  88:.\event_fifo/event_fifo.c **** }
+ 244              		.loc 1 88 0
+ 245 008e 1846     		mov	r0, r3
+ 246 0090 1437     		adds	r7, r7, #20
+ 247              		.cfi_def_cfa_offset 4
+ 248 0092 BD46     		mov	sp, r7
+ 249              		.cfi_def_cfa_register 13
+ 250              		@ sp needed
+ 251 0094 5DF8047B 		ldr	r7, [sp], #4
+ 252              		.cfi_restore 7
+ 253              		.cfi_def_cfa_offset 0
+ 254 0098 7047     		bx	lr
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 7
+
+
+ 255              	.L17:
+ 256 009a 00BF     		.align	2
+ 257              	.L16:
+ 258 009c 00000000 		.word	queue_structure
+ 259              		.cfi_endproc
+ 260              	.LFE66:
+ 261              		.size	EF_enqueue_elemement, .-EF_enqueue_elemement
+ 262              		.section	.text.EF_dequeue_element,"ax",%progbits
+ 263              		.align	2
+ 264              		.global	EF_dequeue_element
+ 265              		.thumb
+ 266              		.thumb_func
+ 267              		.type	EF_dequeue_element, %function
+ 268              	EF_dequeue_element:
+ 269              	.LFB67:
+  89:.\event_fifo/event_fifo.c ****        
+  90:.\event_fifo/event_fifo.c **** 
+  91:.\event_fifo/event_fifo.c **** // return number left in queue after dequeue -- return -1 if attempt was made on empty queue
+  92:.\event_fifo/event_fifo.c **** int  EF_dequeue_element( unsigned queue_id, uint16 *event_id, uint16 *event_data )
+  93:.\event_fifo/event_fifo.c **** {
+ 270              		.loc 1 93 0
+ 271              		.cfi_startproc
+ 272              		@ args = 0, pretend = 0, frame = 24
+ 273              		@ frame_needed = 1, uses_anonymous_args = 0
+ 274              		@ link register save eliminated.
+ 275 0000 80B4     		push	{r7}
+ 276              		.cfi_def_cfa_offset 4
+ 277              		.cfi_offset 7, -4
+ 278 0002 87B0     		sub	sp, sp, #28
+ 279              		.cfi_def_cfa_offset 32
+ 280 0004 00AF     		add	r7, sp, #0
+ 281              		.cfi_def_cfa_register 7
+ 282 0006 F860     		str	r0, [r7, #12]
+ 283 0008 B960     		str	r1, [r7, #8]
+ 284 000a 7A60     		str	r2, [r7, #4]
+  94:.\event_fifo/event_fifo.c ****     QUEUE_STRUCTURE *queue_str;
+  95:.\event_fifo/event_fifo.c ****     if( queue_id > NUMBER_OF_QUEUES )
+ 285              		.loc 1 95 0
+ 286 000c FB68     		ldr	r3, [r7, #12]
+ 287 000e 012B     		cmp	r3, #1
+ 288 0010 02D9     		bls	.L19
+  96:.\event_fifo/event_fifo.c ****     {
+  97:.\event_fifo/event_fifo.c ****         return -1;
+ 289              		.loc 1 97 0
+ 290 0012 4FF0FF33 		mov	r3, #-1
+ 291 0016 31E0     		b	.L20
+ 292              	.L19:
+  98:.\event_fifo/event_fifo.c ****     }
+  99:.\event_fifo/event_fifo.c ****     
+ 100:.\event_fifo/event_fifo.c ****     queue_str = &queue_structure[ queue_id ];
+ 293              		.loc 1 100 0
+ 294 0018 FB68     		ldr	r3, [r7, #12]
+ 295 001a 4C22     		movs	r2, #76
+ 296 001c 02FB03F3 		mul	r3, r2, r3
+ 297 0020 194A     		ldr	r2, .L22
+ 298 0022 1344     		add	r3, r3, r2
+ 299 0024 7B61     		str	r3, [r7, #20]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 8
+
+
+ 101:.\event_fifo/event_fifo.c ****     if( queue_str->number == 0 )
+ 300              		.loc 1 101 0
+ 301 0026 7B69     		ldr	r3, [r7, #20]
+ 302 0028 1B68     		ldr	r3, [r3]
+ 303 002a 002B     		cmp	r3, #0
+ 304 002c 02D1     		bne	.L21
+ 102:.\event_fifo/event_fifo.c ****     {
+ 103:.\event_fifo/event_fifo.c ****         return -1;
+ 305              		.loc 1 103 0
+ 306 002e 4FF0FF33 		mov	r3, #-1
+ 307 0032 23E0     		b	.L20
+ 308              	.L21:
+ 104:.\event_fifo/event_fifo.c ****     }
+ 105:.\event_fifo/event_fifo.c ****    
+ 106:.\event_fifo/event_fifo.c **** 
+ 107:.\event_fifo/event_fifo.c ****     *event_id   = queue_str->queue_data[queue_str->read_index].event;
+ 309              		.loc 1 107 0
+ 310 0034 7B69     		ldr	r3, [r7, #20]
+ 311 0036 5B68     		ldr	r3, [r3, #4]
+ 312 0038 7A69     		ldr	r2, [r7, #20]
+ 313 003a 0233     		adds	r3, r3, #2
+ 314 003c 9B00     		lsls	r3, r3, #2
+ 315 003e 1344     		add	r3, r3, r2
+ 316 0040 9A88     		ldrh	r2, [r3, #4]
+ 317 0042 BB68     		ldr	r3, [r7, #8]
+ 318 0044 1A80     		strh	r2, [r3]	@ movhi
+ 108:.\event_fifo/event_fifo.c ****     *event_data = queue_str->queue_data[queue_str->read_index].data;
+ 319              		.loc 1 108 0
+ 320 0046 7B69     		ldr	r3, [r7, #20]
+ 321 0048 5B68     		ldr	r3, [r3, #4]
+ 322 004a 7A69     		ldr	r2, [r7, #20]
+ 323 004c 0233     		adds	r3, r3, #2
+ 324 004e 9B00     		lsls	r3, r3, #2
+ 325 0050 1344     		add	r3, r3, r2
+ 326 0052 DA88     		ldrh	r2, [r3, #6]
+ 327 0054 7B68     		ldr	r3, [r7, #4]
+ 328 0056 1A80     		strh	r2, [r3]	@ movhi
+ 109:.\event_fifo/event_fifo.c ****     
+ 110:.\event_fifo/event_fifo.c ****     queue_str->read_index +=1;
+ 329              		.loc 1 110 0
+ 330 0058 7B69     		ldr	r3, [r7, #20]
+ 331 005a 5B68     		ldr	r3, [r3, #4]
+ 332 005c 5A1C     		adds	r2, r3, #1
+ 333 005e 7B69     		ldr	r3, [r7, #20]
+ 334 0060 5A60     		str	r2, [r3, #4]
+ 111:.\event_fifo/event_fifo.c ****     queue_str->read_index &= QUEUE_MASK;
+ 335              		.loc 1 111 0
+ 336 0062 7B69     		ldr	r3, [r7, #20]
+ 337 0064 5B68     		ldr	r3, [r3, #4]
+ 338 0066 03F00F02 		and	r2, r3, #15
+ 339 006a 7B69     		ldr	r3, [r7, #20]
+ 340 006c 5A60     		str	r2, [r3, #4]
+ 112:.\event_fifo/event_fifo.c ****     queue_str->number -= 1;
+ 341              		.loc 1 112 0
+ 342 006e 7B69     		ldr	r3, [r7, #20]
+ 343 0070 1B68     		ldr	r3, [r3]
+ 344 0072 5A1E     		subs	r2, r3, #1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 9
+
+
+ 345 0074 7B69     		ldr	r3, [r7, #20]
+ 346 0076 1A60     		str	r2, [r3]
+ 113:.\event_fifo/event_fifo.c ****   
+ 114:.\event_fifo/event_fifo.c ****     return queue_str->number;
+ 347              		.loc 1 114 0
+ 348 0078 7B69     		ldr	r3, [r7, #20]
+ 349 007a 1B68     		ldr	r3, [r3]
+ 350              	.L20:
+ 115:.\event_fifo/event_fifo.c **** }
+ 351              		.loc 1 115 0
+ 352 007c 1846     		mov	r0, r3
+ 353 007e 1C37     		adds	r7, r7, #28
+ 354              		.cfi_def_cfa_offset 4
+ 355 0080 BD46     		mov	sp, r7
+ 356              		.cfi_def_cfa_register 13
+ 357              		@ sp needed
+ 358 0082 5DF8047B 		ldr	r7, [sp], #4
+ 359              		.cfi_restore 7
+ 360              		.cfi_def_cfa_offset 0
+ 361 0086 7047     		bx	lr
+ 362              	.L23:
+ 363              		.align	2
+ 364              	.L22:
+ 365 0088 00000000 		.word	queue_structure
+ 366              		.cfi_endproc
+ 367              	.LFE67:
+ 368              		.size	EF_dequeue_element, .-EF_dequeue_element
+ 369              		.text
+ 370              	.Letext0:
+ 371              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 372              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 373              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 374              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 375              		.section	.debug_info,"",%progbits
+ 376              	.Ldebug_info0:
+ 377 0000 56020000 		.4byte	0x256
+ 378 0004 0400     		.2byte	0x4
+ 379 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 380 000a 04       		.byte	0x4
+ 381 000b 01       		.uleb128 0x1
+ 382 000c 10010000 		.4byte	.LASF33
+ 383 0010 01       		.byte	0x1
+ 384 0011 E8000000 		.4byte	.LASF34
+ 385 0015 6E000000 		.4byte	.LASF35
+ 386 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 387 001d 00000000 		.4byte	0
+ 388 0021 00000000 		.4byte	.Ldebug_line0
+ 389 0025 02       		.uleb128 0x2
+ 390 0026 01       		.byte	0x1
+ 391 0027 06       		.byte	0x6
+ 392 0028 84020000 		.4byte	.LASF0
+ 393 002c 02       		.uleb128 0x2
+ 394 002d 01       		.byte	0x1
+ 395 002e 08       		.byte	0x8
+ 396 002f 02010000 		.4byte	.LASF1
+ 397 0033 02       		.uleb128 0x2
+ 398 0034 02       		.byte	0x2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 10
+
+
+ 399 0035 05       		.byte	0x5
+ 400 0036 48020000 		.4byte	.LASF2
+ 401 003a 02       		.uleb128 0x2
+ 402 003b 02       		.byte	0x2
+ 403 003c 07       		.byte	0x7
+ 404 003d C9000000 		.4byte	.LASF3
+ 405 0041 03       		.uleb128 0x3
+ 406 0042 20000000 		.4byte	.LASF9
+ 407 0046 02       		.byte	0x2
+ 408 0047 3F       		.byte	0x3f
+ 409 0048 4C000000 		.4byte	0x4c
+ 410 004c 02       		.uleb128 0x2
+ 411 004d 04       		.byte	0x4
+ 412 004e 05       		.byte	0x5
+ 413 004f 66020000 		.4byte	.LASF4
+ 414 0053 02       		.uleb128 0x2
+ 415 0054 04       		.byte	0x4
+ 416 0055 07       		.byte	0x7
+ 417 0056 B7000000 		.4byte	.LASF5
+ 418 005a 02       		.uleb128 0x2
+ 419 005b 08       		.byte	0x8
+ 420 005c 05       		.byte	0x5
+ 421 005d 35020000 		.4byte	.LASF6
+ 422 0061 02       		.uleb128 0x2
+ 423 0062 08       		.byte	0x8
+ 424 0063 07       		.byte	0x7
+ 425 0064 D5010000 		.4byte	.LASF7
+ 426 0068 04       		.uleb128 0x4
+ 427 0069 04       		.byte	0x4
+ 428 006a 05       		.byte	0x5
+ 429 006b 696E7400 		.ascii	"int\000"
+ 430 006f 02       		.uleb128 0x2
+ 431 0070 04       		.byte	0x4
+ 432 0071 07       		.byte	0x7
+ 433 0072 C8010000 		.4byte	.LASF8
+ 434 0076 03       		.uleb128 0x3
+ 435 0077 24020000 		.4byte	.LASF10
+ 436 007b 03       		.byte	0x3
+ 437 007c 2C       		.byte	0x2c
+ 438 007d 41000000 		.4byte	0x41
+ 439 0081 05       		.uleb128 0x5
+ 440 0082 AE010000 		.4byte	.LASF11
+ 441 0086 04       		.byte	0x4
+ 442 0087 9301     		.2byte	0x193
+ 443 0089 3A000000 		.4byte	0x3a
+ 444 008d 02       		.uleb128 0x2
+ 445 008e 04       		.byte	0x4
+ 446 008f 04       		.byte	0x4
+ 447 0090 5F000000 		.4byte	.LASF12
+ 448 0094 02       		.uleb128 0x2
+ 449 0095 08       		.byte	0x8
+ 450 0096 04       		.byte	0x4
+ 451 0097 9E010000 		.4byte	.LASF13
+ 452 009b 02       		.uleb128 0x2
+ 453 009c 01       		.byte	0x1
+ 454 009d 08       		.byte	0x8
+ 455 009e 43020000 		.4byte	.LASF14
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 11
+
+
+ 456 00a2 02       		.uleb128 0x2
+ 457 00a3 04       		.byte	0x4
+ 458 00a4 07       		.byte	0x7
+ 459 00a5 2C020000 		.4byte	.LASF15
+ 460 00a9 06       		.uleb128 0x6
+ 461 00aa 04       		.byte	0x4
+ 462 00ab 01       		.byte	0x1
+ 463 00ac 17       		.byte	0x17
+ 464 00ad CA000000 		.4byte	0xca
+ 465 00b1 07       		.uleb128 0x7
+ 466 00b2 C2010000 		.4byte	.LASF16
+ 467 00b6 01       		.byte	0x1
+ 468 00b7 19       		.byte	0x19
+ 469 00b8 81000000 		.4byte	0x81
+ 470 00bc 00       		.byte	0
+ 471 00bd 07       		.uleb128 0x7
+ 472 00be 4F000000 		.4byte	.LASF17
+ 473 00c2 01       		.byte	0x1
+ 474 00c3 1A       		.byte	0x1a
+ 475 00c4 81000000 		.4byte	0x81
+ 476 00c8 02       		.byte	0x2
+ 477 00c9 00       		.byte	0
+ 478 00ca 03       		.uleb128 0x3
+ 479 00cb 15000000 		.4byte	.LASF18
+ 480 00cf 01       		.byte	0x1
+ 481 00d0 1C       		.byte	0x1c
+ 482 00d1 A9000000 		.4byte	0xa9
+ 483 00d5 06       		.uleb128 0x6
+ 484 00d6 4C       		.byte	0x4c
+ 485 00d7 01       		.byte	0x1
+ 486 00d8 1E       		.byte	0x1e
+ 487 00d9 0E010000 		.4byte	0x10e
+ 488 00dd 07       		.uleb128 0x7
+ 489 00de 0A020000 		.4byte	.LASF19
+ 490 00e2 01       		.byte	0x1
+ 491 00e3 20       		.byte	0x20
+ 492 00e4 68000000 		.4byte	0x68
+ 493 00e8 00       		.byte	0
+ 494 00e9 07       		.uleb128 0x7
+ 495 00ea 34000000 		.4byte	.LASF20
+ 496 00ee 01       		.byte	0x1
+ 497 00ef 21       		.byte	0x21
+ 498 00f0 68000000 		.4byte	0x68
+ 499 00f4 04       		.byte	0x4
+ 500 00f5 07       		.uleb128 0x7
+ 501 00f6 DC000000 		.4byte	.LASF21
+ 502 00fa 01       		.byte	0x1
+ 503 00fb 22       		.byte	0x22
+ 504 00fc 68000000 		.4byte	0x68
+ 505 0100 08       		.byte	0x8
+ 506 0101 07       		.uleb128 0x7
+ 507 0102 54000000 		.4byte	.LASF22
+ 508 0106 01       		.byte	0x1
+ 509 0107 23       		.byte	0x23
+ 510 0108 0E010000 		.4byte	0x10e
+ 511 010c 0C       		.byte	0xc
+ 512 010d 00       		.byte	0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 12
+
+
+ 513 010e 08       		.uleb128 0x8
+ 514 010f CA000000 		.4byte	0xca
+ 515 0113 1E010000 		.4byte	0x11e
+ 516 0117 09       		.uleb128 0x9
+ 517 0118 A2000000 		.4byte	0xa2
+ 518 011c 0F       		.byte	0xf
+ 519 011d 00       		.byte	0
+ 520 011e 03       		.uleb128 0x3
+ 521 011f 3F000000 		.4byte	.LASF23
+ 522 0123 01       		.byte	0x1
+ 523 0124 24       		.byte	0x24
+ 524 0125 D5000000 		.4byte	0xd5
+ 525 0129 0A       		.uleb128 0xa
+ 526 012a FC010000 		.4byte	.LASF36
+ 527 012e 01       		.byte	0x1
+ 528 012f 28       		.byte	0x28
+ 529 0130 00000000 		.4byte	.LFB63
+ 530 0134 20000000 		.4byte	.LFE63-.LFB63
+ 531 0138 01       		.uleb128 0x1
+ 532 0139 9C       		.byte	0x9c
+ 533 013a 0B       		.uleb128 0xb
+ 534 013b 52020000 		.4byte	.LASF37
+ 535 013f 01       		.byte	0x1
+ 536 0140 2F       		.byte	0x2f
+ 537 0141 6F000000 		.4byte	0x6f
+ 538 0145 00000000 		.4byte	.LFB64
+ 539 0149 10000000 		.4byte	.LFE64-.LFB64
+ 540 014d 01       		.uleb128 0x1
+ 541 014e 9C       		.byte	0x9c
+ 542 014f 0C       		.uleb128 0xc
+ 543 0150 6F020000 		.4byte	.LASF24
+ 544 0154 01       		.byte	0x1
+ 545 0155 34       		.byte	0x34
+ 546 0156 68000000 		.4byte	0x68
+ 547 015a 00000000 		.4byte	.LFB65
+ 548 015e 34000000 		.4byte	.LFE65-.LFB65
+ 549 0162 01       		.uleb128 0x1
+ 550 0163 9C       		.byte	0x9c
+ 551 0164 77010000 		.4byte	0x177
+ 552 0168 0D       		.uleb128 0xd
+ 553 0169 A5010000 		.4byte	.LASF26
+ 554 016d 01       		.byte	0x1
+ 555 016e 34       		.byte	0x34
+ 556 016f 6F000000 		.4byte	0x6f
+ 557 0173 02       		.uleb128 0x2
+ 558 0174 91       		.byte	0x91
+ 559 0175 74       		.sleb128 -12
+ 560 0176 00       		.byte	0
+ 561 0177 0C       		.uleb128 0xc
+ 562 0178 00000000 		.4byte	.LASF25
+ 563 017c 01       		.byte	0x1
+ 564 017d 3E       		.byte	0x3e
+ 565 017e 68000000 		.4byte	0x68
+ 566 0182 00000000 		.4byte	.LFB66
+ 567 0186 A0000000 		.4byte	.LFE66-.LFB66
+ 568 018a 01       		.uleb128 0x1
+ 569 018b 9C       		.byte	0x9c
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 13
+
+
+ 570 018c C9010000 		.4byte	0x1c9
+ 571 0190 0D       		.uleb128 0xd
+ 572 0191 A5010000 		.4byte	.LASF26
+ 573 0195 01       		.byte	0x1
+ 574 0196 3E       		.byte	0x3e
+ 575 0197 6F000000 		.4byte	0x6f
+ 576 019b 02       		.uleb128 0x2
+ 577 019c 91       		.byte	0x91
+ 578 019d 6C       		.sleb128 -20
+ 579 019e 0D       		.uleb128 0xd
+ 580 019f 65000000 		.4byte	.LASF27
+ 581 01a3 01       		.byte	0x1
+ 582 01a4 3E       		.byte	0x3e
+ 583 01a5 81000000 		.4byte	0x81
+ 584 01a9 02       		.uleb128 0x2
+ 585 01aa 91       		.byte	0x91
+ 586 01ab 6A       		.sleb128 -22
+ 587 01ac 0D       		.uleb128 0xd
+ 588 01ad AC000000 		.4byte	.LASF28
+ 589 01b1 01       		.byte	0x1
+ 590 01b2 3E       		.byte	0x3e
+ 591 01b3 81000000 		.4byte	0x81
+ 592 01b7 02       		.uleb128 0x2
+ 593 01b8 91       		.byte	0x91
+ 594 01b9 68       		.sleb128 -24
+ 595 01ba 0E       		.uleb128 0xe
+ 596 01bb 2A000000 		.4byte	.LASF30
+ 597 01bf 01       		.byte	0x1
+ 598 01c0 40       		.byte	0x40
+ 599 01c1 C9010000 		.4byte	0x1c9
+ 600 01c5 02       		.uleb128 0x2
+ 601 01c6 91       		.byte	0x91
+ 602 01c7 74       		.sleb128 -12
+ 603 01c8 00       		.byte	0
+ 604 01c9 0F       		.uleb128 0xf
+ 605 01ca 04       		.byte	0x4
+ 606 01cb 1E010000 		.4byte	0x11e
+ 607 01cf 0C       		.uleb128 0xc
+ 608 01d0 11020000 		.4byte	.LASF29
+ 609 01d4 01       		.byte	0x1
+ 610 01d5 5C       		.byte	0x5c
+ 611 01d6 68000000 		.4byte	0x68
+ 612 01da 00000000 		.4byte	.LFB67
+ 613 01de 8C000000 		.4byte	.LFE67-.LFB67
+ 614 01e2 01       		.uleb128 0x1
+ 615 01e3 9C       		.byte	0x9c
+ 616 01e4 21020000 		.4byte	0x221
+ 617 01e8 0D       		.uleb128 0xd
+ 618 01e9 A5010000 		.4byte	.LASF26
+ 619 01ed 01       		.byte	0x1
+ 620 01ee 5C       		.byte	0x5c
+ 621 01ef 6F000000 		.4byte	0x6f
+ 622 01f3 02       		.uleb128 0x2
+ 623 01f4 91       		.byte	0x91
+ 624 01f5 6C       		.sleb128 -20
+ 625 01f6 0D       		.uleb128 0xd
+ 626 01f7 65000000 		.4byte	.LASF27
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 14
+
+
+ 627 01fb 01       		.byte	0x1
+ 628 01fc 5C       		.byte	0x5c
+ 629 01fd 21020000 		.4byte	0x221
+ 630 0201 02       		.uleb128 0x2
+ 631 0202 91       		.byte	0x91
+ 632 0203 68       		.sleb128 -24
+ 633 0204 0D       		.uleb128 0xd
+ 634 0205 AC000000 		.4byte	.LASF28
+ 635 0209 01       		.byte	0x1
+ 636 020a 5C       		.byte	0x5c
+ 637 020b 21020000 		.4byte	0x221
+ 638 020f 02       		.uleb128 0x2
+ 639 0210 91       		.byte	0x91
+ 640 0211 64       		.sleb128 -28
+ 641 0212 0E       		.uleb128 0xe
+ 642 0213 2A000000 		.4byte	.LASF30
+ 643 0217 01       		.byte	0x1
+ 644 0218 5E       		.byte	0x5e
+ 645 0219 C9010000 		.4byte	0x1c9
+ 646 021d 02       		.uleb128 0x2
+ 647 021e 91       		.byte	0x91
+ 648 021f 74       		.sleb128 -12
+ 649 0220 00       		.byte	0
+ 650 0221 0F       		.uleb128 0xf
+ 651 0222 04       		.byte	0x4
+ 652 0223 81000000 		.4byte	0x81
+ 653 0227 10       		.uleb128 0x10
+ 654 0228 B5010000 		.4byte	.LASF31
+ 655 022c 05       		.byte	0x5
+ 656 022d 9606     		.2byte	0x696
+ 657 022f 33020000 		.4byte	0x233
+ 658 0233 11       		.uleb128 0x11
+ 659 0234 76000000 		.4byte	0x76
+ 660 0238 08       		.uleb128 0x8
+ 661 0239 1E010000 		.4byte	0x11e
+ 662 023d 48020000 		.4byte	0x248
+ 663 0241 09       		.uleb128 0x9
+ 664 0242 A2000000 		.4byte	0xa2
+ 665 0246 00       		.byte	0
+ 666 0247 00       		.byte	0
+ 667 0248 12       		.uleb128 0x12
+ 668 0249 EC010000 		.4byte	.LASF32
+ 669 024d 01       		.byte	0x1
+ 670 024e 26       		.byte	0x26
+ 671 024f 38020000 		.4byte	0x238
+ 672 0253 05       		.uleb128 0x5
+ 673 0254 03       		.byte	0x3
+ 674 0255 00000000 		.4byte	queue_structure
+ 675 0259 00       		.byte	0
+ 676              		.section	.debug_abbrev,"",%progbits
+ 677              	.Ldebug_abbrev0:
+ 678 0000 01       		.uleb128 0x1
+ 679 0001 11       		.uleb128 0x11
+ 680 0002 01       		.byte	0x1
+ 681 0003 25       		.uleb128 0x25
+ 682 0004 0E       		.uleb128 0xe
+ 683 0005 13       		.uleb128 0x13
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 15
+
+
+ 684 0006 0B       		.uleb128 0xb
+ 685 0007 03       		.uleb128 0x3
+ 686 0008 0E       		.uleb128 0xe
+ 687 0009 1B       		.uleb128 0x1b
+ 688 000a 0E       		.uleb128 0xe
+ 689 000b 55       		.uleb128 0x55
+ 690 000c 17       		.uleb128 0x17
+ 691 000d 11       		.uleb128 0x11
+ 692 000e 01       		.uleb128 0x1
+ 693 000f 10       		.uleb128 0x10
+ 694 0010 17       		.uleb128 0x17
+ 695 0011 00       		.byte	0
+ 696 0012 00       		.byte	0
+ 697 0013 02       		.uleb128 0x2
+ 698 0014 24       		.uleb128 0x24
+ 699 0015 00       		.byte	0
+ 700 0016 0B       		.uleb128 0xb
+ 701 0017 0B       		.uleb128 0xb
+ 702 0018 3E       		.uleb128 0x3e
+ 703 0019 0B       		.uleb128 0xb
+ 704 001a 03       		.uleb128 0x3
+ 705 001b 0E       		.uleb128 0xe
+ 706 001c 00       		.byte	0
+ 707 001d 00       		.byte	0
+ 708 001e 03       		.uleb128 0x3
+ 709 001f 16       		.uleb128 0x16
+ 710 0020 00       		.byte	0
+ 711 0021 03       		.uleb128 0x3
+ 712 0022 0E       		.uleb128 0xe
+ 713 0023 3A       		.uleb128 0x3a
+ 714 0024 0B       		.uleb128 0xb
+ 715 0025 3B       		.uleb128 0x3b
+ 716 0026 0B       		.uleb128 0xb
+ 717 0027 49       		.uleb128 0x49
+ 718 0028 13       		.uleb128 0x13
+ 719 0029 00       		.byte	0
+ 720 002a 00       		.byte	0
+ 721 002b 04       		.uleb128 0x4
+ 722 002c 24       		.uleb128 0x24
+ 723 002d 00       		.byte	0
+ 724 002e 0B       		.uleb128 0xb
+ 725 002f 0B       		.uleb128 0xb
+ 726 0030 3E       		.uleb128 0x3e
+ 727 0031 0B       		.uleb128 0xb
+ 728 0032 03       		.uleb128 0x3
+ 729 0033 08       		.uleb128 0x8
+ 730 0034 00       		.byte	0
+ 731 0035 00       		.byte	0
+ 732 0036 05       		.uleb128 0x5
+ 733 0037 16       		.uleb128 0x16
+ 734 0038 00       		.byte	0
+ 735 0039 03       		.uleb128 0x3
+ 736 003a 0E       		.uleb128 0xe
+ 737 003b 3A       		.uleb128 0x3a
+ 738 003c 0B       		.uleb128 0xb
+ 739 003d 3B       		.uleb128 0x3b
+ 740 003e 05       		.uleb128 0x5
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 16
+
+
+ 741 003f 49       		.uleb128 0x49
+ 742 0040 13       		.uleb128 0x13
+ 743 0041 00       		.byte	0
+ 744 0042 00       		.byte	0
+ 745 0043 06       		.uleb128 0x6
+ 746 0044 13       		.uleb128 0x13
+ 747 0045 01       		.byte	0x1
+ 748 0046 0B       		.uleb128 0xb
+ 749 0047 0B       		.uleb128 0xb
+ 750 0048 3A       		.uleb128 0x3a
+ 751 0049 0B       		.uleb128 0xb
+ 752 004a 3B       		.uleb128 0x3b
+ 753 004b 0B       		.uleb128 0xb
+ 754 004c 01       		.uleb128 0x1
+ 755 004d 13       		.uleb128 0x13
+ 756 004e 00       		.byte	0
+ 757 004f 00       		.byte	0
+ 758 0050 07       		.uleb128 0x7
+ 759 0051 0D       		.uleb128 0xd
+ 760 0052 00       		.byte	0
+ 761 0053 03       		.uleb128 0x3
+ 762 0054 0E       		.uleb128 0xe
+ 763 0055 3A       		.uleb128 0x3a
+ 764 0056 0B       		.uleb128 0xb
+ 765 0057 3B       		.uleb128 0x3b
+ 766 0058 0B       		.uleb128 0xb
+ 767 0059 49       		.uleb128 0x49
+ 768 005a 13       		.uleb128 0x13
+ 769 005b 38       		.uleb128 0x38
+ 770 005c 0B       		.uleb128 0xb
+ 771 005d 00       		.byte	0
+ 772 005e 00       		.byte	0
+ 773 005f 08       		.uleb128 0x8
+ 774 0060 01       		.uleb128 0x1
+ 775 0061 01       		.byte	0x1
+ 776 0062 49       		.uleb128 0x49
+ 777 0063 13       		.uleb128 0x13
+ 778 0064 01       		.uleb128 0x1
+ 779 0065 13       		.uleb128 0x13
+ 780 0066 00       		.byte	0
+ 781 0067 00       		.byte	0
+ 782 0068 09       		.uleb128 0x9
+ 783 0069 21       		.uleb128 0x21
+ 784 006a 00       		.byte	0
+ 785 006b 49       		.uleb128 0x49
+ 786 006c 13       		.uleb128 0x13
+ 787 006d 2F       		.uleb128 0x2f
+ 788 006e 0B       		.uleb128 0xb
+ 789 006f 00       		.byte	0
+ 790 0070 00       		.byte	0
+ 791 0071 0A       		.uleb128 0xa
+ 792 0072 2E       		.uleb128 0x2e
+ 793 0073 00       		.byte	0
+ 794 0074 3F       		.uleb128 0x3f
+ 795 0075 19       		.uleb128 0x19
+ 796 0076 03       		.uleb128 0x3
+ 797 0077 0E       		.uleb128 0xe
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 17
+
+
+ 798 0078 3A       		.uleb128 0x3a
+ 799 0079 0B       		.uleb128 0xb
+ 800 007a 3B       		.uleb128 0x3b
+ 801 007b 0B       		.uleb128 0xb
+ 802 007c 27       		.uleb128 0x27
+ 803 007d 19       		.uleb128 0x19
+ 804 007e 11       		.uleb128 0x11
+ 805 007f 01       		.uleb128 0x1
+ 806 0080 12       		.uleb128 0x12
+ 807 0081 06       		.uleb128 0x6
+ 808 0082 40       		.uleb128 0x40
+ 809 0083 18       		.uleb128 0x18
+ 810 0084 9642     		.uleb128 0x2116
+ 811 0086 19       		.uleb128 0x19
+ 812 0087 00       		.byte	0
+ 813 0088 00       		.byte	0
+ 814 0089 0B       		.uleb128 0xb
+ 815 008a 2E       		.uleb128 0x2e
+ 816 008b 00       		.byte	0
+ 817 008c 3F       		.uleb128 0x3f
+ 818 008d 19       		.uleb128 0x19
+ 819 008e 03       		.uleb128 0x3
+ 820 008f 0E       		.uleb128 0xe
+ 821 0090 3A       		.uleb128 0x3a
+ 822 0091 0B       		.uleb128 0xb
+ 823 0092 3B       		.uleb128 0x3b
+ 824 0093 0B       		.uleb128 0xb
+ 825 0094 27       		.uleb128 0x27
+ 826 0095 19       		.uleb128 0x19
+ 827 0096 49       		.uleb128 0x49
+ 828 0097 13       		.uleb128 0x13
+ 829 0098 11       		.uleb128 0x11
+ 830 0099 01       		.uleb128 0x1
+ 831 009a 12       		.uleb128 0x12
+ 832 009b 06       		.uleb128 0x6
+ 833 009c 40       		.uleb128 0x40
+ 834 009d 18       		.uleb128 0x18
+ 835 009e 9742     		.uleb128 0x2117
+ 836 00a0 19       		.uleb128 0x19
+ 837 00a1 00       		.byte	0
+ 838 00a2 00       		.byte	0
+ 839 00a3 0C       		.uleb128 0xc
+ 840 00a4 2E       		.uleb128 0x2e
+ 841 00a5 01       		.byte	0x1
+ 842 00a6 3F       		.uleb128 0x3f
+ 843 00a7 19       		.uleb128 0x19
+ 844 00a8 03       		.uleb128 0x3
+ 845 00a9 0E       		.uleb128 0xe
+ 846 00aa 3A       		.uleb128 0x3a
+ 847 00ab 0B       		.uleb128 0xb
+ 848 00ac 3B       		.uleb128 0x3b
+ 849 00ad 0B       		.uleb128 0xb
+ 850 00ae 27       		.uleb128 0x27
+ 851 00af 19       		.uleb128 0x19
+ 852 00b0 49       		.uleb128 0x49
+ 853 00b1 13       		.uleb128 0x13
+ 854 00b2 11       		.uleb128 0x11
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 18
+
+
+ 855 00b3 01       		.uleb128 0x1
+ 856 00b4 12       		.uleb128 0x12
+ 857 00b5 06       		.uleb128 0x6
+ 858 00b6 40       		.uleb128 0x40
+ 859 00b7 18       		.uleb128 0x18
+ 860 00b8 9742     		.uleb128 0x2117
+ 861 00ba 19       		.uleb128 0x19
+ 862 00bb 01       		.uleb128 0x1
+ 863 00bc 13       		.uleb128 0x13
+ 864 00bd 00       		.byte	0
+ 865 00be 00       		.byte	0
+ 866 00bf 0D       		.uleb128 0xd
+ 867 00c0 05       		.uleb128 0x5
+ 868 00c1 00       		.byte	0
+ 869 00c2 03       		.uleb128 0x3
+ 870 00c3 0E       		.uleb128 0xe
+ 871 00c4 3A       		.uleb128 0x3a
+ 872 00c5 0B       		.uleb128 0xb
+ 873 00c6 3B       		.uleb128 0x3b
+ 874 00c7 0B       		.uleb128 0xb
+ 875 00c8 49       		.uleb128 0x49
+ 876 00c9 13       		.uleb128 0x13
+ 877 00ca 02       		.uleb128 0x2
+ 878 00cb 18       		.uleb128 0x18
+ 879 00cc 00       		.byte	0
+ 880 00cd 00       		.byte	0
+ 881 00ce 0E       		.uleb128 0xe
+ 882 00cf 34       		.uleb128 0x34
+ 883 00d0 00       		.byte	0
+ 884 00d1 03       		.uleb128 0x3
+ 885 00d2 0E       		.uleb128 0xe
+ 886 00d3 3A       		.uleb128 0x3a
+ 887 00d4 0B       		.uleb128 0xb
+ 888 00d5 3B       		.uleb128 0x3b
+ 889 00d6 0B       		.uleb128 0xb
+ 890 00d7 49       		.uleb128 0x49
+ 891 00d8 13       		.uleb128 0x13
+ 892 00d9 02       		.uleb128 0x2
+ 893 00da 18       		.uleb128 0x18
+ 894 00db 00       		.byte	0
+ 895 00dc 00       		.byte	0
+ 896 00dd 0F       		.uleb128 0xf
+ 897 00de 0F       		.uleb128 0xf
+ 898 00df 00       		.byte	0
+ 899 00e0 0B       		.uleb128 0xb
+ 900 00e1 0B       		.uleb128 0xb
+ 901 00e2 49       		.uleb128 0x49
+ 902 00e3 13       		.uleb128 0x13
+ 903 00e4 00       		.byte	0
+ 904 00e5 00       		.byte	0
+ 905 00e6 10       		.uleb128 0x10
+ 906 00e7 34       		.uleb128 0x34
+ 907 00e8 00       		.byte	0
+ 908 00e9 03       		.uleb128 0x3
+ 909 00ea 0E       		.uleb128 0xe
+ 910 00eb 3A       		.uleb128 0x3a
+ 911 00ec 0B       		.uleb128 0xb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 19
+
+
+ 912 00ed 3B       		.uleb128 0x3b
+ 913 00ee 05       		.uleb128 0x5
+ 914 00ef 49       		.uleb128 0x49
+ 915 00f0 13       		.uleb128 0x13
+ 916 00f1 3F       		.uleb128 0x3f
+ 917 00f2 19       		.uleb128 0x19
+ 918 00f3 3C       		.uleb128 0x3c
+ 919 00f4 19       		.uleb128 0x19
+ 920 00f5 00       		.byte	0
+ 921 00f6 00       		.byte	0
+ 922 00f7 11       		.uleb128 0x11
+ 923 00f8 35       		.uleb128 0x35
+ 924 00f9 00       		.byte	0
+ 925 00fa 49       		.uleb128 0x49
+ 926 00fb 13       		.uleb128 0x13
+ 927 00fc 00       		.byte	0
+ 928 00fd 00       		.byte	0
+ 929 00fe 12       		.uleb128 0x12
+ 930 00ff 34       		.uleb128 0x34
+ 931 0100 00       		.byte	0
+ 932 0101 03       		.uleb128 0x3
+ 933 0102 0E       		.uleb128 0xe
+ 934 0103 3A       		.uleb128 0x3a
+ 935 0104 0B       		.uleb128 0xb
+ 936 0105 3B       		.uleb128 0x3b
+ 937 0106 0B       		.uleb128 0xb
+ 938 0107 49       		.uleb128 0x49
+ 939 0108 13       		.uleb128 0x13
+ 940 0109 3F       		.uleb128 0x3f
+ 941 010a 19       		.uleb128 0x19
+ 942 010b 02       		.uleb128 0x2
+ 943 010c 18       		.uleb128 0x18
+ 944 010d 00       		.byte	0
+ 945 010e 00       		.byte	0
+ 946 010f 00       		.byte	0
+ 947              		.section	.debug_aranges,"",%progbits
+ 948 0000 3C000000 		.4byte	0x3c
+ 949 0004 0200     		.2byte	0x2
+ 950 0006 00000000 		.4byte	.Ldebug_info0
+ 951 000a 04       		.byte	0x4
+ 952 000b 00       		.byte	0
+ 953 000c 0000     		.2byte	0
+ 954 000e 0000     		.2byte	0
+ 955 0010 00000000 		.4byte	.LFB63
+ 956 0014 20000000 		.4byte	.LFE63-.LFB63
+ 957 0018 00000000 		.4byte	.LFB64
+ 958 001c 10000000 		.4byte	.LFE64-.LFB64
+ 959 0020 00000000 		.4byte	.LFB65
+ 960 0024 34000000 		.4byte	.LFE65-.LFB65
+ 961 0028 00000000 		.4byte	.LFB66
+ 962 002c A0000000 		.4byte	.LFE66-.LFB66
+ 963 0030 00000000 		.4byte	.LFB67
+ 964 0034 8C000000 		.4byte	.LFE67-.LFB67
+ 965 0038 00000000 		.4byte	0
+ 966 003c 00000000 		.4byte	0
+ 967              		.section	.debug_ranges,"",%progbits
+ 968              	.Ldebug_ranges0:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 20
+
+
+ 969 0000 00000000 		.4byte	.LFB63
+ 970 0004 20000000 		.4byte	.LFE63
+ 971 0008 00000000 		.4byte	.LFB64
+ 972 000c 10000000 		.4byte	.LFE64
+ 973 0010 00000000 		.4byte	.LFB65
+ 974 0014 34000000 		.4byte	.LFE65
+ 975 0018 00000000 		.4byte	.LFB66
+ 976 001c A0000000 		.4byte	.LFE66
+ 977 0020 00000000 		.4byte	.LFB67
+ 978 0024 8C000000 		.4byte	.LFE67
+ 979 0028 00000000 		.4byte	0
+ 980 002c 00000000 		.4byte	0
+ 981              		.section	.debug_line,"",%progbits
+ 982              	.Ldebug_line0:
+ 983 0000 CE010000 		.section	.debug_str,"MS",%progbits,1
+ 983      02005A01 
+ 983      00000201 
+ 983      FB0E0D00 
+ 983      01010101 
+ 984              	.LASF25:
+ 985 0000 45465F65 		.ascii	"EF_enqueue_elemement\000"
+ 985      6E717565 
+ 985      75655F65 
+ 985      6C656D65 
+ 985      6D656E74 
+ 986              	.LASF18:
+ 987 0015 51554555 		.ascii	"QUEUE_DATA\000"
+ 987      455F4441 
+ 987      544100
+ 988              	.LASF9:
+ 989 0020 5F5F696E 		.ascii	"__int32_t\000"
+ 989      7433325F 
+ 989      7400
+ 990              	.LASF30:
+ 991 002a 71756575 		.ascii	"queue_str\000"
+ 991      655F7374 
+ 991      7200
+ 992              	.LASF20:
+ 993 0034 72656164 		.ascii	"read_index\000"
+ 993      5F696E64 
+ 993      657800
+ 994              	.LASF23:
+ 995 003f 51554555 		.ascii	"QUEUE_STRUCTURE\000"
+ 995      455F5354 
+ 995      52554354 
+ 995      55524500 
+ 996              	.LASF17:
+ 997 004f 64617461 		.ascii	"data\000"
+ 997      00
+ 998              	.LASF22:
+ 999 0054 71756575 		.ascii	"queue_data\000"
+ 999      655F6461 
+ 999      746100
+ 1000              	.LASF12:
+ 1001 005f 666C6F61 		.ascii	"float\000"
+ 1001      7400
+ 1002              	.LASF27:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 21
+
+
+ 1003 0065 6576656E 		.ascii	"event_id\000"
+ 1003      745F6964 
+ 1003      00
+ 1004              	.LASF35:
+ 1005 006e 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 1005      73657273 
+ 1005      5C676C65 
+ 1005      6E6E5C4F 
+ 1005      6E654472 
+ 1006 009b 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ 1006      55415254 
+ 1006      30312E63 
+ 1006      7964736E 
+ 1006      00
+ 1007              	.LASF28:
+ 1008 00ac 6576656E 		.ascii	"event_data\000"
+ 1008      745F6461 
+ 1008      746100
+ 1009              	.LASF5:
+ 1010 00b7 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1010      20756E73 
+ 1010      69676E65 
+ 1010      6420696E 
+ 1010      7400
+ 1011              	.LASF3:
+ 1012 00c9 73686F72 		.ascii	"short unsigned int\000"
+ 1012      7420756E 
+ 1012      7369676E 
+ 1012      65642069 
+ 1012      6E7400
+ 1013              	.LASF21:
+ 1014 00dc 77726974 		.ascii	"write_index\000"
+ 1014      655F696E 
+ 1014      64657800 
+ 1015              	.LASF34:
+ 1016 00e8 2E5C6576 		.ascii	".\\event_fifo\\event_fifo.c\000"
+ 1016      656E745F 
+ 1016      6669666F 
+ 1016      5C657665 
+ 1016      6E745F66 
+ 1017              	.LASF1:
+ 1018 0102 756E7369 		.ascii	"unsigned char\000"
+ 1018      676E6564 
+ 1018      20636861 
+ 1018      7200
+ 1019              	.LASF33:
+ 1020 0110 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 1020      4320342E 
+ 1020      392E3320 
+ 1020      32303135 
+ 1020      30333033 
+ 1021 0143 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 1021      20726576 
+ 1021      6973696F 
+ 1021      6E203232 
+ 1021      31323230 
+ 1022 0176 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 22
+
+
+ 1022      66756E63 
+ 1022      74696F6E 
+ 1022      2D736563 
+ 1022      74696F6E 
+ 1023              	.LASF13:
+ 1024 019e 646F7562 		.ascii	"double\000"
+ 1024      6C6500
+ 1025              	.LASF26:
+ 1026 01a5 71756575 		.ascii	"queue_id\000"
+ 1026      655F6964 
+ 1026      00
+ 1027              	.LASF11:
+ 1028 01ae 75696E74 		.ascii	"uint16\000"
+ 1028      313600
+ 1029              	.LASF31:
+ 1030 01b5 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1030      52784275 
+ 1030      66666572 
+ 1030      00
+ 1031              	.LASF16:
+ 1032 01c2 6576656E 		.ascii	"event\000"
+ 1032      7400
+ 1033              	.LASF8:
+ 1034 01c8 756E7369 		.ascii	"unsigned int\000"
+ 1034      676E6564 
+ 1034      20696E74 
+ 1034      00
+ 1035              	.LASF7:
+ 1036 01d5 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1036      206C6F6E 
+ 1036      6720756E 
+ 1036      7369676E 
+ 1036      65642069 
+ 1037              	.LASF32:
+ 1038 01ec 71756575 		.ascii	"queue_structure\000"
+ 1038      655F7374 
+ 1038      72756374 
+ 1038      75726500 
+ 1039              	.LASF36:
+ 1040 01fc 45465F69 		.ascii	"EF_initialize\000"
+ 1040      6E697469 
+ 1040      616C697A 
+ 1040      6500
+ 1041              	.LASF19:
+ 1042 020a 6E756D62 		.ascii	"number\000"
+ 1042      657200
+ 1043              	.LASF29:
+ 1044 0211 45465F64 		.ascii	"EF_dequeue_element\000"
+ 1044      65717565 
+ 1044      75655F65 
+ 1044      6C656D65 
+ 1044      6E7400
+ 1045              	.LASF10:
+ 1046 0224 696E7433 		.ascii	"int32_t\000"
+ 1046      325F7400 
+ 1047              	.LASF15:
+ 1048 022c 73697A65 		.ascii	"sizetype\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccheCCSd.s 			page 23
+
+
+ 1048      74797065 
+ 1048      00
+ 1049              	.LASF6:
+ 1050 0235 6C6F6E67 		.ascii	"long long int\000"
+ 1050      206C6F6E 
+ 1050      6720696E 
+ 1050      7400
+ 1051              	.LASF14:
+ 1052 0243 63686172 		.ascii	"char\000"
+ 1052      00
+ 1053              	.LASF2:
+ 1054 0248 73686F72 		.ascii	"short int\000"
+ 1054      7420696E 
+ 1054      7400
+ 1055              	.LASF37:
+ 1056 0252 45465F6E 		.ascii	"EF_number_of_queues\000"
+ 1056      756D6265 
+ 1056      725F6F66 
+ 1056      5F717565 
+ 1056      75657300 
+ 1057              	.LASF4:
+ 1058 0266 6C6F6E67 		.ascii	"long int\000"
+ 1058      20696E74 
+ 1058      00
+ 1059              	.LASF24:
+ 1060 026f 45465F65 		.ascii	"EF_elements_in_queue\000"
+ 1060      6C656D65 
+ 1060      6E74735F 
+ 1060      696E5F71 
+ 1060      75657565 
+ 1061              	.LASF0:
+ 1062 0284 7369676E 		.ascii	"signed char\000"
+ 1062      65642063 
+ 1062      68617200 
+ 1063              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

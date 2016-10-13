@@ -14,6 +14,7 @@ Implements of codes for cf_runtime_functions.c
 #include "cf_runtime_functions.h"
 #include "cf_events.h"
 
+#define NULL_PARAMETER  0xffffffff
 
 int terminate_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
     unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data)
@@ -42,15 +43,18 @@ int reset_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
 int one_step_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
     unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data)
 {
-  
-
-
-
-   if( event== CF_INIT_EVENT )
+   int return_value;   
+   
+   if( event!= CF_INIT_EVENT )
    {
       param_1(link_id, param_2,param_3,param_4,event,event_data );
+      return_value = CF_DISABLE;
    }
-   return CF_DISABLE; 
+   else
+   {
+      return_value = CF_CONTINUE;
+   }
+   return return_value; 
 }
 
 int code_step_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
@@ -86,11 +90,11 @@ int wait_tod_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
    hour   = RTC_1_ReadHour();
  
    // check hour
-   if( ( param_2 == 0xffff ) && ( param_2 == hour ))
+   if( ( param_2 == NULL_PARAMETER ) || ( param_2 == hour ))
    {
-     if( ( param_3 == 0xffff ) && ( param_3 == hour ))
+     if( ( param_3 == NULL_PARAMETER ) || ( param_3 == minute ))
      {
-       if( ( param_4 == 0xffff ) && ( param_4 == second ))
+       if( ( param_4 == NULL_PARAMETER ) || ( param_4 == second ))
        {
           return CF_DISABLE;
        }
@@ -115,7 +119,7 @@ int wait_event_count_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned rx_event
    if( event == rx_event )
    {
        value = cf_get_cell_value( link_id );
-       value += event_data;
+       value += 1;
        cf_store_cell_value(link_id, value);
        if( value >= rx_event_count )
        {
@@ -287,6 +291,7 @@ int verify_not_timeout_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_
   if( event == CF_INIT_EVENT )
   {
        cf_store_cell_value( link_id , 0 );
+       return_value = CF_CONTINUE;
 
   }
   else if( event == CF_TIME_TICK_EVENT )
@@ -343,11 +348,11 @@ int verify_not_tod_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
    hour   = RTC_1_ReadHour();
  
    // check hour
-   if( ( param_2 == 0xffff ) && ( param_2 == hour ))
+   if( ( param_2 == NULL_PARAMETER ) || ( param_2 == hour ))
    {
-     if( ( param_3 == 0xffff ) && ( param_3 == hour ))
+     if( ( param_3 == NULL_PARAMETER ) || ( param_3 == minute ))
      {
-       if( ( param_4 == 0xffff ) && ( param_4 == second ))
+       if( ( param_4 == NULL_PARAMETER ) || ( param_4 == second ))
        {
           return CF_RESET;
        }
@@ -360,8 +365,17 @@ int verify_not_tod_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
 int nop_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
     unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data)
 {
-  return CF_DISABLE;
-}
+
+    
+   if( event != CF_INIT_EVENT )
+   {
+       return CF_DISABLE;
+   }
+   else
+   {
+       return CF_CONTINUE;
+   }
+ }
  
 
  
@@ -389,10 +403,20 @@ int enable_chain_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
 {
    if( event == CF_INIT_EVENT )
    {
-      
-      cf_enable_chain((intptr_t)param_2);
-      cf_enable_chain((intptr_t)param_3);
-      cf_enable_chain((intptr_t)param_4);
+      if( param_2 != NULL_PARAMETER)
+      {
+          cf_enable_chain((intptr_t)param_2);
+      }
+      if( param_3 != NULL_PARAMETER)
+      {
+          cf_enable_chain((intptr_t)param_3);
+      }
+
+      if( param_4 != NULL_PARAMETER)
+      {
+          cf_enable_chain((intptr_t)param_4);
+      }
+
    }
    return CF_DISABLE;
 
@@ -403,10 +427,23 @@ int disable_chain_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2,
 {
    if( event == CF_INIT_EVENT )
    {
+     if( param_2 != NULL_PARAMETER)
+      {
+           cf_disable_chain((intptr_t)param_2);
+      }
+      if( param_3 != NULL_PARAMETER)
+      {
+          cf_suspend_chain((intptr_t)param_3);
+      }
 
-      cf_disable_chain((intptr_t)param_2);
-      cf_suspend_chain((intptr_t)param_3);
-      cf_suspend_chain((intptr_t)param_4);
+      if( param_4 != NULL_PARAMETER)
+      {
+          cf_suspend_chain((intptr_t)param_4);
+      }
+
+     
+      
+      
    }
    return CF_DISABLE;
 

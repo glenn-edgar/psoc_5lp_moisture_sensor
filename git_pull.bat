@@ -1,1 +1,1 @@
-git clone https://onyxengr.visualstudio.com/DefaultCollection/Irrigation%20System/_git/psoc-5lp-base_rtu
+git clone https://github.com/glenn-edgar/psoc_5lp_moisture_sensor

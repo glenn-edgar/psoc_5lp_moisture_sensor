@@ -1,0 +1,23 @@
+--------------- Build Started: 04/07/2016 01:56:12 Project: USB_UART01, Configuration: ARM GCC 4.9-2015-q1-update Debug ---------------
+cydsfit.exe -.appdatapath "C:\Users\Glenn\AppData\Local\Cypress Semiconductor\PSoC Creator\3.3" -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -p C:\Users\Glenn\OneDrive\PSOC\psoc-5lp\5lp-rtu\USB_UART01.cydsn\USB_UART01.cyprj -d CY8C5888LTI-LP097 -s C:\Users\Glenn\OneDrive\PSOC\psoc-5lp\5lp-rtu\USB_UART01.cydsn\Generated_Source\PSoC5 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
+Elaborating Design...
+ADD: sdb.M0065: information: Analog terminal "ADC_DelSig_1.vplus" on TopDesign is unconnected.
+ * C:\Users\Glenn\OneDrive\PSOC\psoc-5lp\5lp-rtu\USB_UART01.cydsn\TopDesign\TopDesign.cysch (Signal: Net_2202)
+ * C:\Users\Glenn\OneDrive\PSOC\psoc-5lp\5lp-rtu\USB_UART01.cydsn\TopDesign\TopDesign.cysch (Shape_224.3)
+ADD: sdb.M0065: information: Analog terminal "ADC_DelSig_1.vminus" on TopDesign is unconnected.
+ * C:\Users\Glenn\OneDrive\PSOC\psoc-5lp\5lp-rtu\USB_UART01.cydsn\TopDesign\TopDesign.cysch (Signal: Net_2203)
+ * C:\Users\Glenn\OneDrive\PSOC\psoc-5lp\5lp-rtu\USB_UART01.cydsn\TopDesign\TopDesign.cysch (Shape_224.5)
+ADD: sdb.M0065: information: Analog terminal "vdac_ref" on ADC_SAR_SEQ_v2_0 is unconnected.
+ * C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\PSoC5\ADC_SAR_SEQ_v2_0.cysch (Signal: vdac_ref)
+ * C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\PSoC5\ADC_SAR_SEQ_v2_0.cysch (Shape_798)
+ * C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\PSoC5\ADC_SAR_SEQ_v2_0.cysch (Shape_885)
+ADD: pft.M0104: error: Clock Model Error: (There are too many new digital clocks used in the current design. The selected device only supports '8' new digital clocks but '9' have been used.).
+ * C:\Users\Glenn\OneDrive\PSOC\psoc-5lp\5lp-rtu\USB_UART01.cydsn\USB_UART01.cydwr ()
+ADD: sdb.M0061: information: Info from component: DAC_1. System VDDA voltage is set less than the voltage range of
+        VDAC, the actual range of the VDAC will be 0V to VDDA.
+ * C:\Users\Glenn\OneDrive\PSOC\psoc-5lp\5lp-rtu\USB_UART01.cydsn\TopDesign\TopDesign.cysch (Instance:DAC_1)
+ADD: sdb.M0061: information: Info from component: DAC_2. System VDDA voltage is set less than the voltage range of
+        VDAC, the actual range of the VDAC will be 0V to VDDA.
+ * C:\Users\Glenn\OneDrive\PSOC\psoc-5lp\5lp-rtu\USB_UART01.cydsn\TopDesign\TopDesign.cysch (Instance:DAC_2)
+Error: cdf.M0005: CyDsFit aborted due to errors, please address all errors and rerun CyDsFit. (App=cydsfit)
+--------------- Build Failed: 04/07/2016 01:57:02 ---------------

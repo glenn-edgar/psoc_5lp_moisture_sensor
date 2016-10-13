@@ -1,0 +1,790 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"main.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global _printf_float
+  19              		.thumb
+  20              		.section	.text.process_status_data,"ax",%progbits
+  21              		.align	2
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	process_status_data, %function
+  25              	process_status_data:
+  26              	.LFB63:
+  27              		.file 1 ".\\main.c"
+   1:.\main.c      **** /*******************************************************************************
+   2:.\main.c      **** * File Name: main.c
+   3:.\main.c      **** *
+   4:.\main.c      **** * Version: 1.0
+   5:.\main.c      **** *
+   6:.\main.c      **** * Description:
+   7:.\main.c      **** *   Enumerates as a Virtual Com port.  Receives data from hyper terminal, then 
+   8:.\main.c      **** *   send received data backward. LCD shows the Line settings.
+   9:.\main.c      **** *   
+  10:.\main.c      **** *  To test project:
+  11:.\main.c      **** *   1. Build the project and program the hex file on to the target device.
+  12:.\main.c      **** *   2. Select 3.3V in SW3 and plug-in power to the CY8CKIT-001
+  13:.\main.c      **** *   3. Connect USB cable from the computer to the CY8CKIT-001.
+  14:.\main.c      **** *   4. Select the USB_UART.inf file from the project directory, as the driver 
+  15:.\main.c      **** *      for this example once Windows asks for it.
+  16:.\main.c      **** *   5. Open "Device Manager" and note the COM port number for "Example Project"
+  17:.\main.c      **** *      device.
+  18:.\main.c      **** *   6. Open "HyperTerminal" application and make new connection to noted COM port
+  19:.\main.c      **** *   7. Type the message, observe echo data received.
+  20:.\main.c      **** *
+  21:.\main.c      **** * Related Document:
+  22:.\main.c      **** *  Universal Serial Bus Specification Revision 2.0 
+  23:.\main.c      **** *  Universal Serial Bus Class Definitions for Communications Devices 
+  24:.\main.c      **** *  Revision 1.2
+  25:.\main.c      **** *
+  26:.\main.c      **** ********************************************************************************
+  27:.\main.c      **** * Copyright 2012, Cypress Semiconductor Corporation. All rights reserved.
+  28:.\main.c      **** * This software is owned by Cypress Semiconductor Corporation and is protected
+  29:.\main.c      **** * by and subject to worldwide patent and copyright laws and treaties.
+  30:.\main.c      **** * Therefore, you may use this software only as provided in the license agreement
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 2
+
+
+  31:.\main.c      **** * accompanying the software package from which you obtained this software.
+  32:.\main.c      **** * CYPRESS AND ITS SUPPLIERS MAKE NO WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  33:.\main.c      **** * WITH REGARD TO THIS SOFTWARE, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT,
+  34:.\main.c      **** * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+  35:.\main.c      **** *******************************************************************************/
+  36:.\main.c      **** 
+  37:.\main.c      **** #include <device.h>
+  38:.\main.c      **** #include "stdio.h"
+  39:.\main.c      **** 
+  40:.\main.c      **** // software reset
+  41:.\main.c      **** // CySoftwareReset();
+  42:.\main.c      **** 
+  43:.\main.c      **** 
+  44:.\main.c      **** #include "cf_chain_flow_support.h"
+  45:.\main.c      **** #include "a_to_d_functions.h"
+  46:.\main.c      **** #include "cf_events.h"
+  47:.\main.c      **** #include "sigma_mux.h"
+  48:.\main.c      **** #include "cf_status_bit.h"
+  49:.\main.c      **** #include "modbus_serial_ctrl.h"
+  50:.\main.c      **** 
+  51:.\main.c      **** #if defined (__GNUC__)
+  52:.\main.c      ****     /* Add an explicit reference to the floating point printf library */
+  53:.\main.c      ****     /* to allow the usage of floating point conversion specifiers. */
+  54:.\main.c      ****     /* This is not linked in by default with the newlib-nano library. */
+  55:.\main.c      ****     asm (".global _printf_float");
+  56:.\main.c      **** #endif
+  57:.\main.c      **** 
+  58:.\main.c      **** #define HEART_BEAT_INTERVAL 500
+  59:.\main.c      **** 
+  60:.\main.c      **** 
+  61:.\main.c      **** 
+  62:.\main.c      **** 
+  63:.\main.c      **** 
+  64:.\main.c      **** 
+  65:.\main.c      **** 
+  66:.\main.c      **** static inline void  process_status_data( unsigned status_data)
+  67:.\main.c      **** {
+  28              		.loc 1 67 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+  35              		.cfi_offset 14, -4
+  36 0002 82B0     		sub	sp, sp, #8
+  37              		.cfi_def_cfa_offset 16
+  38 0004 00AF     		add	r7, sp, #0
+  39              		.cfi_def_cfa_register 7
+  40 0006 7860     		str	r0, [r7, #4]
+  68:.\main.c      **** 
+  69:.\main.c      ****     
+  70:.\main.c      ****     if( status_data & CF_PROCESS_AD_RESULTS )
+  41              		.loc 1 70 0
+  42 0008 7B68     		ldr	r3, [r7, #4]
+  43 000a 03F00103 		and	r3, r3, #1
+  44 000e 002B     		cmp	r3, #0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 3
+
+
+  45 0010 01D0     		beq	.L2
+  71:.\main.c      ****     {
+  72:.\main.c      ****         ad_process_se();
+  46              		.loc 1 72 0
+  47 0012 FFF7FEFF 		bl	ad_process_se
+  48              	.L2:
+  73:.\main.c      ****     }
+  74:.\main.c      ****     if( status_data & CF_PROCESS_MODBUS )
+  49              		.loc 1 74 0
+  50 0016 7B68     		ldr	r3, [r7, #4]
+  51 0018 03F00203 		and	r3, r3, #2
+  52 001c 002B     		cmp	r3, #0
+  53 001e 01D0     		beq	.L1
+  75:.\main.c      ****     {
+  76:.\main.c      ****       process_rx_modbus_rtu_message( );
+  54              		.loc 1 76 0
+  55 0020 FFF7FEFF 		bl	process_rx_modbus_rtu_message
+  56              	.L1:
+  77:.\main.c      ****     }
+  78:.\main.c      ****     
+  79:.\main.c      **** }
+  57              		.loc 1 79 0
+  58 0024 0837     		adds	r7, r7, #8
+  59              		.cfi_def_cfa_offset 8
+  60 0026 BD46     		mov	sp, r7
+  61              		.cfi_def_cfa_register 13
+  62              		@ sp needed
+  63 0028 80BD     		pop	{r7, pc}
+  64              		.cfi_endproc
+  65              	.LFE63:
+  66              		.size	process_status_data, .-process_status_data
+  67 002a 00BF     		.bss
+  68              		.align	2
+  69              	event_number:
+  70 0000 00000000 		.space	4
+  71              		.align	2
+  72              	event_id:
+  73 0004 00000000 		.space	4
+  74              		.align	2
+  75              	event_data:
+  76 0008 00000000 		.space	4
+  77              		.align	2
+  78              	status_data:
+  79 000c 00000000 		.space	4
+  80              		.section	.text.main,"ax",%progbits
+  81              		.align	2
+  82              		.global	main
+  83              		.thumb
+  84              		.thumb_func
+  85              		.type	main, %function
+  86              	main:
+  87              	.LFB64:
+  80:.\main.c      **** 
+  81:.\main.c      **** // static varibles to save stack space
+  82:.\main.c      **** static int event_number;
+  83:.\main.c      **** static unsigned event_id;
+  84:.\main.c      **** static unsigned event_data;
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 4
+
+
+  85:.\main.c      **** static unsigned status_data;
+  86:.\main.c      **** 
+  87:.\main.c      **** int main()
+  88:.\main.c      **** {
+  88              		.loc 1 88 0
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 0
+  91              		@ frame_needed = 1, uses_anonymous_args = 0
+  92 0000 80B5     		push	{r7, lr}
+  93              		.cfi_def_cfa_offset 8
+  94              		.cfi_offset 7, -8
+  95              		.cfi_offset 14, -4
+  96 0002 00AF     		add	r7, sp, #0
+  97              		.cfi_def_cfa_register 7
+  89:.\main.c      ****     cf_initialize_status_manager();             
+  98              		.loc 1 89 0
+  99 0004 FFF7FEFF 		bl	cf_initialize_status_manager
+  90:.\main.c      ****     cf_initialize_event_manager();
+ 100              		.loc 1 90 0
+ 101 0008 FFF7FEFF 		bl	cf_initialize_event_manager
+  91:.\main.c      ****     initialize_cf_system(  );
+ 102              		.loc 1 91 0
+ 103 000c FFF7FEFF 		bl	initialize_cf_system
+  92:.\main.c      ****     CyGlobalIntDisable;  // Chain Global Interrupts  initialization chain will enable interrupts 
+ 104              		.loc 1 92 0
+ 105              	@ 92 ".\main.c" 1
+ 106 0010 72B6     		CPSID   i
+ 107              	@ 0 "" 2
+  93:.\main.c      ****     
+  94:.\main.c      ****     
+  95:.\main.c      ****     
+  96:.\main.c      ****     
+  97:.\main.c      ****     
+  98:.\main.c      ****     
+  99:.\main.c      ****     cf_process_cf_event( CF_SYSTEM_INIT , 0);
+ 108              		.loc 1 99 0
+ 109              		.thumb
+ 110 0012 0020     		movs	r0, #0
+ 111 0014 0021     		movs	r1, #0
+ 112 0016 FFF7FEFF 		bl	cf_process_cf_event
+ 113              	.L7:
+ 100:.\main.c      ****     for(;;)
+ 101:.\main.c      ****     {
+ 102:.\main.c      ****         status_data = cf_get_status();
+ 114              		.loc 1 102 0
+ 115 001a FFF7FEFF 		bl	cf_get_status
+ 116 001e 0246     		mov	r2, r0
+ 117 0020 0F4B     		ldr	r3, .L8
+ 118 0022 1A60     		str	r2, [r3]
+ 103:.\main.c      ****         if( status_data != 0 )
+ 119              		.loc 1 103 0
+ 120 0024 0E4B     		ldr	r3, .L8
+ 121 0026 1B68     		ldr	r3, [r3]
+ 122 0028 002B     		cmp	r3, #0
+ 123 002a 05D0     		beq	.L5
+ 104:.\main.c      ****         {
+ 105:.\main.c      ****             process_status_data( status_data);
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 5
+
+
+ 124              		.loc 1 105 0
+ 125 002c 0C4B     		ldr	r3, .L8
+ 126 002e 1B68     		ldr	r3, [r3]
+ 127 0030 1846     		mov	r0, r3
+ 128 0032 FFF7FEFF 		bl	process_status_data
+ 129 0036 12E0     		b	.L6
+ 130              	.L5:
+ 106:.\main.c      ****         }
+ 107:.\main.c      ****         else
+ 108:.\main.c      ****         {
+ 109:.\main.c      ****            event_number = cf_rx_event( &event_id, &event_data );
+ 131              		.loc 1 109 0
+ 132 0038 0A48     		ldr	r0, .L8+4
+ 133 003a 0B49     		ldr	r1, .L8+8
+ 134 003c FFF7FEFF 		bl	cf_rx_event
+ 135 0040 0246     		mov	r2, r0
+ 136 0042 0A4B     		ldr	r3, .L8+12
+ 137 0044 1A60     		str	r2, [r3]
+ 110:.\main.c      ****            if( event_number > 0 )
+ 138              		.loc 1 110 0
+ 139 0046 094B     		ldr	r3, .L8+12
+ 140 0048 1B68     		ldr	r3, [r3]
+ 141 004a 002B     		cmp	r3, #0
+ 142 004c 07DD     		ble	.L6
+ 111:.\main.c      ****            {
+ 112:.\main.c      ****               cf_process_cf_event( event_id, event_data);
+ 143              		.loc 1 112 0
+ 144 004e 054B     		ldr	r3, .L8+4
+ 145 0050 1A68     		ldr	r2, [r3]
+ 146 0052 054B     		ldr	r3, .L8+8
+ 147 0054 1B68     		ldr	r3, [r3]
+ 148 0056 1046     		mov	r0, r2
+ 149 0058 1946     		mov	r1, r3
+ 150 005a FFF7FEFF 		bl	cf_process_cf_event
+ 151              	.L6:
+ 113:.\main.c      ****            }
+ 114:.\main.c      ****            else
+ 115:.\main.c      ****            {
+ 116:.\main.c      ****              ; // add sleep for low power apps
+ 117:.\main.c      ****            }
+ 118:.\main.c      ****         }  
+ 119:.\main.c      ****     }   
+ 152              		.loc 1 119 0
+ 153 005e DCE7     		b	.L7
+ 154              	.L9:
+ 155              		.align	2
+ 156              	.L8:
+ 157 0060 0C000000 		.word	status_data
+ 158 0064 04000000 		.word	event_id
+ 159 0068 08000000 		.word	event_data
+ 160 006c 00000000 		.word	event_number
+ 161              		.cfi_endproc
+ 162              	.LFE64:
+ 163              		.size	main, .-main
+ 164              		.text
+ 165              	.Letext0:
+ 166              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 6
+
+
+ 167              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 168              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
+ 169              		.section	.debug_info,"",%progbits
+ 170              	.Ldebug_info0:
+ 171 0000 28010000 		.4byte	0x128
+ 172 0004 0400     		.2byte	0x4
+ 173 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 174 000a 04       		.byte	0x4
+ 175 000b 01       		.uleb128 0x1
+ 176 000c A8000000 		.4byte	.LASF19
+ 177 0010 01       		.byte	0x1
+ 178 0011 6C000000 		.4byte	.LASF20
+ 179 0015 4F010000 		.4byte	.LASF21
+ 180 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 181 001d 00000000 		.4byte	0
+ 182 0021 00000000 		.4byte	.Ldebug_line0
+ 183 0025 02       		.uleb128 0x2
+ 184 0026 01       		.byte	0x1
+ 185 0027 06       		.byte	0x6
+ 186 0028 96010000 		.4byte	.LASF0
+ 187 002c 02       		.uleb128 0x2
+ 188 002d 01       		.byte	0x1
+ 189 002e 08       		.byte	0x8
+ 190 002f 8C000000 		.4byte	.LASF1
+ 191 0033 02       		.uleb128 0x2
+ 192 0034 02       		.byte	0x2
+ 193 0035 05       		.byte	0x5
+ 194 0036 B2010000 		.4byte	.LASF2
+ 195 003a 02       		.uleb128 0x2
+ 196 003b 02       		.byte	0x2
+ 197 003c 07       		.byte	0x7
+ 198 003d 0E000000 		.4byte	.LASF3
+ 199 0041 03       		.uleb128 0x3
+ 200 0042 A2010000 		.4byte	.LASF9
+ 201 0046 02       		.byte	0x2
+ 202 0047 3F       		.byte	0x3f
+ 203 0048 4C000000 		.4byte	0x4c
+ 204 004c 02       		.uleb128 0x2
+ 205 004d 04       		.byte	0x4
+ 206 004e 05       		.byte	0x5
+ 207 004f 9F000000 		.4byte	.LASF4
+ 208 0053 02       		.uleb128 0x2
+ 209 0054 04       		.byte	0x4
+ 210 0055 07       		.byte	0x7
+ 211 0056 3D010000 		.4byte	.LASF5
+ 212 005a 02       		.uleb128 0x2
+ 213 005b 08       		.byte	0x8
+ 214 005c 05       		.byte	0x5
+ 215 005d 00000000 		.4byte	.LASF6
+ 216 0061 02       		.uleb128 0x2
+ 217 0062 08       		.byte	0x8
+ 218 0063 07       		.byte	0x7
+ 219 0064 75000000 		.4byte	.LASF7
+ 220 0068 04       		.uleb128 0x4
+ 221 0069 04       		.byte	0x4
+ 222 006a 05       		.byte	0x5
+ 223 006b 696E7400 		.ascii	"int\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 7
+
+
+ 224 006f 02       		.uleb128 0x2
+ 225 0070 04       		.byte	0x4
+ 226 0071 07       		.byte	0x7
+ 227 0072 2C000000 		.4byte	.LASF8
+ 228 0076 03       		.uleb128 0x3
+ 229 0077 C8010000 		.4byte	.LASF10
+ 230 007b 03       		.byte	0x3
+ 231 007c 2C       		.byte	0x2c
+ 232 007d 41000000 		.4byte	0x41
+ 233 0081 02       		.uleb128 0x2
+ 234 0082 04       		.byte	0x4
+ 235 0083 04       		.byte	0x4
+ 236 0084 AC010000 		.4byte	.LASF11
+ 237 0088 02       		.uleb128 0x2
+ 238 0089 08       		.byte	0x8
+ 239 008a 04       		.byte	0x4
+ 240 008b 36010000 		.4byte	.LASF12
+ 241 008f 02       		.uleb128 0x2
+ 242 0090 01       		.byte	0x1
+ 243 0091 08       		.byte	0x8
+ 244 0092 9A000000 		.4byte	.LASF13
+ 245 0096 02       		.uleb128 0x2
+ 246 0097 04       		.byte	0x4
+ 247 0098 07       		.byte	0x7
+ 248 0099 D0010000 		.4byte	.LASF14
+ 249 009d 05       		.uleb128 0x5
+ 250 009e 58000000 		.4byte	.LASF22
+ 251 00a2 01       		.byte	0x1
+ 252 00a3 42       		.byte	0x42
+ 253 00a4 00000000 		.4byte	.LFB63
+ 254 00a8 2A000000 		.4byte	.LFE63-.LFB63
+ 255 00ac 01       		.uleb128 0x1
+ 256 00ad 9C       		.byte	0x9c
+ 257 00ae C1000000 		.4byte	0xc1
+ 258 00b2 06       		.uleb128 0x6
+ 259 00b3 BC010000 		.4byte	.LASF18
+ 260 00b7 01       		.byte	0x1
+ 261 00b8 42       		.byte	0x42
+ 262 00b9 6F000000 		.4byte	0x6f
+ 263 00bd 02       		.uleb128 0x2
+ 264 00be 91       		.byte	0x91
+ 265 00bf 74       		.sleb128 -12
+ 266 00c0 00       		.byte	0
+ 267 00c1 07       		.uleb128 0x7
+ 268 00c2 39000000 		.4byte	.LASF23
+ 269 00c6 01       		.byte	0x1
+ 270 00c7 57       		.byte	0x57
+ 271 00c8 68000000 		.4byte	0x68
+ 272 00cc 00000000 		.4byte	.LFB64
+ 273 00d0 70000000 		.4byte	.LFE64-.LFB64
+ 274 00d4 01       		.uleb128 0x1
+ 275 00d5 9C       		.byte	0x9c
+ 276 00d6 08       		.uleb128 0x8
+ 277 00d7 4B000000 		.4byte	.LASF15
+ 278 00db 01       		.byte	0x1
+ 279 00dc 52       		.byte	0x52
+ 280 00dd 68000000 		.4byte	0x68
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 8
+
+
+ 281 00e1 05       		.uleb128 0x5
+ 282 00e2 03       		.byte	0x3
+ 283 00e3 00000000 		.4byte	event_number
+ 284 00e7 08       		.uleb128 0x8
+ 285 00e8 8D010000 		.4byte	.LASF16
+ 286 00ec 01       		.byte	0x1
+ 287 00ed 53       		.byte	0x53
+ 288 00ee 6F000000 		.4byte	0x6f
+ 289 00f2 05       		.uleb128 0x5
+ 290 00f3 03       		.byte	0x3
+ 291 00f4 04000000 		.4byte	event_id
+ 292 00f8 08       		.uleb128 0x8
+ 293 00f9 21000000 		.4byte	.LASF17
+ 294 00fd 01       		.byte	0x1
+ 295 00fe 54       		.byte	0x54
+ 296 00ff 6F000000 		.4byte	0x6f
+ 297 0103 05       		.uleb128 0x5
+ 298 0104 03       		.byte	0x3
+ 299 0105 08000000 		.4byte	event_data
+ 300 0109 08       		.uleb128 0x8
+ 301 010a BC010000 		.4byte	.LASF18
+ 302 010e 01       		.byte	0x1
+ 303 010f 55       		.byte	0x55
+ 304 0110 6F000000 		.4byte	0x6f
+ 305 0114 05       		.uleb128 0x5
+ 306 0115 03       		.byte	0x3
+ 307 0116 0C000000 		.4byte	status_data
+ 308 011a 09       		.uleb128 0x9
+ 309 011b 3E000000 		.4byte	.LASF24
+ 310 011f 04       		.byte	0x4
+ 311 0120 9606     		.2byte	0x696
+ 312 0122 26010000 		.4byte	0x126
+ 313 0126 0A       		.uleb128 0xa
+ 314 0127 76000000 		.4byte	0x76
+ 315 012b 00       		.byte	0
+ 316              		.section	.debug_abbrev,"",%progbits
+ 317              	.Ldebug_abbrev0:
+ 318 0000 01       		.uleb128 0x1
+ 319 0001 11       		.uleb128 0x11
+ 320 0002 01       		.byte	0x1
+ 321 0003 25       		.uleb128 0x25
+ 322 0004 0E       		.uleb128 0xe
+ 323 0005 13       		.uleb128 0x13
+ 324 0006 0B       		.uleb128 0xb
+ 325 0007 03       		.uleb128 0x3
+ 326 0008 0E       		.uleb128 0xe
+ 327 0009 1B       		.uleb128 0x1b
+ 328 000a 0E       		.uleb128 0xe
+ 329 000b 55       		.uleb128 0x55
+ 330 000c 17       		.uleb128 0x17
+ 331 000d 11       		.uleb128 0x11
+ 332 000e 01       		.uleb128 0x1
+ 333 000f 10       		.uleb128 0x10
+ 334 0010 17       		.uleb128 0x17
+ 335 0011 00       		.byte	0
+ 336 0012 00       		.byte	0
+ 337 0013 02       		.uleb128 0x2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 9
+
+
+ 338 0014 24       		.uleb128 0x24
+ 339 0015 00       		.byte	0
+ 340 0016 0B       		.uleb128 0xb
+ 341 0017 0B       		.uleb128 0xb
+ 342 0018 3E       		.uleb128 0x3e
+ 343 0019 0B       		.uleb128 0xb
+ 344 001a 03       		.uleb128 0x3
+ 345 001b 0E       		.uleb128 0xe
+ 346 001c 00       		.byte	0
+ 347 001d 00       		.byte	0
+ 348 001e 03       		.uleb128 0x3
+ 349 001f 16       		.uleb128 0x16
+ 350 0020 00       		.byte	0
+ 351 0021 03       		.uleb128 0x3
+ 352 0022 0E       		.uleb128 0xe
+ 353 0023 3A       		.uleb128 0x3a
+ 354 0024 0B       		.uleb128 0xb
+ 355 0025 3B       		.uleb128 0x3b
+ 356 0026 0B       		.uleb128 0xb
+ 357 0027 49       		.uleb128 0x49
+ 358 0028 13       		.uleb128 0x13
+ 359 0029 00       		.byte	0
+ 360 002a 00       		.byte	0
+ 361 002b 04       		.uleb128 0x4
+ 362 002c 24       		.uleb128 0x24
+ 363 002d 00       		.byte	0
+ 364 002e 0B       		.uleb128 0xb
+ 365 002f 0B       		.uleb128 0xb
+ 366 0030 3E       		.uleb128 0x3e
+ 367 0031 0B       		.uleb128 0xb
+ 368 0032 03       		.uleb128 0x3
+ 369 0033 08       		.uleb128 0x8
+ 370 0034 00       		.byte	0
+ 371 0035 00       		.byte	0
+ 372 0036 05       		.uleb128 0x5
+ 373 0037 2E       		.uleb128 0x2e
+ 374 0038 01       		.byte	0x1
+ 375 0039 03       		.uleb128 0x3
+ 376 003a 0E       		.uleb128 0xe
+ 377 003b 3A       		.uleb128 0x3a
+ 378 003c 0B       		.uleb128 0xb
+ 379 003d 3B       		.uleb128 0x3b
+ 380 003e 0B       		.uleb128 0xb
+ 381 003f 27       		.uleb128 0x27
+ 382 0040 19       		.uleb128 0x19
+ 383 0041 11       		.uleb128 0x11
+ 384 0042 01       		.uleb128 0x1
+ 385 0043 12       		.uleb128 0x12
+ 386 0044 06       		.uleb128 0x6
+ 387 0045 40       		.uleb128 0x40
+ 388 0046 18       		.uleb128 0x18
+ 389 0047 9642     		.uleb128 0x2116
+ 390 0049 19       		.uleb128 0x19
+ 391 004a 01       		.uleb128 0x1
+ 392 004b 13       		.uleb128 0x13
+ 393 004c 00       		.byte	0
+ 394 004d 00       		.byte	0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 10
+
+
+ 395 004e 06       		.uleb128 0x6
+ 396 004f 05       		.uleb128 0x5
+ 397 0050 00       		.byte	0
+ 398 0051 03       		.uleb128 0x3
+ 399 0052 0E       		.uleb128 0xe
+ 400 0053 3A       		.uleb128 0x3a
+ 401 0054 0B       		.uleb128 0xb
+ 402 0055 3B       		.uleb128 0x3b
+ 403 0056 0B       		.uleb128 0xb
+ 404 0057 49       		.uleb128 0x49
+ 405 0058 13       		.uleb128 0x13
+ 406 0059 02       		.uleb128 0x2
+ 407 005a 18       		.uleb128 0x18
+ 408 005b 00       		.byte	0
+ 409 005c 00       		.byte	0
+ 410 005d 07       		.uleb128 0x7
+ 411 005e 2E       		.uleb128 0x2e
+ 412 005f 00       		.byte	0
+ 413 0060 3F       		.uleb128 0x3f
+ 414 0061 19       		.uleb128 0x19
+ 415 0062 03       		.uleb128 0x3
+ 416 0063 0E       		.uleb128 0xe
+ 417 0064 3A       		.uleb128 0x3a
+ 418 0065 0B       		.uleb128 0xb
+ 419 0066 3B       		.uleb128 0x3b
+ 420 0067 0B       		.uleb128 0xb
+ 421 0068 49       		.uleb128 0x49
+ 422 0069 13       		.uleb128 0x13
+ 423 006a 11       		.uleb128 0x11
+ 424 006b 01       		.uleb128 0x1
+ 425 006c 12       		.uleb128 0x12
+ 426 006d 06       		.uleb128 0x6
+ 427 006e 40       		.uleb128 0x40
+ 428 006f 18       		.uleb128 0x18
+ 429 0070 9642     		.uleb128 0x2116
+ 430 0072 19       		.uleb128 0x19
+ 431 0073 00       		.byte	0
+ 432 0074 00       		.byte	0
+ 433 0075 08       		.uleb128 0x8
+ 434 0076 34       		.uleb128 0x34
+ 435 0077 00       		.byte	0
+ 436 0078 03       		.uleb128 0x3
+ 437 0079 0E       		.uleb128 0xe
+ 438 007a 3A       		.uleb128 0x3a
+ 439 007b 0B       		.uleb128 0xb
+ 440 007c 3B       		.uleb128 0x3b
+ 441 007d 0B       		.uleb128 0xb
+ 442 007e 49       		.uleb128 0x49
+ 443 007f 13       		.uleb128 0x13
+ 444 0080 02       		.uleb128 0x2
+ 445 0081 18       		.uleb128 0x18
+ 446 0082 00       		.byte	0
+ 447 0083 00       		.byte	0
+ 448 0084 09       		.uleb128 0x9
+ 449 0085 34       		.uleb128 0x34
+ 450 0086 00       		.byte	0
+ 451 0087 03       		.uleb128 0x3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 11
+
+
+ 452 0088 0E       		.uleb128 0xe
+ 453 0089 3A       		.uleb128 0x3a
+ 454 008a 0B       		.uleb128 0xb
+ 455 008b 3B       		.uleb128 0x3b
+ 456 008c 05       		.uleb128 0x5
+ 457 008d 49       		.uleb128 0x49
+ 458 008e 13       		.uleb128 0x13
+ 459 008f 3F       		.uleb128 0x3f
+ 460 0090 19       		.uleb128 0x19
+ 461 0091 3C       		.uleb128 0x3c
+ 462 0092 19       		.uleb128 0x19
+ 463 0093 00       		.byte	0
+ 464 0094 00       		.byte	0
+ 465 0095 0A       		.uleb128 0xa
+ 466 0096 35       		.uleb128 0x35
+ 467 0097 00       		.byte	0
+ 468 0098 49       		.uleb128 0x49
+ 469 0099 13       		.uleb128 0x13
+ 470 009a 00       		.byte	0
+ 471 009b 00       		.byte	0
+ 472 009c 00       		.byte	0
+ 473              		.section	.debug_aranges,"",%progbits
+ 474 0000 24000000 		.4byte	0x24
+ 475 0004 0200     		.2byte	0x2
+ 476 0006 00000000 		.4byte	.Ldebug_info0
+ 477 000a 04       		.byte	0x4
+ 478 000b 00       		.byte	0
+ 479 000c 0000     		.2byte	0
+ 480 000e 0000     		.2byte	0
+ 481 0010 00000000 		.4byte	.LFB63
+ 482 0014 2A000000 		.4byte	.LFE63-.LFB63
+ 483 0018 00000000 		.4byte	.LFB64
+ 484 001c 70000000 		.4byte	.LFE64-.LFB64
+ 485 0020 00000000 		.4byte	0
+ 486 0024 00000000 		.4byte	0
+ 487              		.section	.debug_ranges,"",%progbits
+ 488              	.Ldebug_ranges0:
+ 489 0000 00000000 		.4byte	.LFB63
+ 490 0004 2A000000 		.4byte	.LFE63
+ 491 0008 00000000 		.4byte	.LFB64
+ 492 000c 70000000 		.4byte	.LFE64
+ 493 0010 00000000 		.4byte	0
+ 494 0014 00000000 		.4byte	0
+ 495              		.section	.debug_line,"",%progbits
+ 496              	.Ldebug_line0:
+ 497 0000 73010000 		.section	.debug_str,"MS",%progbits,1
+ 497      02003C01 
+ 497      00000201 
+ 497      FB0E0D00 
+ 497      01010101 
+ 498              	.LASF6:
+ 499 0000 6C6F6E67 		.ascii	"long long int\000"
+ 499      206C6F6E 
+ 499      6720696E 
+ 499      7400
+ 500              	.LASF3:
+ 501 000e 73686F72 		.ascii	"short unsigned int\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 12
+
+
+ 501      7420756E 
+ 501      7369676E 
+ 501      65642069 
+ 501      6E7400
+ 502              	.LASF17:
+ 503 0021 6576656E 		.ascii	"event_data\000"
+ 503      745F6461 
+ 503      746100
+ 504              	.LASF8:
+ 505 002c 756E7369 		.ascii	"unsigned int\000"
+ 505      676E6564 
+ 505      20696E74 
+ 505      00
+ 506              	.LASF23:
+ 507 0039 6D61696E 		.ascii	"main\000"
+ 507      00
+ 508              	.LASF24:
+ 509 003e 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 509      52784275 
+ 509      66666572 
+ 509      00
+ 510              	.LASF15:
+ 511 004b 6576656E 		.ascii	"event_number\000"
+ 511      745F6E75 
+ 511      6D626572 
+ 511      00
+ 512              	.LASF22:
+ 513 0058 70726F63 		.ascii	"process_status_data\000"
+ 513      6573735F 
+ 513      73746174 
+ 513      75735F64 
+ 513      61746100 
+ 514              	.LASF20:
+ 515 006c 2E5C6D61 		.ascii	".\\main.c\000"
+ 515      696E2E63 
+ 515      00
+ 516              	.LASF7:
+ 517 0075 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 517      206C6F6E 
+ 517      6720756E 
+ 517      7369676E 
+ 517      65642069 
+ 518              	.LASF1:
+ 519 008c 756E7369 		.ascii	"unsigned char\000"
+ 519      676E6564 
+ 519      20636861 
+ 519      7200
+ 520              	.LASF13:
+ 521 009a 63686172 		.ascii	"char\000"
+ 521      00
+ 522              	.LASF4:
+ 523 009f 6C6F6E67 		.ascii	"long int\000"
+ 523      20696E74 
+ 523      00
+ 524              	.LASF19:
+ 525 00a8 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 525      4320342E 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 13
+
+
+ 525      392E3320 
+ 525      32303135 
+ 525      30333033 
+ 526 00db 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 526      20726576 
+ 526      6973696F 
+ 526      6E203232 
+ 526      31323230 
+ 527 010e 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 527      66756E63 
+ 527      74696F6E 
+ 527      2D736563 
+ 527      74696F6E 
+ 528              	.LASF12:
+ 529 0136 646F7562 		.ascii	"double\000"
+ 529      6C6500
+ 530              	.LASF5:
+ 531 013d 6C6F6E67 		.ascii	"long unsigned int\000"
+ 531      20756E73 
+ 531      69676E65 
+ 531      6420696E 
+ 531      7400
+ 532              	.LASF21:
+ 533 014f 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 533      73657273 
+ 533      5C676C65 
+ 533      6E6E5C4F 
+ 533      6E654472 
+ 534 017c 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ 534      55415254 
+ 534      30312E63 
+ 534      7964736E 
+ 534      00
+ 535              	.LASF16:
+ 536 018d 6576656E 		.ascii	"event_id\000"
+ 536      745F6964 
+ 536      00
+ 537              	.LASF0:
+ 538 0196 7369676E 		.ascii	"signed char\000"
+ 538      65642063 
+ 538      68617200 
+ 539              	.LASF9:
+ 540 01a2 5F5F696E 		.ascii	"__int32_t\000"
+ 540      7433325F 
+ 540      7400
+ 541              	.LASF11:
+ 542 01ac 666C6F61 		.ascii	"float\000"
+ 542      7400
+ 543              	.LASF2:
+ 544 01b2 73686F72 		.ascii	"short int\000"
+ 544      7420696E 
+ 544      7400
+ 545              	.LASF18:
+ 546 01bc 73746174 		.ascii	"status_data\000"
+ 546      75735F64 
+ 546      61746100 
+ 547              	.LASF10:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc2NqFYX.s 			page 14
+
+
+ 548 01c8 696E7433 		.ascii	"int32_t\000"
+ 548      325F7400 
+ 549              	.LASF14:
+ 550 01d0 73697A65 		.ascii	"sizetype\000"
+ 550      74797065 
+ 550      00
+ 551              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

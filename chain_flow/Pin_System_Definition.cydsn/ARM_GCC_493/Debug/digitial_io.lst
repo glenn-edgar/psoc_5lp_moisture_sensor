@@ -1,0 +1,1015 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"digitial_io.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.read_and_clear_counter,"ax",%progbits
+  19              		.align	2
+  20              		.global	read_and_clear_counter
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	read_and_clear_counter, %function
+  24              	read_and_clear_counter:
+  25              	.LFB63:
+  26              		.file 1 "..\\..\\utilities\\digitial_io.c"
+   1:..\..\utilities/digitial_io.c **** /*
+   2:..\..\utilities/digitial_io.c **** File: digital_io.c
+   3:..\..\utilities/digitial_io.c **** 
+   4:..\..\utilities/digitial_io.c **** Digital functions
+   5:..\..\utilities/digitial_io.c **** 
+   6:..\..\utilities/digitial_io.c **** */
+   7:..\..\utilities/digitial_io.c **** 
+   8:..\..\utilities/digitial_io.c **** 
+   9:..\..\utilities/digitial_io.c **** #include <device.h>
+  10:..\..\utilities/digitial_io.c **** 
+  11:..\..\utilities/digitial_io.c **** // status registers bit definitions
+  12:..\..\utilities/digitial_io.c **** #define  DIGITAL_2  1
+  13:..\..\utilities/digitial_io.c **** #define  DIGITAL_3  2
+  14:..\..\utilities/digitial_io.c **** #define  DIGITAL_4  4
+  15:..\..\utilities/digitial_io.c **** #define  BOARD_SWITCH  8
+  16:..\..\utilities/digitial_io.c **** 
+  17:..\..\utilities/digitial_io.c **** 
+  18:..\..\utilities/digitial_io.c **** 
+  19:..\..\utilities/digitial_io.c **** 
+  20:..\..\utilities/digitial_io.c **** 
+  21:..\..\utilities/digitial_io.c **** uint32 read_and_clear_counter( void )
+  22:..\..\utilities/digitial_io.c **** {   
+  27              		.loc 1 22 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 8
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31 0000 80B5     		push	{r7, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 7, -8
+  34              		.cfi_offset 14, -4
+  35 0002 82B0     		sub	sp, sp, #8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 2
+
+
+  36              		.cfi_def_cfa_offset 16
+  37 0004 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+  23:..\..\utilities/digitial_io.c ****     uint32 counter;
+  24:..\..\utilities/digitial_io.c ****     
+  25:..\..\utilities/digitial_io.c ****     counter = Counter_1_ReadCounter();
+  39              		.loc 1 25 0
+  40 0006 FFF7FEFF 		bl	Counter_1_ReadCounter
+  41 000a 0346     		mov	r3, r0
+  42 000c 7B60     		str	r3, [r7, #4]
+  26:..\..\utilities/digitial_io.c ****     Counter_1_Stop(); 
+  43              		.loc 1 26 0
+  44 000e FFF7FEFF 		bl	Counter_1_Stop
+  27:..\..\utilities/digitial_io.c ****     Counter_1_WriteCounter(0);
+  45              		.loc 1 27 0
+  46 0012 0020     		movs	r0, #0
+  47 0014 FFF7FEFF 		bl	Counter_1_WriteCounter
+  28:..\..\utilities/digitial_io.c ****     Counter_1_Start();    
+  48              		.loc 1 28 0
+  49 0018 FFF7FEFF 		bl	Counter_1_Start
+  29:..\..\utilities/digitial_io.c ****     return counter;
+  50              		.loc 1 29 0
+  51 001c 7B68     		ldr	r3, [r7, #4]
+  30:..\..\utilities/digitial_io.c ****     
+  31:..\..\utilities/digitial_io.c **** 
+  32:..\..\utilities/digitial_io.c **** }
+  52              		.loc 1 32 0
+  53 001e 1846     		mov	r0, r3
+  54 0020 0837     		adds	r7, r7, #8
+  55              		.cfi_def_cfa_offset 8
+  56 0022 BD46     		mov	sp, r7
+  57              		.cfi_def_cfa_register 13
+  58              		@ sp needed
+  59 0024 80BD     		pop	{r7, pc}
+  60              		.cfi_endproc
+  61              	.LFE63:
+  62              		.size	read_and_clear_counter, .-read_and_clear_counter
+  63 0026 00BF     		.section	.text.read_board_switch,"ax",%progbits
+  64              		.align	2
+  65              		.global	read_board_switch
+  66              		.thumb
+  67              		.thumb_func
+  68              		.type	read_board_switch, %function
+  69              	read_board_switch:
+  70              	.LFB64:
+  33:..\..\utilities/digitial_io.c **** 
+  34:..\..\utilities/digitial_io.c **** uint32 read_board_switch( void )
+  35:..\..\utilities/digitial_io.c **** {
+  71              		.loc 1 35 0
+  72              		.cfi_startproc
+  73              		@ args = 0, pretend = 0, frame = 8
+  74              		@ frame_needed = 1, uses_anonymous_args = 0
+  75 0000 80B5     		push	{r7, lr}
+  76              		.cfi_def_cfa_offset 8
+  77              		.cfi_offset 7, -8
+  78              		.cfi_offset 14, -4
+  79 0002 82B0     		sub	sp, sp, #8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 3
+
+
+  80              		.cfi_def_cfa_offset 16
+  81 0004 00AF     		add	r7, sp, #0
+  82              		.cfi_def_cfa_register 7
+  36:..\..\utilities/digitial_io.c ****     uint32 return_value;
+  37:..\..\utilities/digitial_io.c ****     
+  38:..\..\utilities/digitial_io.c ****     if( Status_Reg_1_Read() & BOARD_SWITCH )
+  83              		.loc 1 38 0
+  84 0006 FFF7FEFF 		bl	Status_Reg_1_Read
+  85 000a 0346     		mov	r3, r0
+  86 000c 03F00803 		and	r3, r3, #8
+  87 0010 002B     		cmp	r3, #0
+  88 0012 02D0     		beq	.L4
+  39:..\..\utilities/digitial_io.c ****     {
+  40:..\..\utilities/digitial_io.c ****         return_value = 1;
+  89              		.loc 1 40 0
+  90 0014 0123     		movs	r3, #1
+  91 0016 7B60     		str	r3, [r7, #4]
+  92 0018 01E0     		b	.L5
+  93              	.L4:
+  41:..\..\utilities/digitial_io.c ****     }
+  42:..\..\utilities/digitial_io.c ****     else
+  43:..\..\utilities/digitial_io.c ****     {
+  44:..\..\utilities/digitial_io.c ****         return_value = 0;
+  94              		.loc 1 44 0
+  95 001a 0023     		movs	r3, #0
+  96 001c 7B60     		str	r3, [r7, #4]
+  97              	.L5:
+  45:..\..\utilities/digitial_io.c ****     }
+  46:..\..\utilities/digitial_io.c ****     return return_value;
+  98              		.loc 1 46 0
+  99 001e 7B68     		ldr	r3, [r7, #4]
+  47:..\..\utilities/digitial_io.c **** 
+  48:..\..\utilities/digitial_io.c ****     
+  49:..\..\utilities/digitial_io.c **** }
+ 100              		.loc 1 49 0
+ 101 0020 1846     		mov	r0, r3
+ 102 0022 0837     		adds	r7, r7, #8
+ 103              		.cfi_def_cfa_offset 8
+ 104 0024 BD46     		mov	sp, r7
+ 105              		.cfi_def_cfa_register 13
+ 106              		@ sp needed
+ 107 0026 80BD     		pop	{r7, pc}
+ 108              		.cfi_endproc
+ 109              	.LFE64:
+ 110              		.size	read_board_switch, .-read_board_switch
+ 111              		.section	.text.read_input_2,"ax",%progbits
+ 112              		.align	2
+ 113              		.global	read_input_2
+ 114              		.thumb
+ 115              		.thumb_func
+ 116              		.type	read_input_2, %function
+ 117              	read_input_2:
+ 118              	.LFB65:
+  50:..\..\utilities/digitial_io.c **** 
+  51:..\..\utilities/digitial_io.c **** uint32 read_input_2( void )
+  52:..\..\utilities/digitial_io.c **** {
+ 119              		.loc 1 52 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 4
+
+
+ 120              		.cfi_startproc
+ 121              		@ args = 0, pretend = 0, frame = 8
+ 122              		@ frame_needed = 1, uses_anonymous_args = 0
+ 123 0000 80B5     		push	{r7, lr}
+ 124              		.cfi_def_cfa_offset 8
+ 125              		.cfi_offset 7, -8
+ 126              		.cfi_offset 14, -4
+ 127 0002 82B0     		sub	sp, sp, #8
+ 128              		.cfi_def_cfa_offset 16
+ 129 0004 00AF     		add	r7, sp, #0
+ 130              		.cfi_def_cfa_register 7
+  53:..\..\utilities/digitial_io.c ****     uint32 return_value;
+  54:..\..\utilities/digitial_io.c ****     if( Status_Reg_1_Read() & DIGITAL_2 )
+ 131              		.loc 1 54 0
+ 132 0006 FFF7FEFF 		bl	Status_Reg_1_Read
+ 133 000a 0346     		mov	r3, r0
+ 134 000c 03F00103 		and	r3, r3, #1
+ 135 0010 002B     		cmp	r3, #0
+ 136 0012 02D0     		beq	.L8
+  55:..\..\utilities/digitial_io.c ****     {
+  56:..\..\utilities/digitial_io.c ****         return_value = 1;
+ 137              		.loc 1 56 0
+ 138 0014 0123     		movs	r3, #1
+ 139 0016 7B60     		str	r3, [r7, #4]
+ 140 0018 01E0     		b	.L9
+ 141              	.L8:
+  57:..\..\utilities/digitial_io.c ****     }
+  58:..\..\utilities/digitial_io.c ****     else
+  59:..\..\utilities/digitial_io.c ****     {
+  60:..\..\utilities/digitial_io.c ****         return_value = 0;
+ 142              		.loc 1 60 0
+ 143 001a 0023     		movs	r3, #0
+ 144 001c 7B60     		str	r3, [r7, #4]
+ 145              	.L9:
+  61:..\..\utilities/digitial_io.c ****     }
+  62:..\..\utilities/digitial_io.c ****     return return_value;
+ 146              		.loc 1 62 0
+ 147 001e 7B68     		ldr	r3, [r7, #4]
+  63:..\..\utilities/digitial_io.c **** 
+  64:..\..\utilities/digitial_io.c ****     
+  65:..\..\utilities/digitial_io.c **** }
+ 148              		.loc 1 65 0
+ 149 0020 1846     		mov	r0, r3
+ 150 0022 0837     		adds	r7, r7, #8
+ 151              		.cfi_def_cfa_offset 8
+ 152 0024 BD46     		mov	sp, r7
+ 153              		.cfi_def_cfa_register 13
+ 154              		@ sp needed
+ 155 0026 80BD     		pop	{r7, pc}
+ 156              		.cfi_endproc
+ 157              	.LFE65:
+ 158              		.size	read_input_2, .-read_input_2
+ 159              		.section	.text.read_input_3,"ax",%progbits
+ 160              		.align	2
+ 161              		.global	read_input_3
+ 162              		.thumb
+ 163              		.thumb_func
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 5
+
+
+ 164              		.type	read_input_3, %function
+ 165              	read_input_3:
+ 166              	.LFB66:
+  66:..\..\utilities/digitial_io.c **** 
+  67:..\..\utilities/digitial_io.c **** 
+  68:..\..\utilities/digitial_io.c **** 
+  69:..\..\utilities/digitial_io.c **** 
+  70:..\..\utilities/digitial_io.c **** uint32 read_input_3( void )
+  71:..\..\utilities/digitial_io.c **** {
+ 167              		.loc 1 71 0
+ 168              		.cfi_startproc
+ 169              		@ args = 0, pretend = 0, frame = 8
+ 170              		@ frame_needed = 1, uses_anonymous_args = 0
+ 171 0000 80B5     		push	{r7, lr}
+ 172              		.cfi_def_cfa_offset 8
+ 173              		.cfi_offset 7, -8
+ 174              		.cfi_offset 14, -4
+ 175 0002 82B0     		sub	sp, sp, #8
+ 176              		.cfi_def_cfa_offset 16
+ 177 0004 00AF     		add	r7, sp, #0
+ 178              		.cfi_def_cfa_register 7
+  72:..\..\utilities/digitial_io.c ****     uint32 return_value;
+  73:..\..\utilities/digitial_io.c ****     if( Status_Reg_1_Read() & DIGITAL_3 )
+ 179              		.loc 1 73 0
+ 180 0006 FFF7FEFF 		bl	Status_Reg_1_Read
+ 181 000a 0346     		mov	r3, r0
+ 182 000c 03F00203 		and	r3, r3, #2
+ 183 0010 002B     		cmp	r3, #0
+ 184 0012 02D0     		beq	.L12
+  74:..\..\utilities/digitial_io.c ****     {
+  75:..\..\utilities/digitial_io.c ****         return_value = 1;
+ 185              		.loc 1 75 0
+ 186 0014 0123     		movs	r3, #1
+ 187 0016 7B60     		str	r3, [r7, #4]
+ 188 0018 01E0     		b	.L13
+ 189              	.L12:
+  76:..\..\utilities/digitial_io.c ****     }
+  77:..\..\utilities/digitial_io.c ****     else
+  78:..\..\utilities/digitial_io.c ****     {
+  79:..\..\utilities/digitial_io.c ****         return_value = 0;
+ 190              		.loc 1 79 0
+ 191 001a 0023     		movs	r3, #0
+ 192 001c 7B60     		str	r3, [r7, #4]
+ 193              	.L13:
+  80:..\..\utilities/digitial_io.c ****     }
+  81:..\..\utilities/digitial_io.c ****     return return_value;
+ 194              		.loc 1 81 0
+ 195 001e 7B68     		ldr	r3, [r7, #4]
+  82:..\..\utilities/digitial_io.c **** 
+  83:..\..\utilities/digitial_io.c ****     
+  84:..\..\utilities/digitial_io.c **** }
+ 196              		.loc 1 84 0
+ 197 0020 1846     		mov	r0, r3
+ 198 0022 0837     		adds	r7, r7, #8
+ 199              		.cfi_def_cfa_offset 8
+ 200 0024 BD46     		mov	sp, r7
+ 201              		.cfi_def_cfa_register 13
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 6
+
+
+ 202              		@ sp needed
+ 203 0026 80BD     		pop	{r7, pc}
+ 204              		.cfi_endproc
+ 205              	.LFE66:
+ 206              		.size	read_input_3, .-read_input_3
+ 207              		.section	.text.read_input_4,"ax",%progbits
+ 208              		.align	2
+ 209              		.global	read_input_4
+ 210              		.thumb
+ 211              		.thumb_func
+ 212              		.type	read_input_4, %function
+ 213              	read_input_4:
+ 214              	.LFB67:
+  85:..\..\utilities/digitial_io.c **** 
+  86:..\..\utilities/digitial_io.c **** 
+  87:..\..\utilities/digitial_io.c **** uint32 read_input_4( void )
+  88:..\..\utilities/digitial_io.c **** {
+ 215              		.loc 1 88 0
+ 216              		.cfi_startproc
+ 217              		@ args = 0, pretend = 0, frame = 8
+ 218              		@ frame_needed = 1, uses_anonymous_args = 0
+ 219 0000 80B5     		push	{r7, lr}
+ 220              		.cfi_def_cfa_offset 8
+ 221              		.cfi_offset 7, -8
+ 222              		.cfi_offset 14, -4
+ 223 0002 82B0     		sub	sp, sp, #8
+ 224              		.cfi_def_cfa_offset 16
+ 225 0004 00AF     		add	r7, sp, #0
+ 226              		.cfi_def_cfa_register 7
+  89:..\..\utilities/digitial_io.c ****     uint32 return_value;
+  90:..\..\utilities/digitial_io.c ****     if( Status_Reg_1_Read() & DIGITAL_4 )
+ 227              		.loc 1 90 0
+ 228 0006 FFF7FEFF 		bl	Status_Reg_1_Read
+ 229 000a 0346     		mov	r3, r0
+ 230 000c 03F00403 		and	r3, r3, #4
+ 231 0010 002B     		cmp	r3, #0
+ 232 0012 02D0     		beq	.L16
+  91:..\..\utilities/digitial_io.c ****     {
+  92:..\..\utilities/digitial_io.c ****         return_value = 1;
+ 233              		.loc 1 92 0
+ 234 0014 0123     		movs	r3, #1
+ 235 0016 7B60     		str	r3, [r7, #4]
+ 236 0018 01E0     		b	.L17
+ 237              	.L16:
+  93:..\..\utilities/digitial_io.c ****     }
+  94:..\..\utilities/digitial_io.c ****     else
+  95:..\..\utilities/digitial_io.c ****     {
+  96:..\..\utilities/digitial_io.c ****         return_value = 0;
+ 238              		.loc 1 96 0
+ 239 001a 0023     		movs	r3, #0
+ 240 001c 7B60     		str	r3, [r7, #4]
+ 241              	.L17:
+  97:..\..\utilities/digitial_io.c ****     }
+  98:..\..\utilities/digitial_io.c ****     return return_value;
+ 242              		.loc 1 98 0
+ 243 001e 7B68     		ldr	r3, [r7, #4]
+  99:..\..\utilities/digitial_io.c **** 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 7
+
+
+ 100:..\..\utilities/digitial_io.c ****     
+ 101:..\..\utilities/digitial_io.c **** }
+ 244              		.loc 1 101 0
+ 245 0020 1846     		mov	r0, r3
+ 246 0022 0837     		adds	r7, r7, #8
+ 247              		.cfi_def_cfa_offset 8
+ 248 0024 BD46     		mov	sp, r7
+ 249              		.cfi_def_cfa_register 13
+ 250              		@ sp needed
+ 251 0026 80BD     		pop	{r7, pc}
+ 252              		.cfi_endproc
+ 253              	.LFE67:
+ 254              		.size	read_input_4, .-read_input_4
+ 255              		.text
+ 256              	.Letext0:
+ 257              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 258              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 259              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 260              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 261              		.section	.debug_info,"",%progbits
+ 262              	.Ldebug_info0:
+ 263 0000 BF010000 		.4byte	0x1bf
+ 264 0004 0400     		.2byte	0x4
+ 265 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 266 000a 04       		.byte	0x4
+ 267 000b 01       		.uleb128 0x1
+ 268 000c 1C000000 		.4byte	.LASF26
+ 269 0010 01       		.byte	0x1
+ 270 0011 5A020000 		.4byte	.LASF27
+ 271 0015 B5010000 		.4byte	.LASF28
+ 272 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 273 001d 00000000 		.4byte	0
+ 274 0021 00000000 		.4byte	.Ldebug_line0
+ 275 0025 02       		.uleb128 0x2
+ 276 0026 01       		.byte	0x1
+ 277 0027 06       		.byte	0x6
+ 278 0028 F2000000 		.4byte	.LASF0
+ 279 002c 02       		.uleb128 0x2
+ 280 002d 01       		.byte	0x1
+ 281 002e 08       		.byte	0x8
+ 282 002f FE000000 		.4byte	.LASF1
+ 283 0033 02       		.uleb128 0x2
+ 284 0034 02       		.byte	0x2
+ 285 0035 05       		.byte	0x5
+ 286 0036 AB010000 		.4byte	.LASF2
+ 287 003a 02       		.uleb128 0x2
+ 288 003b 02       		.byte	0x2
+ 289 003c 07       		.byte	0x7
+ 290 003d 1E010000 		.4byte	.LASF3
+ 291 0041 03       		.uleb128 0x3
+ 292 0042 12000000 		.4byte	.LASF9
+ 293 0046 02       		.byte	0x2
+ 294 0047 3F       		.byte	0x3f
+ 295 0048 4C000000 		.4byte	0x4c
+ 296 004c 02       		.uleb128 0x2
+ 297 004d 04       		.byte	0x4
+ 298 004e 05       		.byte	0x5
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 8
+
+
+ 299 004f 41020000 		.4byte	.LASF4
+ 300 0053 02       		.uleb128 0x2
+ 301 0054 04       		.byte	0x4
+ 302 0055 07       		.byte	0x7
+ 303 0056 0C010000 		.4byte	.LASF5
+ 304 005a 02       		.uleb128 0x2
+ 305 005b 08       		.byte	0x8
+ 306 005c 05       		.byte	0x5
+ 307 005d 98010000 		.4byte	.LASF6
+ 308 0061 02       		.uleb128 0x2
+ 309 0062 08       		.byte	0x8
+ 310 0063 07       		.byte	0x7
+ 311 0064 59010000 		.4byte	.LASF7
+ 312 0068 04       		.uleb128 0x4
+ 313 0069 04       		.byte	0x4
+ 314 006a 05       		.byte	0x5
+ 315 006b 696E7400 		.ascii	"int\000"
+ 316 006f 02       		.uleb128 0x2
+ 317 0070 04       		.byte	0x4
+ 318 0071 07       		.byte	0x7
+ 319 0072 4C010000 		.4byte	.LASF8
+ 320 0076 03       		.uleb128 0x3
+ 321 0077 70010000 		.4byte	.LASF10
+ 322 007b 03       		.byte	0x3
+ 323 007c 2C       		.byte	0x2c
+ 324 007d 41000000 		.4byte	0x41
+ 325 0081 05       		.uleb128 0x5
+ 326 0082 45010000 		.4byte	.LASF11
+ 327 0086 04       		.byte	0x4
+ 328 0087 9401     		.2byte	0x194
+ 329 0089 53000000 		.4byte	0x53
+ 330 008d 02       		.uleb128 0x2
+ 331 008e 04       		.byte	0x4
+ 332 008f 04       		.byte	0x4
+ 333 0090 E4000000 		.4byte	.LASF12
+ 334 0094 02       		.uleb128 0x2
+ 335 0095 08       		.byte	0x8
+ 336 0096 04       		.byte	0x4
+ 337 0097 3E010000 		.4byte	.LASF13
+ 338 009b 02       		.uleb128 0x2
+ 339 009c 01       		.byte	0x1
+ 340 009d 08       		.byte	0x8
+ 341 009e A6010000 		.4byte	.LASF14
+ 342 00a2 02       		.uleb128 0x2
+ 343 00a3 04       		.byte	0x4
+ 344 00a4 07       		.byte	0x7
+ 345 00a5 78010000 		.4byte	.LASF15
+ 346 00a9 06       		.uleb128 0x6
+ 347 00aa AA000000 		.4byte	.LASF19
+ 348 00ae 01       		.byte	0x1
+ 349 00af 15       		.byte	0x15
+ 350 00b0 81000000 		.4byte	0x81
+ 351 00b4 00000000 		.4byte	.LFB63
+ 352 00b8 26000000 		.4byte	.LFE63-.LFB63
+ 353 00bc 01       		.uleb128 0x1
+ 354 00bd 9C       		.byte	0x9c
+ 355 00be 11010000 		.4byte	0x111
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 9
+
+
+ 356 00c2 07       		.uleb128 0x7
+ 357 00c3 EA000000 		.4byte	.LASF21
+ 358 00c7 01       		.byte	0x1
+ 359 00c8 17       		.byte	0x17
+ 360 00c9 81000000 		.4byte	0x81
+ 361 00cd 02       		.uleb128 0x2
+ 362 00ce 91       		.byte	0x91
+ 363 00cf 74       		.sleb128 -12
+ 364 00d0 08       		.uleb128 0x8
+ 365 00d1 C1000000 		.4byte	.LASF16
+ 366 00d5 01       		.byte	0x1
+ 367 00d6 19       		.byte	0x19
+ 368 00d7 68000000 		.4byte	0x68
+ 369 00db E1000000 		.4byte	0xe1
+ 370 00df 09       		.uleb128 0x9
+ 371 00e0 00       		.byte	0
+ 372 00e1 08       		.uleb128 0x8
+ 373 00e2 78020000 		.4byte	.LASF17
+ 374 00e6 01       		.byte	0x1
+ 375 00e7 1A       		.byte	0x1a
+ 376 00e8 68000000 		.4byte	0x68
+ 377 00ec F2000000 		.4byte	0xf2
+ 378 00f0 09       		.uleb128 0x9
+ 379 00f1 00       		.byte	0
+ 380 00f2 08       		.uleb128 0x8
+ 381 00f3 81010000 		.4byte	.LASF18
+ 382 00f7 01       		.byte	0x1
+ 383 00f8 1B       		.byte	0x1b
+ 384 00f9 68000000 		.4byte	0x68
+ 385 00fd 03010000 		.4byte	0x103
+ 386 0101 09       		.uleb128 0x9
+ 387 0102 00       		.byte	0
+ 388 0103 0A       		.uleb128 0xa
+ 389 0104 4A020000 		.4byte	.LASF29
+ 390 0108 01       		.byte	0x1
+ 391 0109 1C       		.byte	0x1c
+ 392 010a 68000000 		.4byte	0x68
+ 393 010e 09       		.uleb128 0x9
+ 394 010f 00       		.byte	0
+ 395 0110 00       		.byte	0
+ 396 0111 06       		.uleb128 0x6
+ 397 0112 00000000 		.4byte	.LASF20
+ 398 0116 01       		.byte	0x1
+ 399 0117 22       		.byte	0x22
+ 400 0118 81000000 		.4byte	0x81
+ 401 011c 00000000 		.4byte	.LFB64
+ 402 0120 28000000 		.4byte	.LFE64-.LFB64
+ 403 0124 01       		.uleb128 0x1
+ 404 0125 9C       		.byte	0x9c
+ 405 0126 39010000 		.4byte	0x139
+ 406 012a 07       		.uleb128 0x7
+ 407 012b D7000000 		.4byte	.LASF22
+ 408 012f 01       		.byte	0x1
+ 409 0130 24       		.byte	0x24
+ 410 0131 81000000 		.4byte	0x81
+ 411 0135 02       		.uleb128 0x2
+ 412 0136 91       		.byte	0x91
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 10
+
+
+ 413 0137 74       		.sleb128 -12
+ 414 0138 00       		.byte	0
+ 415 0139 06       		.uleb128 0x6
+ 416 013a 1A020000 		.4byte	.LASF23
+ 417 013e 01       		.byte	0x1
+ 418 013f 33       		.byte	0x33
+ 419 0140 81000000 		.4byte	0x81
+ 420 0144 00000000 		.4byte	.LFB65
+ 421 0148 28000000 		.4byte	.LFE65-.LFB65
+ 422 014c 01       		.uleb128 0x1
+ 423 014d 9C       		.byte	0x9c
+ 424 014e 61010000 		.4byte	0x161
+ 425 0152 07       		.uleb128 0x7
+ 426 0153 D7000000 		.4byte	.LASF22
+ 427 0157 01       		.byte	0x1
+ 428 0158 35       		.byte	0x35
+ 429 0159 81000000 		.4byte	0x81
+ 430 015d 02       		.uleb128 0x2
+ 431 015e 91       		.byte	0x91
+ 432 015f 74       		.sleb128 -12
+ 433 0160 00       		.byte	0
+ 434 0161 06       		.uleb128 0x6
+ 435 0162 27020000 		.4byte	.LASF24
+ 436 0166 01       		.byte	0x1
+ 437 0167 46       		.byte	0x46
+ 438 0168 81000000 		.4byte	0x81
+ 439 016c 00000000 		.4byte	.LFB66
+ 440 0170 28000000 		.4byte	.LFE66-.LFB66
+ 441 0174 01       		.uleb128 0x1
+ 442 0175 9C       		.byte	0x9c
+ 443 0176 89010000 		.4byte	0x189
+ 444 017a 07       		.uleb128 0x7
+ 445 017b D7000000 		.4byte	.LASF22
+ 446 017f 01       		.byte	0x1
+ 447 0180 48       		.byte	0x48
+ 448 0181 81000000 		.4byte	0x81
+ 449 0185 02       		.uleb128 0x2
+ 450 0186 91       		.byte	0x91
+ 451 0187 74       		.sleb128 -12
+ 452 0188 00       		.byte	0
+ 453 0189 06       		.uleb128 0x6
+ 454 018a 34020000 		.4byte	.LASF25
+ 455 018e 01       		.byte	0x1
+ 456 018f 57       		.byte	0x57
+ 457 0190 81000000 		.4byte	0x81
+ 458 0194 00000000 		.4byte	.LFB67
+ 459 0198 28000000 		.4byte	.LFE67-.LFB67
+ 460 019c 01       		.uleb128 0x1
+ 461 019d 9C       		.byte	0x9c
+ 462 019e B1010000 		.4byte	0x1b1
+ 463 01a2 07       		.uleb128 0x7
+ 464 01a3 D7000000 		.4byte	.LASF22
+ 465 01a7 01       		.byte	0x1
+ 466 01a8 59       		.byte	0x59
+ 467 01a9 81000000 		.4byte	0x81
+ 468 01ad 02       		.uleb128 0x2
+ 469 01ae 91       		.byte	0x91
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 11
+
+
+ 470 01af 74       		.sleb128 -12
+ 471 01b0 00       		.byte	0
+ 472 01b1 0B       		.uleb128 0xb
+ 473 01b2 31010000 		.4byte	.LASF30
+ 474 01b6 05       		.byte	0x5
+ 475 01b7 9606     		.2byte	0x696
+ 476 01b9 BD010000 		.4byte	0x1bd
+ 477 01bd 0C       		.uleb128 0xc
+ 478 01be 76000000 		.4byte	0x76
+ 479 01c2 00       		.byte	0
+ 480              		.section	.debug_abbrev,"",%progbits
+ 481              	.Ldebug_abbrev0:
+ 482 0000 01       		.uleb128 0x1
+ 483 0001 11       		.uleb128 0x11
+ 484 0002 01       		.byte	0x1
+ 485 0003 25       		.uleb128 0x25
+ 486 0004 0E       		.uleb128 0xe
+ 487 0005 13       		.uleb128 0x13
+ 488 0006 0B       		.uleb128 0xb
+ 489 0007 03       		.uleb128 0x3
+ 490 0008 0E       		.uleb128 0xe
+ 491 0009 1B       		.uleb128 0x1b
+ 492 000a 0E       		.uleb128 0xe
+ 493 000b 55       		.uleb128 0x55
+ 494 000c 17       		.uleb128 0x17
+ 495 000d 11       		.uleb128 0x11
+ 496 000e 01       		.uleb128 0x1
+ 497 000f 10       		.uleb128 0x10
+ 498 0010 17       		.uleb128 0x17
+ 499 0011 00       		.byte	0
+ 500 0012 00       		.byte	0
+ 501 0013 02       		.uleb128 0x2
+ 502 0014 24       		.uleb128 0x24
+ 503 0015 00       		.byte	0
+ 504 0016 0B       		.uleb128 0xb
+ 505 0017 0B       		.uleb128 0xb
+ 506 0018 3E       		.uleb128 0x3e
+ 507 0019 0B       		.uleb128 0xb
+ 508 001a 03       		.uleb128 0x3
+ 509 001b 0E       		.uleb128 0xe
+ 510 001c 00       		.byte	0
+ 511 001d 00       		.byte	0
+ 512 001e 03       		.uleb128 0x3
+ 513 001f 16       		.uleb128 0x16
+ 514 0020 00       		.byte	0
+ 515 0021 03       		.uleb128 0x3
+ 516 0022 0E       		.uleb128 0xe
+ 517 0023 3A       		.uleb128 0x3a
+ 518 0024 0B       		.uleb128 0xb
+ 519 0025 3B       		.uleb128 0x3b
+ 520 0026 0B       		.uleb128 0xb
+ 521 0027 49       		.uleb128 0x49
+ 522 0028 13       		.uleb128 0x13
+ 523 0029 00       		.byte	0
+ 524 002a 00       		.byte	0
+ 525 002b 04       		.uleb128 0x4
+ 526 002c 24       		.uleb128 0x24
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 12
+
+
+ 527 002d 00       		.byte	0
+ 528 002e 0B       		.uleb128 0xb
+ 529 002f 0B       		.uleb128 0xb
+ 530 0030 3E       		.uleb128 0x3e
+ 531 0031 0B       		.uleb128 0xb
+ 532 0032 03       		.uleb128 0x3
+ 533 0033 08       		.uleb128 0x8
+ 534 0034 00       		.byte	0
+ 535 0035 00       		.byte	0
+ 536 0036 05       		.uleb128 0x5
+ 537 0037 16       		.uleb128 0x16
+ 538 0038 00       		.byte	0
+ 539 0039 03       		.uleb128 0x3
+ 540 003a 0E       		.uleb128 0xe
+ 541 003b 3A       		.uleb128 0x3a
+ 542 003c 0B       		.uleb128 0xb
+ 543 003d 3B       		.uleb128 0x3b
+ 544 003e 05       		.uleb128 0x5
+ 545 003f 49       		.uleb128 0x49
+ 546 0040 13       		.uleb128 0x13
+ 547 0041 00       		.byte	0
+ 548 0042 00       		.byte	0
+ 549 0043 06       		.uleb128 0x6
+ 550 0044 2E       		.uleb128 0x2e
+ 551 0045 01       		.byte	0x1
+ 552 0046 3F       		.uleb128 0x3f
+ 553 0047 19       		.uleb128 0x19
+ 554 0048 03       		.uleb128 0x3
+ 555 0049 0E       		.uleb128 0xe
+ 556 004a 3A       		.uleb128 0x3a
+ 557 004b 0B       		.uleb128 0xb
+ 558 004c 3B       		.uleb128 0x3b
+ 559 004d 0B       		.uleb128 0xb
+ 560 004e 27       		.uleb128 0x27
+ 561 004f 19       		.uleb128 0x19
+ 562 0050 49       		.uleb128 0x49
+ 563 0051 13       		.uleb128 0x13
+ 564 0052 11       		.uleb128 0x11
+ 565 0053 01       		.uleb128 0x1
+ 566 0054 12       		.uleb128 0x12
+ 567 0055 06       		.uleb128 0x6
+ 568 0056 40       		.uleb128 0x40
+ 569 0057 18       		.uleb128 0x18
+ 570 0058 9642     		.uleb128 0x2116
+ 571 005a 19       		.uleb128 0x19
+ 572 005b 01       		.uleb128 0x1
+ 573 005c 13       		.uleb128 0x13
+ 574 005d 00       		.byte	0
+ 575 005e 00       		.byte	0
+ 576 005f 07       		.uleb128 0x7
+ 577 0060 34       		.uleb128 0x34
+ 578 0061 00       		.byte	0
+ 579 0062 03       		.uleb128 0x3
+ 580 0063 0E       		.uleb128 0xe
+ 581 0064 3A       		.uleb128 0x3a
+ 582 0065 0B       		.uleb128 0xb
+ 583 0066 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 13
+
+
+ 584 0067 0B       		.uleb128 0xb
+ 585 0068 49       		.uleb128 0x49
+ 586 0069 13       		.uleb128 0x13
+ 587 006a 02       		.uleb128 0x2
+ 588 006b 18       		.uleb128 0x18
+ 589 006c 00       		.byte	0
+ 590 006d 00       		.byte	0
+ 591 006e 08       		.uleb128 0x8
+ 592 006f 2E       		.uleb128 0x2e
+ 593 0070 01       		.byte	0x1
+ 594 0071 3F       		.uleb128 0x3f
+ 595 0072 19       		.uleb128 0x19
+ 596 0073 03       		.uleb128 0x3
+ 597 0074 0E       		.uleb128 0xe
+ 598 0075 3A       		.uleb128 0x3a
+ 599 0076 0B       		.uleb128 0xb
+ 600 0077 3B       		.uleb128 0x3b
+ 601 0078 0B       		.uleb128 0xb
+ 602 0079 49       		.uleb128 0x49
+ 603 007a 13       		.uleb128 0x13
+ 604 007b 3C       		.uleb128 0x3c
+ 605 007c 19       		.uleb128 0x19
+ 606 007d 01       		.uleb128 0x1
+ 607 007e 13       		.uleb128 0x13
+ 608 007f 00       		.byte	0
+ 609 0080 00       		.byte	0
+ 610 0081 09       		.uleb128 0x9
+ 611 0082 18       		.uleb128 0x18
+ 612 0083 00       		.byte	0
+ 613 0084 00       		.byte	0
+ 614 0085 00       		.byte	0
+ 615 0086 0A       		.uleb128 0xa
+ 616 0087 2E       		.uleb128 0x2e
+ 617 0088 01       		.byte	0x1
+ 618 0089 3F       		.uleb128 0x3f
+ 619 008a 19       		.uleb128 0x19
+ 620 008b 03       		.uleb128 0x3
+ 621 008c 0E       		.uleb128 0xe
+ 622 008d 3A       		.uleb128 0x3a
+ 623 008e 0B       		.uleb128 0xb
+ 624 008f 3B       		.uleb128 0x3b
+ 625 0090 0B       		.uleb128 0xb
+ 626 0091 49       		.uleb128 0x49
+ 627 0092 13       		.uleb128 0x13
+ 628 0093 3C       		.uleb128 0x3c
+ 629 0094 19       		.uleb128 0x19
+ 630 0095 00       		.byte	0
+ 631 0096 00       		.byte	0
+ 632 0097 0B       		.uleb128 0xb
+ 633 0098 34       		.uleb128 0x34
+ 634 0099 00       		.byte	0
+ 635 009a 03       		.uleb128 0x3
+ 636 009b 0E       		.uleb128 0xe
+ 637 009c 3A       		.uleb128 0x3a
+ 638 009d 0B       		.uleb128 0xb
+ 639 009e 3B       		.uleb128 0x3b
+ 640 009f 05       		.uleb128 0x5
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 14
+
+
+ 641 00a0 49       		.uleb128 0x49
+ 642 00a1 13       		.uleb128 0x13
+ 643 00a2 3F       		.uleb128 0x3f
+ 644 00a3 19       		.uleb128 0x19
+ 645 00a4 3C       		.uleb128 0x3c
+ 646 00a5 19       		.uleb128 0x19
+ 647 00a6 00       		.byte	0
+ 648 00a7 00       		.byte	0
+ 649 00a8 0C       		.uleb128 0xc
+ 650 00a9 35       		.uleb128 0x35
+ 651 00aa 00       		.byte	0
+ 652 00ab 49       		.uleb128 0x49
+ 653 00ac 13       		.uleb128 0x13
+ 654 00ad 00       		.byte	0
+ 655 00ae 00       		.byte	0
+ 656 00af 00       		.byte	0
+ 657              		.section	.debug_aranges,"",%progbits
+ 658 0000 3C000000 		.4byte	0x3c
+ 659 0004 0200     		.2byte	0x2
+ 660 0006 00000000 		.4byte	.Ldebug_info0
+ 661 000a 04       		.byte	0x4
+ 662 000b 00       		.byte	0
+ 663 000c 0000     		.2byte	0
+ 664 000e 0000     		.2byte	0
+ 665 0010 00000000 		.4byte	.LFB63
+ 666 0014 26000000 		.4byte	.LFE63-.LFB63
+ 667 0018 00000000 		.4byte	.LFB64
+ 668 001c 28000000 		.4byte	.LFE64-.LFB64
+ 669 0020 00000000 		.4byte	.LFB65
+ 670 0024 28000000 		.4byte	.LFE65-.LFB65
+ 671 0028 00000000 		.4byte	.LFB66
+ 672 002c 28000000 		.4byte	.LFE66-.LFB66
+ 673 0030 00000000 		.4byte	.LFB67
+ 674 0034 28000000 		.4byte	.LFE67-.LFB67
+ 675 0038 00000000 		.4byte	0
+ 676 003c 00000000 		.4byte	0
+ 677              		.section	.debug_ranges,"",%progbits
+ 678              	.Ldebug_ranges0:
+ 679 0000 00000000 		.4byte	.LFB63
+ 680 0004 26000000 		.4byte	.LFE63
+ 681 0008 00000000 		.4byte	.LFB64
+ 682 000c 28000000 		.4byte	.LFE64
+ 683 0010 00000000 		.4byte	.LFB65
+ 684 0014 28000000 		.4byte	.LFE65
+ 685 0018 00000000 		.4byte	.LFB66
+ 686 001c 28000000 		.4byte	.LFE66
+ 687 0020 00000000 		.4byte	.LFB67
+ 688 0024 28000000 		.4byte	.LFE67
+ 689 0028 00000000 		.4byte	0
+ 690 002c 00000000 		.4byte	0
+ 691              		.section	.debug_line,"",%progbits
+ 692              	.Ldebug_line0:
+ 693 0000 CB010000 		.section	.debug_str,"MS",%progbits,1
+ 693      02005E01 
+ 693      00000201 
+ 693      FB0E0D00 
+ 693      01010101 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 15
+
+
+ 694              	.LASF20:
+ 695 0000 72656164 		.ascii	"read_board_switch\000"
+ 695      5F626F61 
+ 695      72645F73 
+ 695      77697463 
+ 695      6800
+ 696              	.LASF9:
+ 697 0012 5F5F696E 		.ascii	"__int32_t\000"
+ 697      7433325F 
+ 697      7400
+ 698              	.LASF26:
+ 699 001c 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 699      4320342E 
+ 699      392E3320 
+ 699      32303135 
+ 699      30333033 
+ 700 004f 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 700      20726576 
+ 700      6973696F 
+ 700      6E203232 
+ 700      31323230 
+ 701 0082 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 701      66756E63 
+ 701      74696F6E 
+ 701      2D736563 
+ 701      74696F6E 
+ 702              	.LASF19:
+ 703 00aa 72656164 		.ascii	"read_and_clear_counter\000"
+ 703      5F616E64 
+ 703      5F636C65 
+ 703      61725F63 
+ 703      6F756E74 
+ 704              	.LASF16:
+ 705 00c1 436F756E 		.ascii	"Counter_1_ReadCounter\000"
+ 705      7465725F 
+ 705      315F5265 
+ 705      6164436F 
+ 705      756E7465 
+ 706              	.LASF22:
+ 707 00d7 72657475 		.ascii	"return_value\000"
+ 707      726E5F76 
+ 707      616C7565 
+ 707      00
+ 708              	.LASF12:
+ 709 00e4 666C6F61 		.ascii	"float\000"
+ 709      7400
+ 710              	.LASF21:
+ 711 00ea 636F756E 		.ascii	"counter\000"
+ 711      74657200 
+ 712              	.LASF0:
+ 713 00f2 7369676E 		.ascii	"signed char\000"
+ 713      65642063 
+ 713      68617200 
+ 714              	.LASF1:
+ 715 00fe 756E7369 		.ascii	"unsigned char\000"
+ 715      676E6564 
+ 715      20636861 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 16
+
+
+ 715      7200
+ 716              	.LASF5:
+ 717 010c 6C6F6E67 		.ascii	"long unsigned int\000"
+ 717      20756E73 
+ 717      69676E65 
+ 717      6420696E 
+ 717      7400
+ 718              	.LASF3:
+ 719 011e 73686F72 		.ascii	"short unsigned int\000"
+ 719      7420756E 
+ 719      7369676E 
+ 719      65642069 
+ 719      6E7400
+ 720              	.LASF30:
+ 721 0131 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 721      52784275 
+ 721      66666572 
+ 721      00
+ 722              	.LASF13:
+ 723 013e 646F7562 		.ascii	"double\000"
+ 723      6C6500
+ 724              	.LASF11:
+ 725 0145 75696E74 		.ascii	"uint32\000"
+ 725      333200
+ 726              	.LASF8:
+ 727 014c 756E7369 		.ascii	"unsigned int\000"
+ 727      676E6564 
+ 727      20696E74 
+ 727      00
+ 728              	.LASF7:
+ 729 0159 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 729      206C6F6E 
+ 729      6720756E 
+ 729      7369676E 
+ 729      65642069 
+ 730              	.LASF10:
+ 731 0170 696E7433 		.ascii	"int32_t\000"
+ 731      325F7400 
+ 732              	.LASF15:
+ 733 0178 73697A65 		.ascii	"sizetype\000"
+ 733      74797065 
+ 733      00
+ 734              	.LASF18:
+ 735 0181 436F756E 		.ascii	"Counter_1_WriteCounter\000"
+ 735      7465725F 
+ 735      315F5772 
+ 735      69746543 
+ 735      6F756E74 
+ 736              	.LASF6:
+ 737 0198 6C6F6E67 		.ascii	"long long int\000"
+ 737      206C6F6E 
+ 737      6720696E 
+ 737      7400
+ 738              	.LASF14:
+ 739 01a6 63686172 		.ascii	"char\000"
+ 739      00
+ 740              	.LASF2:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccMxSLDc.s 			page 17
+
+
+ 741 01ab 73686F72 		.ascii	"short int\000"
+ 741      7420696E 
+ 741      7400
+ 742              	.LASF28:
+ 743 01b5 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 743      73657273 
+ 743      5C676C65 
+ 743      6E6E5C4F 
+ 743      6E654472 
+ 744 01e2 5553425F 		.ascii	"USB_UART01.cydsn\\chain_flow\\Pin_System_Definition"
+ 744      55415254 
+ 744      30312E63 
+ 744      7964736E 
+ 744      5C636861 
+ 745 0213 2E637964 		.ascii	".cydsn\000"
+ 745      736E00
+ 746              	.LASF23:
+ 747 021a 72656164 		.ascii	"read_input_2\000"
+ 747      5F696E70 
+ 747      75745F32 
+ 747      00
+ 748              	.LASF24:
+ 749 0227 72656164 		.ascii	"read_input_3\000"
+ 749      5F696E70 
+ 749      75745F33 
+ 749      00
+ 750              	.LASF25:
+ 751 0234 72656164 		.ascii	"read_input_4\000"
+ 751      5F696E70 
+ 751      75745F34 
+ 751      00
+ 752              	.LASF4:
+ 753 0241 6C6F6E67 		.ascii	"long int\000"
+ 753      20696E74 
+ 753      00
+ 754              	.LASF29:
+ 755 024a 436F756E 		.ascii	"Counter_1_Start\000"
+ 755      7465725F 
+ 755      315F5374 
+ 755      61727400 
+ 756              	.LASF27:
+ 757 025a 2E2E5C2E 		.ascii	"..\\..\\utilities\\digitial_io.c\000"
+ 757      2E5C7574 
+ 757      696C6974 
+ 757      6965735C 
+ 757      64696769 
+ 758              	.LASF17:
+ 759 0278 436F756E 		.ascii	"Counter_1_Stop\000"
+ 759      7465725F 
+ 759      315F5374 
+ 759      6F7000
+ 760              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

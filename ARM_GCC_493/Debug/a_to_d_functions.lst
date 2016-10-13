@@ -1,0 +1,1748 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"a_to_d_functions.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.rodata
+  19              		.align	2
+  20              		.type	se_reg_mapping, %object
+  21              		.size	se_reg_mapping, 4
+  22              	se_reg_mapping:
+  23 0000 28000000 		.word	40
+  24              		.align	2
+  25              		.type	se_calibration_mapping, %object
+  26              		.size	se_calibration_mapping, 4
+  27              	se_calibration_mapping:
+  28 0004 64000000 		.word	100
+  29              		.bss
+  30              		.align	2
+  31              	se_dc_sec:
+  32 0000 00000000 		.space	12
+  32      00000000 
+  32      00000000 
+  33              		.align	2
+  34              	se_ac_sec:
+  35 000c 00000000 		.space	12
+  35      00000000 
+  35      00000000 
+  36              		.align	2
+  37              	se_dc_min:
+  38 0018 00000000 		.space	12
+  38      00000000 
+  38      00000000 
+  39              		.align	2
+  40              	se_ac_min:
+  41 0024 00000000 		.space	12
+  41      00000000 
+  41      00000000 
+  42              		.section	.text.process_ad_interrupt,"ax",%progbits
+  43              		.align	2
+  44              		.global	process_ad_interrupt
+  45              		.thumb
+  46              		.thumb_func
+  47              		.type	process_ad_interrupt, %function
+  48              	process_ad_interrupt:
+  49              	.LFB65:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 2
+
+
+  50              		.file 1 ".\\a_to_d_functions\\a_to_d_functions.c"
+   1:.\a_to_d_functions/a_to_d_functions.c **** /*
+   2:.\a_to_d_functions/a_to_d_functions.c **** **
+   3:.\a_to_d_functions/a_to_d_functions.c **** ** File: a_to_d_functions.c
+   4:.\a_to_d_functions/a_to_d_functions.c **** ** Implements high speed a_to_d_functions
+   5:.\a_to_d_functions/a_to_d_functions.c **** ** High speed is needed as we are measuring 60 hz a/c signals
+   6:.\a_to_d_functions/a_to_d_functions.c **** **
+   7:.\a_to_d_functions/a_to_d_functions.c **** **
+   8:.\a_to_d_functions/a_to_d_functions.c **** */
+   9:.\a_to_d_functions/a_to_d_functions.c **** 
+  10:.\a_to_d_functions/a_to_d_functions.c **** #include <stdlib.h>
+  11:.\a_to_d_functions/a_to_d_functions.c **** #include <device.h>
+  12:.\a_to_d_functions/a_to_d_functions.c **** #include "a_to_d_functions.h"
+  13:.\a_to_d_functions/a_to_d_functions.c **** #include "moving_average.h"
+  14:.\a_to_d_functions/a_to_d_functions.c **** #include "cf_status_bit.h"
+  15:.\a_to_d_functions/a_to_d_functions.c **** #include "process_modbus_message.h"
+  16:.\a_to_d_functions/a_to_d_functions.c **** #include "cf_external_functions.h"
+  17:.\a_to_d_functions/a_to_d_functions.c **** 
+  18:.\a_to_d_functions/a_to_d_functions.c **** #define ALPHA_VALUE_SEC .01
+  19:.\a_to_d_functions/a_to_d_functions.c **** #define ALPHA_VALUE_MIN .2
+  20:.\a_to_d_functions/a_to_d_functions.c **** 
+  21:.\a_to_d_functions/a_to_d_functions.c **** #define   SIGMA_SETTLING_TIME   10
+  22:.\a_to_d_functions/a_to_d_functions.c **** #define   SIGMA_WAIT_FOR_INIT_STATE  0
+  23:.\a_to_d_functions/a_to_d_functions.c **** #define   SIGMA_SETTLING_STATE       1
+  24:.\a_to_d_functions/a_to_d_functions.c **** #define   SIGMA_MEASUREMENT_STATE    2
+  25:.\a_to_d_functions/a_to_d_functions.c **** 
+  26:.\a_to_d_functions/a_to_d_functions.c **** 
+  27:.\a_to_d_functions/a_to_d_functions.c **** 
+  28:.\a_to_d_functions/a_to_d_functions.c **** 
+  29:.\a_to_d_functions/a_to_d_functions.c **** 
+  30:.\a_to_d_functions/a_to_d_functions.c **** static const int se_reg_mapping[1]       = { MOISTURE_TEMP_DC_MIN_FLOAT };
+  31:.\a_to_d_functions/a_to_d_functions.c **** 
+  32:.\a_to_d_functions/a_to_d_functions.c **** 
+  33:.\a_to_d_functions/a_to_d_functions.c **** static const int se_calibration_mapping[] = { MOISTURE_TEMP_CALIBRATION_A };
+  34:.\a_to_d_functions/a_to_d_functions.c **** 
+  35:.\a_to_d_functions/a_to_d_functions.c **** 
+  36:.\a_to_d_functions/a_to_d_functions.c **** static MOVING_AVERAGE_STRUCT se_dc_sec[ SE_NUMBER];
+  37:.\a_to_d_functions/a_to_d_functions.c **** static MOVING_AVERAGE_STRUCT se_ac_sec[ SE_NUMBER];
+  38:.\a_to_d_functions/a_to_d_functions.c **** static MOVING_AVERAGE_STRUCT se_dc_min[ SE_NUMBER];
+  39:.\a_to_d_functions/a_to_d_functions.c **** static MOVING_AVERAGE_STRUCT se_ac_min[ SE_NUMBER ];
+  40:.\a_to_d_functions/a_to_d_functions.c **** 
+  41:.\a_to_d_functions/a_to_d_functions.c **** 
+  42:.\a_to_d_functions/a_to_d_functions.c **** 
+  43:.\a_to_d_functions/a_to_d_functions.c **** CY_ISR_PROTO(process_ad_interrupt)
+  44:.\a_to_d_functions/a_to_d_functions.c **** {
+  51              		.loc 1 44 0
+  52              		.cfi_startproc
+  53              		@ args = 0, pretend = 0, frame = 0
+  54              		@ frame_needed = 1, uses_anonymous_args = 0
+  55 0000 80B5     		push	{r7, lr}
+  56              		.cfi_def_cfa_offset 8
+  57              		.cfi_offset 7, -8
+  58              		.cfi_offset 14, -4
+  59 0002 00AF     		add	r7, sp, #0
+  60              		.cfi_def_cfa_register 7
+  45:.\a_to_d_functions/a_to_d_functions.c ****     ad_interrupt_1_ClearPending();
+  61              		.loc 1 45 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 3
+
+
+  62 0004 FFF7FEFF 		bl	ad_interrupt_1_ClearPending
+  46:.\a_to_d_functions/a_to_d_functions.c ****     cf_set_interrupt_status_bit(  CF_PROCESS_AD_RESULTS );
+  63              		.loc 1 46 0
+  64 0008 0120     		movs	r0, #1
+  65 000a FFF7FEFF 		bl	cf_set_interrupt_status_bit
+  47:.\a_to_d_functions/a_to_d_functions.c **** }
+  66              		.loc 1 47 0
+  67 000e 80BD     		pop	{r7, pc}
+  68              		.cfi_endproc
+  69              	.LFE65:
+  70              		.size	process_ad_interrupt, .-process_ad_interrupt
+  71              		.section	.text.ad_setup_interrupt,"ax",%progbits
+  72              		.align	2
+  73              		.global	ad_setup_interrupt
+  74              		.thumb
+  75              		.thumb_func
+  76              		.type	ad_setup_interrupt, %function
+  77              	ad_setup_interrupt:
+  78              	.LFB66:
+  48:.\a_to_d_functions/a_to_d_functions.c **** 
+  49:.\a_to_d_functions/a_to_d_functions.c **** /*
+  50:.\a_to_d_functions/a_to_d_functions.c **** **
+  51:.\a_to_d_functions/a_to_d_functions.c **** **  SAR Functions
+  52:.\a_to_d_functions/a_to_d_functions.c **** **
+  53:.\a_to_d_functions/a_to_d_functions.c **** */
+  54:.\a_to_d_functions/a_to_d_functions.c **** 
+  55:.\a_to_d_functions/a_to_d_functions.c **** void ad_setup_interrupt( void )
+  56:.\a_to_d_functions/a_to_d_functions.c **** {
+  79              		.loc 1 56 0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 0
+  82              		@ frame_needed = 1, uses_anonymous_args = 0
+  83 0000 80B5     		push	{r7, lr}
+  84              		.cfi_def_cfa_offset 8
+  85              		.cfi_offset 7, -8
+  86              		.cfi_offset 14, -4
+  87 0002 00AF     		add	r7, sp, #0
+  88              		.cfi_def_cfa_register 7
+  57:.\a_to_d_functions/a_to_d_functions.c ****     AD_CLOCK_Start();
+  89              		.loc 1 57 0
+  90 0004 FFF7FEFF 		bl	AD_CLOCK_Start
+  58:.\a_to_d_functions/a_to_d_functions.c ****     ad_interrupt_1_StartEx( process_ad_interrupt );
+  91              		.loc 1 58 0
+  92 0008 0148     		ldr	r0, .L3
+  93 000a FFF7FEFF 		bl	ad_interrupt_1_StartEx
+  59:.\a_to_d_functions/a_to_d_functions.c **** }
+  94              		.loc 1 59 0
+  95 000e 80BD     		pop	{r7, pc}
+  96              	.L4:
+  97              		.align	2
+  98              	.L3:
+  99 0010 00000000 		.word	process_ad_interrupt
+ 100              		.cfi_endproc
+ 101              	.LFE66:
+ 102              		.size	ad_setup_interrupt, .-ad_setup_interrupt
+ 103              		.section	.text.ad_init_se,"ax",%progbits
+ 104              		.align	2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 4
+
+
+ 105              		.global	ad_init_se
+ 106              		.thumb
+ 107              		.thumb_func
+ 108              		.type	ad_init_se, %function
+ 109              	ad_init_se:
+ 110              	.LFB67:
+  60:.\a_to_d_functions/a_to_d_functions.c **** 
+  61:.\a_to_d_functions/a_to_d_functions.c **** 
+  62:.\a_to_d_functions/a_to_d_functions.c **** void ad_init_se( void )  // init single ended a/d signals
+  63:.\a_to_d_functions/a_to_d_functions.c **** {
+ 111              		.loc 1 63 0
+ 112              		.cfi_startproc
+ 113              		@ args = 0, pretend = 0, frame = 8
+ 114              		@ frame_needed = 1, uses_anonymous_args = 0
+ 115 0000 80B5     		push	{r7, lr}
+ 116              		.cfi_def_cfa_offset 8
+ 117              		.cfi_offset 7, -8
+ 118              		.cfi_offset 14, -4
+ 119 0002 82B0     		sub	sp, sp, #8
+ 120              		.cfi_def_cfa_offset 16
+ 121 0004 00AF     		add	r7, sp, #0
+ 122              		.cfi_def_cfa_register 7
+  64:.\a_to_d_functions/a_to_d_functions.c ****     int i;
+  65:.\a_to_d_functions/a_to_d_functions.c ****     for( i = 0; i< SE_NUMBER; i++ )
+ 123              		.loc 1 65 0
+ 124 0006 0023     		movs	r3, #0
+ 125 0008 7B60     		str	r3, [r7, #4]
+ 126 000a 36E0     		b	.L6
+ 127              	.L7:
+  66:.\a_to_d_functions/a_to_d_functions.c ****     {
+  67:.\a_to_d_functions/a_to_d_functions.c ****         ma_initialize( &se_dc_sec[i], ALPHA_VALUE_SEC,0);
+ 128              		.loc 1 67 0 discriminator 3
+ 129 000c 7A68     		ldr	r2, [r7, #4]
+ 130 000e 1346     		mov	r3, r2
+ 131 0010 5B00     		lsls	r3, r3, #1
+ 132 0012 1344     		add	r3, r3, r2
+ 133 0014 9B00     		lsls	r3, r3, #2
+ 134 0016 1E4A     		ldr	r2, .L8
+ 135 0018 1344     		add	r3, r3, r2
+ 136 001a 1846     		mov	r0, r3
+ 137 001c 1D49     		ldr	r1, .L8+4
+ 138 001e 4FF00002 		mov	r2, #0
+ 139 0022 FFF7FEFF 		bl	ma_initialize
+  68:.\a_to_d_functions/a_to_d_functions.c ****         ma_initialize( &se_ac_sec[i], ALPHA_VALUE_SEC,0);
+ 140              		.loc 1 68 0 discriminator 3
+ 141 0026 7A68     		ldr	r2, [r7, #4]
+ 142 0028 1346     		mov	r3, r2
+ 143 002a 5B00     		lsls	r3, r3, #1
+ 144 002c 1344     		add	r3, r3, r2
+ 145 002e 9B00     		lsls	r3, r3, #2
+ 146 0030 194A     		ldr	r2, .L8+8
+ 147 0032 1344     		add	r3, r3, r2
+ 148 0034 1846     		mov	r0, r3
+ 149 0036 1749     		ldr	r1, .L8+4
+ 150 0038 4FF00002 		mov	r2, #0
+ 151 003c FFF7FEFF 		bl	ma_initialize
+  69:.\a_to_d_functions/a_to_d_functions.c ****         ma_initialize( &se_dc_min[i], ALPHA_VALUE_MIN,0);
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 5
+
+
+ 152              		.loc 1 69 0 discriminator 3
+ 153 0040 7A68     		ldr	r2, [r7, #4]
+ 154 0042 1346     		mov	r3, r2
+ 155 0044 5B00     		lsls	r3, r3, #1
+ 156 0046 1344     		add	r3, r3, r2
+ 157 0048 9B00     		lsls	r3, r3, #2
+ 158 004a 144A     		ldr	r2, .L8+12
+ 159 004c 1344     		add	r3, r3, r2
+ 160 004e 1846     		mov	r0, r3
+ 161 0050 1349     		ldr	r1, .L8+16
+ 162 0052 4FF00002 		mov	r2, #0
+ 163 0056 FFF7FEFF 		bl	ma_initialize
+  70:.\a_to_d_functions/a_to_d_functions.c ****         ma_initialize( &se_ac_min[i],ALPHA_VALUE_MIN,0);
+ 164              		.loc 1 70 0 discriminator 3
+ 165 005a 7A68     		ldr	r2, [r7, #4]
+ 166 005c 1346     		mov	r3, r2
+ 167 005e 5B00     		lsls	r3, r3, #1
+ 168 0060 1344     		add	r3, r3, r2
+ 169 0062 9B00     		lsls	r3, r3, #2
+ 170 0064 0F4A     		ldr	r2, .L8+20
+ 171 0066 1344     		add	r3, r3, r2
+ 172 0068 1846     		mov	r0, r3
+ 173 006a 0D49     		ldr	r1, .L8+16
+ 174 006c 4FF00002 		mov	r2, #0
+ 175 0070 FFF7FEFF 		bl	ma_initialize
+  65:.\a_to_d_functions/a_to_d_functions.c ****     {
+ 176              		.loc 1 65 0 discriminator 3
+ 177 0074 7B68     		ldr	r3, [r7, #4]
+ 178 0076 0133     		adds	r3, r3, #1
+ 179 0078 7B60     		str	r3, [r7, #4]
+ 180              	.L6:
+  65:.\a_to_d_functions/a_to_d_functions.c ****     {
+ 181              		.loc 1 65 0 is_stmt 0 discriminator 1
+ 182 007a 7B68     		ldr	r3, [r7, #4]
+ 183 007c 002B     		cmp	r3, #0
+ 184 007e C5DD     		ble	.L7
+  71:.\a_to_d_functions/a_to_d_functions.c **** 
+  72:.\a_to_d_functions/a_to_d_functions.c ****     }
+  73:.\a_to_d_functions/a_to_d_functions.c ****     
+  74:.\a_to_d_functions/a_to_d_functions.c ****     ADC_SAR_Seq_1_Start();
+ 185              		.loc 1 74 0 is_stmt 1
+ 186 0080 FFF7FEFF 		bl	ADC_SAR_Seq_1_Start
+  75:.\a_to_d_functions/a_to_d_functions.c ****     ADC_SAR_Seq_1_StartConvert();
+ 187              		.loc 1 75 0
+ 188 0084 FFF7FEFF 		bl	ADC_SAR_Seq_1_StartConvert
+  76:.\a_to_d_functions/a_to_d_functions.c **** }
+ 189              		.loc 1 76 0
+ 190 0088 0837     		adds	r7, r7, #8
+ 191              		.cfi_def_cfa_offset 8
+ 192 008a BD46     		mov	sp, r7
+ 193              		.cfi_def_cfa_register 13
+ 194              		@ sp needed
+ 195 008c 80BD     		pop	{r7, pc}
+ 196              	.L9:
+ 197 008e 00BF     		.align	2
+ 198              	.L8:
+ 199 0090 00000000 		.word	se_dc_sec
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 6
+
+
+ 200 0094 0AD7233C 		.word	1008981770
+ 201 0098 0C000000 		.word	se_ac_sec
+ 202 009c 18000000 		.word	se_dc_min
+ 203 00a0 CDCC4C3E 		.word	1045220557
+ 204 00a4 24000000 		.word	se_ac_min
+ 205              		.cfi_endproc
+ 206              	.LFE67:
+ 207              		.size	ad_init_se, .-ad_init_se
+ 208              		.global	__aeabi_i2f
+ 209              		.global	__aeabi_f2iz
+ 210              		.section	.text.ad_process_se,"ax",%progbits
+ 211              		.align	2
+ 212              		.global	ad_process_se
+ 213              		.thumb
+ 214              		.thumb_func
+ 215              		.type	ad_process_se, %function
+ 216              	ad_process_se:
+ 217              	.LFB68:
+  77:.\a_to_d_functions/a_to_d_functions.c **** 
+  78:.\a_to_d_functions/a_to_d_functions.c **** void ad_process_se( void )  // process single ended 
+  79:.\a_to_d_functions/a_to_d_functions.c **** {
+ 218              		.loc 1 79 0
+ 219              		.cfi_startproc
+ 220              		@ args = 0, pretend = 0, frame = 24
+ 221              		@ frame_needed = 1, uses_anonymous_args = 0
+ 222 0000 90B5     		push	{r4, r7, lr}
+ 223              		.cfi_def_cfa_offset 12
+ 224              		.cfi_offset 4, -12
+ 225              		.cfi_offset 7, -8
+ 226              		.cfi_offset 14, -4
+ 227 0002 87B0     		sub	sp, sp, #28
+ 228              		.cfi_def_cfa_offset 40
+ 229 0004 00AF     		add	r7, sp, #0
+ 230              		.cfi_def_cfa_register 7
+  80:.\a_to_d_functions/a_to_d_functions.c ****     int   i;
+  81:.\a_to_d_functions/a_to_d_functions.c ****     int32 temp;
+  82:.\a_to_d_functions/a_to_d_functions.c ****     int32 dc_value;
+  83:.\a_to_d_functions/a_to_d_functions.c ****     int32 ac_value;
+  84:.\a_to_d_functions/a_to_d_functions.c ****     int32 mvolts;
+  85:.\a_to_d_functions/a_to_d_functions.c ****     
+  86:.\a_to_d_functions/a_to_d_functions.c ****     
+  87:.\a_to_d_functions/a_to_d_functions.c ****     for( i = 0; i < SE_NUMBER; i++)
+ 231              		.loc 1 87 0
+ 232 0006 0023     		movs	r3, #0
+ 233 0008 7B61     		str	r3, [r7, #20]
+ 234 000a 3DE0     		b	.L11
+ 235              	.L12:
+  88:.\a_to_d_functions/a_to_d_functions.c ****     {
+  89:.\a_to_d_functions/a_to_d_functions.c ****          temp =  ADC_SAR_Seq_1_GetResult16(i);
+ 236              		.loc 1 89 0 discriminator 3
+ 237 000c 7B69     		ldr	r3, [r7, #20]
+ 238 000e 9BB2     		uxth	r3, r3
+ 239 0010 1846     		mov	r0, r3
+ 240 0012 FFF7FEFF 		bl	ADC_SAR_Seq_1_GetResult16
+ 241 0016 0346     		mov	r3, r0
+ 242 0018 3B61     		str	r3, [r7, #16]
+  90:.\a_to_d_functions/a_to_d_functions.c ****          mvolts = ADC_SAR_Seq_1_CountsTo_mVolts(temp);
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 7
+
+
+ 243              		.loc 1 90 0 discriminator 3
+ 244 001a 3B69     		ldr	r3, [r7, #16]
+ 245 001c 9BB2     		uxth	r3, r3
+ 246 001e 1BB2     		sxth	r3, r3
+ 247 0020 1846     		mov	r0, r3
+ 248 0022 FFF7FEFF 		bl	ADC_SAR_Seq_1_CountsTo_mVolts
+ 249 0026 F860     		str	r0, [r7, #12]
+  91:.\a_to_d_functions/a_to_d_functions.c ****          dc_value = ma_update( &se_dc_sec[i], mvolts);
+ 250              		.loc 1 91 0 discriminator 3
+ 251 0028 7A69     		ldr	r2, [r7, #20]
+ 252 002a 1346     		mov	r3, r2
+ 253 002c 5B00     		lsls	r3, r3, #1
+ 254 002e 1344     		add	r3, r3, r2
+ 255 0030 9B00     		lsls	r3, r3, #2
+ 256 0032 184A     		ldr	r2, .L13
+ 257 0034 9C18     		adds	r4, r3, r2
+ 258 0036 F868     		ldr	r0, [r7, #12]
+ 259 0038 FFF7FEFF 		bl	__aeabi_i2f
+ 260 003c 0346     		mov	r3, r0
+ 261 003e 2046     		mov	r0, r4
+ 262 0040 1946     		mov	r1, r3
+ 263 0042 FFF7FEFF 		bl	ma_update
+ 264 0046 0346     		mov	r3, r0
+ 265 0048 1846     		mov	r0, r3
+ 266 004a FFF7FEFF 		bl	__aeabi_f2iz
+ 267 004e 0346     		mov	r3, r0
+ 268 0050 BB60     		str	r3, [r7, #8]
+  92:.\a_to_d_functions/a_to_d_functions.c ****          ac_value = (int16) abs( (int)(dc_value -mvolts ) );
+ 269              		.loc 1 92 0 discriminator 3
+ 270 0052 BA68     		ldr	r2, [r7, #8]
+ 271 0054 FB68     		ldr	r3, [r7, #12]
+ 272 0056 D31A     		subs	r3, r2, r3
+ 273 0058 002B     		cmp	r3, #0
+ 274 005a B8BF     		it	lt
+ 275 005c 5B42     		rsblt	r3, r3, #0
+ 276 005e 9BB2     		uxth	r3, r3
+ 277 0060 1BB2     		sxth	r3, r3
+ 278 0062 7B60     		str	r3, [r7, #4]
+  93:.\a_to_d_functions/a_to_d_functions.c ****          ma_update(&se_ac_sec[i],ac_value);
+ 279              		.loc 1 93 0 discriminator 3
+ 280 0064 7A69     		ldr	r2, [r7, #20]
+ 281 0066 1346     		mov	r3, r2
+ 282 0068 5B00     		lsls	r3, r3, #1
+ 283 006a 1344     		add	r3, r3, r2
+ 284 006c 9B00     		lsls	r3, r3, #2
+ 285 006e 0A4A     		ldr	r2, .L13+4
+ 286 0070 9C18     		adds	r4, r3, r2
+ 287 0072 7868     		ldr	r0, [r7, #4]
+ 288 0074 FFF7FEFF 		bl	__aeabi_i2f
+ 289 0078 0346     		mov	r3, r0
+ 290 007a 2046     		mov	r0, r4
+ 291 007c 1946     		mov	r1, r3
+ 292 007e FFF7FEFF 		bl	ma_update
+  87:.\a_to_d_functions/a_to_d_functions.c ****     {
+ 293              		.loc 1 87 0 discriminator 3
+ 294 0082 7B69     		ldr	r3, [r7, #20]
+ 295 0084 0133     		adds	r3, r3, #1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 8
+
+
+ 296 0086 7B61     		str	r3, [r7, #20]
+ 297              	.L11:
+  87:.\a_to_d_functions/a_to_d_functions.c ****     {
+ 298              		.loc 1 87 0 is_stmt 0 discriminator 1
+ 299 0088 7B69     		ldr	r3, [r7, #20]
+ 300 008a 002B     		cmp	r3, #0
+ 301 008c BEDD     		ble	.L12
+  94:.\a_to_d_functions/a_to_d_functions.c ****  
+  95:.\a_to_d_functions/a_to_d_functions.c ****     }
+  96:.\a_to_d_functions/a_to_d_functions.c **** }
+ 302              		.loc 1 96 0 is_stmt 1
+ 303 008e 1C37     		adds	r7, r7, #28
+ 304              		.cfi_def_cfa_offset 12
+ 305 0090 BD46     		mov	sp, r7
+ 306              		.cfi_def_cfa_register 13
+ 307              		@ sp needed
+ 308 0092 90BD     		pop	{r4, r7, pc}
+ 309              	.L14:
+ 310              		.align	2
+ 311              	.L13:
+ 312 0094 00000000 		.word	se_dc_sec
+ 313 0098 0C000000 		.word	se_ac_sec
+ 314              		.cfi_endproc
+ 315              	.LFE68:
+ 316              		.size	ad_process_se, .-ad_process_se
+ 317              		.global	__aeabi_fmul
+ 318              		.global	__aeabi_fadd
+ 319              		.section	.text.ad_process_se_second,"ax",%progbits
+ 320              		.align	2
+ 321              		.global	ad_process_se_second
+ 322              		.thumb
+ 323              		.thumb_func
+ 324              		.type	ad_process_se_second, %function
+ 325              	ad_process_se_second:
+ 326              	.LFB69:
+  97:.\a_to_d_functions/a_to_d_functions.c **** 
+  98:.\a_to_d_functions/a_to_d_functions.c **** void ad_process_se_second( void )
+  99:.\a_to_d_functions/a_to_d_functions.c **** {
+ 327              		.loc 1 99 0
+ 328              		.cfi_startproc
+ 329              		@ args = 0, pretend = 0, frame = 16
+ 330              		@ frame_needed = 1, uses_anonymous_args = 0
+ 331 0000 80B5     		push	{r7, lr}
+ 332              		.cfi_def_cfa_offset 8
+ 333              		.cfi_offset 7, -8
+ 334              		.cfi_offset 14, -4
+ 335 0002 84B0     		sub	sp, sp, #16
+ 336              		.cfi_def_cfa_offset 24
+ 337 0004 00AF     		add	r7, sp, #0
+ 338              		.cfi_def_cfa_register 7
+ 100:.\a_to_d_functions/a_to_d_functions.c ****     int i;
+ 101:.\a_to_d_functions/a_to_d_functions.c ****     float value;
+ 102:.\a_to_d_functions/a_to_d_functions.c ****     float calibration_a;
+ 103:.\a_to_d_functions/a_to_d_functions.c ****     float calibration_b;
+ 104:.\a_to_d_functions/a_to_d_functions.c ****     
+ 105:.\a_to_d_functions/a_to_d_functions.c ****     for( i = 0; i< SE_NUMBER; i++ )
+ 339              		.loc 1 105 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 9
+
+
+ 340 0006 0023     		movs	r3, #0
+ 341 0008 FB60     		str	r3, [r7, #12]
+ 342 000a 6EE0     		b	.L16
+ 343              	.L17:
+ 106:.\a_to_d_functions/a_to_d_functions.c ****     {
+ 107:.\a_to_d_functions/a_to_d_functions.c ****         get_modbus_data_registers( se_calibration_mapping[i], 2, (uint16 *)&calibration_a );
+ 344              		.loc 1 107 0 discriminator 3
+ 345 000c 6423     		movs	r3, #100
+ 346 000e 1A46     		mov	r2, r3
+ 347 0010 3B1D     		adds	r3, r7, #4
+ 348 0012 1046     		mov	r0, r2
+ 349 0014 0221     		movs	r1, #2
+ 350 0016 1A46     		mov	r2, r3
+ 351 0018 FFF7FEFF 		bl	get_modbus_data_registers
+ 108:.\a_to_d_functions/a_to_d_functions.c ****         get_modbus_data_registers( se_calibration_mapping[i]+2, 2, (uint16 *)&calibration_b );
+ 352              		.loc 1 108 0 discriminator 3
+ 353 001c 6423     		movs	r3, #100
+ 354 001e 0233     		adds	r3, r3, #2
+ 355 0020 1A46     		mov	r2, r3
+ 356 0022 3B46     		mov	r3, r7
+ 357 0024 1046     		mov	r0, r2
+ 358 0026 0221     		movs	r1, #2
+ 359 0028 1A46     		mov	r2, r3
+ 360 002a FFF7FEFF 		bl	get_modbus_data_registers
+ 109:.\a_to_d_functions/a_to_d_functions.c ****         value = ma_get_value( &se_dc_sec[i]);
+ 361              		.loc 1 109 0 discriminator 3
+ 362 002e FA68     		ldr	r2, [r7, #12]
+ 363 0030 1346     		mov	r3, r2
+ 364 0032 5B00     		lsls	r3, r3, #1
+ 365 0034 1344     		add	r3, r3, r2
+ 366 0036 9B00     		lsls	r3, r3, #2
+ 367 0038 2F4A     		ldr	r2, .L18
+ 368 003a 1344     		add	r3, r3, r2
+ 369 003c 1846     		mov	r0, r3
+ 370 003e FFF7FEFF 		bl	ma_get_value
+ 371 0042 0346     		mov	r3, r0
+ 372 0044 BB60     		str	r3, [r7, #8]	@ float
+ 110:.\a_to_d_functions/a_to_d_functions.c ****         ma_update(   &se_dc_min[i], value );
+ 373              		.loc 1 110 0 discriminator 3
+ 374 0046 FA68     		ldr	r2, [r7, #12]
+ 375 0048 1346     		mov	r3, r2
+ 376 004a 5B00     		lsls	r3, r3, #1
+ 377 004c 1344     		add	r3, r3, r2
+ 378 004e 9B00     		lsls	r3, r3, #2
+ 379 0050 2A4A     		ldr	r2, .L18+4
+ 380 0052 1A44     		add	r2, r2, r3
+ 381 0054 BB68     		ldr	r3, [r7, #8]	@ float
+ 382 0056 1046     		mov	r0, r2
+ 383 0058 1946     		mov	r1, r3
+ 384 005a FFF7FEFF 		bl	ma_update
+ 111:.\a_to_d_functions/a_to_d_functions.c ****         value = (value*calibration_a) + calibration_b;
+ 385              		.loc 1 111 0 discriminator 3
+ 386 005e BA68     		ldr	r2, [r7, #8]	@ float
+ 387 0060 7B68     		ldr	r3, [r7, #4]	@ float
+ 388 0062 1046     		mov	r0, r2
+ 389 0064 1946     		mov	r1, r3
+ 390 0066 FFF7FEFF 		bl	__aeabi_fmul
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 10
+
+
+ 391 006a 0346     		mov	r3, r0
+ 392 006c 1A46     		mov	r2, r3
+ 393 006e 3B68     		ldr	r3, [r7]	@ float
+ 394 0070 1046     		mov	r0, r2
+ 395 0072 1946     		mov	r1, r3
+ 396 0074 FFF7FEFF 		bl	__aeabi_fadd
+ 397 0078 0346     		mov	r3, r0
+ 398 007a BB60     		str	r3, [r7, #8]	@ float
+ 112:.\a_to_d_functions/a_to_d_functions.c ****         store_modbus_data_registers( se_reg_mapping[i]+4, 2,(uint16*) &value);
+ 399              		.loc 1 112 0 discriminator 3
+ 400 007c 2823     		movs	r3, #40
+ 401 007e 0433     		adds	r3, r3, #4
+ 402 0080 1A46     		mov	r2, r3
+ 403 0082 07F10803 		add	r3, r7, #8
+ 404 0086 1046     		mov	r0, r2
+ 405 0088 0221     		movs	r1, #2
+ 406 008a 1A46     		mov	r2, r3
+ 407 008c FFF7FEFF 		bl	store_modbus_data_registers
+ 113:.\a_to_d_functions/a_to_d_functions.c ****         value = ma_get_value( &se_ac_sec[i]);
+ 408              		.loc 1 113 0 discriminator 3
+ 409 0090 FA68     		ldr	r2, [r7, #12]
+ 410 0092 1346     		mov	r3, r2
+ 411 0094 5B00     		lsls	r3, r3, #1
+ 412 0096 1344     		add	r3, r3, r2
+ 413 0098 9B00     		lsls	r3, r3, #2
+ 414 009a 194A     		ldr	r2, .L18+8
+ 415 009c 1344     		add	r3, r3, r2
+ 416 009e 1846     		mov	r0, r3
+ 417 00a0 FFF7FEFF 		bl	ma_get_value
+ 418 00a4 0346     		mov	r3, r0
+ 419 00a6 BB60     		str	r3, [r7, #8]	@ float
+ 114:.\a_to_d_functions/a_to_d_functions.c ****         ma_update(   &se_ac_min[i], value );
+ 420              		.loc 1 114 0 discriminator 3
+ 421 00a8 FA68     		ldr	r2, [r7, #12]
+ 422 00aa 1346     		mov	r3, r2
+ 423 00ac 5B00     		lsls	r3, r3, #1
+ 424 00ae 1344     		add	r3, r3, r2
+ 425 00b0 9B00     		lsls	r3, r3, #2
+ 426 00b2 144A     		ldr	r2, .L18+12
+ 427 00b4 1A44     		add	r2, r2, r3
+ 428 00b6 BB68     		ldr	r3, [r7, #8]	@ float
+ 429 00b8 1046     		mov	r0, r2
+ 430 00ba 1946     		mov	r1, r3
+ 431 00bc FFF7FEFF 		bl	ma_update
+ 115:.\a_to_d_functions/a_to_d_functions.c ****         value = (value) * calibration_a;
+ 432              		.loc 1 115 0 discriminator 3
+ 433 00c0 BA68     		ldr	r2, [r7, #8]	@ float
+ 434 00c2 7B68     		ldr	r3, [r7, #4]	@ float
+ 435 00c4 1046     		mov	r0, r2
+ 436 00c6 1946     		mov	r1, r3
+ 437 00c8 FFF7FEFF 		bl	__aeabi_fmul
+ 438 00cc 0346     		mov	r3, r0
+ 439 00ce BB60     		str	r3, [r7, #8]	@ float
+ 116:.\a_to_d_functions/a_to_d_functions.c ****         store_modbus_data_registers( se_reg_mapping[i]+6, 2,(uint16*) &value);
+ 440              		.loc 1 116 0 discriminator 3
+ 441 00d0 2823     		movs	r3, #40
+ 442 00d2 0633     		adds	r3, r3, #6
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 11
+
+
+ 443 00d4 1A46     		mov	r2, r3
+ 444 00d6 07F10803 		add	r3, r7, #8
+ 445 00da 1046     		mov	r0, r2
+ 446 00dc 0221     		movs	r1, #2
+ 447 00de 1A46     		mov	r2, r3
+ 448 00e0 FFF7FEFF 		bl	store_modbus_data_registers
+ 105:.\a_to_d_functions/a_to_d_functions.c ****     {
+ 449              		.loc 1 105 0 discriminator 3
+ 450 00e4 FB68     		ldr	r3, [r7, #12]
+ 451 00e6 0133     		adds	r3, r3, #1
+ 452 00e8 FB60     		str	r3, [r7, #12]
+ 453              	.L16:
+ 105:.\a_to_d_functions/a_to_d_functions.c ****     {
+ 454              		.loc 1 105 0 is_stmt 0 discriminator 1
+ 455 00ea FB68     		ldr	r3, [r7, #12]
+ 456 00ec 002B     		cmp	r3, #0
+ 457 00ee 8DDD     		ble	.L17
+ 117:.\a_to_d_functions/a_to_d_functions.c ****     }
+ 118:.\a_to_d_functions/a_to_d_functions.c **** }
+ 458              		.loc 1 118 0 is_stmt 1
+ 459 00f0 1037     		adds	r7, r7, #16
+ 460              		.cfi_def_cfa_offset 8
+ 461 00f2 BD46     		mov	sp, r7
+ 462              		.cfi_def_cfa_register 13
+ 463              		@ sp needed
+ 464 00f4 80BD     		pop	{r7, pc}
+ 465              	.L19:
+ 466 00f6 00BF     		.align	2
+ 467              	.L18:
+ 468 00f8 00000000 		.word	se_dc_sec
+ 469 00fc 18000000 		.word	se_dc_min
+ 470 0100 0C000000 		.word	se_ac_sec
+ 471 0104 24000000 		.word	se_ac_min
+ 472              		.cfi_endproc
+ 473              	.LFE69:
+ 474              		.size	ad_process_se_second, .-ad_process_se_second
+ 475              		.section	.text.ad_process_minute_second,"ax",%progbits
+ 476              		.align	2
+ 477              		.global	ad_process_minute_second
+ 478              		.thumb
+ 479              		.thumb_func
+ 480              		.type	ad_process_minute_second, %function
+ 481              	ad_process_minute_second:
+ 482              	.LFB70:
+ 119:.\a_to_d_functions/a_to_d_functions.c ****         
+ 120:.\a_to_d_functions/a_to_d_functions.c **** 
+ 121:.\a_to_d_functions/a_to_d_functions.c **** void ad_process_minute_second( void )
+ 122:.\a_to_d_functions/a_to_d_functions.c **** {
+ 483              		.loc 1 122 0
+ 484              		.cfi_startproc
+ 485              		@ args = 0, pretend = 0, frame = 16
+ 486              		@ frame_needed = 1, uses_anonymous_args = 0
+ 487 0000 80B5     		push	{r7, lr}
+ 488              		.cfi_def_cfa_offset 8
+ 489              		.cfi_offset 7, -8
+ 490              		.cfi_offset 14, -4
+ 491 0002 84B0     		sub	sp, sp, #16
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 12
+
+
+ 492              		.cfi_def_cfa_offset 24
+ 493 0004 00AF     		add	r7, sp, #0
+ 494              		.cfi_def_cfa_register 7
+ 123:.\a_to_d_functions/a_to_d_functions.c ****     int i;
+ 124:.\a_to_d_functions/a_to_d_functions.c ****     float value;
+ 125:.\a_to_d_functions/a_to_d_functions.c ****     float calibration_a;
+ 126:.\a_to_d_functions/a_to_d_functions.c ****     float calibration_b;
+ 127:.\a_to_d_functions/a_to_d_functions.c ****     
+ 128:.\a_to_d_functions/a_to_d_functions.c ****     for( i = 0; i< SE_NUMBER; i++ )
+ 495              		.loc 1 128 0
+ 496 0006 0023     		movs	r3, #0
+ 497 0008 FB60     		str	r3, [r7, #12]
+ 498 000a 55E0     		b	.L21
+ 499              	.L22:
+ 129:.\a_to_d_functions/a_to_d_functions.c ****     {
+ 130:.\a_to_d_functions/a_to_d_functions.c ****         get_modbus_data_registers( se_calibration_mapping[i], 2, (uint16 *)&calibration_a );
+ 500              		.loc 1 130 0 discriminator 3
+ 501 000c 6423     		movs	r3, #100
+ 502 000e 1A46     		mov	r2, r3
+ 503 0010 3B1D     		adds	r3, r7, #4
+ 504 0012 1046     		mov	r0, r2
+ 505 0014 0221     		movs	r1, #2
+ 506 0016 1A46     		mov	r2, r3
+ 507 0018 FFF7FEFF 		bl	get_modbus_data_registers
+ 131:.\a_to_d_functions/a_to_d_functions.c ****         get_modbus_data_registers( se_calibration_mapping[i]+2, 2, (uint16 *)&calibration_b );
+ 508              		.loc 1 131 0 discriminator 3
+ 509 001c 6423     		movs	r3, #100
+ 510 001e 0233     		adds	r3, r3, #2
+ 511 0020 1A46     		mov	r2, r3
+ 512 0022 3B46     		mov	r3, r7
+ 513 0024 1046     		mov	r0, r2
+ 514 0026 0221     		movs	r1, #2
+ 515 0028 1A46     		mov	r2, r3
+ 516 002a FFF7FEFF 		bl	get_modbus_data_registers
+ 132:.\a_to_d_functions/a_to_d_functions.c ****         value = ma_get_value( &se_dc_min[i]);
+ 517              		.loc 1 132 0 discriminator 3
+ 518 002e FA68     		ldr	r2, [r7, #12]
+ 519 0030 1346     		mov	r3, r2
+ 520 0032 5B00     		lsls	r3, r3, #1
+ 521 0034 1344     		add	r3, r3, r2
+ 522 0036 9B00     		lsls	r3, r3, #2
+ 523 0038 224A     		ldr	r2, .L23
+ 524 003a 1344     		add	r3, r3, r2
+ 525 003c 1846     		mov	r0, r3
+ 526 003e FFF7FEFF 		bl	ma_get_value
+ 527 0042 0346     		mov	r3, r0
+ 528 0044 BB60     		str	r3, [r7, #8]	@ float
+ 133:.\a_to_d_functions/a_to_d_functions.c ****         value = (value*calibration_a) + calibration_b;
+ 529              		.loc 1 133 0 discriminator 3
+ 530 0046 BA68     		ldr	r2, [r7, #8]	@ float
+ 531 0048 7B68     		ldr	r3, [r7, #4]	@ float
+ 532 004a 1046     		mov	r0, r2
+ 533 004c 1946     		mov	r1, r3
+ 534 004e FFF7FEFF 		bl	__aeabi_fmul
+ 535 0052 0346     		mov	r3, r0
+ 536 0054 1A46     		mov	r2, r3
+ 537 0056 3B68     		ldr	r3, [r7]	@ float
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 13
+
+
+ 538 0058 1046     		mov	r0, r2
+ 539 005a 1946     		mov	r1, r3
+ 540 005c FFF7FEFF 		bl	__aeabi_fadd
+ 541 0060 0346     		mov	r3, r0
+ 542 0062 BB60     		str	r3, [r7, #8]	@ float
+ 134:.\a_to_d_functions/a_to_d_functions.c ****         store_modbus_data_registers( se_reg_mapping[i], 2,(uint16*) &value);
+ 543              		.loc 1 134 0 discriminator 3
+ 544 0064 2823     		movs	r3, #40
+ 545 0066 1A46     		mov	r2, r3
+ 546 0068 07F10803 		add	r3, r7, #8
+ 547 006c 1046     		mov	r0, r2
+ 548 006e 0221     		movs	r1, #2
+ 549 0070 1A46     		mov	r2, r3
+ 550 0072 FFF7FEFF 		bl	store_modbus_data_registers
+ 135:.\a_to_d_functions/a_to_d_functions.c ****         value = ma_get_value( &se_ac_min[i]);
+ 551              		.loc 1 135 0 discriminator 3
+ 552 0076 FA68     		ldr	r2, [r7, #12]
+ 553 0078 1346     		mov	r3, r2
+ 554 007a 5B00     		lsls	r3, r3, #1
+ 555 007c 1344     		add	r3, r3, r2
+ 556 007e 9B00     		lsls	r3, r3, #2
+ 557 0080 114A     		ldr	r2, .L23+4
+ 558 0082 1344     		add	r3, r3, r2
+ 559 0084 1846     		mov	r0, r3
+ 560 0086 FFF7FEFF 		bl	ma_get_value
+ 561 008a 0346     		mov	r3, r0
+ 562 008c BB60     		str	r3, [r7, #8]	@ float
+ 136:.\a_to_d_functions/a_to_d_functions.c ****         value = (value) * calibration_a;
+ 563              		.loc 1 136 0 discriminator 3
+ 564 008e BA68     		ldr	r2, [r7, #8]	@ float
+ 565 0090 7B68     		ldr	r3, [r7, #4]	@ float
+ 566 0092 1046     		mov	r0, r2
+ 567 0094 1946     		mov	r1, r3
+ 568 0096 FFF7FEFF 		bl	__aeabi_fmul
+ 569 009a 0346     		mov	r3, r0
+ 570 009c BB60     		str	r3, [r7, #8]	@ float
+ 137:.\a_to_d_functions/a_to_d_functions.c ****         store_modbus_data_registers( se_reg_mapping[i]+2, 2,(uint16*) &value);
+ 571              		.loc 1 137 0 discriminator 3
+ 572 009e 2823     		movs	r3, #40
+ 573 00a0 0233     		adds	r3, r3, #2
+ 574 00a2 1A46     		mov	r2, r3
+ 575 00a4 07F10803 		add	r3, r7, #8
+ 576 00a8 1046     		mov	r0, r2
+ 577 00aa 0221     		movs	r1, #2
+ 578 00ac 1A46     		mov	r2, r3
+ 579 00ae FFF7FEFF 		bl	store_modbus_data_registers
+ 128:.\a_to_d_functions/a_to_d_functions.c ****     {
+ 580              		.loc 1 128 0 discriminator 3
+ 581 00b2 FB68     		ldr	r3, [r7, #12]
+ 582 00b4 0133     		adds	r3, r3, #1
+ 583 00b6 FB60     		str	r3, [r7, #12]
+ 584              	.L21:
+ 128:.\a_to_d_functions/a_to_d_functions.c ****     {
+ 585              		.loc 1 128 0 is_stmt 0 discriminator 1
+ 586 00b8 FB68     		ldr	r3, [r7, #12]
+ 587 00ba 002B     		cmp	r3, #0
+ 588 00bc A6DD     		ble	.L22
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 14
+
+
+ 138:.\a_to_d_functions/a_to_d_functions.c ****     
+ 139:.\a_to_d_functions/a_to_d_functions.c ****         
+ 140:.\a_to_d_functions/a_to_d_functions.c ****     }    
+ 141:.\a_to_d_functions/a_to_d_functions.c ****     
+ 142:.\a_to_d_functions/a_to_d_functions.c **** }
+ 589              		.loc 1 142 0 is_stmt 1
+ 590 00be 1037     		adds	r7, r7, #16
+ 591              		.cfi_def_cfa_offset 8
+ 592 00c0 BD46     		mov	sp, r7
+ 593              		.cfi_def_cfa_register 13
+ 594              		@ sp needed
+ 595 00c2 80BD     		pop	{r7, pc}
+ 596              	.L24:
+ 597              		.align	2
+ 598              	.L23:
+ 599 00c4 18000000 		.word	se_dc_min
+ 600 00c8 24000000 		.word	se_ac_min
+ 601              		.cfi_endproc
+ 602              	.LFE70:
+ 603              		.size	ad_process_minute_second, .-ad_process_minute_second
+ 604              		.text
+ 605              	.Letext0:
+ 606              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 607              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 608              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 609              		.file 5 ".\\utilities/moving_average.h"
+ 610              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 611              		.file 7 ".\\rtu_modbus/process_modbus_message.h"
+ 612              		.section	.debug_info,"",%progbits
+ 613              	.Ldebug_info0:
+ 614 0000 ED020000 		.4byte	0x2ed
+ 615 0004 0400     		.2byte	0x4
+ 616 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 617 000a 04       		.byte	0x4
+ 618 000b 01       		.uleb128 0x1
+ 619 000c 2F000000 		.4byte	.LASF43
+ 620 0010 01       		.byte	0x1
+ 621 0011 57020000 		.4byte	.LASF44
+ 622 0015 EF000000 		.4byte	.LASF45
+ 623 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 624 001d 00000000 		.4byte	0
+ 625 0021 00000000 		.4byte	.Ldebug_line0
+ 626 0025 02       		.uleb128 0x2
+ 627 0026 04       		.byte	0x4
+ 628 0027 07       		.byte	0x7
+ 629 0028 B8010000 		.4byte	.LASF0
+ 630 002c 03       		.uleb128 0x3
+ 631 002d 04       		.byte	0x4
+ 632 002e 05       		.byte	0x5
+ 633 002f 696E7400 		.ascii	"int\000"
+ 634 0033 02       		.uleb128 0x2
+ 635 0034 01       		.byte	0x1
+ 636 0035 06       		.byte	0x6
+ 637 0036 C8020000 		.4byte	.LASF1
+ 638 003a 02       		.uleb128 0x2
+ 639 003b 01       		.byte	0x1
+ 640 003c 08       		.byte	0x8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 15
+
+
+ 641 003d 5D010000 		.4byte	.LASF2
+ 642 0041 02       		.uleb128 0x2
+ 643 0042 02       		.byte	0x2
+ 644 0043 05       		.byte	0x5
+ 645 0044 B5020000 		.4byte	.LASF3
+ 646 0048 02       		.uleb128 0x2
+ 647 0049 02       		.byte	0x2
+ 648 004a 07       		.byte	0x7
+ 649 004b 36020000 		.4byte	.LASF4
+ 650 004f 04       		.uleb128 0x4
+ 651 0050 25000000 		.4byte	.LASF11
+ 652 0054 02       		.byte	0x2
+ 653 0055 3F       		.byte	0x3f
+ 654 0056 5A000000 		.4byte	0x5a
+ 655 005a 02       		.uleb128 0x2
+ 656 005b 04       		.byte	0x4
+ 657 005c 05       		.byte	0x5
+ 658 005d BF020000 		.4byte	.LASF5
+ 659 0061 02       		.uleb128 0x2
+ 660 0062 04       		.byte	0x4
+ 661 0063 07       		.byte	0x7
+ 662 0064 33010000 		.4byte	.LASF6
+ 663 0068 02       		.uleb128 0x2
+ 664 0069 08       		.byte	0x8
+ 665 006a 05       		.byte	0x5
+ 666 006b 49020000 		.4byte	.LASF7
+ 667 006f 02       		.uleb128 0x2
+ 668 0070 08       		.byte	0x8
+ 669 0071 07       		.byte	0x7
+ 670 0072 C5010000 		.4byte	.LASF8
+ 671 0076 02       		.uleb128 0x2
+ 672 0077 04       		.byte	0x4
+ 673 0078 07       		.byte	0x7
+ 674 0079 2D020000 		.4byte	.LASF9
+ 675 007d 02       		.uleb128 0x2
+ 676 007e 01       		.byte	0x1
+ 677 007f 08       		.byte	0x8
+ 678 0080 7D020000 		.4byte	.LASF10
+ 679 0084 04       		.uleb128 0x4
+ 680 0085 CB000000 		.4byte	.LASF12
+ 681 0089 03       		.byte	0x3
+ 682 008a 2C       		.byte	0x2c
+ 683 008b 4F000000 		.4byte	0x4f
+ 684 008f 05       		.uleb128 0x5
+ 685 0090 A0010000 		.4byte	.LASF13
+ 686 0094 04       		.byte	0x4
+ 687 0095 9301     		.2byte	0x193
+ 688 0097 48000000 		.4byte	0x48
+ 689 009b 05       		.uleb128 0x5
+ 690 009c 2D010000 		.4byte	.LASF14
+ 691 00a0 04       		.byte	0x4
+ 692 00a1 9601     		.2byte	0x196
+ 693 00a3 41000000 		.4byte	0x41
+ 694 00a7 05       		.uleb128 0x5
+ 695 00a8 4A010000 		.4byte	.LASF15
+ 696 00ac 04       		.byte	0x4
+ 697 00ad 9701     		.2byte	0x197
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 16
+
+
+ 698 00af 5A000000 		.4byte	0x5a
+ 699 00b3 02       		.uleb128 0x2
+ 700 00b4 04       		.byte	0x4
+ 701 00b5 04       		.byte	0x4
+ 702 00b6 E9000000 		.4byte	.LASF16
+ 703 00ba 02       		.uleb128 0x2
+ 704 00bb 08       		.byte	0x8
+ 705 00bc 04       		.byte	0x4
+ 706 00bd 6B010000 		.4byte	.LASF17
+ 707 00c1 06       		.uleb128 0x6
+ 708 00c2 0C       		.byte	0xc
+ 709 00c3 05       		.byte	0x5
+ 710 00c4 0C       		.byte	0xc
+ 711 00c5 EE000000 		.4byte	0xee
+ 712 00c9 07       		.uleb128 0x7
+ 713 00ca FE020000 		.4byte	.LASF18
+ 714 00ce 05       		.byte	0x5
+ 715 00cf 0E       		.byte	0xe
+ 716 00d0 B3000000 		.4byte	0xb3
+ 717 00d4 00       		.byte	0
+ 718 00d5 07       		.uleb128 0x7
+ 719 00d6 A9020000 		.4byte	.LASF19
+ 720 00da 05       		.byte	0x5
+ 721 00db 0F       		.byte	0xf
+ 722 00dc B3000000 		.4byte	0xb3
+ 723 00e0 04       		.byte	0x4
+ 724 00e1 07       		.uleb128 0x7
+ 725 00e2 E6010000 		.4byte	.LASF20
+ 726 00e6 05       		.byte	0x5
+ 727 00e7 10       		.byte	0x10
+ 728 00e8 B3000000 		.4byte	0xb3
+ 729 00ec 08       		.byte	0x8
+ 730 00ed 00       		.byte	0
+ 731 00ee 04       		.uleb128 0x4
+ 732 00ef D3000000 		.4byte	.LASF21
+ 733 00f3 05       		.byte	0x5
+ 734 00f4 11       		.byte	0x11
+ 735 00f5 C1000000 		.4byte	0xc1
+ 736 00f9 08       		.uleb128 0x8
+ 737 00fa 00000000 		.4byte	.LASF22
+ 738 00fe 01       		.byte	0x1
+ 739 00ff 2B       		.byte	0x2b
+ 740 0100 00000000 		.4byte	.LFB65
+ 741 0104 10000000 		.4byte	.LFE65-.LFB65
+ 742 0108 01       		.uleb128 0x1
+ 743 0109 9C       		.byte	0x9c
+ 744 010a 08       		.uleb128 0x8
+ 745 010b EB020000 		.4byte	.LASF23
+ 746 010f 01       		.byte	0x1
+ 747 0110 37       		.byte	0x37
+ 748 0111 00000000 		.4byte	.LFB66
+ 749 0115 14000000 		.4byte	.LFE66-.LFB66
+ 750 0119 01       		.uleb128 0x1
+ 751 011a 9C       		.byte	0x9c
+ 752 011b 09       		.uleb128 0x9
+ 753 011c 72010000 		.4byte	.LASF24
+ 754 0120 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 17
+
+
+ 755 0121 3E       		.byte	0x3e
+ 756 0122 00000000 		.4byte	.LFB67
+ 757 0126 A8000000 		.4byte	.LFE67-.LFB67
+ 758 012a 01       		.uleb128 0x1
+ 759 012b 9C       		.byte	0x9c
+ 760 012c 3D010000 		.4byte	0x13d
+ 761 0130 0A       		.uleb128 0xa
+ 762 0131 6900     		.ascii	"i\000"
+ 763 0133 01       		.byte	0x1
+ 764 0134 40       		.byte	0x40
+ 765 0135 2C000000 		.4byte	0x2c
+ 766 0139 02       		.uleb128 0x2
+ 767 013a 91       		.byte	0x91
+ 768 013b 74       		.sleb128 -12
+ 769 013c 00       		.byte	0
+ 770 013d 09       		.uleb128 0x9
+ 771 013e BD000000 		.4byte	.LASF25
+ 772 0142 01       		.byte	0x1
+ 773 0143 4E       		.byte	0x4e
+ 774 0144 00000000 		.4byte	.LFB68
+ 775 0148 9C000000 		.4byte	.LFE68-.LFB68
+ 776 014c 01       		.uleb128 0x1
+ 777 014d 9C       		.byte	0x9c
+ 778 014e 97010000 		.4byte	0x197
+ 779 0152 0A       		.uleb128 0xa
+ 780 0153 6900     		.ascii	"i\000"
+ 781 0155 01       		.byte	0x1
+ 782 0156 50       		.byte	0x50
+ 783 0157 2C000000 		.4byte	0x2c
+ 784 015b 02       		.uleb128 0x2
+ 785 015c 91       		.byte	0x91
+ 786 015d 6C       		.sleb128 -20
+ 787 015e 0B       		.uleb128 0xb
+ 788 015f 45010000 		.4byte	.LASF26
+ 789 0163 01       		.byte	0x1
+ 790 0164 51       		.byte	0x51
+ 791 0165 A7000000 		.4byte	0xa7
+ 792 0169 02       		.uleb128 0x2
+ 793 016a 91       		.byte	0x91
+ 794 016b 68       		.sleb128 -24
+ 795 016c 0B       		.uleb128 0xb
+ 796 016d A0020000 		.4byte	.LASF27
+ 797 0171 01       		.byte	0x1
+ 798 0172 52       		.byte	0x52
+ 799 0173 A7000000 		.4byte	0xa7
+ 800 0177 02       		.uleb128 0x2
+ 801 0178 91       		.byte	0x91
+ 802 0179 60       		.sleb128 -32
+ 803 017a 0B       		.uleb128 0xb
+ 804 017b 82020000 		.4byte	.LASF28
+ 805 017f 01       		.byte	0x1
+ 806 0180 53       		.byte	0x53
+ 807 0181 A7000000 		.4byte	0xa7
+ 808 0185 02       		.uleb128 0x2
+ 809 0186 91       		.byte	0x91
+ 810 0187 5C       		.sleb128 -36
+ 811 0188 0B       		.uleb128 0xb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 18
+
+
+ 812 0189 A7010000 		.4byte	.LASF29
+ 813 018d 01       		.byte	0x1
+ 814 018e 54       		.byte	0x54
+ 815 018f A7000000 		.4byte	0xa7
+ 816 0193 02       		.uleb128 0x2
+ 817 0194 91       		.byte	0x91
+ 818 0195 64       		.sleb128 -28
+ 819 0196 00       		.byte	0
+ 820 0197 09       		.uleb128 0x9
+ 821 0198 8B020000 		.4byte	.LASF30
+ 822 019c 01       		.byte	0x1
+ 823 019d 62       		.byte	0x62
+ 824 019e 00000000 		.4byte	.LFB69
+ 825 01a2 08010000 		.4byte	.LFE69-.LFB69
+ 826 01a6 01       		.uleb128 0x1
+ 827 01a7 9C       		.byte	0x9c
+ 828 01a8 E3010000 		.4byte	0x1e3
+ 829 01ac 0A       		.uleb128 0xa
+ 830 01ad 6900     		.ascii	"i\000"
+ 831 01af 01       		.byte	0x1
+ 832 01b0 64       		.byte	0x64
+ 833 01b1 2C000000 		.4byte	0x2c
+ 834 01b5 02       		.uleb128 0x2
+ 835 01b6 91       		.byte	0x91
+ 836 01b7 74       		.sleb128 -12
+ 837 01b8 0B       		.uleb128 0xb
+ 838 01b9 1F000000 		.4byte	.LASF31
+ 839 01bd 01       		.byte	0x1
+ 840 01be 65       		.byte	0x65
+ 841 01bf B3000000 		.4byte	0xb3
+ 842 01c3 02       		.uleb128 0x2
+ 843 01c4 91       		.byte	0x91
+ 844 01c5 70       		.sleb128 -16
+ 845 01c6 0B       		.uleb128 0xb
+ 846 01c7 EE010000 		.4byte	.LASF32
+ 847 01cb 01       		.byte	0x1
+ 848 01cc 66       		.byte	0x66
+ 849 01cd B3000000 		.4byte	0xb3
+ 850 01d1 02       		.uleb128 0x2
+ 851 01d2 91       		.byte	0x91
+ 852 01d3 6C       		.sleb128 -20
+ 853 01d4 0B       		.uleb128 0xb
+ 854 01d5 FC010000 		.4byte	.LASF33
+ 855 01d9 01       		.byte	0x1
+ 856 01da 67       		.byte	0x67
+ 857 01db B3000000 		.4byte	0xb3
+ 858 01df 02       		.uleb128 0x2
+ 859 01e0 91       		.byte	0x91
+ 860 01e1 68       		.sleb128 -24
+ 861 01e2 00       		.byte	0
+ 862 01e3 09       		.uleb128 0x9
+ 863 01e4 7D010000 		.4byte	.LASF34
+ 864 01e8 01       		.byte	0x1
+ 865 01e9 79       		.byte	0x79
+ 866 01ea 00000000 		.4byte	.LFB70
+ 867 01ee CC000000 		.4byte	.LFE70-.LFB70
+ 868 01f2 01       		.uleb128 0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 19
+
+
+ 869 01f3 9C       		.byte	0x9c
+ 870 01f4 2F020000 		.4byte	0x22f
+ 871 01f8 0A       		.uleb128 0xa
+ 872 01f9 6900     		.ascii	"i\000"
+ 873 01fb 01       		.byte	0x1
+ 874 01fc 7B       		.byte	0x7b
+ 875 01fd 2C000000 		.4byte	0x2c
+ 876 0201 02       		.uleb128 0x2
+ 877 0202 91       		.byte	0x91
+ 878 0203 74       		.sleb128 -12
+ 879 0204 0B       		.uleb128 0xb
+ 880 0205 1F000000 		.4byte	.LASF31
+ 881 0209 01       		.byte	0x1
+ 882 020a 7C       		.byte	0x7c
+ 883 020b B3000000 		.4byte	0xb3
+ 884 020f 02       		.uleb128 0x2
+ 885 0210 91       		.byte	0x91
+ 886 0211 70       		.sleb128 -16
+ 887 0212 0B       		.uleb128 0xb
+ 888 0213 EE010000 		.4byte	.LASF32
+ 889 0217 01       		.byte	0x1
+ 890 0218 7D       		.byte	0x7d
+ 891 0219 B3000000 		.4byte	0xb3
+ 892 021d 02       		.uleb128 0x2
+ 893 021e 91       		.byte	0x91
+ 894 021f 6C       		.sleb128 -20
+ 895 0220 0B       		.uleb128 0xb
+ 896 0221 FC010000 		.4byte	.LASF33
+ 897 0225 01       		.byte	0x1
+ 898 0226 7E       		.byte	0x7e
+ 899 0227 B3000000 		.4byte	0xb3
+ 900 022b 02       		.uleb128 0x2
+ 901 022c 91       		.byte	0x91
+ 902 022d 68       		.sleb128 -24
+ 903 022e 00       		.byte	0
+ 904 022f 0C       		.uleb128 0xc
+ 905 0230 2C000000 		.4byte	0x2c
+ 906 0234 3F020000 		.4byte	0x23f
+ 907 0238 0D       		.uleb128 0xd
+ 908 0239 76000000 		.4byte	0x76
+ 909 023d 00       		.byte	0
+ 910 023e 00       		.byte	0
+ 911 023f 0B       		.uleb128 0xb
+ 912 0240 0A020000 		.4byte	.LASF35
+ 913 0244 01       		.byte	0x1
+ 914 0245 1E       		.byte	0x1e
+ 915 0246 50020000 		.4byte	0x250
+ 916 024a 05       		.uleb128 0x5
+ 917 024b 03       		.byte	0x3
+ 918 024c 00000000 		.4byte	se_reg_mapping
+ 919 0250 0E       		.uleb128 0xe
+ 920 0251 2F020000 		.4byte	0x22f
+ 921 0255 0B       		.uleb128 0xb
+ 922 0256 D4020000 		.4byte	.LASF36
+ 923 025a 01       		.byte	0x1
+ 924 025b 21       		.byte	0x21
+ 925 025c 66020000 		.4byte	0x266
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 20
+
+
+ 926 0260 05       		.uleb128 0x5
+ 927 0261 03       		.byte	0x3
+ 928 0262 04000000 		.4byte	se_calibration_mapping
+ 929 0266 0E       		.uleb128 0xe
+ 930 0267 2F020000 		.4byte	0x22f
+ 931 026b 0C       		.uleb128 0xc
+ 932 026c EE000000 		.4byte	0xee
+ 933 0270 7B020000 		.4byte	0x27b
+ 934 0274 0D       		.uleb128 0xd
+ 935 0275 76000000 		.4byte	0x76
+ 936 0279 00       		.byte	0
+ 937 027a 00       		.byte	0
+ 938 027b 0B       		.uleb128 0xb
+ 939 027c DC010000 		.4byte	.LASF37
+ 940 0280 01       		.byte	0x1
+ 941 0281 24       		.byte	0x24
+ 942 0282 6B020000 		.4byte	0x26b
+ 943 0286 05       		.uleb128 0x5
+ 944 0287 03       		.byte	0x3
+ 945 0288 00000000 		.4byte	se_dc_sec
+ 946 028c 0B       		.uleb128 0xb
+ 947 028d 96010000 		.4byte	.LASF38
+ 948 0291 01       		.byte	0x1
+ 949 0292 25       		.byte	0x25
+ 950 0293 6B020000 		.4byte	0x26b
+ 951 0297 05       		.uleb128 0x5
+ 952 0298 03       		.byte	0x3
+ 953 0299 0C000000 		.4byte	se_ac_sec
+ 954 029d 0B       		.uleb128 0xb
+ 955 029e AE010000 		.4byte	.LASF39
+ 956 02a2 01       		.byte	0x1
+ 957 02a3 26       		.byte	0x26
+ 958 02a4 6B020000 		.4byte	0x26b
+ 959 02a8 05       		.uleb128 0x5
+ 960 02a9 03       		.byte	0x3
+ 961 02aa 18000000 		.4byte	se_dc_min
+ 962 02ae 0B       		.uleb128 0xb
+ 963 02af 15000000 		.4byte	.LASF40
+ 964 02b3 01       		.byte	0x1
+ 965 02b4 27       		.byte	0x27
+ 966 02b5 6B020000 		.4byte	0x26b
+ 967 02b9 05       		.uleb128 0x5
+ 968 02ba 03       		.byte	0x3
+ 969 02bb 24000000 		.4byte	se_ac_min
+ 970 02bf 0F       		.uleb128 0xf
+ 971 02c0 50010000 		.4byte	.LASF41
+ 972 02c4 06       		.byte	0x6
+ 973 02c5 9606     		.2byte	0x696
+ 974 02c7 CB020000 		.4byte	0x2cb
+ 975 02cb 10       		.uleb128 0x10
+ 976 02cc 84000000 		.4byte	0x84
+ 977 02d0 0C       		.uleb128 0xc
+ 978 02d1 8F000000 		.4byte	0x8f
+ 979 02d5 E0020000 		.4byte	0x2e0
+ 980 02d9 0D       		.uleb128 0xd
+ 981 02da 76000000 		.4byte	0x76
+ 982 02de 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 21
+
+
+ 983 02df 00       		.byte	0
+ 984 02e0 11       		.uleb128 0x11
+ 985 02e1 19020000 		.4byte	.LASF42
+ 986 02e5 07       		.byte	0x7
+ 987 02e6 77       		.byte	0x77
+ 988 02e7 EB020000 		.4byte	0x2eb
+ 989 02eb 0E       		.uleb128 0xe
+ 990 02ec D0020000 		.4byte	0x2d0
+ 991 02f0 00       		.byte	0
+ 992              		.section	.debug_abbrev,"",%progbits
+ 993              	.Ldebug_abbrev0:
+ 994 0000 01       		.uleb128 0x1
+ 995 0001 11       		.uleb128 0x11
+ 996 0002 01       		.byte	0x1
+ 997 0003 25       		.uleb128 0x25
+ 998 0004 0E       		.uleb128 0xe
+ 999 0005 13       		.uleb128 0x13
+ 1000 0006 0B       		.uleb128 0xb
+ 1001 0007 03       		.uleb128 0x3
+ 1002 0008 0E       		.uleb128 0xe
+ 1003 0009 1B       		.uleb128 0x1b
+ 1004 000a 0E       		.uleb128 0xe
+ 1005 000b 55       		.uleb128 0x55
+ 1006 000c 17       		.uleb128 0x17
+ 1007 000d 11       		.uleb128 0x11
+ 1008 000e 01       		.uleb128 0x1
+ 1009 000f 10       		.uleb128 0x10
+ 1010 0010 17       		.uleb128 0x17
+ 1011 0011 00       		.byte	0
+ 1012 0012 00       		.byte	0
+ 1013 0013 02       		.uleb128 0x2
+ 1014 0014 24       		.uleb128 0x24
+ 1015 0015 00       		.byte	0
+ 1016 0016 0B       		.uleb128 0xb
+ 1017 0017 0B       		.uleb128 0xb
+ 1018 0018 3E       		.uleb128 0x3e
+ 1019 0019 0B       		.uleb128 0xb
+ 1020 001a 03       		.uleb128 0x3
+ 1021 001b 0E       		.uleb128 0xe
+ 1022 001c 00       		.byte	0
+ 1023 001d 00       		.byte	0
+ 1024 001e 03       		.uleb128 0x3
+ 1025 001f 24       		.uleb128 0x24
+ 1026 0020 00       		.byte	0
+ 1027 0021 0B       		.uleb128 0xb
+ 1028 0022 0B       		.uleb128 0xb
+ 1029 0023 3E       		.uleb128 0x3e
+ 1030 0024 0B       		.uleb128 0xb
+ 1031 0025 03       		.uleb128 0x3
+ 1032 0026 08       		.uleb128 0x8
+ 1033 0027 00       		.byte	0
+ 1034 0028 00       		.byte	0
+ 1035 0029 04       		.uleb128 0x4
+ 1036 002a 16       		.uleb128 0x16
+ 1037 002b 00       		.byte	0
+ 1038 002c 03       		.uleb128 0x3
+ 1039 002d 0E       		.uleb128 0xe
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 22
+
+
+ 1040 002e 3A       		.uleb128 0x3a
+ 1041 002f 0B       		.uleb128 0xb
+ 1042 0030 3B       		.uleb128 0x3b
+ 1043 0031 0B       		.uleb128 0xb
+ 1044 0032 49       		.uleb128 0x49
+ 1045 0033 13       		.uleb128 0x13
+ 1046 0034 00       		.byte	0
+ 1047 0035 00       		.byte	0
+ 1048 0036 05       		.uleb128 0x5
+ 1049 0037 16       		.uleb128 0x16
+ 1050 0038 00       		.byte	0
+ 1051 0039 03       		.uleb128 0x3
+ 1052 003a 0E       		.uleb128 0xe
+ 1053 003b 3A       		.uleb128 0x3a
+ 1054 003c 0B       		.uleb128 0xb
+ 1055 003d 3B       		.uleb128 0x3b
+ 1056 003e 05       		.uleb128 0x5
+ 1057 003f 49       		.uleb128 0x49
+ 1058 0040 13       		.uleb128 0x13
+ 1059 0041 00       		.byte	0
+ 1060 0042 00       		.byte	0
+ 1061 0043 06       		.uleb128 0x6
+ 1062 0044 13       		.uleb128 0x13
+ 1063 0045 01       		.byte	0x1
+ 1064 0046 0B       		.uleb128 0xb
+ 1065 0047 0B       		.uleb128 0xb
+ 1066 0048 3A       		.uleb128 0x3a
+ 1067 0049 0B       		.uleb128 0xb
+ 1068 004a 3B       		.uleb128 0x3b
+ 1069 004b 0B       		.uleb128 0xb
+ 1070 004c 01       		.uleb128 0x1
+ 1071 004d 13       		.uleb128 0x13
+ 1072 004e 00       		.byte	0
+ 1073 004f 00       		.byte	0
+ 1074 0050 07       		.uleb128 0x7
+ 1075 0051 0D       		.uleb128 0xd
+ 1076 0052 00       		.byte	0
+ 1077 0053 03       		.uleb128 0x3
+ 1078 0054 0E       		.uleb128 0xe
+ 1079 0055 3A       		.uleb128 0x3a
+ 1080 0056 0B       		.uleb128 0xb
+ 1081 0057 3B       		.uleb128 0x3b
+ 1082 0058 0B       		.uleb128 0xb
+ 1083 0059 49       		.uleb128 0x49
+ 1084 005a 13       		.uleb128 0x13
+ 1085 005b 38       		.uleb128 0x38
+ 1086 005c 0B       		.uleb128 0xb
+ 1087 005d 00       		.byte	0
+ 1088 005e 00       		.byte	0
+ 1089 005f 08       		.uleb128 0x8
+ 1090 0060 2E       		.uleb128 0x2e
+ 1091 0061 00       		.byte	0
+ 1092 0062 3F       		.uleb128 0x3f
+ 1093 0063 19       		.uleb128 0x19
+ 1094 0064 03       		.uleb128 0x3
+ 1095 0065 0E       		.uleb128 0xe
+ 1096 0066 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 23
+
+
+ 1097 0067 0B       		.uleb128 0xb
+ 1098 0068 3B       		.uleb128 0x3b
+ 1099 0069 0B       		.uleb128 0xb
+ 1100 006a 27       		.uleb128 0x27
+ 1101 006b 19       		.uleb128 0x19
+ 1102 006c 11       		.uleb128 0x11
+ 1103 006d 01       		.uleb128 0x1
+ 1104 006e 12       		.uleb128 0x12
+ 1105 006f 06       		.uleb128 0x6
+ 1106 0070 40       		.uleb128 0x40
+ 1107 0071 18       		.uleb128 0x18
+ 1108 0072 9642     		.uleb128 0x2116
+ 1109 0074 19       		.uleb128 0x19
+ 1110 0075 00       		.byte	0
+ 1111 0076 00       		.byte	0
+ 1112 0077 09       		.uleb128 0x9
+ 1113 0078 2E       		.uleb128 0x2e
+ 1114 0079 01       		.byte	0x1
+ 1115 007a 3F       		.uleb128 0x3f
+ 1116 007b 19       		.uleb128 0x19
+ 1117 007c 03       		.uleb128 0x3
+ 1118 007d 0E       		.uleb128 0xe
+ 1119 007e 3A       		.uleb128 0x3a
+ 1120 007f 0B       		.uleb128 0xb
+ 1121 0080 3B       		.uleb128 0x3b
+ 1122 0081 0B       		.uleb128 0xb
+ 1123 0082 27       		.uleb128 0x27
+ 1124 0083 19       		.uleb128 0x19
+ 1125 0084 11       		.uleb128 0x11
+ 1126 0085 01       		.uleb128 0x1
+ 1127 0086 12       		.uleb128 0x12
+ 1128 0087 06       		.uleb128 0x6
+ 1129 0088 40       		.uleb128 0x40
+ 1130 0089 18       		.uleb128 0x18
+ 1131 008a 9642     		.uleb128 0x2116
+ 1132 008c 19       		.uleb128 0x19
+ 1133 008d 01       		.uleb128 0x1
+ 1134 008e 13       		.uleb128 0x13
+ 1135 008f 00       		.byte	0
+ 1136 0090 00       		.byte	0
+ 1137 0091 0A       		.uleb128 0xa
+ 1138 0092 34       		.uleb128 0x34
+ 1139 0093 00       		.byte	0
+ 1140 0094 03       		.uleb128 0x3
+ 1141 0095 08       		.uleb128 0x8
+ 1142 0096 3A       		.uleb128 0x3a
+ 1143 0097 0B       		.uleb128 0xb
+ 1144 0098 3B       		.uleb128 0x3b
+ 1145 0099 0B       		.uleb128 0xb
+ 1146 009a 49       		.uleb128 0x49
+ 1147 009b 13       		.uleb128 0x13
+ 1148 009c 02       		.uleb128 0x2
+ 1149 009d 18       		.uleb128 0x18
+ 1150 009e 00       		.byte	0
+ 1151 009f 00       		.byte	0
+ 1152 00a0 0B       		.uleb128 0xb
+ 1153 00a1 34       		.uleb128 0x34
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 24
+
+
+ 1154 00a2 00       		.byte	0
+ 1155 00a3 03       		.uleb128 0x3
+ 1156 00a4 0E       		.uleb128 0xe
+ 1157 00a5 3A       		.uleb128 0x3a
+ 1158 00a6 0B       		.uleb128 0xb
+ 1159 00a7 3B       		.uleb128 0x3b
+ 1160 00a8 0B       		.uleb128 0xb
+ 1161 00a9 49       		.uleb128 0x49
+ 1162 00aa 13       		.uleb128 0x13
+ 1163 00ab 02       		.uleb128 0x2
+ 1164 00ac 18       		.uleb128 0x18
+ 1165 00ad 00       		.byte	0
+ 1166 00ae 00       		.byte	0
+ 1167 00af 0C       		.uleb128 0xc
+ 1168 00b0 01       		.uleb128 0x1
+ 1169 00b1 01       		.byte	0x1
+ 1170 00b2 49       		.uleb128 0x49
+ 1171 00b3 13       		.uleb128 0x13
+ 1172 00b4 01       		.uleb128 0x1
+ 1173 00b5 13       		.uleb128 0x13
+ 1174 00b6 00       		.byte	0
+ 1175 00b7 00       		.byte	0
+ 1176 00b8 0D       		.uleb128 0xd
+ 1177 00b9 21       		.uleb128 0x21
+ 1178 00ba 00       		.byte	0
+ 1179 00bb 49       		.uleb128 0x49
+ 1180 00bc 13       		.uleb128 0x13
+ 1181 00bd 2F       		.uleb128 0x2f
+ 1182 00be 0B       		.uleb128 0xb
+ 1183 00bf 00       		.byte	0
+ 1184 00c0 00       		.byte	0
+ 1185 00c1 0E       		.uleb128 0xe
+ 1186 00c2 26       		.uleb128 0x26
+ 1187 00c3 00       		.byte	0
+ 1188 00c4 49       		.uleb128 0x49
+ 1189 00c5 13       		.uleb128 0x13
+ 1190 00c6 00       		.byte	0
+ 1191 00c7 00       		.byte	0
+ 1192 00c8 0F       		.uleb128 0xf
+ 1193 00c9 34       		.uleb128 0x34
+ 1194 00ca 00       		.byte	0
+ 1195 00cb 03       		.uleb128 0x3
+ 1196 00cc 0E       		.uleb128 0xe
+ 1197 00cd 3A       		.uleb128 0x3a
+ 1198 00ce 0B       		.uleb128 0xb
+ 1199 00cf 3B       		.uleb128 0x3b
+ 1200 00d0 05       		.uleb128 0x5
+ 1201 00d1 49       		.uleb128 0x49
+ 1202 00d2 13       		.uleb128 0x13
+ 1203 00d3 3F       		.uleb128 0x3f
+ 1204 00d4 19       		.uleb128 0x19
+ 1205 00d5 3C       		.uleb128 0x3c
+ 1206 00d6 19       		.uleb128 0x19
+ 1207 00d7 00       		.byte	0
+ 1208 00d8 00       		.byte	0
+ 1209 00d9 10       		.uleb128 0x10
+ 1210 00da 35       		.uleb128 0x35
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 25
+
+
+ 1211 00db 00       		.byte	0
+ 1212 00dc 49       		.uleb128 0x49
+ 1213 00dd 13       		.uleb128 0x13
+ 1214 00de 00       		.byte	0
+ 1215 00df 00       		.byte	0
+ 1216 00e0 11       		.uleb128 0x11
+ 1217 00e1 34       		.uleb128 0x34
+ 1218 00e2 00       		.byte	0
+ 1219 00e3 03       		.uleb128 0x3
+ 1220 00e4 0E       		.uleb128 0xe
+ 1221 00e5 3A       		.uleb128 0x3a
+ 1222 00e6 0B       		.uleb128 0xb
+ 1223 00e7 3B       		.uleb128 0x3b
+ 1224 00e8 0B       		.uleb128 0xb
+ 1225 00e9 49       		.uleb128 0x49
+ 1226 00ea 13       		.uleb128 0x13
+ 1227 00eb 3F       		.uleb128 0x3f
+ 1228 00ec 19       		.uleb128 0x19
+ 1229 00ed 3C       		.uleb128 0x3c
+ 1230 00ee 19       		.uleb128 0x19
+ 1231 00ef 00       		.byte	0
+ 1232 00f0 00       		.byte	0
+ 1233 00f1 00       		.byte	0
+ 1234              		.section	.debug_aranges,"",%progbits
+ 1235 0000 44000000 		.4byte	0x44
+ 1236 0004 0200     		.2byte	0x2
+ 1237 0006 00000000 		.4byte	.Ldebug_info0
+ 1238 000a 04       		.byte	0x4
+ 1239 000b 00       		.byte	0
+ 1240 000c 0000     		.2byte	0
+ 1241 000e 0000     		.2byte	0
+ 1242 0010 00000000 		.4byte	.LFB65
+ 1243 0014 10000000 		.4byte	.LFE65-.LFB65
+ 1244 0018 00000000 		.4byte	.LFB66
+ 1245 001c 14000000 		.4byte	.LFE66-.LFB66
+ 1246 0020 00000000 		.4byte	.LFB67
+ 1247 0024 A8000000 		.4byte	.LFE67-.LFB67
+ 1248 0028 00000000 		.4byte	.LFB68
+ 1249 002c 9C000000 		.4byte	.LFE68-.LFB68
+ 1250 0030 00000000 		.4byte	.LFB69
+ 1251 0034 08010000 		.4byte	.LFE69-.LFB69
+ 1252 0038 00000000 		.4byte	.LFB70
+ 1253 003c CC000000 		.4byte	.LFE70-.LFB70
+ 1254 0040 00000000 		.4byte	0
+ 1255 0044 00000000 		.4byte	0
+ 1256              		.section	.debug_ranges,"",%progbits
+ 1257              	.Ldebug_ranges0:
+ 1258 0000 00000000 		.4byte	.LFB65
+ 1259 0004 10000000 		.4byte	.LFE65
+ 1260 0008 00000000 		.4byte	.LFB66
+ 1261 000c 14000000 		.4byte	.LFE66
+ 1262 0010 00000000 		.4byte	.LFB67
+ 1263 0014 A8000000 		.4byte	.LFE67
+ 1264 0018 00000000 		.4byte	.LFB68
+ 1265 001c 9C000000 		.4byte	.LFE68
+ 1266 0020 00000000 		.4byte	.LFB69
+ 1267 0024 08010000 		.4byte	.LFE69
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 26
+
+
+ 1268 0028 00000000 		.4byte	.LFB70
+ 1269 002c CC000000 		.4byte	.LFE70
+ 1270 0030 00000000 		.4byte	0
+ 1271 0034 00000000 		.4byte	0
+ 1272              		.section	.debug_line,"",%progbits
+ 1273              	.Ldebug_line0:
+ 1274 0000 E8020000 		.section	.debug_str,"MS",%progbits,1
+ 1274      0200AF01 
+ 1274      00000201 
+ 1274      FB0E0D00 
+ 1274      01010101 
+ 1275              	.LASF22:
+ 1276 0000 70726F63 		.ascii	"process_ad_interrupt\000"
+ 1276      6573735F 
+ 1276      61645F69 
+ 1276      6E746572 
+ 1276      72757074 
+ 1277              	.LASF40:
+ 1278 0015 73655F61 		.ascii	"se_ac_min\000"
+ 1278      635F6D69 
+ 1278      6E00
+ 1279              	.LASF31:
+ 1280 001f 76616C75 		.ascii	"value\000"
+ 1280      6500
+ 1281              	.LASF11:
+ 1282 0025 5F5F696E 		.ascii	"__int32_t\000"
+ 1282      7433325F 
+ 1282      7400
+ 1283              	.LASF43:
+ 1284 002f 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 1284      4320342E 
+ 1284      392E3320 
+ 1284      32303135 
+ 1284      30333033 
+ 1285 0062 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 1285      20726576 
+ 1285      6973696F 
+ 1285      6E203232 
+ 1285      31323230 
+ 1286 0095 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1286      66756E63 
+ 1286      74696F6E 
+ 1286      2D736563 
+ 1286      74696F6E 
+ 1287              	.LASF25:
+ 1288 00bd 61645F70 		.ascii	"ad_process_se\000"
+ 1288      726F6365 
+ 1288      73735F73 
+ 1288      6500
+ 1289              	.LASF12:
+ 1290 00cb 696E7433 		.ascii	"int32_t\000"
+ 1290      325F7400 
+ 1291              	.LASF21:
+ 1292 00d3 4D4F5649 		.ascii	"MOVING_AVERAGE_STRUCT\000"
+ 1292      4E475F41 
+ 1292      56455241 
+ 1292      47455F53 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 27
+
+
+ 1292      54525543 
+ 1293              	.LASF16:
+ 1294 00e9 666C6F61 		.ascii	"float\000"
+ 1294      7400
+ 1295              	.LASF45:
+ 1296 00ef 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 1296      73657273 
+ 1296      5C676C65 
+ 1296      6E6E5C4F 
+ 1296      6E654472 
+ 1297 011c 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ 1297      55415254 
+ 1297      30312E63 
+ 1297      7964736E 
+ 1297      00
+ 1298              	.LASF14:
+ 1299 012d 696E7431 		.ascii	"int16\000"
+ 1299      3600
+ 1300              	.LASF6:
+ 1301 0133 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1301      20756E73 
+ 1301      69676E65 
+ 1301      6420696E 
+ 1301      7400
+ 1302              	.LASF26:
+ 1303 0145 74656D70 		.ascii	"temp\000"
+ 1303      00
+ 1304              	.LASF15:
+ 1305 014a 696E7433 		.ascii	"int32\000"
+ 1305      3200
+ 1306              	.LASF41:
+ 1307 0150 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1307      52784275 
+ 1307      66666572 
+ 1307      00
+ 1308              	.LASF2:
+ 1309 015d 756E7369 		.ascii	"unsigned char\000"
+ 1309      676E6564 
+ 1309      20636861 
+ 1309      7200
+ 1310              	.LASF17:
+ 1311 016b 646F7562 		.ascii	"double\000"
+ 1311      6C6500
+ 1312              	.LASF24:
+ 1313 0172 61645F69 		.ascii	"ad_init_se\000"
+ 1313      6E69745F 
+ 1313      736500
+ 1314              	.LASF34:
+ 1315 017d 61645F70 		.ascii	"ad_process_minute_second\000"
+ 1315      726F6365 
+ 1315      73735F6D 
+ 1315      696E7574 
+ 1315      655F7365 
+ 1316              	.LASF38:
+ 1317 0196 73655F61 		.ascii	"se_ac_sec\000"
+ 1317      635F7365 
+ 1317      6300
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 28
+
+
+ 1318              	.LASF13:
+ 1319 01a0 75696E74 		.ascii	"uint16\000"
+ 1319      313600
+ 1320              	.LASF29:
+ 1321 01a7 6D766F6C 		.ascii	"mvolts\000"
+ 1321      747300
+ 1322              	.LASF39:
+ 1323 01ae 73655F64 		.ascii	"se_dc_min\000"
+ 1323      635F6D69 
+ 1323      6E00
+ 1324              	.LASF0:
+ 1325 01b8 756E7369 		.ascii	"unsigned int\000"
+ 1325      676E6564 
+ 1325      20696E74 
+ 1325      00
+ 1326              	.LASF8:
+ 1327 01c5 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1327      206C6F6E 
+ 1327      6720756E 
+ 1327      7369676E 
+ 1327      65642069 
+ 1328              	.LASF37:
+ 1329 01dc 73655F64 		.ascii	"se_dc_sec\000"
+ 1329      635F7365 
+ 1329      6300
+ 1330              	.LASF20:
+ 1331 01e6 61766572 		.ascii	"average\000"
+ 1331      61676500 
+ 1332              	.LASF32:
+ 1333 01ee 63616C69 		.ascii	"calibration_a\000"
+ 1333      62726174 
+ 1333      696F6E5F 
+ 1333      6100
+ 1334              	.LASF33:
+ 1335 01fc 63616C69 		.ascii	"calibration_b\000"
+ 1335      62726174 
+ 1335      696F6E5F 
+ 1335      6200
+ 1336              	.LASF35:
+ 1337 020a 73655F72 		.ascii	"se_reg_mapping\000"
+ 1337      65675F6D 
+ 1337      61707069 
+ 1337      6E6700
+ 1338              	.LASF42:
+ 1339 0219 6D6F6462 		.ascii	"modbus_address_data\000"
+ 1339      75735F61 
+ 1339      64647265 
+ 1339      73735F64 
+ 1339      61746100 
+ 1340              	.LASF9:
+ 1341 022d 73697A65 		.ascii	"sizetype\000"
+ 1341      74797065 
+ 1341      00
+ 1342              	.LASF4:
+ 1343 0236 73686F72 		.ascii	"short unsigned int\000"
+ 1343      7420756E 
+ 1343      7369676E 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 29
+
+
+ 1343      65642069 
+ 1343      6E7400
+ 1344              	.LASF7:
+ 1345 0249 6C6F6E67 		.ascii	"long long int\000"
+ 1345      206C6F6E 
+ 1345      6720696E 
+ 1345      7400
+ 1346              	.LASF44:
+ 1347 0257 2E5C615F 		.ascii	".\\a_to_d_functions\\a_to_d_functions.c\000"
+ 1347      746F5F64 
+ 1347      5F66756E 
+ 1347      6374696F 
+ 1347      6E735C61 
+ 1348              	.LASF10:
+ 1349 027d 63686172 		.ascii	"char\000"
+ 1349      00
+ 1350              	.LASF28:
+ 1351 0282 61635F76 		.ascii	"ac_value\000"
+ 1351      616C7565 
+ 1351      00
+ 1352              	.LASF30:
+ 1353 028b 61645F70 		.ascii	"ad_process_se_second\000"
+ 1353      726F6365 
+ 1353      73735F73 
+ 1353      655F7365 
+ 1353      636F6E64 
+ 1354              	.LASF27:
+ 1355 02a0 64635F76 		.ascii	"dc_value\000"
+ 1355      616C7565 
+ 1355      00
+ 1356              	.LASF19:
+ 1357 02a9 6D696E75 		.ascii	"minus_alpha\000"
+ 1357      735F616C 
+ 1357      70686100 
+ 1358              	.LASF3:
+ 1359 02b5 73686F72 		.ascii	"short int\000"
+ 1359      7420696E 
+ 1359      7400
+ 1360              	.LASF5:
+ 1361 02bf 6C6F6E67 		.ascii	"long int\000"
+ 1361      20696E74 
+ 1361      00
+ 1362              	.LASF1:
+ 1363 02c8 7369676E 		.ascii	"signed char\000"
+ 1363      65642063 
+ 1363      68617200 
+ 1364              	.LASF36:
+ 1365 02d4 73655F63 		.ascii	"se_calibration_mapping\000"
+ 1365      616C6962 
+ 1365      72617469 
+ 1365      6F6E5F6D 
+ 1365      61707069 
+ 1366              	.LASF23:
+ 1367 02eb 61645F73 		.ascii	"ad_setup_interrupt\000"
+ 1367      65747570 
+ 1367      5F696E74 
+ 1367      65727275 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 30
+
+
+ 1367      707400
+ 1368              	.LASF18:
+ 1369 02fe 616C7068 		.ascii	"alpha\000"
+ 1369      6100
+ 1370              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

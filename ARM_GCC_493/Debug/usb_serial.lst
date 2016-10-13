@@ -1,0 +1,2302 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"usb_serial.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.initialize_usb,"ax",%progbits
+  19              		.align	2
+  20              		.global	initialize_usb
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	initialize_usb, %function
+  24              	initialize_usb:
+  25              	.LFB63:
+  26              		.file 1 ".\\usb_serial\\usb_serial.c"
+   1:.\usb_serial/usb_serial.c **** /*
+   2:.\usb_serial/usb_serial.c **** **
+   3:.\usb_serial/usb_serial.c **** ** File: usb_serial.c
+   4:.\usb_serial/usb_serial.c **** **
+   5:.\usb_serial/usb_serial.c **** **
+   6:.\usb_serial/usb_serial.c **** */
+   7:.\usb_serial/usb_serial.c **** 
+   8:.\usb_serial/usb_serial.c **** 
+   9:.\usb_serial/usb_serial.c **** #include <device.h>
+  10:.\usb_serial/usb_serial.c **** #include "cf_chain_flow_support.h"
+  11:.\usb_serial/usb_serial.c **** #include "cf_external_functions.h"
+  12:.\usb_serial/usb_serial.c **** #include "usb_serial.h"
+  13:.\usb_serial/usb_serial.c **** #include "process_modbus_message.h"
+  14:.\usb_serial/usb_serial.c **** 
+  15:.\usb_serial/usb_serial.c **** #define USB_MODBUS_ADDRESS        25
+  16:.\usb_serial/usb_serial.c **** 
+  17:.\usb_serial/usb_serial.c **** 
+  18:.\usb_serial/usb_serial.c **** 
+  19:.\usb_serial/usb_serial.c **** int initialize_usb(unsigned link_id, unsigned param_1,
+  20:.\usb_serial/usb_serial.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+  21:.\usb_serial/usb_serial.c **** {
+  27              		.loc 1 21 0
+  28              		.cfi_startproc
+  29              		@ args = 8, pretend = 0, frame = 16
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31 0000 80B5     		push	{r7, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 7, -8
+  34              		.cfi_offset 14, -4
+  35 0002 84B0     		sub	sp, sp, #16
+  36              		.cfi_def_cfa_offset 24
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 2
+
+
+  37 0004 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+  39 0006 F860     		str	r0, [r7, #12]
+  40 0008 B960     		str	r1, [r7, #8]
+  41 000a 7A60     		str	r2, [r7, #4]
+  42 000c 3B60     		str	r3, [r7]
+  22:.\usb_serial/usb_serial.c ****     USBUART_1_Start(0u, USBUART_1_5V_OPERATION);
+  43              		.loc 1 22 0
+  44 000e 0020     		movs	r0, #0
+  45 0010 0121     		movs	r1, #1
+  46 0012 FFF7FEFF 		bl	USBUART_1_Start
+  23:.\usb_serial/usb_serial.c ****     return CF_DISABLE;
+  47              		.loc 1 23 0
+  48 0016 0223     		movs	r3, #2
+  24:.\usb_serial/usb_serial.c **** }
+  49              		.loc 1 24 0
+  50 0018 1846     		mov	r0, r3
+  51 001a 1037     		adds	r7, r7, #16
+  52              		.cfi_def_cfa_offset 8
+  53 001c BD46     		mov	sp, r7
+  54              		.cfi_def_cfa_register 13
+  55              		@ sp needed
+  56 001e 80BD     		pop	{r7, pc}
+  57              		.cfi_endproc
+  58              	.LFE63:
+  59              		.size	initialize_usb, .-initialize_usb
+  60              		.section	.text.usb_configuration_changed,"ax",%progbits
+  61              		.align	2
+  62              		.global	usb_configuration_changed
+  63              		.thumb
+  64              		.thumb_func
+  65              		.type	usb_configuration_changed, %function
+  66              	usb_configuration_changed:
+  67              	.LFB64:
+  25:.\usb_serial/usb_serial.c **** 
+  26:.\usb_serial/usb_serial.c **** // this is a wait condition
+  27:.\usb_serial/usb_serial.c **** int usb_configuration_changed(unsigned link_id, unsigned param_1,
+  28:.\usb_serial/usb_serial.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+  29:.\usb_serial/usb_serial.c **** {
+  68              		.loc 1 29 0
+  69              		.cfi_startproc
+  70              		@ args = 8, pretend = 0, frame = 24
+  71              		@ frame_needed = 1, uses_anonymous_args = 0
+  72 0000 80B5     		push	{r7, lr}
+  73              		.cfi_def_cfa_offset 8
+  74              		.cfi_offset 7, -8
+  75              		.cfi_offset 14, -4
+  76 0002 86B0     		sub	sp, sp, #24
+  77              		.cfi_def_cfa_offset 32
+  78 0004 00AF     		add	r7, sp, #0
+  79              		.cfi_def_cfa_register 7
+  80 0006 F860     		str	r0, [r7, #12]
+  81 0008 B960     		str	r1, [r7, #8]
+  82 000a 7A60     		str	r2, [r7, #4]
+  83 000c 3B60     		str	r3, [r7]
+  30:.\usb_serial/usb_serial.c ****     int return_value;
+  31:.\usb_serial/usb_serial.c ****     if( USBUART_1_IsConfigurationChanged() != 0u )
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 3
+
+
+  84              		.loc 1 31 0
+  85 000e FFF7FEFF 		bl	USBUART_1_IsConfigurationChanged
+  86 0012 0346     		mov	r3, r0
+  87 0014 002B     		cmp	r3, #0
+  88 0016 0CD0     		beq	.L4
+  32:.\usb_serial/usb_serial.c ****     {
+  33:.\usb_serial/usb_serial.c ****         if(USBUART_1_GetConfiguration() != 0u)   /* Init IN endpoints when device configured */
+  89              		.loc 1 33 0
+  90 0018 FFF7FEFF 		bl	USBUART_1_GetConfiguration
+  91 001c 0346     		mov	r3, r0
+  92 001e 002B     		cmp	r3, #0
+  93 0020 09D0     		beq	.L6
+  34:.\usb_serial/usb_serial.c ****             {
+  35:.\usb_serial/usb_serial.c ****                 /* Enumeration is done, enable OUT endpoint for receive data from Host */
+  36:.\usb_serial/usb_serial.c ****                 USBUART_1_CDC_Init();
+  94              		.loc 1 36 0
+  95 0022 FFF7FEFF 		bl	USBUART_1_CDC_Init
+  37:.\usb_serial/usb_serial.c ****                 return_value = 1;
+  96              		.loc 1 37 0
+  97 0026 0123     		movs	r3, #1
+  98 0028 7B61     		str	r3, [r7, #20]
+  38:.\usb_serial/usb_serial.c ****                 cf_enable_chain( usb_rx_packet );
+  99              		.loc 1 38 0
+ 100 002a 0720     		movs	r0, #7
+ 101 002c FFF7FEFF 		bl	cf_enable_chain
+ 102 0030 01E0     		b	.L6
+ 103              	.L4:
+  39:.\usb_serial/usb_serial.c ****             }
+  40:.\usb_serial/usb_serial.c ****     }
+  41:.\usb_serial/usb_serial.c ****     else
+  42:.\usb_serial/usb_serial.c ****     {
+  43:.\usb_serial/usb_serial.c ****         return_value =  0;
+ 104              		.loc 1 43 0
+ 105 0032 0023     		movs	r3, #0
+ 106 0034 7B61     		str	r3, [r7, #20]
+ 107              	.L6:
+  44:.\usb_serial/usb_serial.c ****     }
+  45:.\usb_serial/usb_serial.c ****     return return_value;
+ 108              		.loc 1 45 0
+ 109 0036 7B69     		ldr	r3, [r7, #20]
+  46:.\usb_serial/usb_serial.c ****     
+  47:.\usb_serial/usb_serial.c **** }
+ 110              		.loc 1 47 0
+ 111 0038 1846     		mov	r0, r3
+ 112 003a 1837     		adds	r7, r7, #24
+ 113              		.cfi_def_cfa_offset 8
+ 114 003c BD46     		mov	sp, r7
+ 115              		.cfi_def_cfa_register 13
+ 116              		@ sp needed
+ 117 003e 80BD     		pop	{r7, pc}
+ 118              		.cfi_endproc
+ 119              	.LFE64:
+ 120              		.size	usb_configuration_changed, .-usb_configuration_changed
+ 121              		.section	.text.usb_connection_still_active,"ax",%progbits
+ 122              		.align	2
+ 123              		.global	usb_connection_still_active
+ 124              		.thumb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 4
+
+
+ 125              		.thumb_func
+ 126              		.type	usb_connection_still_active, %function
+ 127              	usb_connection_still_active:
+ 128              	.LFB65:
+  48:.\usb_serial/usb_serial.c **** 
+  49:.\usb_serial/usb_serial.c **** // this is a verify condition
+  50:.\usb_serial/usb_serial.c **** int usb_connection_still_active(unsigned link_id, unsigned param_1,
+  51:.\usb_serial/usb_serial.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+  52:.\usb_serial/usb_serial.c **** {
+ 129              		.loc 1 52 0
+ 130              		.cfi_startproc
+ 131              		@ args = 8, pretend = 0, frame = 24
+ 132              		@ frame_needed = 1, uses_anonymous_args = 0
+ 133 0000 80B5     		push	{r7, lr}
+ 134              		.cfi_def_cfa_offset 8
+ 135              		.cfi_offset 7, -8
+ 136              		.cfi_offset 14, -4
+ 137 0002 86B0     		sub	sp, sp, #24
+ 138              		.cfi_def_cfa_offset 32
+ 139 0004 00AF     		add	r7, sp, #0
+ 140              		.cfi_def_cfa_register 7
+ 141 0006 F860     		str	r0, [r7, #12]
+ 142 0008 B960     		str	r1, [r7, #8]
+ 143 000a 7A60     		str	r2, [r7, #4]
+ 144 000c 3B60     		str	r3, [r7]
+  53:.\usb_serial/usb_serial.c ****   int return_value;
+  54:.\usb_serial/usb_serial.c ****   if( USBUART_1_IsConfigurationChanged() != 0 ) 
+ 145              		.loc 1 54 0
+ 146 000e FFF7FEFF 		bl	USBUART_1_IsConfigurationChanged
+ 147 0012 0346     		mov	r3, r0
+ 148 0014 002B     		cmp	r3, #0
+ 149 0016 02D0     		beq	.L9
+  55:.\usb_serial/usb_serial.c ****   {
+  56:.\usb_serial/usb_serial.c ****     return_value = 0; // verify function will reset
+ 150              		.loc 1 56 0
+ 151 0018 0023     		movs	r3, #0
+ 152 001a 7B61     		str	r3, [r7, #20]
+ 153 001c 01E0     		b	.L10
+ 154              	.L9:
+  57:.\usb_serial/usb_serial.c ****   }
+  58:.\usb_serial/usb_serial.c ****   else
+  59:.\usb_serial/usb_serial.c ****   {
+  60:.\usb_serial/usb_serial.c ****     return_value = 1; // link has not changed
+ 155              		.loc 1 60 0
+ 156 001e 0123     		movs	r3, #1
+ 157 0020 7B61     		str	r3, [r7, #20]
+ 158              	.L10:
+  61:.\usb_serial/usb_serial.c ****   }
+  62:.\usb_serial/usb_serial.c ****   return return_value;
+ 159              		.loc 1 62 0
+ 160 0022 7B69     		ldr	r3, [r7, #20]
+  63:.\usb_serial/usb_serial.c **** }
+ 161              		.loc 1 63 0
+ 162 0024 1846     		mov	r0, r3
+ 163 0026 1837     		adds	r7, r7, #24
+ 164              		.cfi_def_cfa_offset 8
+ 165 0028 BD46     		mov	sp, r7
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 5
+
+
+ 166              		.cfi_def_cfa_register 13
+ 167              		@ sp needed
+ 168 002a 80BD     		pop	{r7, pc}
+ 169              		.cfi_endproc
+ 170              	.LFE65:
+ 171              		.size	usb_connection_still_active, .-usb_connection_still_active
+ 172              		.section	.text.usb_can_receive,"ax",%progbits
+ 173              		.align	2
+ 174              		.global	usb_can_receive
+ 175              		.thumb
+ 176              		.thumb_func
+ 177              		.type	usb_can_receive, %function
+ 178              	usb_can_receive:
+ 179              	.LFB66:
+  64:.\usb_serial/usb_serial.c ****     
+  65:.\usb_serial/usb_serial.c ****    
+  66:.\usb_serial/usb_serial.c **** 
+  67:.\usb_serial/usb_serial.c **** 
+  68:.\usb_serial/usb_serial.c **** int usb_can_receive(unsigned link_id, unsigned time_out,
+  69:.\usb_serial/usb_serial.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+  70:.\usb_serial/usb_serial.c **** {
+ 180              		.loc 1 70 0
+ 181              		.cfi_startproc
+ 182              		@ args = 8, pretend = 0, frame = 24
+ 183              		@ frame_needed = 1, uses_anonymous_args = 0
+ 184 0000 80B5     		push	{r7, lr}
+ 185              		.cfi_def_cfa_offset 8
+ 186              		.cfi_offset 7, -8
+ 187              		.cfi_offset 14, -4
+ 188 0002 86B0     		sub	sp, sp, #24
+ 189              		.cfi_def_cfa_offset 32
+ 190 0004 00AF     		add	r7, sp, #0
+ 191              		.cfi_def_cfa_register 7
+ 192 0006 F860     		str	r0, [r7, #12]
+ 193 0008 B960     		str	r1, [r7, #8]
+ 194 000a 7A60     		str	r2, [r7, #4]
+ 195 000c 3B60     		str	r3, [r7]
+  71:.\usb_serial/usb_serial.c ****      int return_value;
+  72:.\usb_serial/usb_serial.c ****     
+  73:.\usb_serial/usb_serial.c ****      if( event == CF_INIT_EVENT )
+ 196              		.loc 1 73 0
+ 197 000e 3B6A     		ldr	r3, [r7, #32]
+ 198 0010 012B     		cmp	r3, #1
+ 199 0012 05D1     		bne	.L13
+  74:.\usb_serial/usb_serial.c ****      {
+  75:.\usb_serial/usb_serial.c ****        cf_store_cell_value( link_id , 0 );
+ 200              		.loc 1 75 0
+ 201 0014 F868     		ldr	r0, [r7, #12]
+ 202 0016 0021     		movs	r1, #0
+ 203 0018 FFF7FEFF 		bl	cf_store_cell_value
+  76:.\usb_serial/usb_serial.c ****        return CF_CONTINUE;
+ 204              		.loc 1 76 0
+ 205 001c 0023     		movs	r3, #0
+ 206 001e 0AE0     		b	.L14
+ 207              	.L13:
+  77:.\usb_serial/usb_serial.c **** 
+  78:.\usb_serial/usb_serial.c ****      }
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 6
+
+
+  79:.\usb_serial/usb_serial.c ****      if(USBUART_1_DataIsReady() != 0u)               /* Check for input data from PC */
+ 208              		.loc 1 79 0
+ 209 0020 FFF7FEFF 		bl	USBUART_1_DataIsReady
+ 210 0024 0346     		mov	r3, r0
+ 211 0026 002B     		cmp	r3, #0
+ 212 0028 02D0     		beq	.L15
+  80:.\usb_serial/usb_serial.c ****      {
+  81:.\usb_serial/usb_serial.c ****         return_value =  1 ; // wait condition is meet
+ 213              		.loc 1 81 0
+ 214 002a 0123     		movs	r3, #1
+ 215 002c 7B61     		str	r3, [r7, #20]
+ 216 002e 01E0     		b	.L16
+ 217              	.L15:
+  82:.\usb_serial/usb_serial.c ****      }
+  83:.\usb_serial/usb_serial.c ****      else 
+  84:.\usb_serial/usb_serial.c ****      {
+  85:.\usb_serial/usb_serial.c ****         return_value = 0;
+ 218              		.loc 1 85 0
+ 219 0030 0023     		movs	r3, #0
+ 220 0032 7B61     		str	r3, [r7, #20]
+ 221              	.L16:
+  86:.\usb_serial/usb_serial.c ****      }
+  87:.\usb_serial/usb_serial.c ****      return return_value;    
+ 222              		.loc 1 87 0
+ 223 0034 7B69     		ldr	r3, [r7, #20]
+ 224              	.L14:
+  88:.\usb_serial/usb_serial.c ****      
+  89:.\usb_serial/usb_serial.c ****    
+  90:.\usb_serial/usb_serial.c **** }
+ 225              		.loc 1 90 0
+ 226 0036 1846     		mov	r0, r3
+ 227 0038 1837     		adds	r7, r7, #24
+ 228              		.cfi_def_cfa_offset 8
+ 229 003a BD46     		mov	sp, r7
+ 230              		.cfi_def_cfa_register 13
+ 231              		@ sp needed
+ 232 003c 80BD     		pop	{r7, pc}
+ 233              		.cfi_endproc
+ 234              	.LFE66:
+ 235              		.size	usb_can_receive, .-usb_can_receive
+ 236 003e 00BF     		.bss
+ 237              		.align	2
+ 238              	usb_rx_count:
+ 239 0000 00000000 		.space	4
+ 240              		.align	2
+ 241              	usb_rx_buffer:
+ 242 0004 00000000 		.space	256
+ 242      00000000 
+ 242      00000000 
+ 242      00000000 
+ 242      00000000 
+ 243              		.section	.text.process_usb_rx_packet,"ax",%progbits
+ 244              		.align	2
+ 245              		.global	process_usb_rx_packet
+ 246              		.thumb
+ 247              		.thumb_func
+ 248              		.type	process_usb_rx_packet, %function
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 7
+
+
+ 249              	process_usb_rx_packet:
+ 250              	.LFB67:
+  91:.\usb_serial/usb_serial.c **** static unsigned usb_rx_count;
+  92:.\usb_serial/usb_serial.c **** static unsigned char usb_rx_buffer[ MODBUS_PACKET_SIZE];
+  93:.\usb_serial/usb_serial.c **** 
+  94:.\usb_serial/usb_serial.c **** int process_usb_rx_packet(unsigned link_id, unsigned usb_block,
+  95:.\usb_serial/usb_serial.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+  96:.\usb_serial/usb_serial.c **** {
+ 251              		.loc 1 96 0
+ 252              		.cfi_startproc
+ 253              		@ args = 8, pretend = 0, frame = 24
+ 254              		@ frame_needed = 1, uses_anonymous_args = 0
+ 255 0000 80B5     		push	{r7, lr}
+ 256              		.cfi_def_cfa_offset 8
+ 257              		.cfi_offset 7, -8
+ 258              		.cfi_offset 14, -4
+ 259 0002 86B0     		sub	sp, sp, #24
+ 260              		.cfi_def_cfa_offset 32
+ 261 0004 00AF     		add	r7, sp, #0
+ 262              		.cfi_def_cfa_register 7
+ 263 0006 F860     		str	r0, [r7, #12]
+ 264 0008 B960     		str	r1, [r7, #8]
+ 265 000a 7A60     		str	r2, [r7, #4]
+ 266 000c 3B60     		str	r3, [r7]
+  97:.\usb_serial/usb_serial.c ****     int done_flag;
+  98:.\usb_serial/usb_serial.c ****     done_flag = 0;
+ 267              		.loc 1 98 0
+ 268 000e 0023     		movs	r3, #0
+ 269 0010 7B61     		str	r3, [r7, #20]
+  99:.\usb_serial/usb_serial.c ****     switch( usb_block)
+ 270              		.loc 1 99 0
+ 271 0012 BB68     		ldr	r3, [r7, #8]
+ 272 0014 042B     		cmp	r3, #4
+ 273 0016 70D8     		bhi	.L18
+ 274 0018 01A2     		adr	r2, .L20
+ 275 001a 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 276 001e 00BF     		.p2align 2
+ 277              	.L20:
+ 278 0020 35000000 		.word	.L19+1
+ 279 0024 6F000000 		.word	.L21+1
+ 280 0028 99000000 		.word	.L22+1
+ 281 002c C3000000 		.word	.L23+1
+ 282 0030 ED000000 		.word	.L24+1
+ 283              		.p2align 1
+ 284              	.L19:
+ 100:.\usb_serial/usb_serial.c ****     {
+ 101:.\usb_serial/usb_serial.c ****         case 0: usb_rx_count = 0;
+ 285              		.loc 1 101 0
+ 286 0034 384B     		ldr	r3, .L32
+ 287 0036 0022     		movs	r2, #0
+ 288 0038 1A60     		str	r2, [r3]
+ 102:.\usb_serial/usb_serial.c ****                 usb_rx_count += USBUART_1_GetAll(&usb_rx_buffer[0]);
+ 289              		.loc 1 102 0
+ 290 003a 3848     		ldr	r0, .L32+4
+ 291 003c FFF7FEFF 		bl	USBUART_1_GetAll
+ 292 0040 0346     		mov	r3, r0
+ 293 0042 1A46     		mov	r2, r3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 8
+
+
+ 294 0044 344B     		ldr	r3, .L32
+ 295 0046 1B68     		ldr	r3, [r3]
+ 296 0048 1344     		add	r3, r3, r2
+ 297 004a 334A     		ldr	r2, .L32
+ 298 004c 1360     		str	r3, [r2]
+ 103:.\usb_serial/usb_serial.c ****                 if( usb_rx_count == 0 ) // empty packet
+ 299              		.loc 1 103 0
+ 300 004e 324B     		ldr	r3, .L32
+ 301 0050 1B68     		ldr	r3, [r3]
+ 302 0052 002B     		cmp	r3, #0
+ 303 0054 03D1     		bne	.L25
+ 104:.\usb_serial/usb_serial.c ****                 {
+ 105:.\usb_serial/usb_serial.c ****                     cf_reset_chain(usb_rx_packet);
+ 304              		.loc 1 105 0
+ 305 0056 0720     		movs	r0, #7
+ 306 0058 FFF7FEFF 		bl	cf_enable_chain
+ 307 005c 06E0     		b	.L26
+ 308              	.L25:
+ 106:.\usb_serial/usb_serial.c ****                 }    
+ 107:.\usb_serial/usb_serial.c ****                 else if( usb_rx_count < 64 )
+ 309              		.loc 1 107 0
+ 310 005e 2E4B     		ldr	r3, .L32
+ 311 0060 1B68     		ldr	r3, [r3]
+ 312 0062 3F2B     		cmp	r3, #63
+ 313 0064 02D8     		bhi	.L26
+ 108:.\usb_serial/usb_serial.c ****                 {
+ 109:.\usb_serial/usb_serial.c ****                     done_flag = 1;
+ 314              		.loc 1 109 0
+ 315 0066 0123     		movs	r3, #1
+ 316 0068 7B61     		str	r3, [r7, #20]
+ 110:.\usb_serial/usb_serial.c ****                 }
+ 111:.\usb_serial/usb_serial.c **** 
+ 112:.\usb_serial/usb_serial.c ****                 break;
+ 317              		.loc 1 112 0
+ 318 006a 46E0     		b	.L18
+ 319              	.L26:
+ 320 006c 45E0     		b	.L18
+ 321              	.L21:
+ 113:.\usb_serial/usb_serial.c ****         case 1:
+ 114:.\usb_serial/usb_serial.c ****                 usb_rx_count = 64;
+ 322              		.loc 1 114 0
+ 323 006e 2A4B     		ldr	r3, .L32
+ 324 0070 4022     		movs	r2, #64
+ 325 0072 1A60     		str	r2, [r3]
+ 115:.\usb_serial/usb_serial.c ****                 usb_rx_count += USBUART_1_GetAll(&usb_rx_buffer[0]);
+ 326              		.loc 1 115 0
+ 327 0074 2948     		ldr	r0, .L32+4
+ 328 0076 FFF7FEFF 		bl	USBUART_1_GetAll
+ 329 007a 0346     		mov	r3, r0
+ 330 007c 1A46     		mov	r2, r3
+ 331 007e 264B     		ldr	r3, .L32
+ 332 0080 1B68     		ldr	r3, [r3]
+ 333 0082 1344     		add	r3, r3, r2
+ 334 0084 244A     		ldr	r2, .L32
+ 335 0086 1360     		str	r3, [r2]
+ 116:.\usb_serial/usb_serial.c ****                 if( usb_rx_count < 128 )
+ 336              		.loc 1 116 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 9
+
+
+ 337 0088 234B     		ldr	r3, .L32
+ 338 008a 1B68     		ldr	r3, [r3]
+ 339 008c 7F2B     		cmp	r3, #127
+ 340 008e 02D8     		bhi	.L27
+ 117:.\usb_serial/usb_serial.c ****                 {
+ 118:.\usb_serial/usb_serial.c ****                     done_flag = 1;
+ 341              		.loc 1 118 0
+ 342 0090 0123     		movs	r3, #1
+ 343 0092 7B61     		str	r3, [r7, #20]
+ 119:.\usb_serial/usb_serial.c ****                 }
+ 120:.\usb_serial/usb_serial.c ****                 
+ 121:.\usb_serial/usb_serial.c ****                 break;
+ 344              		.loc 1 121 0
+ 345 0094 31E0     		b	.L18
+ 346              	.L27:
+ 347 0096 30E0     		b	.L18
+ 348              	.L22:
+ 122:.\usb_serial/usb_serial.c ****         case 2: 
+ 123:.\usb_serial/usb_serial.c ****                 usb_rx_count = 128;
+ 349              		.loc 1 123 0
+ 350 0098 1F4B     		ldr	r3, .L32
+ 351 009a 8022     		movs	r2, #128
+ 352 009c 1A60     		str	r2, [r3]
+ 124:.\usb_serial/usb_serial.c ****                 usb_rx_count += USBUART_1_GetAll(&usb_rx_buffer[0]); 
+ 353              		.loc 1 124 0
+ 354 009e 1F48     		ldr	r0, .L32+4
+ 355 00a0 FFF7FEFF 		bl	USBUART_1_GetAll
+ 356 00a4 0346     		mov	r3, r0
+ 357 00a6 1A46     		mov	r2, r3
+ 358 00a8 1B4B     		ldr	r3, .L32
+ 359 00aa 1B68     		ldr	r3, [r3]
+ 360 00ac 1344     		add	r3, r3, r2
+ 361 00ae 1A4A     		ldr	r2, .L32
+ 362 00b0 1360     		str	r3, [r2]
+ 125:.\usb_serial/usb_serial.c ****                 if( usb_rx_count < 196 )
+ 363              		.loc 1 125 0
+ 364 00b2 194B     		ldr	r3, .L32
+ 365 00b4 1B68     		ldr	r3, [r3]
+ 366 00b6 C32B     		cmp	r3, #195
+ 367 00b8 02D8     		bhi	.L28
+ 126:.\usb_serial/usb_serial.c ****                 {
+ 127:.\usb_serial/usb_serial.c ****                     done_flag = 1;
+ 368              		.loc 1 127 0
+ 369 00ba 0123     		movs	r3, #1
+ 370 00bc 7B61     		str	r3, [r7, #20]
+ 128:.\usb_serial/usb_serial.c ****                 }
+ 129:.\usb_serial/usb_serial.c **** 
+ 130:.\usb_serial/usb_serial.c ****                 break;
+ 371              		.loc 1 130 0
+ 372 00be 1CE0     		b	.L18
+ 373              	.L28:
+ 374 00c0 1BE0     		b	.L18
+ 375              	.L23:
+ 131:.\usb_serial/usb_serial.c ****         case 3:
+ 132:.\usb_serial/usb_serial.c ****                 
+ 133:.\usb_serial/usb_serial.c ****                 usb_rx_count = 192;
+ 376              		.loc 1 133 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 10
+
+
+ 377 00c2 154B     		ldr	r3, .L32
+ 378 00c4 C022     		movs	r2, #192
+ 379 00c6 1A60     		str	r2, [r3]
+ 134:.\usb_serial/usb_serial.c ****                 usb_rx_count += USBUART_1_GetAll(&usb_rx_buffer[192]);
+ 380              		.loc 1 134 0
+ 381 00c8 1548     		ldr	r0, .L32+8
+ 382 00ca FFF7FEFF 		bl	USBUART_1_GetAll
+ 383 00ce 0346     		mov	r3, r0
+ 384 00d0 1A46     		mov	r2, r3
+ 385 00d2 114B     		ldr	r3, .L32
+ 386 00d4 1B68     		ldr	r3, [r3]
+ 387 00d6 1344     		add	r3, r3, r2
+ 388 00d8 0F4A     		ldr	r2, .L32
+ 389 00da 1360     		str	r3, [r2]
+ 135:.\usb_serial/usb_serial.c ****                 if( usb_rx_count < 256 )
+ 390              		.loc 1 135 0
+ 391 00dc 0E4B     		ldr	r3, .L32
+ 392 00de 1B68     		ldr	r3, [r3]
+ 393 00e0 FF2B     		cmp	r3, #255
+ 394 00e2 02D8     		bhi	.L29
+ 136:.\usb_serial/usb_serial.c ****                 {
+ 137:.\usb_serial/usb_serial.c ****                     done_flag = 1;
+ 395              		.loc 1 137 0
+ 396 00e4 0123     		movs	r3, #1
+ 397 00e6 7B61     		str	r3, [r7, #20]
+ 138:.\usb_serial/usb_serial.c ****                 }
+ 139:.\usb_serial/usb_serial.c ****                 break;
+ 398              		.loc 1 139 0
+ 399 00e8 07E0     		b	.L18
+ 400              	.L29:
+ 401 00ea 06E0     		b	.L18
+ 402              	.L24:
+ 140:.\usb_serial/usb_serial.c ****         case 4: 
+ 141:.\usb_serial/usb_serial.c ****                 // this is the empty packet at modbus message 256
+ 142:.\usb_serial/usb_serial.c ****                 usb_rx_count = 256;
+ 403              		.loc 1 142 0
+ 404 00ec 0A4B     		ldr	r3, .L32
+ 405 00ee 4FF48072 		mov	r2, #256
+ 406 00f2 1A60     		str	r2, [r3]
+ 143:.\usb_serial/usb_serial.c ****                 done_flag = 0;
+ 407              		.loc 1 143 0
+ 408 00f4 0023     		movs	r3, #0
+ 409 00f6 7B61     		str	r3, [r7, #20]
+ 144:.\usb_serial/usb_serial.c ****                 break;
+ 410              		.loc 1 144 0
+ 411 00f8 00BF     		nop
+ 412              	.L18:
+ 145:.\usb_serial/usb_serial.c ****         default:
+ 146:.\usb_serial/usb_serial.c ****                 ; // should not happen
+ 147:.\usb_serial/usb_serial.c ****      }   
+ 148:.\usb_serial/usb_serial.c ****      if( done_flag != 0 )
+ 413              		.loc 1 148 0
+ 414 00fa 7B69     		ldr	r3, [r7, #20]
+ 415 00fc 002B     		cmp	r3, #0
+ 416 00fe 05D0     		beq	.L30
+ 149:.\usb_serial/usb_serial.c ****      {
+ 150:.\usb_serial/usb_serial.c ****          cf_disable_chain(  usb_rx_packet );
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 11
+
+
+ 417              		.loc 1 150 0
+ 418 0100 0720     		movs	r0, #7
+ 419 0102 FFF7FEFF 		bl	cf_disable_chain
+ 151:.\usb_serial/usb_serial.c ****          cf_enable_chain( usb_process_packet );
+ 420              		.loc 1 151 0
+ 421 0106 0820     		movs	r0, #8
+ 422 0108 FFF7FEFF 		bl	cf_enable_chain
+ 423              	.L30:
+ 152:.\usb_serial/usb_serial.c ****      }
+ 153:.\usb_serial/usb_serial.c ****           
+ 154:.\usb_serial/usb_serial.c ****     
+ 155:.\usb_serial/usb_serial.c ****     return CF_TERMINATE;
+ 424              		.loc 1 155 0
+ 425 010c 0423     		movs	r3, #4
+ 156:.\usb_serial/usb_serial.c **** }
+ 426              		.loc 1 156 0
+ 427 010e 1846     		mov	r0, r3
+ 428 0110 1837     		adds	r7, r7, #24
+ 429              		.cfi_def_cfa_offset 8
+ 430 0112 BD46     		mov	sp, r7
+ 431              		.cfi_def_cfa_register 13
+ 432              		@ sp needed
+ 433 0114 80BD     		pop	{r7, pc}
+ 434              	.L33:
+ 435 0116 00BF     		.align	2
+ 436              	.L32:
+ 437 0118 00000000 		.word	usb_rx_count
+ 438 011c 04000000 		.word	usb_rx_buffer
+ 439 0120 C4000000 		.word	usb_rx_buffer+192
+ 440              		.cfi_endproc
+ 441              	.LFE67:
+ 442              		.size	process_usb_rx_packet, .-process_usb_rx_packet
+ 443              		.bss
+ 444              		.align	2
+ 445              	usb_tx_count:
+ 446 0104 00000000 		.space	4
+ 447              		.align	2
+ 448              	usb_tx_buffer:
+ 449 0108 00000000 		.space	256
+ 449      00000000 
+ 449      00000000 
+ 449      00000000 
+ 449      00000000 
+ 450              		.section	.text.usb_process_modbus_message,"ax",%progbits
+ 451              		.align	2
+ 452              		.global	usb_process_modbus_message
+ 453              		.thumb
+ 454              		.thumb_func
+ 455              		.type	usb_process_modbus_message, %function
+ 456              	usb_process_modbus_message:
+ 457              	.LFB68:
+ 157:.\usb_serial/usb_serial.c **** 
+ 158:.\usb_serial/usb_serial.c **** static unsigned usb_tx_count;
+ 159:.\usb_serial/usb_serial.c **** static unsigned char usb_tx_buffer[ MODBUS_PACKET_SIZE];
+ 160:.\usb_serial/usb_serial.c **** 
+ 161:.\usb_serial/usb_serial.c **** 
+ 162:.\usb_serial/usb_serial.c **** int usb_process_modbus_message(unsigned link_id, unsigned param_1,
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 12
+
+
+ 163:.\usb_serial/usb_serial.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 164:.\usb_serial/usb_serial.c **** {
+ 458              		.loc 1 164 0
+ 459              		.cfi_startproc
+ 460              		@ args = 8, pretend = 0, frame = 16
+ 461              		@ frame_needed = 1, uses_anonymous_args = 0
+ 462 0000 80B5     		push	{r7, lr}
+ 463              		.cfi_def_cfa_offset 8
+ 464              		.cfi_offset 7, -8
+ 465              		.cfi_offset 14, -4
+ 466 0002 84B0     		sub	sp, sp, #16
+ 467              		.cfi_def_cfa_offset 24
+ 468 0004 00AF     		add	r7, sp, #0
+ 469              		.cfi_def_cfa_register 7
+ 470 0006 F860     		str	r0, [r7, #12]
+ 471 0008 B960     		str	r1, [r7, #8]
+ 472 000a 7A60     		str	r2, [r7, #4]
+ 473 000c 3B60     		str	r3, [r7]
+ 165:.\usb_serial/usb_serial.c ****     usb_tx_count = process_modbus_message( usb_rx_count, 
+ 474              		.loc 1 165 0
+ 475 000e 0E4B     		ldr	r3, .L38
+ 476 0010 1B68     		ldr	r3, [r3]
+ 477 0012 1846     		mov	r0, r3
+ 478 0014 0D49     		ldr	r1, .L38+4
+ 479 0016 4FF48072 		mov	r2, #256
+ 480 001a 0D4B     		ldr	r3, .L38+8
+ 481 001c FFF7FEFF 		bl	process_modbus_message
+ 482 0020 0346     		mov	r3, r0
+ 483 0022 1A46     		mov	r2, r3
+ 484 0024 0B4B     		ldr	r3, .L38+12
+ 485 0026 1A60     		str	r2, [r3]
+ 166:.\usb_serial/usb_serial.c ****                                             usb_rx_buffer, 
+ 167:.\usb_serial/usb_serial.c ****                                             MODBUS_PACKET_SIZE,
+ 168:.\usb_serial/usb_serial.c ****                                             usb_tx_buffer );
+ 169:.\usb_serial/usb_serial.c ****     
+ 170:.\usb_serial/usb_serial.c ****     if( usb_tx_count > 0 )  // usb_tx_count means bad message
+ 486              		.loc 1 170 0
+ 487 0028 0A4B     		ldr	r3, .L38+12
+ 488 002a 1B68     		ldr	r3, [r3]
+ 489 002c 002B     		cmp	r3, #0
+ 490 002e 03D0     		beq	.L35
+ 171:.\usb_serial/usb_serial.c ****     {
+ 172:.\usb_serial/usb_serial.c ****         cf_enable_chain( usb_tx_packet );
+ 491              		.loc 1 172 0
+ 492 0030 0920     		movs	r0, #9
+ 493 0032 FFF7FEFF 		bl	cf_enable_chain
+ 494 0036 02E0     		b	.L36
+ 495              	.L35:
+ 173:.\usb_serial/usb_serial.c ****     }
+ 174:.\usb_serial/usb_serial.c ****     else
+ 175:.\usb_serial/usb_serial.c ****     {
+ 176:.\usb_serial/usb_serial.c ****         cf_enable_chain(  usb_rx_packet );
+ 496              		.loc 1 176 0
+ 497 0038 0720     		movs	r0, #7
+ 498 003a FFF7FEFF 		bl	cf_enable_chain
+ 499              	.L36:
+ 177:.\usb_serial/usb_serial.c ****     }
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 13
+
+
+ 178:.\usb_serial/usb_serial.c ****     
+ 179:.\usb_serial/usb_serial.c ****     return CF_TERMINATE; //  will disable current chain
+ 500              		.loc 1 179 0
+ 501 003e 0423     		movs	r3, #4
+ 180:.\usb_serial/usb_serial.c **** }
+ 502              		.loc 1 180 0
+ 503 0040 1846     		mov	r0, r3
+ 504 0042 1037     		adds	r7, r7, #16
+ 505              		.cfi_def_cfa_offset 8
+ 506 0044 BD46     		mov	sp, r7
+ 507              		.cfi_def_cfa_register 13
+ 508              		@ sp needed
+ 509 0046 80BD     		pop	{r7, pc}
+ 510              	.L39:
+ 511              		.align	2
+ 512              	.L38:
+ 513 0048 00000000 		.word	usb_rx_count
+ 514 004c 04000000 		.word	usb_rx_buffer
+ 515 0050 08010000 		.word	usb_tx_buffer
+ 516 0054 04010000 		.word	usb_tx_count
+ 517              		.cfi_endproc
+ 518              	.LFE68:
+ 519              		.size	usb_process_modbus_message, .-usb_process_modbus_message
+ 520              		.section	.text.usb_can_transmit,"ax",%progbits
+ 521              		.align	2
+ 522              		.global	usb_can_transmit
+ 523              		.thumb
+ 524              		.thumb_func
+ 525              		.type	usb_can_transmit, %function
+ 526              	usb_can_transmit:
+ 527              	.LFB69:
+ 181:.\usb_serial/usb_serial.c **** 
+ 182:.\usb_serial/usb_serial.c **** 
+ 183:.\usb_serial/usb_serial.c **** int usb_can_transmit(unsigned link_id, unsigned param_1,
+ 184:.\usb_serial/usb_serial.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 185:.\usb_serial/usb_serial.c **** {
+ 528              		.loc 1 185 0
+ 529              		.cfi_startproc
+ 530              		@ args = 8, pretend = 0, frame = 24
+ 531              		@ frame_needed = 1, uses_anonymous_args = 0
+ 532 0000 80B5     		push	{r7, lr}
+ 533              		.cfi_def_cfa_offset 8
+ 534              		.cfi_offset 7, -8
+ 535              		.cfi_offset 14, -4
+ 536 0002 86B0     		sub	sp, sp, #24
+ 537              		.cfi_def_cfa_offset 32
+ 538 0004 00AF     		add	r7, sp, #0
+ 539              		.cfi_def_cfa_register 7
+ 540 0006 F860     		str	r0, [r7, #12]
+ 541 0008 B960     		str	r1, [r7, #8]
+ 542 000a 7A60     		str	r2, [r7, #4]
+ 543 000c 3B60     		str	r3, [r7]
+ 186:.\usb_serial/usb_serial.c ****     int return_value;
+ 187:.\usb_serial/usb_serial.c ****     if( USBUART_1_CDCIsReady() == 1)    /* Wait till component is ready to send more data to the PC
+ 544              		.loc 1 187 0
+ 545 000e FFF7FEFF 		bl	USBUART_1_CDCIsReady
+ 546 0012 0346     		mov	r3, r0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 14
+
+
+ 547 0014 012B     		cmp	r3, #1
+ 548 0016 02D1     		bne	.L41
+ 188:.\usb_serial/usb_serial.c ****     {
+ 189:.\usb_serial/usb_serial.c ****         return_value = 1;
+ 549              		.loc 1 189 0
+ 550 0018 0123     		movs	r3, #1
+ 551 001a 7B61     		str	r3, [r7, #20]
+ 552 001c 01E0     		b	.L42
+ 553              	.L41:
+ 190:.\usb_serial/usb_serial.c ****     }
+ 191:.\usb_serial/usb_serial.c ****     else
+ 192:.\usb_serial/usb_serial.c ****     {
+ 193:.\usb_serial/usb_serial.c ****         return_value = 0;
+ 554              		.loc 1 193 0
+ 555 001e 0023     		movs	r3, #0
+ 556 0020 7B61     		str	r3, [r7, #20]
+ 557              	.L42:
+ 194:.\usb_serial/usb_serial.c ****     }
+ 195:.\usb_serial/usb_serial.c ****     return return_value;
+ 558              		.loc 1 195 0
+ 559 0022 7B69     		ldr	r3, [r7, #20]
+ 196:.\usb_serial/usb_serial.c **** }
+ 560              		.loc 1 196 0
+ 561 0024 1846     		mov	r0, r3
+ 562 0026 1837     		adds	r7, r7, #24
+ 563              		.cfi_def_cfa_offset 8
+ 564 0028 BD46     		mov	sp, r7
+ 565              		.cfi_def_cfa_register 13
+ 566              		@ sp needed
+ 567 002a 80BD     		pop	{r7, pc}
+ 568              		.cfi_endproc
+ 569              	.LFE69:
+ 570              		.size	usb_can_transmit, .-usb_can_transmit
+ 571              		.section	.text.usb_send_packet,"ax",%progbits
+ 572              		.align	2
+ 573              		.global	usb_send_packet
+ 574              		.thumb
+ 575              		.thumb_func
+ 576              		.type	usb_send_packet, %function
+ 577              	usb_send_packet:
+ 578              	.LFB70:
+ 197:.\usb_serial/usb_serial.c **** 
+ 198:.\usb_serial/usb_serial.c **** int usb_send_packet(unsigned link_id, unsigned tx_state,
+ 199:.\usb_serial/usb_serial.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 200:.\usb_serial/usb_serial.c **** {
+ 579              		.loc 1 200 0
+ 580              		.cfi_startproc
+ 581              		@ args = 8, pretend = 0, frame = 24
+ 582              		@ frame_needed = 1, uses_anonymous_args = 0
+ 583 0000 80B5     		push	{r7, lr}
+ 584              		.cfi_def_cfa_offset 8
+ 585              		.cfi_offset 7, -8
+ 586              		.cfi_offset 14, -4
+ 587 0002 86B0     		sub	sp, sp, #24
+ 588              		.cfi_def_cfa_offset 32
+ 589 0004 00AF     		add	r7, sp, #0
+ 590              		.cfi_def_cfa_register 7
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 15
+
+
+ 591 0006 F860     		str	r0, [r7, #12]
+ 592 0008 B960     		str	r1, [r7, #8]
+ 593 000a 7A60     		str	r2, [r7, #4]
+ 594 000c 3B60     		str	r3, [r7]
+ 201:.\usb_serial/usb_serial.c ****     int done_flag = 0;
+ 595              		.loc 1 201 0
+ 596 000e 0023     		movs	r3, #0
+ 597 0010 7B61     		str	r3, [r7, #20]
+ 202:.\usb_serial/usb_serial.c ****     unsigned tx_count;
+ 203:.\usb_serial/usb_serial.c ****     
+ 204:.\usb_serial/usb_serial.c ****     done_flag = 0;
+ 598              		.loc 1 204 0
+ 599 0012 0023     		movs	r3, #0
+ 600 0014 7B61     		str	r3, [r7, #20]
+ 205:.\usb_serial/usb_serial.c ****     switch( tx_state )
+ 601              		.loc 1 205 0
+ 602 0016 BB68     		ldr	r3, [r7, #8]
+ 603 0018 042B     		cmp	r3, #4
+ 604 001a 7BD8     		bhi	.L45
+ 605 001c 01A2     		adr	r2, .L47
+ 606 001e 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 607 0022 00BF     		.p2align 2
+ 608              	.L47:
+ 609 0024 39000000 		.word	.L46+1
+ 610 0028 5F000000 		.word	.L48+1
+ 611 002c 93000000 		.word	.L49+1
+ 612 0030 C7000000 		.word	.L50+1
+ 613 0034 FB000000 		.word	.L51+1
+ 614              		.p2align 1
+ 615              	.L46:
+ 206:.\usb_serial/usb_serial.c ****     {
+ 207:.\usb_serial/usb_serial.c ****         case 0:
+ 208:.\usb_serial/usb_serial.c ****                if( usb_tx_count < 64 )
+ 616              		.loc 1 208 0
+ 617 0038 3D4B     		ldr	r3, .L67
+ 618 003a 1B68     		ldr	r3, [r3]
+ 619 003c 3F2B     		cmp	r3, #63
+ 620 003e 05D8     		bhi	.L52
+ 209:.\usb_serial/usb_serial.c ****                {
+ 210:.\usb_serial/usb_serial.c ****                   tx_count = usb_tx_count;
+ 621              		.loc 1 210 0
+ 622 0040 3B4B     		ldr	r3, .L67
+ 623 0042 1B68     		ldr	r3, [r3]
+ 624 0044 3B61     		str	r3, [r7, #16]
+ 211:.\usb_serial/usb_serial.c ****                   done_flag = 1;
+ 625              		.loc 1 211 0
+ 626 0046 0123     		movs	r3, #1
+ 627 0048 7B61     		str	r3, [r7, #20]
+ 628 004a 01E0     		b	.L53
+ 629              	.L52:
+ 212:.\usb_serial/usb_serial.c ****                }
+ 213:.\usb_serial/usb_serial.c ****                else
+ 214:.\usb_serial/usb_serial.c ****                {
+ 215:.\usb_serial/usb_serial.c ****                   tx_count = 64;
+ 630              		.loc 1 215 0
+ 631 004c 4023     		movs	r3, #64
+ 632 004e 3B61     		str	r3, [r7, #16]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 16
+
+
+ 633              	.L53:
+ 216:.\usb_serial/usb_serial.c ****                 }
+ 217:.\usb_serial/usb_serial.c ****                USBUART_1_PutData(&usb_tx_buffer[0], tx_count);
+ 634              		.loc 1 217 0
+ 635 0050 3B69     		ldr	r3, [r7, #16]
+ 636 0052 9BB2     		uxth	r3, r3
+ 637 0054 3748     		ldr	r0, .L67+4
+ 638 0056 1946     		mov	r1, r3
+ 639 0058 FFF7FEFF 		bl	USBUART_1_PutData
+ 218:.\usb_serial/usb_serial.c ****                break;
+ 640              		.loc 1 218 0
+ 641 005c 5AE0     		b	.L45
+ 642              	.L48:
+ 219:.\usb_serial/usb_serial.c ****         
+ 220:.\usb_serial/usb_serial.c ****         case 1:
+ 221:.\usb_serial/usb_serial.c ****                if( usb_tx_count < 64)
+ 643              		.loc 1 221 0
+ 644 005e 344B     		ldr	r3, .L67
+ 645 0060 1B68     		ldr	r3, [r3]
+ 646 0062 3F2B     		cmp	r3, #63
+ 647 0064 01D8     		bhi	.L54
+ 222:.\usb_serial/usb_serial.c ****                {
+ 223:.\usb_serial/usb_serial.c ****                   return CF_DISABLE;
+ 648              		.loc 1 223 0
+ 649 0066 0223     		movs	r3, #2
+ 650 0068 5EE0     		b	.L55
+ 651              	.L54:
+ 224:.\usb_serial/usb_serial.c ****                }
+ 225:.\usb_serial/usb_serial.c ****                if( usb_tx_count < 128 )
+ 652              		.loc 1 225 0
+ 653 006a 314B     		ldr	r3, .L67
+ 654 006c 1B68     		ldr	r3, [r3]
+ 655 006e 7F2B     		cmp	r3, #127
+ 656 0070 06D8     		bhi	.L56
+ 226:.\usb_serial/usb_serial.c ****                {
+ 227:.\usb_serial/usb_serial.c ****                   tx_count = usb_tx_count-64;
+ 657              		.loc 1 227 0
+ 658 0072 2F4B     		ldr	r3, .L67
+ 659 0074 1B68     		ldr	r3, [r3]
+ 660 0076 403B     		subs	r3, r3, #64
+ 661 0078 3B61     		str	r3, [r7, #16]
+ 228:.\usb_serial/usb_serial.c ****                   done_flag = 1;
+ 662              		.loc 1 228 0
+ 663 007a 0123     		movs	r3, #1
+ 664 007c 7B61     		str	r3, [r7, #20]
+ 665 007e 01E0     		b	.L57
+ 666              	.L56:
+ 229:.\usb_serial/usb_serial.c ****                }
+ 230:.\usb_serial/usb_serial.c ****                else
+ 231:.\usb_serial/usb_serial.c ****                {
+ 232:.\usb_serial/usb_serial.c ****                   tx_count = 64;
+ 667              		.loc 1 232 0
+ 668 0080 4023     		movs	r3, #64
+ 669 0082 3B61     		str	r3, [r7, #16]
+ 670              	.L57:
+ 233:.\usb_serial/usb_serial.c ****                 }
+ 234:.\usb_serial/usb_serial.c ****                USBUART_1_PutData(&usb_tx_buffer[64], tx_count);
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 17
+
+
+ 671              		.loc 1 234 0
+ 672 0084 3B69     		ldr	r3, [r7, #16]
+ 673 0086 9BB2     		uxth	r3, r3
+ 674 0088 2B48     		ldr	r0, .L67+8
+ 675 008a 1946     		mov	r1, r3
+ 676 008c FFF7FEFF 		bl	USBUART_1_PutData
+ 235:.\usb_serial/usb_serial.c **** 
+ 236:.\usb_serial/usb_serial.c ****                break;
+ 677              		.loc 1 236 0
+ 678 0090 40E0     		b	.L45
+ 679              	.L49:
+ 237:.\usb_serial/usb_serial.c ****         
+ 238:.\usb_serial/usb_serial.c ****         case 2:
+ 239:.\usb_serial/usb_serial.c ****                if( usb_tx_count < 128 )
+ 680              		.loc 1 239 0
+ 681 0092 274B     		ldr	r3, .L67
+ 682 0094 1B68     		ldr	r3, [r3]
+ 683 0096 7F2B     		cmp	r3, #127
+ 684 0098 01D8     		bhi	.L58
+ 240:.\usb_serial/usb_serial.c ****                {
+ 241:.\usb_serial/usb_serial.c ****                   return CF_DISABLE;
+ 685              		.loc 1 241 0
+ 686 009a 0223     		movs	r3, #2
+ 687 009c 44E0     		b	.L55
+ 688              	.L58:
+ 242:.\usb_serial/usb_serial.c ****                }
+ 243:.\usb_serial/usb_serial.c **** 
+ 244:.\usb_serial/usb_serial.c ****                if( usb_tx_count < 192 )
+ 689              		.loc 1 244 0
+ 690 009e 244B     		ldr	r3, .L67
+ 691 00a0 1B68     		ldr	r3, [r3]
+ 692 00a2 BF2B     		cmp	r3, #191
+ 693 00a4 06D8     		bhi	.L59
+ 245:.\usb_serial/usb_serial.c ****                {
+ 246:.\usb_serial/usb_serial.c ****                   tx_count = usb_tx_count-128;
+ 694              		.loc 1 246 0
+ 695 00a6 224B     		ldr	r3, .L67
+ 696 00a8 1B68     		ldr	r3, [r3]
+ 697 00aa 803B     		subs	r3, r3, #128
+ 698 00ac 3B61     		str	r3, [r7, #16]
+ 247:.\usb_serial/usb_serial.c ****                   done_flag = 1;
+ 699              		.loc 1 247 0
+ 700 00ae 0123     		movs	r3, #1
+ 701 00b0 7B61     		str	r3, [r7, #20]
+ 702 00b2 01E0     		b	.L60
+ 703              	.L59:
+ 248:.\usb_serial/usb_serial.c ****                }
+ 249:.\usb_serial/usb_serial.c ****                else
+ 250:.\usb_serial/usb_serial.c ****                {
+ 251:.\usb_serial/usb_serial.c ****                   tx_count = 64;
+ 704              		.loc 1 251 0
+ 705 00b4 4023     		movs	r3, #64
+ 706 00b6 3B61     		str	r3, [r7, #16]
+ 707              	.L60:
+ 252:.\usb_serial/usb_serial.c ****                 }
+ 253:.\usb_serial/usb_serial.c ****                USBUART_1_PutData(&usb_tx_buffer[128], tx_count);
+ 708              		.loc 1 253 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 18
+
+
+ 709 00b8 3B69     		ldr	r3, [r7, #16]
+ 710 00ba 9BB2     		uxth	r3, r3
+ 711 00bc 1F48     		ldr	r0, .L67+12
+ 712 00be 1946     		mov	r1, r3
+ 713 00c0 FFF7FEFF 		bl	USBUART_1_PutData
+ 254:.\usb_serial/usb_serial.c **** 
+ 255:.\usb_serial/usb_serial.c ****               break;
+ 714              		.loc 1 255 0
+ 715 00c4 26E0     		b	.L45
+ 716              	.L50:
+ 256:.\usb_serial/usb_serial.c ****         
+ 257:.\usb_serial/usb_serial.c ****         case 3:
+ 258:.\usb_serial/usb_serial.c ****                if( usb_tx_count < 192 )
+ 717              		.loc 1 258 0
+ 718 00c6 1A4B     		ldr	r3, .L67
+ 719 00c8 1B68     		ldr	r3, [r3]
+ 720 00ca BF2B     		cmp	r3, #191
+ 721 00cc 01D8     		bhi	.L61
+ 259:.\usb_serial/usb_serial.c ****                {
+ 260:.\usb_serial/usb_serial.c ****                   return CF_DISABLE;
+ 722              		.loc 1 260 0
+ 723 00ce 0223     		movs	r3, #2
+ 724 00d0 2AE0     		b	.L55
+ 725              	.L61:
+ 261:.\usb_serial/usb_serial.c ****                }
+ 262:.\usb_serial/usb_serial.c **** 
+ 263:.\usb_serial/usb_serial.c ****                if( usb_tx_count < 255 )
+ 726              		.loc 1 263 0
+ 727 00d2 174B     		ldr	r3, .L67
+ 728 00d4 1B68     		ldr	r3, [r3]
+ 729 00d6 FE2B     		cmp	r3, #254
+ 730 00d8 06D8     		bhi	.L62
+ 264:.\usb_serial/usb_serial.c ****                {
+ 265:.\usb_serial/usb_serial.c ****                   tx_count = usb_tx_count-192;
+ 731              		.loc 1 265 0
+ 732 00da 154B     		ldr	r3, .L67
+ 733 00dc 1B68     		ldr	r3, [r3]
+ 734 00de C03B     		subs	r3, r3, #192
+ 735 00e0 3B61     		str	r3, [r7, #16]
+ 266:.\usb_serial/usb_serial.c ****                   done_flag = 1;
+ 736              		.loc 1 266 0
+ 737 00e2 0123     		movs	r3, #1
+ 738 00e4 7B61     		str	r3, [r7, #20]
+ 739 00e6 01E0     		b	.L63
+ 740              	.L62:
+ 267:.\usb_serial/usb_serial.c ****                }
+ 268:.\usb_serial/usb_serial.c ****                else
+ 269:.\usb_serial/usb_serial.c ****                {
+ 270:.\usb_serial/usb_serial.c ****                   tx_count = 64;
+ 741              		.loc 1 270 0
+ 742 00e8 4023     		movs	r3, #64
+ 743 00ea 3B61     		str	r3, [r7, #16]
+ 744              	.L63:
+ 271:.\usb_serial/usb_serial.c ****                 }
+ 272:.\usb_serial/usb_serial.c ****                USBUART_1_PutData(&usb_tx_buffer[196], tx_count);
+ 745              		.loc 1 272 0
+ 746 00ec 3B69     		ldr	r3, [r7, #16]
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 19
+
+
+ 747 00ee 9BB2     		uxth	r3, r3
+ 748 00f0 1348     		ldr	r0, .L67+16
+ 749 00f2 1946     		mov	r1, r3
+ 750 00f4 FFF7FEFF 		bl	USBUART_1_PutData
+ 273:.\usb_serial/usb_serial.c **** 
+ 274:.\usb_serial/usb_serial.c ****             break;
+ 751              		.loc 1 274 0
+ 752 00f8 0CE0     		b	.L45
+ 753              	.L51:
+ 275:.\usb_serial/usb_serial.c ****         
+ 276:.\usb_serial/usb_serial.c ****         case 4:
+ 277:.\usb_serial/usb_serial.c ****                if( usb_tx_count == 256 )
+ 754              		.loc 1 277 0
+ 755 00fa 0D4B     		ldr	r3, .L67
+ 756 00fc 1B68     		ldr	r3, [r3]
+ 757 00fe B3F5807F 		cmp	r3, #256
+ 758 0102 06D1     		bne	.L64
+ 278:.\usb_serial/usb_serial.c ****                {
+ 279:.\usb_serial/usb_serial.c ****                  USBUART_1_PutData(&usb_tx_buffer[0], 0);
+ 759              		.loc 1 279 0
+ 760 0104 0B48     		ldr	r0, .L67+4
+ 761 0106 0021     		movs	r1, #0
+ 762 0108 FFF7FEFF 		bl	USBUART_1_PutData
+ 280:.\usb_serial/usb_serial.c ****                  done_flag = 1;
+ 763              		.loc 1 280 0
+ 764 010c 0123     		movs	r3, #1
+ 765 010e 7B61     		str	r3, [r7, #20]
+ 281:.\usb_serial/usb_serial.c ****                }
+ 282:.\usb_serial/usb_serial.c ****                break;
+ 766              		.loc 1 282 0
+ 767 0110 FFE7     		b	.L66
+ 768              	.L64:
+ 769              	.L66:
+ 770 0112 00BF     		nop
+ 771              	.L45:
+ 283:.\usb_serial/usb_serial.c ****     }
+ 284:.\usb_serial/usb_serial.c ****     if( done_flag == 1 )
+ 772              		.loc 1 284 0
+ 773 0114 7B69     		ldr	r3, [r7, #20]
+ 774 0116 012B     		cmp	r3, #1
+ 775 0118 05D1     		bne	.L65
+ 285:.\usb_serial/usb_serial.c ****     {
+ 286:.\usb_serial/usb_serial.c ****          cf_enable_chain(  usb_rx_packet );
+ 776              		.loc 1 286 0
+ 777 011a 0720     		movs	r0, #7
+ 778 011c FFF7FEFF 		bl	cf_enable_chain
+ 287:.\usb_serial/usb_serial.c ****          cf_disable_chain( usb_tx_packet );
+ 779              		.loc 1 287 0
+ 780 0120 0920     		movs	r0, #9
+ 781 0122 FFF7FEFF 		bl	cf_disable_chain
+ 782              	.L65:
+ 288:.\usb_serial/usb_serial.c ****         
+ 289:.\usb_serial/usb_serial.c ****     }
+ 290:.\usb_serial/usb_serial.c ****     
+ 291:.\usb_serial/usb_serial.c ****     return CF_DISABLE;
+ 783              		.loc 1 291 0
+ 784 0126 0223     		movs	r3, #2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 20
+
+
+ 785              	.L55:
+ 292:.\usb_serial/usb_serial.c **** }
+ 786              		.loc 1 292 0
+ 787 0128 1846     		mov	r0, r3
+ 788 012a 1837     		adds	r7, r7, #24
+ 789              		.cfi_def_cfa_offset 8
+ 790 012c BD46     		mov	sp, r7
+ 791              		.cfi_def_cfa_register 13
+ 792              		@ sp needed
+ 793 012e 80BD     		pop	{r7, pc}
+ 794              	.L68:
+ 795              		.align	2
+ 796              	.L67:
+ 797 0130 04010000 		.word	usb_tx_count
+ 798 0134 08010000 		.word	usb_tx_buffer
+ 799 0138 48010000 		.word	usb_tx_buffer+64
+ 800 013c 88010000 		.word	usb_tx_buffer+128
+ 801 0140 CC010000 		.word	usb_tx_buffer+196
+ 802              		.cfi_endproc
+ 803              	.LFE70:
+ 804              		.size	usb_send_packet, .-usb_send_packet
+ 805              		.text
+ 806              	.Letext0:
+ 807              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 808              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 809              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
+ 810              		.section	.debug_info,"",%progbits
+ 811              	.Ldebug_info0:
+ 812 0000 D1040000 		.4byte	0x4d1
+ 813 0004 0400     		.2byte	0x4
+ 814 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 815 000a 04       		.byte	0x4
+ 816 000b 01       		.uleb128 0x1
+ 817 000c B3010000 		.4byte	.LASF39
+ 818 0010 01       		.byte	0x1
+ 819 0011 27000000 		.4byte	.LASF40
+ 820 0015 41020000 		.4byte	.LASF41
+ 821 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 822 001d 00000000 		.4byte	0
+ 823 0021 00000000 		.4byte	.Ldebug_line0
+ 824 0025 02       		.uleb128 0x2
+ 825 0026 01       		.byte	0x1
+ 826 0027 06       		.byte	0x6
+ 827 0028 D6020000 		.4byte	.LASF0
+ 828 002c 02       		.uleb128 0x2
+ 829 002d 01       		.byte	0x1
+ 830 002e 08       		.byte	0x8
+ 831 002f 82000000 		.4byte	.LASF1
+ 832 0033 02       		.uleb128 0x2
+ 833 0034 02       		.byte	0x2
+ 834 0035 05       		.byte	0x5
+ 835 0036 80020000 		.4byte	.LASF2
+ 836 003a 02       		.uleb128 0x2
+ 837 003b 02       		.byte	0x2
+ 838 003c 07       		.byte	0x7
+ 839 003d A2000000 		.4byte	.LASF3
+ 840 0041 03       		.uleb128 0x3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 21
+
+
+ 841 0042 00000000 		.4byte	.LASF9
+ 842 0046 02       		.byte	0x2
+ 843 0047 3F       		.byte	0x3f
+ 844 0048 4C000000 		.4byte	0x4c
+ 845 004c 02       		.uleb128 0x2
+ 846 004d 04       		.byte	0x4
+ 847 004e 05       		.byte	0x5
+ 848 004f A9020000 		.4byte	.LASF4
+ 849 0053 02       		.uleb128 0x2
+ 850 0054 04       		.byte	0x4
+ 851 0055 07       		.byte	0x7
+ 852 0056 90000000 		.4byte	.LASF5
+ 853 005a 02       		.uleb128 0x2
+ 854 005b 08       		.byte	0x8
+ 855 005c 05       		.byte	0x5
+ 856 005d A0010000 		.4byte	.LASF6
+ 857 0061 02       		.uleb128 0x2
+ 858 0062 08       		.byte	0x8
+ 859 0063 07       		.byte	0x7
+ 860 0064 73010000 		.4byte	.LASF7
+ 861 0068 04       		.uleb128 0x4
+ 862 0069 04       		.byte	0x4
+ 863 006a 05       		.byte	0x5
+ 864 006b 696E7400 		.ascii	"int\000"
+ 865 006f 02       		.uleb128 0x2
+ 866 0070 04       		.byte	0x4
+ 867 0071 07       		.byte	0x7
+ 868 0072 66010000 		.4byte	.LASF8
+ 869 0076 03       		.uleb128 0x3
+ 870 0077 4F000000 		.4byte	.LASF10
+ 871 007b 03       		.byte	0x3
+ 872 007c 2C       		.byte	0x2c
+ 873 007d 41000000 		.4byte	0x41
+ 874 0081 02       		.uleb128 0x2
+ 875 0082 04       		.byte	0x4
+ 876 0083 04       		.byte	0x4
+ 877 0084 6D000000 		.4byte	.LASF11
+ 878 0088 02       		.uleb128 0x2
+ 879 0089 08       		.byte	0x8
+ 880 008a 04       		.byte	0x4
+ 881 008b E2020000 		.4byte	.LASF12
+ 882 008f 02       		.uleb128 0x2
+ 883 0090 01       		.byte	0x1
+ 884 0091 08       		.byte	0x8
+ 885 0092 AE010000 		.4byte	.LASF13
+ 886 0096 02       		.uleb128 0x2
+ 887 0097 04       		.byte	0x4
+ 888 0098 07       		.byte	0x7
+ 889 0099 97010000 		.4byte	.LASF14
+ 890 009d 05       		.uleb128 0x5
+ 891 009e 9A020000 		.4byte	.LASF21
+ 892 00a2 01       		.byte	0x1
+ 893 00a3 13       		.byte	0x13
+ 894 00a4 68000000 		.4byte	0x68
+ 895 00a8 00000000 		.4byte	.LFB63
+ 896 00ac 20000000 		.4byte	.LFE63-.LFB63
+ 897 00b0 01       		.uleb128 0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 22
+
+
+ 898 00b1 9C       		.byte	0x9c
+ 899 00b2 0B010000 		.4byte	0x10b
+ 900 00b6 06       		.uleb128 0x6
+ 901 00b7 20010000 		.4byte	.LASF15
+ 902 00bb 01       		.byte	0x1
+ 903 00bc 13       		.byte	0x13
+ 904 00bd 6F000000 		.4byte	0x6f
+ 905 00c1 02       		.uleb128 0x2
+ 906 00c2 91       		.byte	0x91
+ 907 00c3 74       		.sleb128 -12
+ 908 00c4 06       		.uleb128 0x6
+ 909 00c5 08010000 		.4byte	.LASF16
+ 910 00c9 01       		.byte	0x1
+ 911 00ca 13       		.byte	0x13
+ 912 00cb 6F000000 		.4byte	0x6f
+ 913 00cf 02       		.uleb128 0x2
+ 914 00d0 91       		.byte	0x91
+ 915 00d1 70       		.sleb128 -16
+ 916 00d2 06       		.uleb128 0x6
+ 917 00d3 10010000 		.4byte	.LASF17
+ 918 00d7 01       		.byte	0x1
+ 919 00d8 14       		.byte	0x14
+ 920 00d9 6F000000 		.4byte	0x6f
+ 921 00dd 02       		.uleb128 0x2
+ 922 00de 91       		.byte	0x91
+ 923 00df 6C       		.sleb128 -20
+ 924 00e0 06       		.uleb128 0x6
+ 925 00e1 18010000 		.4byte	.LASF18
+ 926 00e5 01       		.byte	0x1
+ 927 00e6 14       		.byte	0x14
+ 928 00e7 6F000000 		.4byte	0x6f
+ 929 00eb 02       		.uleb128 0x2
+ 930 00ec 91       		.byte	0x91
+ 931 00ed 68       		.sleb128 -24
+ 932 00ee 06       		.uleb128 0x6
+ 933 00ef 60010000 		.4byte	.LASF19
+ 934 00f3 01       		.byte	0x1
+ 935 00f4 14       		.byte	0x14
+ 936 00f5 6F000000 		.4byte	0x6f
+ 937 00f9 02       		.uleb128 0x2
+ 938 00fa 91       		.byte	0x91
+ 939 00fb 00       		.sleb128 0
+ 940 00fc 06       		.uleb128 0x6
+ 941 00fd 73000000 		.4byte	.LASF20
+ 942 0101 01       		.byte	0x1
+ 943 0102 14       		.byte	0x14
+ 944 0103 6F000000 		.4byte	0x6f
+ 945 0107 02       		.uleb128 0x2
+ 946 0108 91       		.byte	0x91
+ 947 0109 04       		.sleb128 4
+ 948 010a 00       		.byte	0
+ 949 010b 05       		.uleb128 0x5
+ 950 010c 28010000 		.4byte	.LASF22
+ 951 0110 01       		.byte	0x1
+ 952 0111 1B       		.byte	0x1b
+ 953 0112 68000000 		.4byte	0x68
+ 954 0116 00000000 		.4byte	.LFB64
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 23
+
+
+ 955 011a 40000000 		.4byte	.LFE64-.LFB64
+ 956 011e 01       		.uleb128 0x1
+ 957 011f 9C       		.byte	0x9c
+ 958 0120 87010000 		.4byte	0x187
+ 959 0124 06       		.uleb128 0x6
+ 960 0125 20010000 		.4byte	.LASF15
+ 961 0129 01       		.byte	0x1
+ 962 012a 1B       		.byte	0x1b
+ 963 012b 6F000000 		.4byte	0x6f
+ 964 012f 02       		.uleb128 0x2
+ 965 0130 91       		.byte	0x91
+ 966 0131 6C       		.sleb128 -20
+ 967 0132 06       		.uleb128 0x6
+ 968 0133 08010000 		.4byte	.LASF16
+ 969 0137 01       		.byte	0x1
+ 970 0138 1B       		.byte	0x1b
+ 971 0139 6F000000 		.4byte	0x6f
+ 972 013d 02       		.uleb128 0x2
+ 973 013e 91       		.byte	0x91
+ 974 013f 68       		.sleb128 -24
+ 975 0140 06       		.uleb128 0x6
+ 976 0141 10010000 		.4byte	.LASF17
+ 977 0145 01       		.byte	0x1
+ 978 0146 1C       		.byte	0x1c
+ 979 0147 6F000000 		.4byte	0x6f
+ 980 014b 02       		.uleb128 0x2
+ 981 014c 91       		.byte	0x91
+ 982 014d 64       		.sleb128 -28
+ 983 014e 06       		.uleb128 0x6
+ 984 014f 18010000 		.4byte	.LASF18
+ 985 0153 01       		.byte	0x1
+ 986 0154 1C       		.byte	0x1c
+ 987 0155 6F000000 		.4byte	0x6f
+ 988 0159 02       		.uleb128 0x2
+ 989 015a 91       		.byte	0x91
+ 990 015b 60       		.sleb128 -32
+ 991 015c 06       		.uleb128 0x6
+ 992 015d 60010000 		.4byte	.LASF19
+ 993 0161 01       		.byte	0x1
+ 994 0162 1C       		.byte	0x1c
+ 995 0163 6F000000 		.4byte	0x6f
+ 996 0167 02       		.uleb128 0x2
+ 997 0168 91       		.byte	0x91
+ 998 0169 00       		.sleb128 0
+ 999 016a 06       		.uleb128 0x6
+ 1000 016b 73000000 		.4byte	.LASF20
+ 1001 016f 01       		.byte	0x1
+ 1002 0170 1C       		.byte	0x1c
+ 1003 0171 6F000000 		.4byte	0x6f
+ 1004 0175 02       		.uleb128 0x2
+ 1005 0176 91       		.byte	0x91
+ 1006 0177 04       		.sleb128 4
+ 1007 0178 07       		.uleb128 0x7
+ 1008 0179 60000000 		.4byte	.LASF24
+ 1009 017d 01       		.byte	0x1
+ 1010 017e 1E       		.byte	0x1e
+ 1011 017f 68000000 		.4byte	0x68
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 24
+
+
+ 1012 0183 02       		.uleb128 0x2
+ 1013 0184 91       		.byte	0x91
+ 1014 0185 74       		.sleb128 -12
+ 1015 0186 00       		.byte	0
+ 1016 0187 05       		.uleb128 0x5
+ 1017 0188 EC000000 		.4byte	.LASF23
+ 1018 018c 01       		.byte	0x1
+ 1019 018d 32       		.byte	0x32
+ 1020 018e 68000000 		.4byte	0x68
+ 1021 0192 00000000 		.4byte	.LFB65
+ 1022 0196 2C000000 		.4byte	.LFE65-.LFB65
+ 1023 019a 01       		.uleb128 0x1
+ 1024 019b 9C       		.byte	0x9c
+ 1025 019c 03020000 		.4byte	0x203
+ 1026 01a0 06       		.uleb128 0x6
+ 1027 01a1 20010000 		.4byte	.LASF15
+ 1028 01a5 01       		.byte	0x1
+ 1029 01a6 32       		.byte	0x32
+ 1030 01a7 6F000000 		.4byte	0x6f
+ 1031 01ab 02       		.uleb128 0x2
+ 1032 01ac 91       		.byte	0x91
+ 1033 01ad 6C       		.sleb128 -20
+ 1034 01ae 06       		.uleb128 0x6
+ 1035 01af 08010000 		.4byte	.LASF16
+ 1036 01b3 01       		.byte	0x1
+ 1037 01b4 32       		.byte	0x32
+ 1038 01b5 6F000000 		.4byte	0x6f
+ 1039 01b9 02       		.uleb128 0x2
+ 1040 01ba 91       		.byte	0x91
+ 1041 01bb 68       		.sleb128 -24
+ 1042 01bc 06       		.uleb128 0x6
+ 1043 01bd 10010000 		.4byte	.LASF17
+ 1044 01c1 01       		.byte	0x1
+ 1045 01c2 33       		.byte	0x33
+ 1046 01c3 6F000000 		.4byte	0x6f
+ 1047 01c7 02       		.uleb128 0x2
+ 1048 01c8 91       		.byte	0x91
+ 1049 01c9 64       		.sleb128 -28
+ 1050 01ca 06       		.uleb128 0x6
+ 1051 01cb 18010000 		.4byte	.LASF18
+ 1052 01cf 01       		.byte	0x1
+ 1053 01d0 33       		.byte	0x33
+ 1054 01d1 6F000000 		.4byte	0x6f
+ 1055 01d5 02       		.uleb128 0x2
+ 1056 01d6 91       		.byte	0x91
+ 1057 01d7 60       		.sleb128 -32
+ 1058 01d8 06       		.uleb128 0x6
+ 1059 01d9 60010000 		.4byte	.LASF19
+ 1060 01dd 01       		.byte	0x1
+ 1061 01de 33       		.byte	0x33
+ 1062 01df 6F000000 		.4byte	0x6f
+ 1063 01e3 02       		.uleb128 0x2
+ 1064 01e4 91       		.byte	0x91
+ 1065 01e5 00       		.sleb128 0
+ 1066 01e6 06       		.uleb128 0x6
+ 1067 01e7 73000000 		.4byte	.LASF20
+ 1068 01eb 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 25
+
+
+ 1069 01ec 33       		.byte	0x33
+ 1070 01ed 6F000000 		.4byte	0x6f
+ 1071 01f1 02       		.uleb128 0x2
+ 1072 01f2 91       		.byte	0x91
+ 1073 01f3 04       		.sleb128 4
+ 1074 01f4 07       		.uleb128 0x7
+ 1075 01f5 60000000 		.4byte	.LASF24
+ 1076 01f9 01       		.byte	0x1
+ 1077 01fa 35       		.byte	0x35
+ 1078 01fb 68000000 		.4byte	0x68
+ 1079 01ff 02       		.uleb128 0x2
+ 1080 0200 91       		.byte	0x91
+ 1081 0201 74       		.sleb128 -12
+ 1082 0202 00       		.byte	0
+ 1083 0203 05       		.uleb128 0x5
+ 1084 0204 8A020000 		.4byte	.LASF25
+ 1085 0208 01       		.byte	0x1
+ 1086 0209 44       		.byte	0x44
+ 1087 020a 68000000 		.4byte	0x68
+ 1088 020e 00000000 		.4byte	.LFB66
+ 1089 0212 3E000000 		.4byte	.LFE66-.LFB66
+ 1090 0216 01       		.uleb128 0x1
+ 1091 0217 9C       		.byte	0x9c
+ 1092 0218 7F020000 		.4byte	0x27f
+ 1093 021c 06       		.uleb128 0x6
+ 1094 021d 20010000 		.4byte	.LASF15
+ 1095 0221 01       		.byte	0x1
+ 1096 0222 44       		.byte	0x44
+ 1097 0223 6F000000 		.4byte	0x6f
+ 1098 0227 02       		.uleb128 0x2
+ 1099 0228 91       		.byte	0x91
+ 1100 0229 6C       		.sleb128 -20
+ 1101 022a 06       		.uleb128 0x6
+ 1102 022b 57000000 		.4byte	.LASF26
+ 1103 022f 01       		.byte	0x1
+ 1104 0230 44       		.byte	0x44
+ 1105 0231 6F000000 		.4byte	0x6f
+ 1106 0235 02       		.uleb128 0x2
+ 1107 0236 91       		.byte	0x91
+ 1108 0237 68       		.sleb128 -24
+ 1109 0238 06       		.uleb128 0x6
+ 1110 0239 10010000 		.4byte	.LASF17
+ 1111 023d 01       		.byte	0x1
+ 1112 023e 45       		.byte	0x45
+ 1113 023f 6F000000 		.4byte	0x6f
+ 1114 0243 02       		.uleb128 0x2
+ 1115 0244 91       		.byte	0x91
+ 1116 0245 64       		.sleb128 -28
+ 1117 0246 06       		.uleb128 0x6
+ 1118 0247 18010000 		.4byte	.LASF18
+ 1119 024b 01       		.byte	0x1
+ 1120 024c 45       		.byte	0x45
+ 1121 024d 6F000000 		.4byte	0x6f
+ 1122 0251 02       		.uleb128 0x2
+ 1123 0252 91       		.byte	0x91
+ 1124 0253 60       		.sleb128 -32
+ 1125 0254 06       		.uleb128 0x6
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 26
+
+
+ 1126 0255 60010000 		.4byte	.LASF19
+ 1127 0259 01       		.byte	0x1
+ 1128 025a 45       		.byte	0x45
+ 1129 025b 6F000000 		.4byte	0x6f
+ 1130 025f 02       		.uleb128 0x2
+ 1131 0260 91       		.byte	0x91
+ 1132 0261 00       		.sleb128 0
+ 1133 0262 06       		.uleb128 0x6
+ 1134 0263 73000000 		.4byte	.LASF20
+ 1135 0267 01       		.byte	0x1
+ 1136 0268 45       		.byte	0x45
+ 1137 0269 6F000000 		.4byte	0x6f
+ 1138 026d 02       		.uleb128 0x2
+ 1139 026e 91       		.byte	0x91
+ 1140 026f 04       		.sleb128 4
+ 1141 0270 07       		.uleb128 0x7
+ 1142 0271 60000000 		.4byte	.LASF24
+ 1143 0275 01       		.byte	0x1
+ 1144 0276 47       		.byte	0x47
+ 1145 0277 68000000 		.4byte	0x68
+ 1146 027b 02       		.uleb128 0x2
+ 1147 027c 91       		.byte	0x91
+ 1148 027d 74       		.sleb128 -12
+ 1149 027e 00       		.byte	0
+ 1150 027f 05       		.uleb128 0x5
+ 1151 0280 C0020000 		.4byte	.LASF27
+ 1152 0284 01       		.byte	0x1
+ 1153 0285 5E       		.byte	0x5e
+ 1154 0286 68000000 		.4byte	0x68
+ 1155 028a 00000000 		.4byte	.LFB67
+ 1156 028e 24010000 		.4byte	.LFE67-.LFB67
+ 1157 0292 01       		.uleb128 0x1
+ 1158 0293 9C       		.byte	0x9c
+ 1159 0294 FB020000 		.4byte	0x2fb
+ 1160 0298 06       		.uleb128 0x6
+ 1161 0299 20010000 		.4byte	.LASF15
+ 1162 029d 01       		.byte	0x1
+ 1163 029e 5E       		.byte	0x5e
+ 1164 029f 6F000000 		.4byte	0x6f
+ 1165 02a3 02       		.uleb128 0x2
+ 1166 02a4 91       		.byte	0x91
+ 1167 02a5 6C       		.sleb128 -20
+ 1168 02a6 06       		.uleb128 0x6
+ 1169 02a7 E2000000 		.4byte	.LASF28
+ 1170 02ab 01       		.byte	0x1
+ 1171 02ac 5E       		.byte	0x5e
+ 1172 02ad 6F000000 		.4byte	0x6f
+ 1173 02b1 02       		.uleb128 0x2
+ 1174 02b2 91       		.byte	0x91
+ 1175 02b3 68       		.sleb128 -24
+ 1176 02b4 06       		.uleb128 0x6
+ 1177 02b5 10010000 		.4byte	.LASF17
+ 1178 02b9 01       		.byte	0x1
+ 1179 02ba 5F       		.byte	0x5f
+ 1180 02bb 6F000000 		.4byte	0x6f
+ 1181 02bf 02       		.uleb128 0x2
+ 1182 02c0 91       		.byte	0x91
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 27
+
+
+ 1183 02c1 64       		.sleb128 -28
+ 1184 02c2 06       		.uleb128 0x6
+ 1185 02c3 18010000 		.4byte	.LASF18
+ 1186 02c7 01       		.byte	0x1
+ 1187 02c8 5F       		.byte	0x5f
+ 1188 02c9 6F000000 		.4byte	0x6f
+ 1189 02cd 02       		.uleb128 0x2
+ 1190 02ce 91       		.byte	0x91
+ 1191 02cf 60       		.sleb128 -32
+ 1192 02d0 06       		.uleb128 0x6
+ 1193 02d1 60010000 		.4byte	.LASF19
+ 1194 02d5 01       		.byte	0x1
+ 1195 02d6 5F       		.byte	0x5f
+ 1196 02d7 6F000000 		.4byte	0x6f
+ 1197 02db 02       		.uleb128 0x2
+ 1198 02dc 91       		.byte	0x91
+ 1199 02dd 00       		.sleb128 0
+ 1200 02de 06       		.uleb128 0x6
+ 1201 02df 73000000 		.4byte	.LASF20
+ 1202 02e3 01       		.byte	0x1
+ 1203 02e4 5F       		.byte	0x5f
+ 1204 02e5 6F000000 		.4byte	0x6f
+ 1205 02e9 02       		.uleb128 0x2
+ 1206 02ea 91       		.byte	0x91
+ 1207 02eb 04       		.sleb128 4
+ 1208 02ec 07       		.uleb128 0x7
+ 1209 02ed 78000000 		.4byte	.LASF29
+ 1210 02f1 01       		.byte	0x1
+ 1211 02f2 61       		.byte	0x61
+ 1212 02f3 68000000 		.4byte	0x68
+ 1213 02f7 02       		.uleb128 0x2
+ 1214 02f8 91       		.byte	0x91
+ 1215 02f9 74       		.sleb128 -12
+ 1216 02fa 00       		.byte	0
+ 1217 02fb 05       		.uleb128 0x5
+ 1218 02fc C7000000 		.4byte	.LASF30
+ 1219 0300 01       		.byte	0x1
+ 1220 0301 A2       		.byte	0xa2
+ 1221 0302 68000000 		.4byte	0x68
+ 1222 0306 00000000 		.4byte	.LFB68
+ 1223 030a 58000000 		.4byte	.LFE68-.LFB68
+ 1224 030e 01       		.uleb128 0x1
+ 1225 030f 9C       		.byte	0x9c
+ 1226 0310 69030000 		.4byte	0x369
+ 1227 0314 06       		.uleb128 0x6
+ 1228 0315 20010000 		.4byte	.LASF15
+ 1229 0319 01       		.byte	0x1
+ 1230 031a A2       		.byte	0xa2
+ 1231 031b 6F000000 		.4byte	0x6f
+ 1232 031f 02       		.uleb128 0x2
+ 1233 0320 91       		.byte	0x91
+ 1234 0321 74       		.sleb128 -12
+ 1235 0322 06       		.uleb128 0x6
+ 1236 0323 08010000 		.4byte	.LASF16
+ 1237 0327 01       		.byte	0x1
+ 1238 0328 A2       		.byte	0xa2
+ 1239 0329 6F000000 		.4byte	0x6f
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 28
+
+
+ 1240 032d 02       		.uleb128 0x2
+ 1241 032e 91       		.byte	0x91
+ 1242 032f 70       		.sleb128 -16
+ 1243 0330 06       		.uleb128 0x6
+ 1244 0331 10010000 		.4byte	.LASF17
+ 1245 0335 01       		.byte	0x1
+ 1246 0336 A3       		.byte	0xa3
+ 1247 0337 6F000000 		.4byte	0x6f
+ 1248 033b 02       		.uleb128 0x2
+ 1249 033c 91       		.byte	0x91
+ 1250 033d 6C       		.sleb128 -20
+ 1251 033e 06       		.uleb128 0x6
+ 1252 033f 18010000 		.4byte	.LASF18
+ 1253 0343 01       		.byte	0x1
+ 1254 0344 A3       		.byte	0xa3
+ 1255 0345 6F000000 		.4byte	0x6f
+ 1256 0349 02       		.uleb128 0x2
+ 1257 034a 91       		.byte	0x91
+ 1258 034b 68       		.sleb128 -24
+ 1259 034c 06       		.uleb128 0x6
+ 1260 034d 60010000 		.4byte	.LASF19
+ 1261 0351 01       		.byte	0x1
+ 1262 0352 A3       		.byte	0xa3
+ 1263 0353 6F000000 		.4byte	0x6f
+ 1264 0357 02       		.uleb128 0x2
+ 1265 0358 91       		.byte	0x91
+ 1266 0359 00       		.sleb128 0
+ 1267 035a 06       		.uleb128 0x6
+ 1268 035b 73000000 		.4byte	.LASF20
+ 1269 035f 01       		.byte	0x1
+ 1270 0360 A3       		.byte	0xa3
+ 1271 0361 6F000000 		.4byte	0x6f
+ 1272 0365 02       		.uleb128 0x2
+ 1273 0366 91       		.byte	0x91
+ 1274 0367 04       		.sleb128 4
+ 1275 0368 00       		.byte	0
+ 1276 0369 05       		.uleb128 0x5
+ 1277 036a 42010000 		.4byte	.LASF31
+ 1278 036e 01       		.byte	0x1
+ 1279 036f B7       		.byte	0xb7
+ 1280 0370 68000000 		.4byte	0x68
+ 1281 0374 00000000 		.4byte	.LFB69
+ 1282 0378 2C000000 		.4byte	.LFE69-.LFB69
+ 1283 037c 01       		.uleb128 0x1
+ 1284 037d 9C       		.byte	0x9c
+ 1285 037e E5030000 		.4byte	0x3e5
+ 1286 0382 06       		.uleb128 0x6
+ 1287 0383 20010000 		.4byte	.LASF15
+ 1288 0387 01       		.byte	0x1
+ 1289 0388 B7       		.byte	0xb7
+ 1290 0389 6F000000 		.4byte	0x6f
+ 1291 038d 02       		.uleb128 0x2
+ 1292 038e 91       		.byte	0x91
+ 1293 038f 6C       		.sleb128 -20
+ 1294 0390 06       		.uleb128 0x6
+ 1295 0391 08010000 		.4byte	.LASF16
+ 1296 0395 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 29
+
+
+ 1297 0396 B7       		.byte	0xb7
+ 1298 0397 6F000000 		.4byte	0x6f
+ 1299 039b 02       		.uleb128 0x2
+ 1300 039c 91       		.byte	0x91
+ 1301 039d 68       		.sleb128 -24
+ 1302 039e 06       		.uleb128 0x6
+ 1303 039f 10010000 		.4byte	.LASF17
+ 1304 03a3 01       		.byte	0x1
+ 1305 03a4 B8       		.byte	0xb8
+ 1306 03a5 6F000000 		.4byte	0x6f
+ 1307 03a9 02       		.uleb128 0x2
+ 1308 03aa 91       		.byte	0x91
+ 1309 03ab 64       		.sleb128 -28
+ 1310 03ac 06       		.uleb128 0x6
+ 1311 03ad 18010000 		.4byte	.LASF18
+ 1312 03b1 01       		.byte	0x1
+ 1313 03b2 B8       		.byte	0xb8
+ 1314 03b3 6F000000 		.4byte	0x6f
+ 1315 03b7 02       		.uleb128 0x2
+ 1316 03b8 91       		.byte	0x91
+ 1317 03b9 60       		.sleb128 -32
+ 1318 03ba 06       		.uleb128 0x6
+ 1319 03bb 60010000 		.4byte	.LASF19
+ 1320 03bf 01       		.byte	0x1
+ 1321 03c0 B8       		.byte	0xb8
+ 1322 03c1 6F000000 		.4byte	0x6f
+ 1323 03c5 02       		.uleb128 0x2
+ 1324 03c6 91       		.byte	0x91
+ 1325 03c7 00       		.sleb128 0
+ 1326 03c8 06       		.uleb128 0x6
+ 1327 03c9 73000000 		.4byte	.LASF20
+ 1328 03cd 01       		.byte	0x1
+ 1329 03ce B8       		.byte	0xb8
+ 1330 03cf 6F000000 		.4byte	0x6f
+ 1331 03d3 02       		.uleb128 0x2
+ 1332 03d4 91       		.byte	0x91
+ 1333 03d5 04       		.sleb128 4
+ 1334 03d6 07       		.uleb128 0x7
+ 1335 03d7 60000000 		.4byte	.LASF24
+ 1336 03db 01       		.byte	0x1
+ 1337 03dc BA       		.byte	0xba
+ 1338 03dd 68000000 		.4byte	0x68
+ 1339 03e1 02       		.uleb128 0x2
+ 1340 03e2 91       		.byte	0x91
+ 1341 03e3 74       		.sleb128 -12
+ 1342 03e4 00       		.byte	0
+ 1343 03e5 05       		.uleb128 0x5
+ 1344 03e6 0A000000 		.4byte	.LASF32
+ 1345 03ea 01       		.byte	0x1
+ 1346 03eb C6       		.byte	0xc6
+ 1347 03ec 68000000 		.4byte	0x68
+ 1348 03f0 00000000 		.4byte	.LFB70
+ 1349 03f4 44010000 		.4byte	.LFE70-.LFB70
+ 1350 03f8 01       		.uleb128 0x1
+ 1351 03f9 9C       		.byte	0x9c
+ 1352 03fa 6F040000 		.4byte	0x46f
+ 1353 03fe 06       		.uleb128 0x6
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 30
+
+
+ 1354 03ff 20010000 		.4byte	.LASF15
+ 1355 0403 01       		.byte	0x1
+ 1356 0404 C6       		.byte	0xc6
+ 1357 0405 6F000000 		.4byte	0x6f
+ 1358 0409 02       		.uleb128 0x2
+ 1359 040a 91       		.byte	0x91
+ 1360 040b 6C       		.sleb128 -20
+ 1361 040c 06       		.uleb128 0x6
+ 1362 040d BE000000 		.4byte	.LASF33
+ 1363 0411 01       		.byte	0x1
+ 1364 0412 C6       		.byte	0xc6
+ 1365 0413 6F000000 		.4byte	0x6f
+ 1366 0417 02       		.uleb128 0x2
+ 1367 0418 91       		.byte	0x91
+ 1368 0419 68       		.sleb128 -24
+ 1369 041a 06       		.uleb128 0x6
+ 1370 041b 10010000 		.4byte	.LASF17
+ 1371 041f 01       		.byte	0x1
+ 1372 0420 C7       		.byte	0xc7
+ 1373 0421 6F000000 		.4byte	0x6f
+ 1374 0425 02       		.uleb128 0x2
+ 1375 0426 91       		.byte	0x91
+ 1376 0427 64       		.sleb128 -28
+ 1377 0428 06       		.uleb128 0x6
+ 1378 0429 18010000 		.4byte	.LASF18
+ 1379 042d 01       		.byte	0x1
+ 1380 042e C7       		.byte	0xc7
+ 1381 042f 6F000000 		.4byte	0x6f
+ 1382 0433 02       		.uleb128 0x2
+ 1383 0434 91       		.byte	0x91
+ 1384 0435 60       		.sleb128 -32
+ 1385 0436 06       		.uleb128 0x6
+ 1386 0437 60010000 		.4byte	.LASF19
+ 1387 043b 01       		.byte	0x1
+ 1388 043c C7       		.byte	0xc7
+ 1389 043d 6F000000 		.4byte	0x6f
+ 1390 0441 02       		.uleb128 0x2
+ 1391 0442 91       		.byte	0x91
+ 1392 0443 00       		.sleb128 0
+ 1393 0444 06       		.uleb128 0x6
+ 1394 0445 73000000 		.4byte	.LASF20
+ 1395 0449 01       		.byte	0x1
+ 1396 044a C7       		.byte	0xc7
+ 1397 044b 6F000000 		.4byte	0x6f
+ 1398 044f 02       		.uleb128 0x2
+ 1399 0450 91       		.byte	0x91
+ 1400 0451 04       		.sleb128 4
+ 1401 0452 07       		.uleb128 0x7
+ 1402 0453 78000000 		.4byte	.LASF29
+ 1403 0457 01       		.byte	0x1
+ 1404 0458 C9       		.byte	0xc9
+ 1405 0459 68000000 		.4byte	0x68
+ 1406 045d 02       		.uleb128 0x2
+ 1407 045e 91       		.byte	0x91
+ 1408 045f 74       		.sleb128 -12
+ 1409 0460 07       		.uleb128 0x7
+ 1410 0461 B5000000 		.4byte	.LASF34
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 31
+
+
+ 1411 0465 01       		.byte	0x1
+ 1412 0466 CA       		.byte	0xca
+ 1413 0467 6F000000 		.4byte	0x6f
+ 1414 046b 02       		.uleb128 0x2
+ 1415 046c 91       		.byte	0x91
+ 1416 046d 70       		.sleb128 -16
+ 1417 046e 00       		.byte	0
+ 1418 046f 07       		.uleb128 0x7
+ 1419 0470 1A000000 		.4byte	.LASF35
+ 1420 0474 01       		.byte	0x1
+ 1421 0475 5B       		.byte	0x5b
+ 1422 0476 6F000000 		.4byte	0x6f
+ 1423 047a 05       		.uleb128 0x5
+ 1424 047b 03       		.byte	0x3
+ 1425 047c 00000000 		.4byte	usb_rx_count
+ 1426 0480 08       		.uleb128 0x8
+ 1427 0481 2C000000 		.4byte	0x2c
+ 1428 0485 90040000 		.4byte	0x490
+ 1429 0489 09       		.uleb128 0x9
+ 1430 048a 96000000 		.4byte	0x96
+ 1431 048e FF       		.byte	0xff
+ 1432 048f 00       		.byte	0
+ 1433 0490 07       		.uleb128 0x7
+ 1434 0491 41000000 		.4byte	.LASF36
+ 1435 0495 01       		.byte	0x1
+ 1436 0496 5C       		.byte	0x5c
+ 1437 0497 80040000 		.4byte	0x480
+ 1438 049b 05       		.uleb128 0x5
+ 1439 049c 03       		.byte	0x3
+ 1440 049d 04000000 		.4byte	usb_rx_buffer
+ 1441 04a1 07       		.uleb128 0x7
+ 1442 04a2 8A010000 		.4byte	.LASF37
+ 1443 04a6 01       		.byte	0x1
+ 1444 04a7 9E       		.byte	0x9e
+ 1445 04a8 6F000000 		.4byte	0x6f
+ 1446 04ac 05       		.uleb128 0x5
+ 1447 04ad 03       		.byte	0x3
+ 1448 04ae 04010000 		.4byte	usb_tx_count
+ 1449 04b2 07       		.uleb128 0x7
+ 1450 04b3 B2020000 		.4byte	.LASF38
+ 1451 04b7 01       		.byte	0x1
+ 1452 04b8 9F       		.byte	0x9f
+ 1453 04b9 80040000 		.4byte	0x480
+ 1454 04bd 05       		.uleb128 0x5
+ 1455 04be 03       		.byte	0x3
+ 1456 04bf 08010000 		.4byte	usb_tx_buffer
+ 1457 04c3 0A       		.uleb128 0xa
+ 1458 04c4 53010000 		.4byte	.LASF42
+ 1459 04c8 04       		.byte	0x4
+ 1460 04c9 5506     		.2byte	0x655
+ 1461 04cb CF040000 		.4byte	0x4cf
+ 1462 04cf 0B       		.uleb128 0xb
+ 1463 04d0 76000000 		.4byte	0x76
+ 1464 04d4 00       		.byte	0
+ 1465              		.section	.debug_abbrev,"",%progbits
+ 1466              	.Ldebug_abbrev0:
+ 1467 0000 01       		.uleb128 0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 32
+
+
+ 1468 0001 11       		.uleb128 0x11
+ 1469 0002 01       		.byte	0x1
+ 1470 0003 25       		.uleb128 0x25
+ 1471 0004 0E       		.uleb128 0xe
+ 1472 0005 13       		.uleb128 0x13
+ 1473 0006 0B       		.uleb128 0xb
+ 1474 0007 03       		.uleb128 0x3
+ 1475 0008 0E       		.uleb128 0xe
+ 1476 0009 1B       		.uleb128 0x1b
+ 1477 000a 0E       		.uleb128 0xe
+ 1478 000b 55       		.uleb128 0x55
+ 1479 000c 17       		.uleb128 0x17
+ 1480 000d 11       		.uleb128 0x11
+ 1481 000e 01       		.uleb128 0x1
+ 1482 000f 10       		.uleb128 0x10
+ 1483 0010 17       		.uleb128 0x17
+ 1484 0011 00       		.byte	0
+ 1485 0012 00       		.byte	0
+ 1486 0013 02       		.uleb128 0x2
+ 1487 0014 24       		.uleb128 0x24
+ 1488 0015 00       		.byte	0
+ 1489 0016 0B       		.uleb128 0xb
+ 1490 0017 0B       		.uleb128 0xb
+ 1491 0018 3E       		.uleb128 0x3e
+ 1492 0019 0B       		.uleb128 0xb
+ 1493 001a 03       		.uleb128 0x3
+ 1494 001b 0E       		.uleb128 0xe
+ 1495 001c 00       		.byte	0
+ 1496 001d 00       		.byte	0
+ 1497 001e 03       		.uleb128 0x3
+ 1498 001f 16       		.uleb128 0x16
+ 1499 0020 00       		.byte	0
+ 1500 0021 03       		.uleb128 0x3
+ 1501 0022 0E       		.uleb128 0xe
+ 1502 0023 3A       		.uleb128 0x3a
+ 1503 0024 0B       		.uleb128 0xb
+ 1504 0025 3B       		.uleb128 0x3b
+ 1505 0026 0B       		.uleb128 0xb
+ 1506 0027 49       		.uleb128 0x49
+ 1507 0028 13       		.uleb128 0x13
+ 1508 0029 00       		.byte	0
+ 1509 002a 00       		.byte	0
+ 1510 002b 04       		.uleb128 0x4
+ 1511 002c 24       		.uleb128 0x24
+ 1512 002d 00       		.byte	0
+ 1513 002e 0B       		.uleb128 0xb
+ 1514 002f 0B       		.uleb128 0xb
+ 1515 0030 3E       		.uleb128 0x3e
+ 1516 0031 0B       		.uleb128 0xb
+ 1517 0032 03       		.uleb128 0x3
+ 1518 0033 08       		.uleb128 0x8
+ 1519 0034 00       		.byte	0
+ 1520 0035 00       		.byte	0
+ 1521 0036 05       		.uleb128 0x5
+ 1522 0037 2E       		.uleb128 0x2e
+ 1523 0038 01       		.byte	0x1
+ 1524 0039 3F       		.uleb128 0x3f
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 33
+
+
+ 1525 003a 19       		.uleb128 0x19
+ 1526 003b 03       		.uleb128 0x3
+ 1527 003c 0E       		.uleb128 0xe
+ 1528 003d 3A       		.uleb128 0x3a
+ 1529 003e 0B       		.uleb128 0xb
+ 1530 003f 3B       		.uleb128 0x3b
+ 1531 0040 0B       		.uleb128 0xb
+ 1532 0041 27       		.uleb128 0x27
+ 1533 0042 19       		.uleb128 0x19
+ 1534 0043 49       		.uleb128 0x49
+ 1535 0044 13       		.uleb128 0x13
+ 1536 0045 11       		.uleb128 0x11
+ 1537 0046 01       		.uleb128 0x1
+ 1538 0047 12       		.uleb128 0x12
+ 1539 0048 06       		.uleb128 0x6
+ 1540 0049 40       		.uleb128 0x40
+ 1541 004a 18       		.uleb128 0x18
+ 1542 004b 9642     		.uleb128 0x2116
+ 1543 004d 19       		.uleb128 0x19
+ 1544 004e 01       		.uleb128 0x1
+ 1545 004f 13       		.uleb128 0x13
+ 1546 0050 00       		.byte	0
+ 1547 0051 00       		.byte	0
+ 1548 0052 06       		.uleb128 0x6
+ 1549 0053 05       		.uleb128 0x5
+ 1550 0054 00       		.byte	0
+ 1551 0055 03       		.uleb128 0x3
+ 1552 0056 0E       		.uleb128 0xe
+ 1553 0057 3A       		.uleb128 0x3a
+ 1554 0058 0B       		.uleb128 0xb
+ 1555 0059 3B       		.uleb128 0x3b
+ 1556 005a 0B       		.uleb128 0xb
+ 1557 005b 49       		.uleb128 0x49
+ 1558 005c 13       		.uleb128 0x13
+ 1559 005d 02       		.uleb128 0x2
+ 1560 005e 18       		.uleb128 0x18
+ 1561 005f 00       		.byte	0
+ 1562 0060 00       		.byte	0
+ 1563 0061 07       		.uleb128 0x7
+ 1564 0062 34       		.uleb128 0x34
+ 1565 0063 00       		.byte	0
+ 1566 0064 03       		.uleb128 0x3
+ 1567 0065 0E       		.uleb128 0xe
+ 1568 0066 3A       		.uleb128 0x3a
+ 1569 0067 0B       		.uleb128 0xb
+ 1570 0068 3B       		.uleb128 0x3b
+ 1571 0069 0B       		.uleb128 0xb
+ 1572 006a 49       		.uleb128 0x49
+ 1573 006b 13       		.uleb128 0x13
+ 1574 006c 02       		.uleb128 0x2
+ 1575 006d 18       		.uleb128 0x18
+ 1576 006e 00       		.byte	0
+ 1577 006f 00       		.byte	0
+ 1578 0070 08       		.uleb128 0x8
+ 1579 0071 01       		.uleb128 0x1
+ 1580 0072 01       		.byte	0x1
+ 1581 0073 49       		.uleb128 0x49
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 34
+
+
+ 1582 0074 13       		.uleb128 0x13
+ 1583 0075 01       		.uleb128 0x1
+ 1584 0076 13       		.uleb128 0x13
+ 1585 0077 00       		.byte	0
+ 1586 0078 00       		.byte	0
+ 1587 0079 09       		.uleb128 0x9
+ 1588 007a 21       		.uleb128 0x21
+ 1589 007b 00       		.byte	0
+ 1590 007c 49       		.uleb128 0x49
+ 1591 007d 13       		.uleb128 0x13
+ 1592 007e 2F       		.uleb128 0x2f
+ 1593 007f 0B       		.uleb128 0xb
+ 1594 0080 00       		.byte	0
+ 1595 0081 00       		.byte	0
+ 1596 0082 0A       		.uleb128 0xa
+ 1597 0083 34       		.uleb128 0x34
+ 1598 0084 00       		.byte	0
+ 1599 0085 03       		.uleb128 0x3
+ 1600 0086 0E       		.uleb128 0xe
+ 1601 0087 3A       		.uleb128 0x3a
+ 1602 0088 0B       		.uleb128 0xb
+ 1603 0089 3B       		.uleb128 0x3b
+ 1604 008a 05       		.uleb128 0x5
+ 1605 008b 49       		.uleb128 0x49
+ 1606 008c 13       		.uleb128 0x13
+ 1607 008d 3F       		.uleb128 0x3f
+ 1608 008e 19       		.uleb128 0x19
+ 1609 008f 3C       		.uleb128 0x3c
+ 1610 0090 19       		.uleb128 0x19
+ 1611 0091 00       		.byte	0
+ 1612 0092 00       		.byte	0
+ 1613 0093 0B       		.uleb128 0xb
+ 1614 0094 35       		.uleb128 0x35
+ 1615 0095 00       		.byte	0
+ 1616 0096 49       		.uleb128 0x49
+ 1617 0097 13       		.uleb128 0x13
+ 1618 0098 00       		.byte	0
+ 1619 0099 00       		.byte	0
+ 1620 009a 00       		.byte	0
+ 1621              		.section	.debug_aranges,"",%progbits
+ 1622 0000 54000000 		.4byte	0x54
+ 1623 0004 0200     		.2byte	0x2
+ 1624 0006 00000000 		.4byte	.Ldebug_info0
+ 1625 000a 04       		.byte	0x4
+ 1626 000b 00       		.byte	0
+ 1627 000c 0000     		.2byte	0
+ 1628 000e 0000     		.2byte	0
+ 1629 0010 00000000 		.4byte	.LFB63
+ 1630 0014 20000000 		.4byte	.LFE63-.LFB63
+ 1631 0018 00000000 		.4byte	.LFB64
+ 1632 001c 40000000 		.4byte	.LFE64-.LFB64
+ 1633 0020 00000000 		.4byte	.LFB65
+ 1634 0024 2C000000 		.4byte	.LFE65-.LFB65
+ 1635 0028 00000000 		.4byte	.LFB66
+ 1636 002c 3E000000 		.4byte	.LFE66-.LFB66
+ 1637 0030 00000000 		.4byte	.LFB67
+ 1638 0034 24010000 		.4byte	.LFE67-.LFB67
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 35
+
+
+ 1639 0038 00000000 		.4byte	.LFB68
+ 1640 003c 58000000 		.4byte	.LFE68-.LFB68
+ 1641 0040 00000000 		.4byte	.LFB69
+ 1642 0044 2C000000 		.4byte	.LFE69-.LFB69
+ 1643 0048 00000000 		.4byte	.LFB70
+ 1644 004c 44010000 		.4byte	.LFE70-.LFB70
+ 1645 0050 00000000 		.4byte	0
+ 1646 0054 00000000 		.4byte	0
+ 1647              		.section	.debug_ranges,"",%progbits
+ 1648              	.Ldebug_ranges0:
+ 1649 0000 00000000 		.4byte	.LFB63
+ 1650 0004 20000000 		.4byte	.LFE63
+ 1651 0008 00000000 		.4byte	.LFB64
+ 1652 000c 40000000 		.4byte	.LFE64
+ 1653 0010 00000000 		.4byte	.LFB65
+ 1654 0014 2C000000 		.4byte	.LFE65
+ 1655 0018 00000000 		.4byte	.LFB66
+ 1656 001c 3E000000 		.4byte	.LFE66
+ 1657 0020 00000000 		.4byte	.LFB67
+ 1658 0024 24010000 		.4byte	.LFE67
+ 1659 0028 00000000 		.4byte	.LFB68
+ 1660 002c 58000000 		.4byte	.LFE68
+ 1661 0030 00000000 		.4byte	.LFB69
+ 1662 0034 2C000000 		.4byte	.LFE69
+ 1663 0038 00000000 		.4byte	.LFB70
+ 1664 003c 44010000 		.4byte	.LFE70
+ 1665 0040 00000000 		.4byte	0
+ 1666 0044 00000000 		.4byte	0
+ 1667              		.section	.debug_line,"",%progbits
+ 1668              	.Ldebug_line0:
+ 1669 0000 3F020000 		.section	.debug_str,"MS",%progbits,1
+ 1669      02004D01 
+ 1669      00000201 
+ 1669      FB0E0D00 
+ 1669      01010101 
+ 1670              	.LASF9:
+ 1671 0000 5F5F696E 		.ascii	"__int32_t\000"
+ 1671      7433325F 
+ 1671      7400
+ 1672              	.LASF32:
+ 1673 000a 7573625F 		.ascii	"usb_send_packet\000"
+ 1673      73656E64 
+ 1673      5F706163 
+ 1673      6B657400 
+ 1674              	.LASF35:
+ 1675 001a 7573625F 		.ascii	"usb_rx_count\000"
+ 1675      72785F63 
+ 1675      6F756E74 
+ 1675      00
+ 1676              	.LASF40:
+ 1677 0027 2E5C7573 		.ascii	".\\usb_serial\\usb_serial.c\000"
+ 1677      625F7365 
+ 1677      7269616C 
+ 1677      5C757362 
+ 1677      5F736572 
+ 1678              	.LASF36:
+ 1679 0041 7573625F 		.ascii	"usb_rx_buffer\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 36
+
+
+ 1679      72785F62 
+ 1679      75666665 
+ 1679      7200
+ 1680              	.LASF10:
+ 1681 004f 696E7433 		.ascii	"int32_t\000"
+ 1681      325F7400 
+ 1682              	.LASF26:
+ 1683 0057 74696D65 		.ascii	"time_out\000"
+ 1683      5F6F7574 
+ 1683      00
+ 1684              	.LASF24:
+ 1685 0060 72657475 		.ascii	"return_value\000"
+ 1685      726E5F76 
+ 1685      616C7565 
+ 1685      00
+ 1686              	.LASF11:
+ 1687 006d 666C6F61 		.ascii	"float\000"
+ 1687      7400
+ 1688              	.LASF20:
+ 1689 0073 64617461 		.ascii	"data\000"
+ 1689      00
+ 1690              	.LASF29:
+ 1691 0078 646F6E65 		.ascii	"done_flag\000"
+ 1691      5F666C61 
+ 1691      6700
+ 1692              	.LASF1:
+ 1693 0082 756E7369 		.ascii	"unsigned char\000"
+ 1693      676E6564 
+ 1693      20636861 
+ 1693      7200
+ 1694              	.LASF5:
+ 1695 0090 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1695      20756E73 
+ 1695      69676E65 
+ 1695      6420696E 
+ 1695      7400
+ 1696              	.LASF3:
+ 1697 00a2 73686F72 		.ascii	"short unsigned int\000"
+ 1697      7420756E 
+ 1697      7369676E 
+ 1697      65642069 
+ 1697      6E7400
+ 1698              	.LASF34:
+ 1699 00b5 74785F63 		.ascii	"tx_count\000"
+ 1699      6F756E74 
+ 1699      00
+ 1700              	.LASF33:
+ 1701 00be 74785F73 		.ascii	"tx_state\000"
+ 1701      74617465 
+ 1701      00
+ 1702              	.LASF30:
+ 1703 00c7 7573625F 		.ascii	"usb_process_modbus_message\000"
+ 1703      70726F63 
+ 1703      6573735F 
+ 1703      6D6F6462 
+ 1703      75735F6D 
+ 1704              	.LASF28:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 37
+
+
+ 1705 00e2 7573625F 		.ascii	"usb_block\000"
+ 1705      626C6F63 
+ 1705      6B00
+ 1706              	.LASF23:
+ 1707 00ec 7573625F 		.ascii	"usb_connection_still_active\000"
+ 1707      636F6E6E 
+ 1707      65637469 
+ 1707      6F6E5F73 
+ 1707      74696C6C 
+ 1708              	.LASF16:
+ 1709 0108 70617261 		.ascii	"param_1\000"
+ 1709      6D5F3100 
+ 1710              	.LASF17:
+ 1711 0110 70617261 		.ascii	"param_2\000"
+ 1711      6D5F3200 
+ 1712              	.LASF18:
+ 1713 0118 70617261 		.ascii	"param_3\000"
+ 1713      6D5F3300 
+ 1714              	.LASF15:
+ 1715 0120 6C696E6B 		.ascii	"link_id\000"
+ 1715      5F696400 
+ 1716              	.LASF22:
+ 1717 0128 7573625F 		.ascii	"usb_configuration_changed\000"
+ 1717      636F6E66 
+ 1717      69677572 
+ 1717      6174696F 
+ 1717      6E5F6368 
+ 1718              	.LASF31:
+ 1719 0142 7573625F 		.ascii	"usb_can_transmit\000"
+ 1719      63616E5F 
+ 1719      7472616E 
+ 1719      736D6974 
+ 1719      00
+ 1720              	.LASF42:
+ 1721 0153 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1721      52784275 
+ 1721      66666572 
+ 1721      00
+ 1722              	.LASF19:
+ 1723 0160 6576656E 		.ascii	"event\000"
+ 1723      7400
+ 1724              	.LASF8:
+ 1725 0166 756E7369 		.ascii	"unsigned int\000"
+ 1725      676E6564 
+ 1725      20696E74 
+ 1725      00
+ 1726              	.LASF7:
+ 1727 0173 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1727      206C6F6E 
+ 1727      6720756E 
+ 1727      7369676E 
+ 1727      65642069 
+ 1728              	.LASF37:
+ 1729 018a 7573625F 		.ascii	"usb_tx_count\000"
+ 1729      74785F63 
+ 1729      6F756E74 
+ 1729      00
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 38
+
+
+ 1730              	.LASF14:
+ 1731 0197 73697A65 		.ascii	"sizetype\000"
+ 1731      74797065 
+ 1731      00
+ 1732              	.LASF6:
+ 1733 01a0 6C6F6E67 		.ascii	"long long int\000"
+ 1733      206C6F6E 
+ 1733      6720696E 
+ 1733      7400
+ 1734              	.LASF13:
+ 1735 01ae 63686172 		.ascii	"char\000"
+ 1735      00
+ 1736              	.LASF39:
+ 1737 01b3 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 1737      4320342E 
+ 1737      392E3320 
+ 1737      32303135 
+ 1737      30333033 
+ 1738 01e6 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 1738      20726576 
+ 1738      6973696F 
+ 1738      6E203232 
+ 1738      31323230 
+ 1739 0219 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1739      66756E63 
+ 1739      74696F6E 
+ 1739      2D736563 
+ 1739      74696F6E 
+ 1740              	.LASF41:
+ 1741 0241 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\psoc-5lp\\5lp-rtu"
+ 1741      73657273 
+ 1741      5C676C65 
+ 1741      6E6E5C4F 
+ 1741      6E654472 
+ 1742 026e 5C555342 		.ascii	"\\USB_UART01.cydsn\000"
+ 1742      5F554152 
+ 1742      5430312E 
+ 1742      63796473 
+ 1742      6E00
+ 1743              	.LASF2:
+ 1744 0280 73686F72 		.ascii	"short int\000"
+ 1744      7420696E 
+ 1744      7400
+ 1745              	.LASF25:
+ 1746 028a 7573625F 		.ascii	"usb_can_receive\000"
+ 1746      63616E5F 
+ 1746      72656365 
+ 1746      69766500 
+ 1747              	.LASF21:
+ 1748 029a 696E6974 		.ascii	"initialize_usb\000"
+ 1748      69616C69 
+ 1748      7A655F75 
+ 1748      736200
+ 1749              	.LASF4:
+ 1750 02a9 6C6F6E67 		.ascii	"long int\000"
+ 1750      20696E74 
+ 1750      00
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc8SSIo9.s 			page 39
+
+
+ 1751              	.LASF38:
+ 1752 02b2 7573625F 		.ascii	"usb_tx_buffer\000"
+ 1752      74785F62 
+ 1752      75666665 
+ 1752      7200
+ 1753              	.LASF27:
+ 1754 02c0 70726F63 		.ascii	"process_usb_rx_packet\000"
+ 1754      6573735F 
+ 1754      7573625F 
+ 1754      72785F70 
+ 1754      61636B65 
+ 1755              	.LASF0:
+ 1756 02d6 7369676E 		.ascii	"signed char\000"
+ 1756      65642063 
+ 1756      68617200 
+ 1757              	.LASF12:
+ 1758 02e2 646F7562 		.ascii	"double\000"
+ 1758      6C6500
+ 1759              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

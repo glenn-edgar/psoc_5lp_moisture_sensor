@@ -1,0 +1,3521 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"moisture_measurements.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.bss
+  19              		.align	2
+  20              	reference_resistance:
+  21 0000 00000000 		.space	4
+  22              		.align	2
+  23              	current_channel:
+  24 0004 00000000 		.space	4
+  25              		.align	2
+  26              	source_voltage:
+  27 0008 00000000 		.space	4
+  28              		.align	2
+  29              	logging_flag:
+  30 000c 00000000 		.space	4
+  31              		.align	2
+  32              	active_flag:
+  33 0010 00000000 		.space	4
+  34              		.align	2
+  35              	measurement_minute_count:
+  36 0014 00000000 		.space	4
+  37              		.align	2
+  38              	sensor_type:
+  39 0018 00000000 		.space	4
+  40              		.align	2
+  41              	sigma_a_d_high:
+  42 001c 00000000 		.space	4
+  43              		.align	2
+  44              	moisture_meaurements:
+  45 0020 00000000 		.space	64
+  45      00000000 
+  45      00000000 
+  45      00000000 
+  45      00000000 
+  46              		.section	.text.init_moisture_processing,"ax",%progbits
+  47              		.align	2
+  48              		.global	init_moisture_processing
+  49              		.thumb
+  50              		.thumb_func
+  51              		.type	init_moisture_processing, %function
+  52              	init_moisture_processing:
+  53              	.LFB65:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 2
+
+
+  54              		.file 1 ".\\moisture_measurement\\moisture_measurements.c"
+   1:.\moisture_measurement/moisture_measurements.c **** /*
+   2:.\moisture_measurement/moisture_measurements.c **** **
+   3:.\moisture_measurement/moisture_measurements.c **** ** File: moisture_measurements.c
+   4:.\moisture_measurement/moisture_measurements.c **** **
+   5:.\moisture_measurement/moisture_measurements.c **** **
+   6:.\moisture_measurement/moisture_measurements.c **** **
+   7:.\moisture_measurement/moisture_measurements.c **** */
+   8:.\moisture_measurement/moisture_measurements.c **** 
+   9:.\moisture_measurement/moisture_measurements.c **** #include <device.h>
+  10:.\moisture_measurement/moisture_measurements.c **** #include "cf_external_functions.h"
+  11:.\moisture_measurement/moisture_measurements.c **** #include "moisture_measurements.h"
+  12:.\moisture_measurement/moisture_measurements.c **** #include "a_to_d_functions.h"
+  13:.\moisture_measurement/moisture_measurements.c **** #include "cf_events.h"
+  14:.\moisture_measurement/moisture_measurements.c **** #include "cb_logging.h"
+  15:.\moisture_measurement/moisture_measurements.c **** #include "process_modbus_message.h"
+  16:.\moisture_measurement/moisture_measurements.c **** #include "digitial_io.h"
+  17:.\moisture_measurement/moisture_measurements.c **** 
+  18:.\moisture_measurement/moisture_measurements.c **** static float reference_resistance;
+  19:.\moisture_measurement/moisture_measurements.c **** static int32 current_channel;
+  20:.\moisture_measurement/moisture_measurements.c **** static int32 source_voltage;
+  21:.\moisture_measurement/moisture_measurements.c **** 
+  22:.\moisture_measurement/moisture_measurements.c **** static uint32 logging_flag;
+  23:.\moisture_measurement/moisture_measurements.c **** static uint32 active_flag = 0;
+  24:.\moisture_measurement/moisture_measurements.c **** static uint32 measurement_minute_count = 0;
+  25:.\moisture_measurement/moisture_measurements.c **** static uint32 sensor_type;
+  26:.\moisture_measurement/moisture_measurements.c **** 
+  27:.\moisture_measurement/moisture_measurements.c **** static int32 sigma_a_d_high;
+  28:.\moisture_measurement/moisture_measurements.c **** 
+  29:.\moisture_measurement/moisture_measurements.c **** 
+  30:.\moisture_measurement/moisture_measurements.c **** 
+  31:.\moisture_measurement/moisture_measurements.c **** static float moisture_meaurements[ MOISTURE_SENSOR_NUMBER ];
+  32:.\moisture_measurement/moisture_measurements.c **** 
+  33:.\moisture_measurement/moisture_measurements.c **** 
+  34:.\moisture_measurement/moisture_measurements.c **** 
+  35:.\moisture_measurement/moisture_measurements.c **** 
+  36:.\moisture_measurement/moisture_measurements.c **** /*
+  37:.\moisture_measurement/moisture_measurements.c **** **
+  38:.\moisture_measurement/moisture_measurements.c **** ** Public ChainFlow Functions
+  39:.\moisture_measurement/moisture_measurements.c **** **
+  40:.\moisture_measurement/moisture_measurements.c **** **
+  41:.\moisture_measurement/moisture_measurements.c **** **
+  42:.\moisture_measurement/moisture_measurements.c **** */
+  43:.\moisture_measurement/moisture_measurements.c **** 
+  44:.\moisture_measurement/moisture_measurements.c **** /*
+  45:.\moisture_measurement/moisture_measurements.c **** ** Moisture Measurement Initialization Functions
+  46:.\moisture_measurement/moisture_measurements.c **** **
+  47:.\moisture_measurement/moisture_measurements.c **** **
+  48:.\moisture_measurement/moisture_measurements.c **** **
+  49:.\moisture_measurement/moisture_measurements.c **** */
+  50:.\moisture_measurement/moisture_measurements.c **** 
+  51:.\moisture_measurement/moisture_measurements.c **** int init_moisture_processing(unsigned link_id, unsigned param_1,
+  52:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+  53:.\moisture_measurement/moisture_measurements.c **** {
+  55              		.loc 1 53 0
+  56              		.cfi_startproc
+  57              		@ args = 8, pretend = 0, frame = 16
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 3
+
+
+  58              		@ frame_needed = 1, uses_anonymous_args = 0
+  59 0000 80B5     		push	{r7, lr}
+  60              		.cfi_def_cfa_offset 8
+  61              		.cfi_offset 7, -8
+  62              		.cfi_offset 14, -4
+  63 0002 84B0     		sub	sp, sp, #16
+  64              		.cfi_def_cfa_offset 24
+  65 0004 00AF     		add	r7, sp, #0
+  66              		.cfi_def_cfa_register 7
+  67 0006 F860     		str	r0, [r7, #12]
+  68 0008 B960     		str	r1, [r7, #8]
+  69 000a 7A60     		str	r2, [r7, #4]
+  70 000c 3B60     		str	r3, [r7]
+  54:.\moisture_measurement/moisture_measurements.c ****    logging_flag     = 0;
+  71              		.loc 1 54 0
+  72 000e 1D4B     		ldr	r3, .L3
+  73 0010 0022     		movs	r2, #0
+  74 0012 1A60     		str	r2, [r3]
+  55:.\moisture_measurement/moisture_measurements.c ****    active_flag      = 0;
+  75              		.loc 1 55 0
+  76 0014 1C4B     		ldr	r3, .L3+4
+  77 0016 0022     		movs	r2, #0
+  78 0018 1A60     		str	r2, [r3]
+  56:.\moisture_measurement/moisture_measurements.c ****    measurement_minute_count = 0;
+  79              		.loc 1 56 0
+  80 001a 1C4B     		ldr	r3, .L3+8
+  81 001c 0022     		movs	r2, #0
+  82 001e 1A60     		str	r2, [r3]
+  57:.\moisture_measurement/moisture_measurements.c ****    SIGMA_A_D_Start();
+  83              		.loc 1 57 0
+  84 0020 FFF7FEFF 		bl	SIGMA_A_D_Start
+  58:.\moisture_measurement/moisture_measurements.c **** 
+  59:.\moisture_measurement/moisture_measurements.c ****    Source_Reg_Write(0);
+  85              		.loc 1 59 0
+  86 0024 0020     		movs	r0, #0
+  87 0026 FFF7FEFF 		bl	Source_Reg_Write
+  60:.\moisture_measurement/moisture_measurements.c ****    Sink_Reg_Write(0);
+  88              		.loc 1 60 0
+  89 002a 0020     		movs	r0, #0
+  90 002c FFF7FEFF 		bl	Sink_Reg_Write
+  61:.\moisture_measurement/moisture_measurements.c ****  
+  62:.\moisture_measurement/moisture_measurements.c ****    SWITCH_CLOCK_Start();
+  91              		.loc 1 62 0
+  92 0030 FFF7FEFF 		bl	SWITCH_CLOCK_Start
+  63:.\moisture_measurement/moisture_measurements.c ****    Sink_Source_Setup_Start() ;
+  93              		.loc 1 63 0
+  94 0034 FFF7FEFF 		bl	Sink_Source_Setup_Start
+  64:.\moisture_measurement/moisture_measurements.c ****    Sink_Source_Setup_FastSelect(9) ;
+  95              		.loc 1 64 0
+  96 0038 0920     		movs	r0, #9
+  97 003a FFF7FEFF 		bl	Sink_Source_Setup_FastSelect
+  65:.\moisture_measurement/moisture_measurements.c ****    SIGMA_A_D_SelectConfiguration( 1,1);
+  98              		.loc 1 65 0
+  99 003e 0120     		movs	r0, #1
+ 100 0040 0121     		movs	r1, #1
+ 101 0042 FFF7FEFF 		bl	SIGMA_A_D_SelectConfiguration
+  66:.\moisture_measurement/moisture_measurements.c ****    SIGMA_A_D_StartConvert();
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 4
+
+
+ 102              		.loc 1 66 0
+ 103 0046 FFF7FEFF 		bl	SIGMA_A_D_StartConvert
+  67:.\moisture_measurement/moisture_measurements.c ****    SIGMA_A_D_IsEndConversion( SIGMA_A_D_WAIT_FOR_RESULT );  // conversion is 3000/sec  max wait tim
+ 104              		.loc 1 67 0
+ 105 004a 0020     		movs	r0, #0
+ 106 004c FFF7FEFF 		bl	SIGMA_A_D_IsEndConversion
+  68:.\moisture_measurement/moisture_measurements.c ****    Sink_Source_Setup_Start();
+ 107              		.loc 1 68 0
+ 108 0050 FFF7FEFF 		bl	Sink_Source_Setup_Start
+  69:.\moisture_measurement/moisture_measurements.c ****    Sink_Source_Setup_FastSelect(MOISTURE_SENSOR_NUMBER) ;
+ 109              		.loc 1 69 0
+ 110 0054 1020     		movs	r0, #16
+ 111 0056 FFF7FEFF 		bl	Sink_Source_Setup_FastSelect
+  70:.\moisture_measurement/moisture_measurements.c ****    SIGMA_A_D_SelectConfiguration( 1,1);
+ 112              		.loc 1 70 0
+ 113 005a 0120     		movs	r0, #1
+ 114 005c 0121     		movs	r1, #1
+ 115 005e FFF7FEFF 		bl	SIGMA_A_D_SelectConfiguration
+  71:.\moisture_measurement/moisture_measurements.c ****    SIGMA_A_D_StartConvert();
+ 116              		.loc 1 71 0
+ 117 0062 FFF7FEFF 		bl	SIGMA_A_D_StartConvert
+  72:.\moisture_measurement/moisture_measurements.c ****    SIGMA_A_D_IsEndConversion( SIGMA_A_D_WAIT_FOR_RESULT );  // conversion is 3000/sec  max wait tim
+ 118              		.loc 1 72 0
+ 119 0066 0020     		movs	r0, #0
+ 120 0068 FFF7FEFF 		bl	SIGMA_A_D_IsEndConversion
+  73:.\moisture_measurement/moisture_measurements.c ****    sigma_a_d_high  =   SIGMA_A_D_GetResult32();
+ 121              		.loc 1 73 0
+ 122 006c FFF7FEFF 		bl	SIGMA_A_D_GetResult32
+ 123 0070 0246     		mov	r2, r0
+ 124 0072 074B     		ldr	r3, .L3+12
+ 125 0074 1A60     		str	r2, [r3]
+  74:.\moisture_measurement/moisture_measurements.c ****    
+  75:.\moisture_measurement/moisture_measurements.c **** 
+  76:.\moisture_measurement/moisture_measurements.c ****    SIGMA_A_D_Sleep();
+ 126              		.loc 1 76 0
+ 127 0076 FFF7FEFF 		bl	SIGMA_A_D_Sleep
+  77:.\moisture_measurement/moisture_measurements.c ****    return 0;
+ 128              		.loc 1 77 0
+ 129 007a 0023     		movs	r3, #0
+  78:.\moisture_measurement/moisture_measurements.c **** }
+ 130              		.loc 1 78 0
+ 131 007c 1846     		mov	r0, r3
+ 132 007e 1037     		adds	r7, r7, #16
+ 133              		.cfi_def_cfa_offset 8
+ 134 0080 BD46     		mov	sp, r7
+ 135              		.cfi_def_cfa_register 13
+ 136              		@ sp needed
+ 137 0082 80BD     		pop	{r7, pc}
+ 138              	.L4:
+ 139              		.align	2
+ 140              	.L3:
+ 141 0084 0C000000 		.word	logging_flag
+ 142 0088 10000000 		.word	active_flag
+ 143 008c 14000000 		.word	measurement_minute_count
+ 144 0090 1C000000 		.word	sigma_a_d_high
+ 145              		.cfi_endproc
+ 146              	.LFE65:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 5
+
+
+ 147              		.size	init_moisture_processing, .-init_moisture_processing
+ 148              		.section	.text.process_moisture_interval_interrupt,"ax",%progbits
+ 149              		.align	2
+ 150              		.global	process_moisture_interval_interrupt
+ 151              		.thumb
+ 152              		.thumb_func
+ 153              		.type	process_moisture_interval_interrupt, %function
+ 154              	process_moisture_interval_interrupt:
+ 155              	.LFB66:
+  79:.\moisture_measurement/moisture_measurements.c **** 
+  80:.\moisture_measurement/moisture_measurements.c **** 
+  81:.\moisture_measurement/moisture_measurements.c **** 
+  82:.\moisture_measurement/moisture_measurements.c **** 
+  83:.\moisture_measurement/moisture_measurements.c **** 
+  84:.\moisture_measurement/moisture_measurements.c **** 
+  85:.\moisture_measurement/moisture_measurements.c **** 
+  86:.\moisture_measurement/moisture_measurements.c **** 
+  87:.\moisture_measurement/moisture_measurements.c **** 
+  88:.\moisture_measurement/moisture_measurements.c **** CY_ISR_PROTO(process_moisture_interval_interrupt)
+  89:.\moisture_measurement/moisture_measurements.c **** {
+ 156              		.loc 1 89 0
+ 157              		.cfi_startproc
+ 158              		@ args = 0, pretend = 0, frame = 0
+ 159              		@ frame_needed = 1, uses_anonymous_args = 0
+ 160 0000 80B5     		push	{r7, lr}
+ 161              		.cfi_def_cfa_offset 8
+ 162              		.cfi_offset 7, -8
+ 163              		.cfi_offset 14, -4
+ 164 0002 00AF     		add	r7, sp, #0
+ 165              		.cfi_def_cfa_register 7
+  90:.\moisture_measurement/moisture_measurements.c ****     ad_interrupt_1_ClearPending();
+ 166              		.loc 1 90 0
+ 167 0004 FFF7FEFF 		bl	ad_interrupt_1_ClearPending
+  91:.\moisture_measurement/moisture_measurements.c ****     cf_send_event(  CF_120HZ_TICK,0 );
+ 168              		.loc 1 91 0
+ 169 0008 0A20     		movs	r0, #10
+ 170 000a 0021     		movs	r1, #0
+ 171 000c FFF7FEFF 		bl	cf_send_event
+  92:.\moisture_measurement/moisture_measurements.c **** }
+ 172              		.loc 1 92 0
+ 173 0010 80BD     		pop	{r7, pc}
+ 174              		.cfi_endproc
+ 175              	.LFE66:
+ 176              		.size	process_moisture_interval_interrupt, .-process_moisture_interval_interrupt
+ 177 0012 00BF     		.section	.text.set_up_moisture_interrupt,"ax",%progbits
+ 178              		.align	2
+ 179              		.global	set_up_moisture_interrupt
+ 180              		.thumb
+ 181              		.thumb_func
+ 182              		.type	set_up_moisture_interrupt, %function
+ 183              	set_up_moisture_interrupt:
+ 184              	.LFB67:
+  93:.\moisture_measurement/moisture_measurements.c **** 
+  94:.\moisture_measurement/moisture_measurements.c **** 
+  95:.\moisture_measurement/moisture_measurements.c **** 
+  96:.\moisture_measurement/moisture_measurements.c **** 
+  97:.\moisture_measurement/moisture_measurements.c **** 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 6
+
+
+  98:.\moisture_measurement/moisture_measurements.c **** int set_up_moisture_interrupt(unsigned link_id, unsigned param_1,
+  99:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 100:.\moisture_measurement/moisture_measurements.c **** {
+ 185              		.loc 1 100 0
+ 186              		.cfi_startproc
+ 187              		@ args = 8, pretend = 0, frame = 16
+ 188              		@ frame_needed = 1, uses_anonymous_args = 0
+ 189 0000 80B5     		push	{r7, lr}
+ 190              		.cfi_def_cfa_offset 8
+ 191              		.cfi_offset 7, -8
+ 192              		.cfi_offset 14, -4
+ 193 0002 84B0     		sub	sp, sp, #16
+ 194              		.cfi_def_cfa_offset 24
+ 195 0004 00AF     		add	r7, sp, #0
+ 196              		.cfi_def_cfa_register 7
+ 197 0006 F860     		str	r0, [r7, #12]
+ 198 0008 B960     		str	r1, [r7, #8]
+ 199 000a 7A60     		str	r2, [r7, #4]
+ 200 000c 3B60     		str	r3, [r7]
+ 101:.\moisture_measurement/moisture_measurements.c ****     moisture_interval_clock_Start();
+ 201              		.loc 1 101 0
+ 202 000e FFF7FEFF 		bl	moisture_interval_clock_Start
+ 102:.\moisture_measurement/moisture_measurements.c ****     moisture_interval_interrupt_StartEx(process_moisture_interval_interrupt);
+ 203              		.loc 1 102 0
+ 204 0012 0448     		ldr	r0, .L8
+ 205 0014 FFF7FEFF 		bl	moisture_interval_interrupt_StartEx
+ 103:.\moisture_measurement/moisture_measurements.c ****     return 0;
+ 206              		.loc 1 103 0
+ 207 0018 0023     		movs	r3, #0
+ 104:.\moisture_measurement/moisture_measurements.c **** }
+ 208              		.loc 1 104 0
+ 209 001a 1846     		mov	r0, r3
+ 210 001c 1037     		adds	r7, r7, #16
+ 211              		.cfi_def_cfa_offset 8
+ 212 001e BD46     		mov	sp, r7
+ 213              		.cfi_def_cfa_register 13
+ 214              		@ sp needed
+ 215 0020 80BD     		pop	{r7, pc}
+ 216              	.L9:
+ 217 0022 00BF     		.align	2
+ 218              	.L8:
+ 219 0024 00000000 		.word	process_moisture_interval_interrupt
+ 220              		.cfi_endproc
+ 221              	.LFE67:
+ 222              		.size	set_up_moisture_interrupt, .-set_up_moisture_interrupt
+ 223              		.section	.text.check_moisture_active_flag,"ax",%progbits
+ 224              		.align	2
+ 225              		.global	check_moisture_active_flag
+ 226              		.thumb
+ 227              		.thumb_func
+ 228              		.type	check_moisture_active_flag, %function
+ 229              	check_moisture_active_flag:
+ 230              	.LFB68:
+ 105:.\moisture_measurement/moisture_measurements.c **** 
+ 106:.\moisture_measurement/moisture_measurements.c **** 
+ 107:.\moisture_measurement/moisture_measurements.c **** 
+ 108:.\moisture_measurement/moisture_measurements.c **** 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 7
+
+
+ 109:.\moisture_measurement/moisture_measurements.c **** /*
+ 110:.\moisture_measurement/moisture_measurements.c **** **  Monitor Pins to determine if active or if logging
+ 111:.\moisture_measurement/moisture_measurements.c **** **  Check to see if it is time to measure moisture
+ 112:.\moisture_measurement/moisture_measurements.c **** **
+ 113:.\moisture_measurement/moisture_measurements.c **** **
+ 114:.\moisture_measurement/moisture_measurements.c **** */
+ 115:.\moisture_measurement/moisture_measurements.c **** 
+ 116:.\moisture_measurement/moisture_measurements.c **** 
+ 117:.\moisture_measurement/moisture_measurements.c **** 
+ 118:.\moisture_measurement/moisture_measurements.c **** 
+ 119:.\moisture_measurement/moisture_measurements.c **** 
+ 120:.\moisture_measurement/moisture_measurements.c **** int check_moisture_active_flag(unsigned link_id, unsigned param_1,
+ 121:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 122:.\moisture_measurement/moisture_measurements.c **** {
+ 231              		.loc 1 122 0
+ 232              		.cfi_startproc
+ 233              		@ args = 8, pretend = 0, frame = 24
+ 234              		@ frame_needed = 1, uses_anonymous_args = 0
+ 235 0000 80B5     		push	{r7, lr}
+ 236              		.cfi_def_cfa_offset 8
+ 237              		.cfi_offset 7, -8
+ 238              		.cfi_offset 14, -4
+ 239 0002 86B0     		sub	sp, sp, #24
+ 240              		.cfi_def_cfa_offset 32
+ 241 0004 00AF     		add	r7, sp, #0
+ 242              		.cfi_def_cfa_register 7
+ 243 0006 F860     		str	r0, [r7, #12]
+ 244 0008 B960     		str	r1, [r7, #8]
+ 245 000a 7A60     		str	r2, [r7, #4]
+ 246 000c 3B60     		str	r3, [r7]
+ 123:.\moisture_measurement/moisture_measurements.c ****       uint16 temp;
+ 124:.\moisture_measurement/moisture_measurements.c ****       temp =  Active_Pin_Read();
+ 247              		.loc 1 124 0
+ 248 000e FFF7FEFF 		bl	Active_Pin_Read
+ 249 0012 0346     		mov	r3, r0
+ 250 0014 9BB2     		uxth	r3, r3
+ 251 0016 FB82     		strh	r3, [r7, #22]	@ movhi
+ 125:.\moisture_measurement/moisture_measurements.c ****       if( read_active_pin() != 0 )
+ 252              		.loc 1 125 0
+ 253 0018 FFF7FEFF 		bl	read_active_pin
+ 254 001c 0346     		mov	r3, r0
+ 255 001e 002B     		cmp	r3, #0
+ 256 0020 03D0     		beq	.L11
+ 126:.\moisture_measurement/moisture_measurements.c ****       {
+ 127:.\moisture_measurement/moisture_measurements.c ****           active_flag = 0;
+ 257              		.loc 1 127 0
+ 258 0022 0B4B     		ldr	r3, .L14
+ 259 0024 0022     		movs	r2, #0
+ 260 0026 1A60     		str	r2, [r3]
+ 261 0028 02E0     		b	.L12
+ 262              	.L11:
+ 128:.\moisture_measurement/moisture_measurements.c ****       }
+ 129:.\moisture_measurement/moisture_measurements.c ****       else
+ 130:.\moisture_measurement/moisture_measurements.c ****       {  
+ 131:.\moisture_measurement/moisture_measurements.c ****           active_flag = 1;
+ 263              		.loc 1 131 0
+ 264 002a 094B     		ldr	r3, .L14
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 8
+
+
+ 265 002c 0122     		movs	r2, #1
+ 266 002e 1A60     		str	r2, [r3]
+ 267              	.L12:
+ 132:.\moisture_measurement/moisture_measurements.c ****       }
+ 133:.\moisture_measurement/moisture_measurements.c ****       temp = active_flag;
+ 268              		.loc 1 133 0
+ 269 0030 074B     		ldr	r3, .L14
+ 270 0032 1B68     		ldr	r3, [r3]
+ 271 0034 9BB2     		uxth	r3, r3
+ 272 0036 FB82     		strh	r3, [r7, #22]	@ movhi
+ 134:.\moisture_measurement/moisture_measurements.c ****       store_modbus_data_registers( LOGGING_FLAG, 1, &temp);
+ 273              		.loc 1 134 0
+ 274 0038 07F11603 		add	r3, r7, #22
+ 275 003c 1F20     		movs	r0, #31
+ 276 003e 0121     		movs	r1, #1
+ 277 0040 1A46     		mov	r2, r3
+ 278 0042 FFF7FEFF 		bl	store_modbus_data_registers
+ 135:.\moisture_measurement/moisture_measurements.c **** 
+ 136:.\moisture_measurement/moisture_measurements.c ****       return 0;
+ 279              		.loc 1 136 0
+ 280 0046 0023     		movs	r3, #0
+ 137:.\moisture_measurement/moisture_measurements.c **** 
+ 138:.\moisture_measurement/moisture_measurements.c **** }
+ 281              		.loc 1 138 0
+ 282 0048 1846     		mov	r0, r3
+ 283 004a 1837     		adds	r7, r7, #24
+ 284              		.cfi_def_cfa_offset 8
+ 285 004c BD46     		mov	sp, r7
+ 286              		.cfi_def_cfa_register 13
+ 287              		@ sp needed
+ 288 004e 80BD     		pop	{r7, pc}
+ 289              	.L15:
+ 290              		.align	2
+ 291              	.L14:
+ 292 0050 10000000 		.word	active_flag
+ 293              		.cfi_endproc
+ 294              	.LFE68:
+ 295              		.size	check_moisture_active_flag, .-check_moisture_active_flag
+ 296              		.section	.text.check_logging_active_flag,"ax",%progbits
+ 297              		.align	2
+ 298              		.global	check_logging_active_flag
+ 299              		.thumb
+ 300              		.thumb_func
+ 301              		.type	check_logging_active_flag, %function
+ 302              	check_logging_active_flag:
+ 303              	.LFB69:
+ 139:.\moisture_measurement/moisture_measurements.c **** 
+ 140:.\moisture_measurement/moisture_measurements.c **** 
+ 141:.\moisture_measurement/moisture_measurements.c **** int check_logging_active_flag(unsigned link_id, unsigned param_1,
+ 142:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 143:.\moisture_measurement/moisture_measurements.c **** {
+ 304              		.loc 1 143 0
+ 305              		.cfi_startproc
+ 306              		@ args = 8, pretend = 0, frame = 24
+ 307              		@ frame_needed = 1, uses_anonymous_args = 0
+ 308 0000 80B5     		push	{r7, lr}
+ 309              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 9
+
+
+ 310              		.cfi_offset 7, -8
+ 311              		.cfi_offset 14, -4
+ 312 0002 86B0     		sub	sp, sp, #24
+ 313              		.cfi_def_cfa_offset 32
+ 314 0004 00AF     		add	r7, sp, #0
+ 315              		.cfi_def_cfa_register 7
+ 316 0006 F860     		str	r0, [r7, #12]
+ 317 0008 B960     		str	r1, [r7, #8]
+ 318 000a 7A60     		str	r2, [r7, #4]
+ 319 000c 3B60     		str	r3, [r7]
+ 144:.\moisture_measurement/moisture_measurements.c ****       uint16 temp;
+ 145:.\moisture_measurement/moisture_measurements.c ****       if( read_log_pin() != 0 )
+ 320              		.loc 1 145 0
+ 321 000e FFF7FEFF 		bl	read_log_pin
+ 322 0012 0346     		mov	r3, r0
+ 323 0014 002B     		cmp	r3, #0
+ 324 0016 03D0     		beq	.L17
+ 146:.\moisture_measurement/moisture_measurements.c ****       {
+ 147:.\moisture_measurement/moisture_measurements.c ****           logging_flag = 0;
+ 325              		.loc 1 147 0
+ 326 0018 0B4B     		ldr	r3, .L20
+ 327 001a 0022     		movs	r2, #0
+ 328 001c 1A60     		str	r2, [r3]
+ 329 001e 02E0     		b	.L18
+ 330              	.L17:
+ 148:.\moisture_measurement/moisture_measurements.c ****       }
+ 149:.\moisture_measurement/moisture_measurements.c ****       else
+ 150:.\moisture_measurement/moisture_measurements.c ****       {  
+ 151:.\moisture_measurement/moisture_measurements.c ****           logging_flag = 1;
+ 331              		.loc 1 151 0
+ 332 0020 094B     		ldr	r3, .L20
+ 333 0022 0122     		movs	r2, #1
+ 334 0024 1A60     		str	r2, [r3]
+ 335              	.L18:
+ 152:.\moisture_measurement/moisture_measurements.c ****       }
+ 153:.\moisture_measurement/moisture_measurements.c ****       temp = logging_flag;
+ 336              		.loc 1 153 0
+ 337 0026 084B     		ldr	r3, .L20
+ 338 0028 1B68     		ldr	r3, [r3]
+ 339 002a 9BB2     		uxth	r3, r3
+ 340 002c FB82     		strh	r3, [r7, #22]	@ movhi
+ 154:.\moisture_measurement/moisture_measurements.c ****       store_modbus_data_registers( ACTIVE_FLAG, 1, &temp);
+ 341              		.loc 1 154 0
+ 342 002e 07F11603 		add	r3, r7, #22
+ 343 0032 1E20     		movs	r0, #30
+ 344 0034 0121     		movs	r1, #1
+ 345 0036 1A46     		mov	r2, r3
+ 346 0038 FFF7FEFF 		bl	store_modbus_data_registers
+ 155:.\moisture_measurement/moisture_measurements.c **** 
+ 156:.\moisture_measurement/moisture_measurements.c ****       return 0;
+ 347              		.loc 1 156 0
+ 348 003c 0023     		movs	r3, #0
+ 157:.\moisture_measurement/moisture_measurements.c **** 
+ 158:.\moisture_measurement/moisture_measurements.c **** }
+ 349              		.loc 1 158 0
+ 350 003e 1846     		mov	r0, r3
+ 351 0040 1837     		adds	r7, r7, #24
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 10
+
+
+ 352              		.cfi_def_cfa_offset 8
+ 353 0042 BD46     		mov	sp, r7
+ 354              		.cfi_def_cfa_register 13
+ 355              		@ sp needed
+ 356 0044 80BD     		pop	{r7, pc}
+ 357              	.L21:
+ 358 0046 00BF     		.align	2
+ 359              	.L20:
+ 360 0048 0C000000 		.word	logging_flag
+ 361              		.cfi_endproc
+ 362              	.LFE69:
+ 363              		.size	check_logging_active_flag, .-check_logging_active_flag
+ 364              		.section	.text.check_for_moisture_measurement,"ax",%progbits
+ 365              		.align	2
+ 366              		.global	check_for_moisture_measurement
+ 367              		.thumb
+ 368              		.thumb_func
+ 369              		.type	check_for_moisture_measurement, %function
+ 370              	check_for_moisture_measurement:
+ 371              	.LFB70:
+ 159:.\moisture_measurement/moisture_measurements.c **** 
+ 160:.\moisture_measurement/moisture_measurements.c **** 
+ 161:.\moisture_measurement/moisture_measurements.c **** 
+ 162:.\moisture_measurement/moisture_measurements.c **** 
+ 163:.\moisture_measurement/moisture_measurements.c **** int check_for_moisture_measurement(unsigned link_id, unsigned param_1,
+ 164:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 165:.\moisture_measurement/moisture_measurements.c **** 
+ 166:.\moisture_measurement/moisture_measurements.c **** 
+ 167:.\moisture_measurement/moisture_measurements.c **** 
+ 168:.\moisture_measurement/moisture_measurements.c **** 
+ 169:.\moisture_measurement/moisture_measurements.c **** 
+ 170:.\moisture_measurement/moisture_measurements.c **** {
+ 372              		.loc 1 170 0
+ 373              		.cfi_startproc
+ 374              		@ args = 8, pretend = 0, frame = 24
+ 375              		@ frame_needed = 1, uses_anonymous_args = 0
+ 376 0000 80B5     		push	{r7, lr}
+ 377              		.cfi_def_cfa_offset 8
+ 378              		.cfi_offset 7, -8
+ 379              		.cfi_offset 14, -4
+ 380 0002 86B0     		sub	sp, sp, #24
+ 381              		.cfi_def_cfa_offset 32
+ 382 0004 00AF     		add	r7, sp, #0
+ 383              		.cfi_def_cfa_register 7
+ 384 0006 F860     		str	r0, [r7, #12]
+ 385 0008 B960     		str	r1, [r7, #8]
+ 386 000a 7A60     		str	r2, [r7, #4]
+ 387 000c 3B60     		str	r3, [r7]
+ 171:.\moisture_measurement/moisture_measurements.c ****       uint16 minute_count_limit;
+ 172:.\moisture_measurement/moisture_measurements.c ****       
+ 173:.\moisture_measurement/moisture_measurements.c ****       if( active_flag == 0 )
+ 388              		.loc 1 173 0
+ 389 000e 164B     		ldr	r3, .L29
+ 390 0010 1B68     		ldr	r3, [r3]
+ 391 0012 002B     		cmp	r3, #0
+ 392 0014 04D1     		bne	.L23
+ 174:.\moisture_measurement/moisture_measurements.c ****       {
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 11
+
+
+ 175:.\moisture_measurement/moisture_measurements.c ****         measurement_minute_count = 0;
+ 393              		.loc 1 175 0
+ 394 0016 154B     		ldr	r3, .L29+4
+ 395 0018 0022     		movs	r2, #0
+ 396 001a 1A60     		str	r2, [r3]
+ 176:.\moisture_measurement/moisture_measurements.c ****         return 0;
+ 397              		.loc 1 176 0
+ 398 001c 0023     		movs	r3, #0
+ 399 001e 1FE0     		b	.L28
+ 400              	.L23:
+ 177:.\moisture_measurement/moisture_measurements.c ****       }
+ 178:.\moisture_measurement/moisture_measurements.c ****       else
+ 179:.\moisture_measurement/moisture_measurements.c ****       {
+ 180:.\moisture_measurement/moisture_measurements.c ****         ; // no else actions
+ 181:.\moisture_measurement/moisture_measurements.c ****       }
+ 182:.\moisture_measurement/moisture_measurements.c ****       get_modbus_data_registers( LOGGING_RATE, 1, &minute_count_limit);
+ 401              		.loc 1 182 0
+ 402 0020 07F11603 		add	r3, r7, #22
+ 403 0024 2120     		movs	r0, #33
+ 404 0026 0121     		movs	r1, #1
+ 405 0028 1A46     		mov	r2, r3
+ 406 002a FFF7FEFF 		bl	get_modbus_data_registers
+ 183:.\moisture_measurement/moisture_measurements.c ****       if( minute_count_limit == 0 )
+ 407              		.loc 1 183 0
+ 408 002e FB8A     		ldrh	r3, [r7, #22]
+ 409 0030 002B     		cmp	r3, #0
+ 410 0032 01D1     		bne	.L25
+ 184:.\moisture_measurement/moisture_measurements.c ****       {
+ 185:.\moisture_measurement/moisture_measurements.c ****         return 0;
+ 411              		.loc 1 185 0
+ 412 0034 0023     		movs	r3, #0
+ 413 0036 13E0     		b	.L28
+ 414              	.L25:
+ 186:.\moisture_measurement/moisture_measurements.c ****       }
+ 187:.\moisture_measurement/moisture_measurements.c ****       else
+ 188:.\moisture_measurement/moisture_measurements.c ****       {
+ 189:.\moisture_measurement/moisture_measurements.c ****         // no else actions
+ 190:.\moisture_measurement/moisture_measurements.c ****       }
+ 191:.\moisture_measurement/moisture_measurements.c ****       
+ 192:.\moisture_measurement/moisture_measurements.c ****       if( measurement_minute_count >= minute_count_limit)
+ 415              		.loc 1 192 0
+ 416 0038 FB8A     		ldrh	r3, [r7, #22]
+ 417 003a 1A46     		mov	r2, r3
+ 418 003c 0B4B     		ldr	r3, .L29+4
+ 419 003e 1B68     		ldr	r3, [r3]
+ 420 0040 9A42     		cmp	r2, r3
+ 421 0042 07D8     		bhi	.L26
+ 193:.\moisture_measurement/moisture_measurements.c ****       {
+ 194:.\moisture_measurement/moisture_measurements.c ****           measurement_minute_count = 0;
+ 422              		.loc 1 194 0
+ 423 0044 094B     		ldr	r3, .L29+4
+ 424 0046 0022     		movs	r2, #0
+ 425 0048 1A60     		str	r2, [r3]
+ 195:.\moisture_measurement/moisture_measurements.c ****           cf_send_event(CF_START_MOISTURE_READING, 0 );
+ 426              		.loc 1 195 0
+ 427 004a 0920     		movs	r0, #9
+ 428 004c 0021     		movs	r1, #0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 12
+
+
+ 429 004e FFF7FEFF 		bl	cf_send_event
+ 430 0052 04E0     		b	.L27
+ 431              	.L26:
+ 196:.\moisture_measurement/moisture_measurements.c ****       }
+ 197:.\moisture_measurement/moisture_measurements.c ****       else
+ 198:.\moisture_measurement/moisture_measurements.c ****       {
+ 199:.\moisture_measurement/moisture_measurements.c ****         measurement_minute_count += 1;
+ 432              		.loc 1 199 0
+ 433 0054 054B     		ldr	r3, .L29+4
+ 434 0056 1B68     		ldr	r3, [r3]
+ 435 0058 0133     		adds	r3, r3, #1
+ 436 005a 044A     		ldr	r2, .L29+4
+ 437 005c 1360     		str	r3, [r2]
+ 438              	.L27:
+ 200:.\moisture_measurement/moisture_measurements.c ****       }
+ 201:.\moisture_measurement/moisture_measurements.c ****       return 0;
+ 439              		.loc 1 201 0
+ 440 005e 0023     		movs	r3, #0
+ 441              	.L28:
+ 202:.\moisture_measurement/moisture_measurements.c **** }
+ 442              		.loc 1 202 0 discriminator 1
+ 443 0060 1846     		mov	r0, r3
+ 444 0062 1837     		adds	r7, r7, #24
+ 445              		.cfi_def_cfa_offset 8
+ 446 0064 BD46     		mov	sp, r7
+ 447              		.cfi_def_cfa_register 13
+ 448              		@ sp needed
+ 449 0066 80BD     		pop	{r7, pc}
+ 450              	.L30:
+ 451              		.align	2
+ 452              	.L29:
+ 453 0068 10000000 		.word	active_flag
+ 454 006c 14000000 		.word	measurement_minute_count
+ 455              		.cfi_endproc
+ 456              	.LFE70:
+ 457              		.size	check_for_moisture_measurement, .-check_for_moisture_measurement
+ 458              		.section	.text.setup_measurement_channel,"ax",%progbits
+ 459              		.align	2
+ 460              		.global	setup_measurement_channel
+ 461              		.thumb
+ 462              		.thumb_func
+ 463              		.type	setup_measurement_channel, %function
+ 464              	setup_measurement_channel:
+ 465              	.LFB71:
+ 203:.\moisture_measurement/moisture_measurements.c **** 
+ 204:.\moisture_measurement/moisture_measurements.c **** /*
+ 205:.\moisture_measurement/moisture_measurements.c **** **
+ 206:.\moisture_measurement/moisture_measurements.c **** **  Functions to make measurements
+ 207:.\moisture_measurement/moisture_measurements.c **** **
+ 208:.\moisture_measurement/moisture_measurements.c **** **/
+ 209:.\moisture_measurement/moisture_measurements.c **** 
+ 210:.\moisture_measurement/moisture_measurements.c **** int setup_measurement_channel(unsigned link_id, unsigned param_1,
+ 211:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 212:.\moisture_measurement/moisture_measurements.c **** {
+ 466              		.loc 1 212 0
+ 467              		.cfi_startproc
+ 468              		@ args = 8, pretend = 0, frame = 24
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 13
+
+
+ 469              		@ frame_needed = 1, uses_anonymous_args = 0
+ 470 0000 80B5     		push	{r7, lr}
+ 471              		.cfi_def_cfa_offset 8
+ 472              		.cfi_offset 7, -8
+ 473              		.cfi_offset 14, -4
+ 474 0002 86B0     		sub	sp, sp, #24
+ 475              		.cfi_def_cfa_offset 32
+ 476 0004 00AF     		add	r7, sp, #0
+ 477              		.cfi_def_cfa_register 7
+ 478 0006 F860     		str	r0, [r7, #12]
+ 479 0008 B960     		str	r1, [r7, #8]
+ 480 000a 7A60     		str	r2, [r7, #4]
+ 481 000c 3B60     		str	r3, [r7]
+ 213:.\moisture_measurement/moisture_measurements.c ****     int return_value;
+ 214:.\moisture_measurement/moisture_measurements.c ****     
+ 215:.\moisture_measurement/moisture_measurements.c ****    if( event== CF_INIT_EVENT )
+ 482              		.loc 1 215 0
+ 483 000e 3B6A     		ldr	r3, [r7, #32]
+ 484 0010 012B     		cmp	r3, #1
+ 485 0012 02D1     		bne	.L32
+ 216:.\moisture_measurement/moisture_measurements.c ****    {
+ 217:.\moisture_measurement/moisture_measurements.c ****       return_value = CF_CONTINUE;
+ 486              		.loc 1 217 0
+ 487 0014 0023     		movs	r3, #0
+ 488 0016 7B61     		str	r3, [r7, #20]
+ 489 0018 27E0     		b	.L33
+ 490              	.L32:
+ 218:.\moisture_measurement/moisture_measurements.c ****    }
+ 219:.\moisture_measurement/moisture_measurements.c ****    else
+ 220:.\moisture_measurement/moisture_measurements.c ****    {
+ 221:.\moisture_measurement/moisture_measurements.c ****       current_channel = data;
+ 491              		.loc 1 221 0
+ 492 001a 7B6A     		ldr	r3, [r7, #36]
+ 493 001c 154A     		ldr	r2, .L36
+ 494 001e 1360     		str	r3, [r2]
+ 222:.\moisture_measurement/moisture_measurements.c ****       reference_resistance = get_reference_resistor( current_channel );
+ 495              		.loc 1 222 0
+ 496 0020 144B     		ldr	r3, .L36
+ 497 0022 1B68     		ldr	r3, [r3]
+ 498 0024 1846     		mov	r0, r3
+ 499 0026 FFF7FEFF 		bl	get_reference_resistor
+ 500 002a 0246     		mov	r2, r0
+ 501 002c 124B     		ldr	r3, .L36+4
+ 502 002e 1A60     		str	r2, [r3]	@ float
+ 223:.\moisture_measurement/moisture_measurements.c ****       sensor_type = get_moisture_sensor_configuration( current_channel );
+ 503              		.loc 1 223 0
+ 504 0030 104B     		ldr	r3, .L36
+ 505 0032 1B68     		ldr	r3, [r3]
+ 506 0034 1846     		mov	r0, r3
+ 507 0036 FFF7FEFF 		bl	get_moisture_sensor_configuration
+ 508 003a 0346     		mov	r3, r0
+ 509 003c 1A46     		mov	r2, r3
+ 510 003e 0F4B     		ldr	r3, .L36+8
+ 511 0040 1A60     		str	r2, [r3]
+ 224:.\moisture_measurement/moisture_measurements.c ****       if( sensor_type == NOT_POPULATED)
+ 512              		.loc 1 224 0
+ 513 0042 0E4B     		ldr	r3, .L36+8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 14
+
+
+ 514 0044 1B68     		ldr	r3, [r3]
+ 515 0046 002B     		cmp	r3, #0
+ 516 0048 0DD1     		bne	.L34
+ 225:.\moisture_measurement/moisture_measurements.c ****       {
+ 226:.\moisture_measurement/moisture_measurements.c ****          cf_send_event( CF_MOISTURE_CHANNEL_DONE,0 );
+ 517              		.loc 1 226 0
+ 518 004a 0D20     		movs	r0, #13
+ 519 004c 0021     		movs	r1, #0
+ 520 004e FFF7FEFF 		bl	cf_send_event
+ 227:.\moisture_measurement/moisture_measurements.c ****          moisture_meaurements[ current_channel ] = 0.0;
+ 521              		.loc 1 227 0
+ 522 0052 084B     		ldr	r3, .L36
+ 523 0054 1B68     		ldr	r3, [r3]
+ 524 0056 0A4A     		ldr	r2, .L36+12
+ 525 0058 4FF00001 		mov	r1, #0
+ 526 005c 42F82310 		str	r1, [r2, r3, lsl #2]	@ float
+ 228:.\moisture_measurement/moisture_measurements.c ****          return_value = CF_RESET;
+ 527              		.loc 1 228 0
+ 528 0060 0323     		movs	r3, #3
+ 529 0062 7B61     		str	r3, [r7, #20]
+ 530 0064 01E0     		b	.L33
+ 531              	.L34:
+ 229:.\moisture_measurement/moisture_measurements.c ****       }
+ 230:.\moisture_measurement/moisture_measurements.c ****       else
+ 231:.\moisture_measurement/moisture_measurements.c ****       {
+ 232:.\moisture_measurement/moisture_measurements.c ****         return_value = CF_DISABLE;
+ 532              		.loc 1 232 0
+ 533 0066 0223     		movs	r3, #2
+ 534 0068 7B61     		str	r3, [r7, #20]
+ 535              	.L33:
+ 233:.\moisture_measurement/moisture_measurements.c ****       }
+ 234:.\moisture_measurement/moisture_measurements.c ****    }     
+ 235:.\moisture_measurement/moisture_measurements.c ****     return return_value;
+ 536              		.loc 1 235 0
+ 537 006a 7B69     		ldr	r3, [r7, #20]
+ 236:.\moisture_measurement/moisture_measurements.c **** }
+ 538              		.loc 1 236 0
+ 539 006c 1846     		mov	r0, r3
+ 540 006e 1837     		adds	r7, r7, #24
+ 541              		.cfi_def_cfa_offset 8
+ 542 0070 BD46     		mov	sp, r7
+ 543              		.cfi_def_cfa_register 13
+ 544              		@ sp needed
+ 545 0072 80BD     		pop	{r7, pc}
+ 546              	.L37:
+ 547              		.align	2
+ 548              	.L36:
+ 549 0074 04000000 		.word	current_channel
+ 550 0078 00000000 		.word	reference_resistance
+ 551 007c 18000000 		.word	sensor_type
+ 552 0080 20000000 		.word	moisture_meaurements
+ 553              		.cfi_endproc
+ 554              	.LFE71:
+ 555              		.size	setup_measurement_channel, .-setup_measurement_channel
+ 556              		.section	.text.remove_power,"ax",%progbits
+ 557              		.align	2
+ 558              		.global	remove_power
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 15
+
+
+ 559              		.thumb
+ 560              		.thumb_func
+ 561              		.type	remove_power, %function
+ 562              	remove_power:
+ 563              	.LFB72:
+ 237:.\moisture_measurement/moisture_measurements.c **** 
+ 238:.\moisture_measurement/moisture_measurements.c **** int remove_power(unsigned link_id, unsigned param_1,
+ 239:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 240:.\moisture_measurement/moisture_measurements.c **** {
+ 564              		.loc 1 240 0
+ 565              		.cfi_startproc
+ 566              		@ args = 8, pretend = 0, frame = 16
+ 567              		@ frame_needed = 1, uses_anonymous_args = 0
+ 568 0000 80B5     		push	{r7, lr}
+ 569              		.cfi_def_cfa_offset 8
+ 570              		.cfi_offset 7, -8
+ 571              		.cfi_offset 14, -4
+ 572 0002 84B0     		sub	sp, sp, #16
+ 573              		.cfi_def_cfa_offset 24
+ 574 0004 00AF     		add	r7, sp, #0
+ 575              		.cfi_def_cfa_register 7
+ 576 0006 F860     		str	r0, [r7, #12]
+ 577 0008 B960     		str	r1, [r7, #8]
+ 578 000a 7A60     		str	r2, [r7, #4]
+ 579 000c 3B60     		str	r3, [r7]
+ 241:.\moisture_measurement/moisture_measurements.c ****      SIGMA_A_D_Sleep();
+ 580              		.loc 1 241 0
+ 581 000e FFF7FEFF 		bl	SIGMA_A_D_Sleep
+ 242:.\moisture_measurement/moisture_measurements.c ****      Sink_Reg_Write(0);
+ 582              		.loc 1 242 0
+ 583 0012 0020     		movs	r0, #0
+ 584 0014 FFF7FEFF 		bl	Sink_Reg_Write
+ 243:.\moisture_measurement/moisture_measurements.c ****      Source_Reg_Write( 0);
+ 585              		.loc 1 243 0
+ 586 0018 0020     		movs	r0, #0
+ 587 001a FFF7FEFF 		bl	Source_Reg_Write
+ 244:.\moisture_measurement/moisture_measurements.c ****     
+ 245:.\moisture_measurement/moisture_measurements.c ****      return 0;
+ 588              		.loc 1 245 0
+ 589 001e 0023     		movs	r3, #0
+ 246:.\moisture_measurement/moisture_measurements.c **** }
+ 590              		.loc 1 246 0
+ 591 0020 1846     		mov	r0, r3
+ 592 0022 1037     		adds	r7, r7, #16
+ 593              		.cfi_def_cfa_offset 8
+ 594 0024 BD46     		mov	sp, r7
+ 595              		.cfi_def_cfa_register 13
+ 596              		@ sp needed
+ 597 0026 80BD     		pop	{r7, pc}
+ 598              		.cfi_endproc
+ 599              	.LFE72:
+ 600              		.size	remove_power, .-remove_power
+ 601              		.section	.text.set_source_channel,"ax",%progbits
+ 602              		.align	2
+ 603              		.global	set_source_channel
+ 604              		.thumb
+ 605              		.thumb_func
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 16
+
+
+ 606              		.type	set_source_channel, %function
+ 607              	set_source_channel:
+ 608              	.LFB73:
+ 247:.\moisture_measurement/moisture_measurements.c **** 
+ 248:.\moisture_measurement/moisture_measurements.c **** 
+ 249:.\moisture_measurement/moisture_measurements.c **** int set_source_channel(unsigned link_id, unsigned param_1,
+ 250:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 251:.\moisture_measurement/moisture_measurements.c **** {
+ 609              		.loc 1 251 0
+ 610              		.cfi_startproc
+ 611              		@ args = 8, pretend = 0, frame = 16
+ 612              		@ frame_needed = 1, uses_anonymous_args = 0
+ 613 0000 80B5     		push	{r7, lr}
+ 614              		.cfi_def_cfa_offset 8
+ 615              		.cfi_offset 7, -8
+ 616              		.cfi_offset 14, -4
+ 617 0002 84B0     		sub	sp, sp, #16
+ 618              		.cfi_def_cfa_offset 24
+ 619 0004 00AF     		add	r7, sp, #0
+ 620              		.cfi_def_cfa_register 7
+ 621 0006 F860     		str	r0, [r7, #12]
+ 622 0008 B960     		str	r1, [r7, #8]
+ 623 000a 7A60     		str	r2, [r7, #4]
+ 624 000c 3B60     		str	r3, [r7]
+ 252:.\moisture_measurement/moisture_measurements.c ****    
+ 253:.\moisture_measurement/moisture_measurements.c ****     
+ 254:.\moisture_measurement/moisture_measurements.c ****     Sink_Reg_Write( 2 );
+ 625              		.loc 1 254 0
+ 626 000e 0220     		movs	r0, #2
+ 627 0010 FFF7FEFF 		bl	Sink_Reg_Write
+ 255:.\moisture_measurement/moisture_measurements.c ****     Source_Reg_Write( 3 ) ;
+ 628              		.loc 1 255 0
+ 629 0014 0320     		movs	r0, #3
+ 630 0016 FFF7FEFF 		bl	Source_Reg_Write
+ 256:.\moisture_measurement/moisture_measurements.c ****    
+ 257:.\moisture_measurement/moisture_measurements.c ****     Sink_Source_Setup_FastSelect(current_channel) ;
+ 631              		.loc 1 257 0
+ 632 001a 094B     		ldr	r3, .L42
+ 633 001c 1B68     		ldr	r3, [r3]
+ 634 001e DBB2     		uxtb	r3, r3
+ 635 0020 1846     		mov	r0, r3
+ 636 0022 FFF7FEFF 		bl	Sink_Source_Setup_FastSelect
+ 258:.\moisture_measurement/moisture_measurements.c ****     SIGMA_A_D_Wakeup();
+ 637              		.loc 1 258 0
+ 638 0026 FFF7FEFF 		bl	SIGMA_A_D_Wakeup
+ 259:.\moisture_measurement/moisture_measurements.c ****     SIGMA_A_D_SelectConfiguration( 1,1);
+ 639              		.loc 1 259 0
+ 640 002a 0120     		movs	r0, #1
+ 641 002c 0121     		movs	r1, #1
+ 642 002e FFF7FEFF 		bl	SIGMA_A_D_SelectConfiguration
+ 260:.\moisture_measurement/moisture_measurements.c ****     SIGMA_A_D_StartConvert();
+ 643              		.loc 1 260 0
+ 644 0032 FFF7FEFF 		bl	SIGMA_A_D_StartConvert
+ 261:.\moisture_measurement/moisture_measurements.c ****     return 0;
+ 645              		.loc 1 261 0
+ 646 0036 0023     		movs	r3, #0
+ 262:.\moisture_measurement/moisture_measurements.c **** }
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 17
+
+
+ 647              		.loc 1 262 0
+ 648 0038 1846     		mov	r0, r3
+ 649 003a 1037     		adds	r7, r7, #16
+ 650              		.cfi_def_cfa_offset 8
+ 651 003c BD46     		mov	sp, r7
+ 652              		.cfi_def_cfa_register 13
+ 653              		@ sp needed
+ 654 003e 80BD     		pop	{r7, pc}
+ 655              	.L43:
+ 656              		.align	2
+ 657              	.L42:
+ 658 0040 04000000 		.word	current_channel
+ 659              		.cfi_endproc
+ 660              	.LFE73:
+ 661              		.size	set_source_channel, .-set_source_channel
+ 662              		.section	.text.make_source_measurement,"ax",%progbits
+ 663              		.align	2
+ 664              		.global	make_source_measurement
+ 665              		.thumb
+ 666              		.thumb_func
+ 667              		.type	make_source_measurement, %function
+ 668              	make_source_measurement:
+ 669              	.LFB74:
+ 263:.\moisture_measurement/moisture_measurements.c **** 
+ 264:.\moisture_measurement/moisture_measurements.c **** int make_source_measurement(unsigned link_id, unsigned param_1,
+ 265:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 266:.\moisture_measurement/moisture_measurements.c **** {
+ 670              		.loc 1 266 0
+ 671              		.cfi_startproc
+ 672              		@ args = 8, pretend = 0, frame = 16
+ 673              		@ frame_needed = 1, uses_anonymous_args = 0
+ 674 0000 80B5     		push	{r7, lr}
+ 675              		.cfi_def_cfa_offset 8
+ 676              		.cfi_offset 7, -8
+ 677              		.cfi_offset 14, -4
+ 678 0002 84B0     		sub	sp, sp, #16
+ 679              		.cfi_def_cfa_offset 24
+ 680 0004 00AF     		add	r7, sp, #0
+ 681              		.cfi_def_cfa_register 7
+ 682 0006 F860     		str	r0, [r7, #12]
+ 683 0008 B960     		str	r1, [r7, #8]
+ 684 000a 7A60     		str	r2, [r7, #4]
+ 685 000c 3B60     		str	r3, [r7]
+ 267:.\moisture_measurement/moisture_measurements.c **** 
+ 268:.\moisture_measurement/moisture_measurements.c ****     SIGMA_A_D_IsEndConversion( SIGMA_A_D_WAIT_FOR_RESULT );  // conversion is 3000/sec  max wait ti
+ 686              		.loc 1 268 0
+ 687 000e 0020     		movs	r0, #0
+ 688 0010 FFF7FEFF 		bl	SIGMA_A_D_IsEndConversion
+ 269:.\moisture_measurement/moisture_measurements.c ****     source_voltage =   SIGMA_A_D_GetResult32();
+ 689              		.loc 1 269 0
+ 690 0014 FFF7FEFF 		bl	SIGMA_A_D_GetResult32
+ 691 0018 0246     		mov	r2, r0
+ 692 001a 034B     		ldr	r3, .L46
+ 693 001c 1A60     		str	r2, [r3]
+ 270:.\moisture_measurement/moisture_measurements.c **** 
+ 271:.\moisture_measurement/moisture_measurements.c ****     return 0;
+ 694              		.loc 1 271 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 18
+
+
+ 695 001e 0023     		movs	r3, #0
+ 272:.\moisture_measurement/moisture_measurements.c **** 
+ 273:.\moisture_measurement/moisture_measurements.c **** }
+ 696              		.loc 1 273 0
+ 697 0020 1846     		mov	r0, r3
+ 698 0022 1037     		adds	r7, r7, #16
+ 699              		.cfi_def_cfa_offset 8
+ 700 0024 BD46     		mov	sp, r7
+ 701              		.cfi_def_cfa_register 13
+ 702              		@ sp needed
+ 703 0026 80BD     		pop	{r7, pc}
+ 704              	.L47:
+ 705              		.align	2
+ 706              	.L46:
+ 707 0028 08000000 		.word	source_voltage
+ 708              		.cfi_endproc
+ 709              	.LFE74:
+ 710              		.size	make_source_measurement, .-make_source_measurement
+ 711              		.section	.text.set_sink_channel,"ax",%progbits
+ 712              		.align	2
+ 713              		.global	set_sink_channel
+ 714              		.thumb
+ 715              		.thumb_func
+ 716              		.type	set_sink_channel, %function
+ 717              	set_sink_channel:
+ 718              	.LFB75:
+ 274:.\moisture_measurement/moisture_measurements.c **** 
+ 275:.\moisture_measurement/moisture_measurements.c **** 
+ 276:.\moisture_measurement/moisture_measurements.c **** 
+ 277:.\moisture_measurement/moisture_measurements.c **** 
+ 278:.\moisture_measurement/moisture_measurements.c **** 
+ 279:.\moisture_measurement/moisture_measurements.c **** 
+ 280:.\moisture_measurement/moisture_measurements.c **** 
+ 281:.\moisture_measurement/moisture_measurements.c **** 
+ 282:.\moisture_measurement/moisture_measurements.c **** int set_sink_channel(unsigned link_id, unsigned param_1,
+ 283:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 284:.\moisture_measurement/moisture_measurements.c **** {
+ 719              		.loc 1 284 0
+ 720              		.cfi_startproc
+ 721              		@ args = 8, pretend = 0, frame = 16
+ 722              		@ frame_needed = 1, uses_anonymous_args = 0
+ 723 0000 80B5     		push	{r7, lr}
+ 724              		.cfi_def_cfa_offset 8
+ 725              		.cfi_offset 7, -8
+ 726              		.cfi_offset 14, -4
+ 727 0002 84B0     		sub	sp, sp, #16
+ 728              		.cfi_def_cfa_offset 24
+ 729 0004 00AF     		add	r7, sp, #0
+ 730              		.cfi_def_cfa_register 7
+ 731 0006 F860     		str	r0, [r7, #12]
+ 732 0008 B960     		str	r1, [r7, #8]
+ 733 000a 7A60     		str	r2, [r7, #4]
+ 734 000c 3B60     		str	r3, [r7]
+ 285:.\moisture_measurement/moisture_measurements.c ****    
+ 286:.\moisture_measurement/moisture_measurements.c ****     Sink_Reg_Write( 3 );
+ 735              		.loc 1 286 0
+ 736 000e 0320     		movs	r0, #3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 19
+
+
+ 737 0010 FFF7FEFF 		bl	Sink_Reg_Write
+ 287:.\moisture_measurement/moisture_measurements.c ****     Source_Reg_Write (2 );
+ 738              		.loc 1 287 0
+ 739 0014 0220     		movs	r0, #2
+ 740 0016 FFF7FEFF 		bl	Source_Reg_Write
+ 288:.\moisture_measurement/moisture_measurements.c ****     
+ 289:.\moisture_measurement/moisture_measurements.c ****     
+ 290:.\moisture_measurement/moisture_measurements.c ****     Sink_Source_Setup_FastSelect(current_channel);
+ 741              		.loc 1 290 0
+ 742 001a 094B     		ldr	r3, .L50
+ 743 001c 1B68     		ldr	r3, [r3]
+ 744 001e DBB2     		uxtb	r3, r3
+ 745 0020 1846     		mov	r0, r3
+ 746 0022 FFF7FEFF 		bl	Sink_Source_Setup_FastSelect
+ 291:.\moisture_measurement/moisture_measurements.c ****     SIGMA_A_D_Wakeup();
+ 747              		.loc 1 291 0
+ 748 0026 FFF7FEFF 		bl	SIGMA_A_D_Wakeup
+ 292:.\moisture_measurement/moisture_measurements.c ****     SIGMA_A_D_SelectConfiguration( 1,1);
+ 749              		.loc 1 292 0
+ 750 002a 0120     		movs	r0, #1
+ 751 002c 0121     		movs	r1, #1
+ 752 002e FFF7FEFF 		bl	SIGMA_A_D_SelectConfiguration
+ 293:.\moisture_measurement/moisture_measurements.c ****     SIGMA_A_D_StartConvert();
+ 753              		.loc 1 293 0
+ 754 0032 FFF7FEFF 		bl	SIGMA_A_D_StartConvert
+ 294:.\moisture_measurement/moisture_measurements.c ****     return 0;
+ 755              		.loc 1 294 0
+ 756 0036 0023     		movs	r3, #0
+ 295:.\moisture_measurement/moisture_measurements.c **** }
+ 757              		.loc 1 295 0
+ 758 0038 1846     		mov	r0, r3
+ 759 003a 1037     		adds	r7, r7, #16
+ 760              		.cfi_def_cfa_offset 8
+ 761 003c BD46     		mov	sp, r7
+ 762              		.cfi_def_cfa_register 13
+ 763              		@ sp needed
+ 764 003e 80BD     		pop	{r7, pc}
+ 765              	.L51:
+ 766              		.align	2
+ 767              	.L50:
+ 768 0040 04000000 		.word	current_channel
+ 769              		.cfi_endproc
+ 770              	.LFE75:
+ 771              		.size	set_sink_channel, .-set_sink_channel
+ 772              		.global	__aeabi_i2f
+ 773              		.global	__aeabi_fsub
+ 774              		.global	__aeabi_fdiv
+ 775              		.section	.text.store_moisture_data,"ax",%progbits
+ 776              		.align	2
+ 777              		.global	store_moisture_data
+ 778              		.thumb
+ 779              		.thumb_func
+ 780              		.type	store_moisture_data, %function
+ 781              	store_moisture_data:
+ 782              	.LFB76:
+ 296:.\moisture_measurement/moisture_measurements.c **** 
+ 297:.\moisture_measurement/moisture_measurements.c **** 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 20
+
+
+ 298:.\moisture_measurement/moisture_measurements.c **** 
+ 299:.\moisture_measurement/moisture_measurements.c **** /*
+ 300:.\moisture_measurement/moisture_measurements.c **** **
+ 301:.\moisture_measurement/moisture_measurements.c **** ** Routines to store data
+ 302:.\moisture_measurement/moisture_measurements.c **** ** resistance unknow resistance equals
+ 303:.\moisture_measurement/moisture_measurements.c **** ** reference resistance is stored in modbus location REFERENECE_RESISTANCE
+ 304:.\moisture_measurement/moisture_measurements.c **** ** i = ( sigma_v_rail)/known_resistance
+ 305:.\moisture_measurement/moisture_measurements.c **** ** unknown resistance = v_measurement/i
+ 306:.\moisture_measurement/moisture_measurements.c **** */
+ 307:.\moisture_measurement/moisture_measurements.c **** 
+ 308:.\moisture_measurement/moisture_measurements.c **** 
+ 309:.\moisture_measurement/moisture_measurements.c **** int store_moisture_data(unsigned link_id, unsigned param_1,
+ 310:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 311:.\moisture_measurement/moisture_measurements.c **** {
+ 783              		.loc 1 311 0
+ 784              		.cfi_startproc
+ 785              		@ args = 8, pretend = 0, frame = 32
+ 786              		@ frame_needed = 1, uses_anonymous_args = 0
+ 787 0000 90B5     		push	{r4, r7, lr}
+ 788              		.cfi_def_cfa_offset 12
+ 789              		.cfi_offset 4, -12
+ 790              		.cfi_offset 7, -8
+ 791              		.cfi_offset 14, -4
+ 792 0002 89B0     		sub	sp, sp, #36
+ 793              		.cfi_def_cfa_offset 48
+ 794 0004 00AF     		add	r7, sp, #0
+ 795              		.cfi_def_cfa_register 7
+ 796 0006 F860     		str	r0, [r7, #12]
+ 797 0008 B960     		str	r1, [r7, #8]
+ 798 000a 7A60     		str	r2, [r7, #4]
+ 799 000c 3B60     		str	r3, [r7]
+ 312:.\moisture_measurement/moisture_measurements.c ****     float measurement;
+ 313:.\moisture_measurement/moisture_measurements.c ****     float source_current;
+ 314:.\moisture_measurement/moisture_measurements.c ****     float source_resistance;
+ 315:.\moisture_measurement/moisture_measurements.c ****     
+ 316:.\moisture_measurement/moisture_measurements.c ****     source_current = ((float) sigma_a_d_high -(float)source_voltage)/reference_resistance;
+ 800              		.loc 1 316 0
+ 801 000e 244B     		ldr	r3, .L60
+ 802 0010 1B68     		ldr	r3, [r3]
+ 803 0012 1846     		mov	r0, r3
+ 804 0014 FFF7FEFF 		bl	__aeabi_i2f
+ 805 0018 0446     		mov	r4, r0
+ 806 001a 224B     		ldr	r3, .L60+4
+ 807 001c 1B68     		ldr	r3, [r3]
+ 808 001e 1846     		mov	r0, r3
+ 809 0020 FFF7FEFF 		bl	__aeabi_i2f
+ 810 0024 0346     		mov	r3, r0
+ 811 0026 2046     		mov	r0, r4
+ 812 0028 1946     		mov	r1, r3
+ 813 002a FFF7FEFF 		bl	__aeabi_fsub
+ 814 002e 0346     		mov	r3, r0
+ 815 0030 1A46     		mov	r2, r3
+ 816 0032 1D4B     		ldr	r3, .L60+8
+ 817 0034 1B68     		ldr	r3, [r3]	@ float
+ 818 0036 1046     		mov	r0, r2
+ 819 0038 1946     		mov	r1, r3
+ 820 003a FFF7FEFF 		bl	__aeabi_fdiv
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 21
+
+
+ 821 003e 0346     		mov	r3, r0
+ 822 0040 BB61     		str	r3, [r7, #24]	@ float
+ 317:.\moisture_measurement/moisture_measurements.c ****     source_resistance = source_voltage/source_current;
+ 823              		.loc 1 317 0
+ 824 0042 184B     		ldr	r3, .L60+4
+ 825 0044 1B68     		ldr	r3, [r3]
+ 826 0046 1846     		mov	r0, r3
+ 827 0048 FFF7FEFF 		bl	__aeabi_i2f
+ 828 004c 0346     		mov	r3, r0
+ 829 004e 1846     		mov	r0, r3
+ 830 0050 B969     		ldr	r1, [r7, #24]	@ float
+ 831 0052 FFF7FEFF 		bl	__aeabi_fdiv
+ 832 0056 0346     		mov	r3, r0
+ 833 0058 7B61     		str	r3, [r7, #20]	@ float
+ 318:.\moisture_measurement/moisture_measurements.c ****     switch( sensor_type )
+ 834              		.loc 1 318 0
+ 835 005a 144B     		ldr	r3, .L60+12
+ 836 005c 1B68     		ldr	r3, [r3]
+ 837 005e 012B     		cmp	r3, #1
+ 838 0060 08D0     		beq	.L54
+ 839 0062 012B     		cmp	r3, #1
+ 840 0064 02D3     		bcc	.L55
+ 841 0066 022B     		cmp	r3, #2
+ 842 0068 07D0     		beq	.L56
+ 843 006a 0AE0     		b	.L59
+ 844              	.L55:
+ 319:.\moisture_measurement/moisture_measurements.c ****     {
+ 320:.\moisture_measurement/moisture_measurements.c ****         case NOT_POPULATED:  // not connected sensor -- should not reach this poi
+ 321:.\moisture_measurement/moisture_measurements.c ****            CYASSERT(0);
+ 845              		.loc 1 321 0
+ 846 006c 0020     		movs	r0, #0
+ 847 006e FFF7FEFF 		bl	CyHalt
+ 322:.\moisture_measurement/moisture_measurements.c ****            break;
+ 848              		.loc 1 322 0
+ 849 0072 09E0     		b	.L57
+ 850              	.L54:
+ 323:.\moisture_measurement/moisture_measurements.c ****         
+ 324:.\moisture_measurement/moisture_measurements.c ****         case RESISTIVE_ELEMENT:
+ 325:.\moisture_measurement/moisture_measurements.c ****             measurement = source_resistance;
+ 851              		.loc 1 325 0
+ 852 0074 7B69     		ldr	r3, [r7, #20]	@ float
+ 853 0076 FB61     		str	r3, [r7, #28]	@ float
+ 326:.\moisture_measurement/moisture_measurements.c ****             break;
+ 854              		.loc 1 326 0
+ 855 0078 06E0     		b	.L57
+ 856              	.L56:
+ 327:.\moisture_measurement/moisture_measurements.c ****             
+ 328:.\moisture_measurement/moisture_measurements.c ****         case WATER_MARK:
+ 329:.\moisture_measurement/moisture_measurements.c ****             measurement = 0; // call watermark function;
+ 857              		.loc 1 329 0
+ 858 007a 4FF00003 		mov	r3, #0
+ 859 007e FB61     		str	r3, [r7, #28]	@ float
+ 330:.\moisture_measurement/moisture_measurements.c ****             break;
+ 860              		.loc 1 330 0
+ 861 0080 02E0     		b	.L57
+ 862              	.L59:
+ 331:.\moisture_measurement/moisture_measurements.c ****        default:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 22
+
+
+ 332:.\moisture_measurement/moisture_measurements.c ****             CYASSERT(0);
+ 863              		.loc 1 332 0
+ 864 0082 0020     		movs	r0, #0
+ 865 0084 FFF7FEFF 		bl	CyHalt
+ 866              	.L57:
+ 333:.\moisture_measurement/moisture_measurements.c ****     }
+ 334:.\moisture_measurement/moisture_measurements.c ****     
+ 335:.\moisture_measurement/moisture_measurements.c ****     moisture_meaurements[ current_channel ] = measurement;
+ 867              		.loc 1 335 0
+ 868 0088 094B     		ldr	r3, .L60+16
+ 869 008a 1B68     		ldr	r3, [r3]
+ 870 008c 0949     		ldr	r1, .L60+20
+ 871 008e FA69     		ldr	r2, [r7, #28]	@ float
+ 872 0090 41F82320 		str	r2, [r1, r3, lsl #2]	@ float
+ 336:.\moisture_measurement/moisture_measurements.c ****     return 0;
+ 873              		.loc 1 336 0
+ 874 0094 0023     		movs	r3, #0
+ 337:.\moisture_measurement/moisture_measurements.c **** }
+ 875              		.loc 1 337 0
+ 876 0096 1846     		mov	r0, r3
+ 877 0098 2437     		adds	r7, r7, #36
+ 878              		.cfi_def_cfa_offset 12
+ 879 009a BD46     		mov	sp, r7
+ 880              		.cfi_def_cfa_register 13
+ 881              		@ sp needed
+ 882 009c 90BD     		pop	{r4, r7, pc}
+ 883              	.L61:
+ 884 009e 00BF     		.align	2
+ 885              	.L60:
+ 886 00a0 1C000000 		.word	sigma_a_d_high
+ 887 00a4 08000000 		.word	source_voltage
+ 888 00a8 00000000 		.word	reference_resistance
+ 889 00ac 18000000 		.word	sensor_type
+ 890 00b0 04000000 		.word	current_channel
+ 891 00b4 20000000 		.word	moisture_meaurements
+ 892              		.cfi_endproc
+ 893              	.LFE76:
+ 894              		.size	store_moisture_data, .-store_moisture_data
+ 895              		.section	.text.update_new_measurement_available,"ax",%progbits
+ 896              		.align	2
+ 897              		.global	update_new_measurement_available
+ 898              		.thumb
+ 899              		.thumb_func
+ 900              		.type	update_new_measurement_available, %function
+ 901              	update_new_measurement_available:
+ 902              	.LFB77:
+ 338:.\moisture_measurement/moisture_measurements.c **** 
+ 339:.\moisture_measurement/moisture_measurements.c **** 
+ 340:.\moisture_measurement/moisture_measurements.c **** /*
+ 341:.\moisture_measurement/moisture_measurements.c **** **  Tell Modbus Devices that moisture measurement is done
+ 342:.\moisture_measurement/moisture_measurements.c **** **
+ 343:.\moisture_measurement/moisture_measurements.c **** */
+ 344:.\moisture_measurement/moisture_measurements.c **** 
+ 345:.\moisture_measurement/moisture_measurements.c **** int update_new_measurement_available(unsigned link_id, unsigned param_1,
+ 346:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 347:.\moisture_measurement/moisture_measurements.c **** {
+ 903              		.loc 1 347 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 23
+
+
+ 904              		.cfi_startproc
+ 905              		@ args = 8, pretend = 0, frame = 24
+ 906              		@ frame_needed = 1, uses_anonymous_args = 0
+ 907 0000 80B5     		push	{r7, lr}
+ 908              		.cfi_def_cfa_offset 8
+ 909              		.cfi_offset 7, -8
+ 910              		.cfi_offset 14, -4
+ 911 0002 86B0     		sub	sp, sp, #24
+ 912              		.cfi_def_cfa_offset 32
+ 913 0004 00AF     		add	r7, sp, #0
+ 914              		.cfi_def_cfa_register 7
+ 915 0006 F860     		str	r0, [r7, #12]
+ 916 0008 B960     		str	r1, [r7, #8]
+ 917 000a 7A60     		str	r2, [r7, #4]
+ 918 000c 3B60     		str	r3, [r7]
+ 348:.\moisture_measurement/moisture_measurements.c ****     uint16 temp;
+ 349:.\moisture_measurement/moisture_measurements.c ****     store_modbus_data_registers( NEW_MOISTURE_DATA, 1, &temp );
+ 919              		.loc 1 349 0
+ 920 000e 07F11603 		add	r3, r7, #22
+ 921 0012 2220     		movs	r0, #34
+ 922 0014 0121     		movs	r1, #1
+ 923 0016 1A46     		mov	r2, r3
+ 924 0018 FFF7FEFF 		bl	store_modbus_data_registers
+ 350:.\moisture_measurement/moisture_measurements.c ****     store_modbus_data_registers( MOISTURE_SENSOR_1_FLOAT, MOISTURE_SENSOR_NUMBER*2, (uint16 *)moist
+ 925              		.loc 1 350 0
+ 926 001c 3220     		movs	r0, #50
+ 927 001e 2021     		movs	r1, #32
+ 928 0020 034A     		ldr	r2, .L64
+ 929 0022 FFF7FEFF 		bl	store_modbus_data_registers
+ 351:.\moisture_measurement/moisture_measurements.c ****     return 0;
+ 930              		.loc 1 351 0
+ 931 0026 0023     		movs	r3, #0
+ 352:.\moisture_measurement/moisture_measurements.c ****     
+ 353:.\moisture_measurement/moisture_measurements.c ****     
+ 354:.\moisture_measurement/moisture_measurements.c **** }
+ 932              		.loc 1 354 0
+ 933 0028 1846     		mov	r0, r3
+ 934 002a 1837     		adds	r7, r7, #24
+ 935              		.cfi_def_cfa_offset 8
+ 936 002c BD46     		mov	sp, r7
+ 937              		.cfi_def_cfa_register 13
+ 938              		@ sp needed
+ 939 002e 80BD     		pop	{r7, pc}
+ 940              	.L65:
+ 941              		.align	2
+ 942              	.L64:
+ 943 0030 20000000 		.word	moisture_meaurements
+ 944              		.cfi_endproc
+ 945              	.LFE77:
+ 946              		.size	update_new_measurement_available, .-update_new_measurement_available
+ 947              		.section	.text.setup_soil_temperature_measurements,"ax",%progbits
+ 948              		.align	2
+ 949              		.global	setup_soil_temperature_measurements
+ 950              		.thumb
+ 951              		.thumb_func
+ 952              		.type	setup_soil_temperature_measurements, %function
+ 953              	setup_soil_temperature_measurements:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 24
+
+
+ 954              	.LFB78:
+ 355:.\moisture_measurement/moisture_measurements.c **** 
+ 356:.\moisture_measurement/moisture_measurements.c **** 
+ 357:.\moisture_measurement/moisture_measurements.c **** 
+ 358:.\moisture_measurement/moisture_measurements.c **** 
+ 359:.\moisture_measurement/moisture_measurements.c **** 
+ 360:.\moisture_measurement/moisture_measurements.c **** /*
+ 361:.\moisture_measurement/moisture_measurements.c **** **
+ 362:.\moisture_measurement/moisture_measurements.c **** ** Temp Soil and other a/d measurements
+ 363:.\moisture_measurement/moisture_measurements.c **** **
+ 364:.\moisture_measurement/moisture_measurements.c **** **
+ 365:.\moisture_measurement/moisture_measurements.c **** **
+ 366:.\moisture_measurement/moisture_measurements.c **** */
+ 367:.\moisture_measurement/moisture_measurements.c **** 
+ 368:.\moisture_measurement/moisture_measurements.c **** int setup_soil_temperature_measurements(unsigned link_id, unsigned param_1,
+ 369:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 370:.\moisture_measurement/moisture_measurements.c **** {
+ 955              		.loc 1 370 0
+ 956              		.cfi_startproc
+ 957              		@ args = 8, pretend = 0, frame = 16
+ 958              		@ frame_needed = 1, uses_anonymous_args = 0
+ 959 0000 80B5     		push	{r7, lr}
+ 960              		.cfi_def_cfa_offset 8
+ 961              		.cfi_offset 7, -8
+ 962              		.cfi_offset 14, -4
+ 963 0002 84B0     		sub	sp, sp, #16
+ 964              		.cfi_def_cfa_offset 24
+ 965 0004 00AF     		add	r7, sp, #0
+ 966              		.cfi_def_cfa_register 7
+ 967 0006 F860     		str	r0, [r7, #12]
+ 968 0008 B960     		str	r1, [r7, #8]
+ 969 000a 7A60     		str	r2, [r7, #4]
+ 970 000c 3B60     		str	r3, [r7]
+ 371:.\moisture_measurement/moisture_measurements.c **** 
+ 372:.\moisture_measurement/moisture_measurements.c ****     ad_setup_interrupt( );
+ 971              		.loc 1 372 0
+ 972 000e FFF7FEFF 		bl	ad_setup_interrupt
+ 373:.\moisture_measurement/moisture_measurements.c ****     ad_init_se( );
+ 973              		.loc 1 373 0
+ 974 0012 FFF7FEFF 		bl	ad_init_se
+ 374:.\moisture_measurement/moisture_measurements.c ****     return 0;
+ 975              		.loc 1 374 0
+ 976 0016 0023     		movs	r3, #0
+ 375:.\moisture_measurement/moisture_measurements.c **** }
+ 977              		.loc 1 375 0
+ 978 0018 1846     		mov	r0, r3
+ 979 001a 1037     		adds	r7, r7, #16
+ 980              		.cfi_def_cfa_offset 8
+ 981 001c BD46     		mov	sp, r7
+ 982              		.cfi_def_cfa_register 13
+ 983              		@ sp needed
+ 984 001e 80BD     		pop	{r7, pc}
+ 985              		.cfi_endproc
+ 986              	.LFE78:
+ 987              		.size	setup_soil_temperature_measurements, .-setup_soil_temperature_measurements
+ 988              		.section	.text.measure_soil_temperature,"ax",%progbits
+ 989              		.align	2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 25
+
+
+ 990              		.global	measure_soil_temperature
+ 991              		.thumb
+ 992              		.thumb_func
+ 993              		.type	measure_soil_temperature, %function
+ 994              	measure_soil_temperature:
+ 995              	.LFB79:
+ 376:.\moisture_measurement/moisture_measurements.c **** 
+ 377:.\moisture_measurement/moisture_measurements.c **** int measure_soil_temperature(unsigned link_id, unsigned param_1,
+ 378:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 379:.\moisture_measurement/moisture_measurements.c **** {
+ 996              		.loc 1 379 0
+ 997              		.cfi_startproc
+ 998              		@ args = 8, pretend = 0, frame = 16
+ 999              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1000 0000 80B5     		push	{r7, lr}
+ 1001              		.cfi_def_cfa_offset 8
+ 1002              		.cfi_offset 7, -8
+ 1003              		.cfi_offset 14, -4
+ 1004 0002 84B0     		sub	sp, sp, #16
+ 1005              		.cfi_def_cfa_offset 24
+ 1006 0004 00AF     		add	r7, sp, #0
+ 1007              		.cfi_def_cfa_register 7
+ 1008 0006 F860     		str	r0, [r7, #12]
+ 1009 0008 B960     		str	r1, [r7, #8]
+ 1010 000a 7A60     		str	r2, [r7, #4]
+ 1011 000c 3B60     		str	r3, [r7]
+ 380:.\moisture_measurement/moisture_measurements.c ****    ad_process_se_second();
+ 1012              		.loc 1 380 0
+ 1013 000e FFF7FEFF 		bl	ad_process_se_second
+ 381:.\moisture_measurement/moisture_measurements.c ****    return 0;
+ 1014              		.loc 1 381 0
+ 1015 0012 0023     		movs	r3, #0
+ 382:.\moisture_measurement/moisture_measurements.c **** }
+ 1016              		.loc 1 382 0
+ 1017 0014 1846     		mov	r0, r3
+ 1018 0016 1037     		adds	r7, r7, #16
+ 1019              		.cfi_def_cfa_offset 8
+ 1020 0018 BD46     		mov	sp, r7
+ 1021              		.cfi_def_cfa_register 13
+ 1022              		@ sp needed
+ 1023 001a 80BD     		pop	{r7, pc}
+ 1024              		.cfi_endproc
+ 1025              	.LFE79:
+ 1026              		.size	measure_soil_temperature, .-measure_soil_temperature
+ 1027              		.section	.text.update_soil_temperature_minute,"ax",%progbits
+ 1028              		.align	2
+ 1029              		.global	update_soil_temperature_minute
+ 1030              		.thumb
+ 1031              		.thumb_func
+ 1032              		.type	update_soil_temperature_minute, %function
+ 1033              	update_soil_temperature_minute:
+ 1034              	.LFB80:
+ 383:.\moisture_measurement/moisture_measurements.c **** 
+ 384:.\moisture_measurement/moisture_measurements.c **** int update_soil_temperature_minute(unsigned link_id, unsigned param_1,
+ 385:.\moisture_measurement/moisture_measurements.c ****   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+ 386:.\moisture_measurement/moisture_measurements.c **** {
+ 1035              		.loc 1 386 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 26
+
+
+ 1036              		.cfi_startproc
+ 1037              		@ args = 8, pretend = 0, frame = 16
+ 1038              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1039 0000 80B5     		push	{r7, lr}
+ 1040              		.cfi_def_cfa_offset 8
+ 1041              		.cfi_offset 7, -8
+ 1042              		.cfi_offset 14, -4
+ 1043 0002 84B0     		sub	sp, sp, #16
+ 1044              		.cfi_def_cfa_offset 24
+ 1045 0004 00AF     		add	r7, sp, #0
+ 1046              		.cfi_def_cfa_register 7
+ 1047 0006 F860     		str	r0, [r7, #12]
+ 1048 0008 B960     		str	r1, [r7, #8]
+ 1049 000a 7A60     		str	r2, [r7, #4]
+ 1050 000c 3B60     		str	r3, [r7]
+ 387:.\moisture_measurement/moisture_measurements.c ****     ad_process_minute_second();
+ 1051              		.loc 1 387 0
+ 1052 000e FFF7FEFF 		bl	ad_process_minute_second
+ 388:.\moisture_measurement/moisture_measurements.c ****     return 0;
+ 1053              		.loc 1 388 0
+ 1054 0012 0023     		movs	r3, #0
+ 389:.\moisture_measurement/moisture_measurements.c **** }
+ 1055              		.loc 1 389 0
+ 1056 0014 1846     		mov	r0, r3
+ 1057 0016 1037     		adds	r7, r7, #16
+ 1058              		.cfi_def_cfa_offset 8
+ 1059 0018 BD46     		mov	sp, r7
+ 1060              		.cfi_def_cfa_register 13
+ 1061              		@ sp needed
+ 1062 001a 80BD     		pop	{r7, pc}
+ 1063              		.cfi_endproc
+ 1064              	.LFE80:
+ 1065              		.size	update_soil_temperature_minute, .-update_soil_temperature_minute
+ 1066              		.text
+ 1067              	.Letext0:
+ 1068              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 1069              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 1070              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 1071              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 1072              		.file 6 ".\\rtu_modbus/process_modbus_message.h"
+ 1073              		.file 7 ".\\moisture_measurement\\cb_logging.h"
+ 1074              		.section	.debug_info,"",%progbits
+ 1075              	.Ldebug_info0:
+ 1076 0000 E7080000 		.4byte	0x8e7
+ 1077 0004 0400     		.2byte	0x4
+ 1078 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1079 000a 04       		.byte	0x4
+ 1080 000b 01       		.uleb128 0x1
+ 1081 000c 27000000 		.4byte	.LASF60
+ 1082 0010 01       		.byte	0x1
+ 1083 0011 E9010000 		.4byte	.LASF61
+ 1084 0015 C3020000 		.4byte	.LASF62
+ 1085 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1086 001d 00000000 		.4byte	0
+ 1087 0021 00000000 		.4byte	.Ldebug_line0
+ 1088 0025 02       		.uleb128 0x2
+ 1089 0026 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 27
+
+
+ 1090 0027 06       		.byte	0x6
+ 1091 0028 A0020000 		.4byte	.LASF0
+ 1092 002c 02       		.uleb128 0x2
+ 1093 002d 01       		.byte	0x1
+ 1094 002e 08       		.byte	0x8
+ 1095 002f 79020000 		.4byte	.LASF1
+ 1096 0033 02       		.uleb128 0x2
+ 1097 0034 02       		.byte	0x2
+ 1098 0035 05       		.byte	0x5
+ 1099 0036 F2000000 		.4byte	.LASF2
+ 1100 003a 02       		.uleb128 0x2
+ 1101 003b 02       		.byte	0x2
+ 1102 003c 07       		.byte	0x7
+ 1103 003d 44030000 		.4byte	.LASF3
+ 1104 0041 03       		.uleb128 0x3
+ 1105 0042 49040000 		.4byte	.LASF9
+ 1106 0046 02       		.byte	0x2
+ 1107 0047 3F       		.byte	0x3f
+ 1108 0048 4C000000 		.4byte	0x4c
+ 1109 004c 02       		.uleb128 0x2
+ 1110 004d 04       		.byte	0x4
+ 1111 004e 05       		.byte	0x5
+ 1112 004f 76030000 		.4byte	.LASF4
+ 1113 0053 02       		.uleb128 0x2
+ 1114 0054 04       		.byte	0x4
+ 1115 0055 07       		.byte	0x7
+ 1116 0056 19040000 		.4byte	.LASF5
+ 1117 005a 02       		.uleb128 0x2
+ 1118 005b 08       		.byte	0x8
+ 1119 005c 05       		.byte	0x5
+ 1120 005d CC010000 		.4byte	.LASF6
+ 1121 0061 02       		.uleb128 0x2
+ 1122 0062 08       		.byte	0x8
+ 1123 0063 07       		.byte	0x7
+ 1124 0064 AC020000 		.4byte	.LASF7
+ 1125 0068 04       		.uleb128 0x4
+ 1126 0069 04       		.byte	0x4
+ 1127 006a 05       		.byte	0x5
+ 1128 006b 696E7400 		.ascii	"int\000"
+ 1129 006f 02       		.uleb128 0x2
+ 1130 0070 04       		.byte	0x4
+ 1131 0071 07       		.byte	0x7
+ 1132 0072 16030000 		.4byte	.LASF8
+ 1133 0076 03       		.uleb128 0x3
+ 1134 0077 91030000 		.4byte	.LASF10
+ 1135 007b 03       		.byte	0x3
+ 1136 007c 2C       		.byte	0x2c
+ 1137 007d 41000000 		.4byte	0x41
+ 1138 0081 05       		.uleb128 0x5
+ 1139 0082 73020000 		.4byte	.LASF11
+ 1140 0086 04       		.byte	0x4
+ 1141 0087 9201     		.2byte	0x192
+ 1142 0089 2C000000 		.4byte	0x2c
+ 1143 008d 05       		.uleb128 0x5
+ 1144 008e 93010000 		.4byte	.LASF12
+ 1145 0092 04       		.byte	0x4
+ 1146 0093 9301     		.2byte	0x193
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 28
+
+
+ 1147 0095 3A000000 		.4byte	0x3a
+ 1148 0099 05       		.uleb128 0x5
+ 1149 009a 31040000 		.4byte	.LASF13
+ 1150 009e 04       		.byte	0x4
+ 1151 009f 9401     		.2byte	0x194
+ 1152 00a1 53000000 		.4byte	0x53
+ 1153 00a5 05       		.uleb128 0x5
+ 1154 00a6 2B040000 		.4byte	.LASF14
+ 1155 00aa 04       		.byte	0x4
+ 1156 00ab 9701     		.2byte	0x197
+ 1157 00ad 4C000000 		.4byte	0x4c
+ 1158 00b1 02       		.uleb128 0x2
+ 1159 00b2 04       		.byte	0x4
+ 1160 00b3 04       		.byte	0x4
+ 1161 00b4 C6010000 		.4byte	.LASF15
+ 1162 00b8 02       		.uleb128 0x2
+ 1163 00b9 08       		.byte	0x8
+ 1164 00ba 04       		.byte	0x4
+ 1165 00bb 72040000 		.4byte	.LASF16
+ 1166 00bf 02       		.uleb128 0x2
+ 1167 00c0 01       		.byte	0x1
+ 1168 00c1 08       		.byte	0x8
+ 1169 00c2 71030000 		.4byte	.LASF17
+ 1170 00c6 02       		.uleb128 0x2
+ 1171 00c7 04       		.byte	0x4
+ 1172 00c8 07       		.byte	0x7
+ 1173 00c9 20010000 		.4byte	.LASF18
+ 1174 00cd 06       		.uleb128 0x6
+ 1175 00ce 01       		.byte	0x1
+ 1176 00cf 07       		.byte	0x7
+ 1177 00d0 1A       		.byte	0x1a
+ 1178 00d1 E8000000 		.4byte	0xe8
+ 1179 00d5 07       		.uleb128 0x7
+ 1180 00d6 19000000 		.4byte	.LASF19
+ 1181 00da 00       		.sleb128 0
+ 1182 00db 07       		.uleb128 0x7
+ 1183 00dc 18020000 		.4byte	.LASF20
+ 1184 00e0 01       		.sleb128 1
+ 1185 00e1 07       		.uleb128 0x7
+ 1186 00e2 88010000 		.4byte	.LASF21
+ 1187 00e6 02       		.sleb128 2
+ 1188 00e7 00       		.byte	0
+ 1189 00e8 08       		.uleb128 0x8
+ 1190 00e9 00000000 		.4byte	.LASF28
+ 1191 00ed 01       		.byte	0x1
+ 1192 00ee 33       		.byte	0x33
+ 1193 00ef 68000000 		.4byte	0x68
+ 1194 00f3 00000000 		.4byte	.LFB65
+ 1195 00f7 94000000 		.4byte	.LFE65-.LFB65
+ 1196 00fb 01       		.uleb128 0x1
+ 1197 00fc 9C       		.byte	0x9c
+ 1198 00fd 56010000 		.4byte	0x156
+ 1199 0101 09       		.uleb128 0x9
+ 1200 0102 44010000 		.4byte	.LASF22
+ 1201 0106 01       		.byte	0x1
+ 1202 0107 33       		.byte	0x33
+ 1203 0108 6F000000 		.4byte	0x6f
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 29
+
+
+ 1204 010c 02       		.uleb128 0x2
+ 1205 010d 91       		.byte	0x91
+ 1206 010e 74       		.sleb128 -12
+ 1207 010f 09       		.uleb128 0x9
+ 1208 0110 72010000 		.4byte	.LASF23
+ 1209 0114 01       		.byte	0x1
+ 1210 0115 33       		.byte	0x33
+ 1211 0116 6F000000 		.4byte	0x6f
+ 1212 011a 02       		.uleb128 0x2
+ 1213 011b 91       		.byte	0x91
+ 1214 011c 70       		.sleb128 -16
+ 1215 011d 09       		.uleb128 0x9
+ 1216 011e 7A010000 		.4byte	.LASF24
+ 1217 0122 01       		.byte	0x1
+ 1218 0123 34       		.byte	0x34
+ 1219 0124 6F000000 		.4byte	0x6f
+ 1220 0128 02       		.uleb128 0x2
+ 1221 0129 91       		.byte	0x91
+ 1222 012a 6C       		.sleb128 -20
+ 1223 012b 09       		.uleb128 0x9
+ 1224 012c C9000000 		.4byte	.LASF25
+ 1225 0130 01       		.byte	0x1
+ 1226 0131 34       		.byte	0x34
+ 1227 0132 6F000000 		.4byte	0x6f
+ 1228 0136 02       		.uleb128 0x2
+ 1229 0137 91       		.byte	0x91
+ 1230 0138 68       		.sleb128 -24
+ 1231 0139 09       		.uleb128 0x9
+ 1232 013a 82010000 		.4byte	.LASF26
+ 1233 013e 01       		.byte	0x1
+ 1234 013f 34       		.byte	0x34
+ 1235 0140 6F000000 		.4byte	0x6f
+ 1236 0144 02       		.uleb128 0x2
+ 1237 0145 91       		.byte	0x91
+ 1238 0146 00       		.sleb128 0
+ 1239 0147 09       		.uleb128 0x9
+ 1240 0148 D2030000 		.4byte	.LASF27
+ 1241 014c 01       		.byte	0x1
+ 1242 014d 34       		.byte	0x34
+ 1243 014e 6F000000 		.4byte	0x6f
+ 1244 0152 02       		.uleb128 0x2
+ 1245 0153 91       		.byte	0x91
+ 1246 0154 04       		.sleb128 4
+ 1247 0155 00       		.byte	0
+ 1248 0156 0A       		.uleb128 0xa
+ 1249 0157 2A020000 		.4byte	.LASF63
+ 1250 015b 01       		.byte	0x1
+ 1251 015c 58       		.byte	0x58
+ 1252 015d 00000000 		.4byte	.LFB66
+ 1253 0161 12000000 		.4byte	.LFE66-.LFB66
+ 1254 0165 01       		.uleb128 0x1
+ 1255 0166 9C       		.byte	0x9c
+ 1256 0167 08       		.uleb128 0x8
+ 1257 0168 57030000 		.4byte	.LASF29
+ 1258 016c 01       		.byte	0x1
+ 1259 016d 62       		.byte	0x62
+ 1260 016e 68000000 		.4byte	0x68
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 30
+
+
+ 1261 0172 00000000 		.4byte	.LFB67
+ 1262 0176 28000000 		.4byte	.LFE67-.LFB67
+ 1263 017a 01       		.uleb128 0x1
+ 1264 017b 9C       		.byte	0x9c
+ 1265 017c D5010000 		.4byte	0x1d5
+ 1266 0180 09       		.uleb128 0x9
+ 1267 0181 44010000 		.4byte	.LASF22
+ 1268 0185 01       		.byte	0x1
+ 1269 0186 62       		.byte	0x62
+ 1270 0187 6F000000 		.4byte	0x6f
+ 1271 018b 02       		.uleb128 0x2
+ 1272 018c 91       		.byte	0x91
+ 1273 018d 74       		.sleb128 -12
+ 1274 018e 09       		.uleb128 0x9
+ 1275 018f 72010000 		.4byte	.LASF23
+ 1276 0193 01       		.byte	0x1
+ 1277 0194 62       		.byte	0x62
+ 1278 0195 6F000000 		.4byte	0x6f
+ 1279 0199 02       		.uleb128 0x2
+ 1280 019a 91       		.byte	0x91
+ 1281 019b 70       		.sleb128 -16
+ 1282 019c 09       		.uleb128 0x9
+ 1283 019d 7A010000 		.4byte	.LASF24
+ 1284 01a1 01       		.byte	0x1
+ 1285 01a2 63       		.byte	0x63
+ 1286 01a3 6F000000 		.4byte	0x6f
+ 1287 01a7 02       		.uleb128 0x2
+ 1288 01a8 91       		.byte	0x91
+ 1289 01a9 6C       		.sleb128 -20
+ 1290 01aa 09       		.uleb128 0x9
+ 1291 01ab C9000000 		.4byte	.LASF25
+ 1292 01af 01       		.byte	0x1
+ 1293 01b0 63       		.byte	0x63
+ 1294 01b1 6F000000 		.4byte	0x6f
+ 1295 01b5 02       		.uleb128 0x2
+ 1296 01b6 91       		.byte	0x91
+ 1297 01b7 68       		.sleb128 -24
+ 1298 01b8 09       		.uleb128 0x9
+ 1299 01b9 82010000 		.4byte	.LASF26
+ 1300 01bd 01       		.byte	0x1
+ 1301 01be 63       		.byte	0x63
+ 1302 01bf 6F000000 		.4byte	0x6f
+ 1303 01c3 02       		.uleb128 0x2
+ 1304 01c4 91       		.byte	0x91
+ 1305 01c5 00       		.sleb128 0
+ 1306 01c6 09       		.uleb128 0x9
+ 1307 01c7 D2030000 		.4byte	.LASF27
+ 1308 01cb 01       		.byte	0x1
+ 1309 01cc 63       		.byte	0x63
+ 1310 01cd 6F000000 		.4byte	0x6f
+ 1311 01d1 02       		.uleb128 0x2
+ 1312 01d2 91       		.byte	0x91
+ 1313 01d3 04       		.sleb128 4
+ 1314 01d4 00       		.byte	0
+ 1315 01d5 08       		.uleb128 0x8
+ 1316 01d6 29010000 		.4byte	.LASF30
+ 1317 01da 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 31
+
+
+ 1318 01db 78       		.byte	0x78
+ 1319 01dc 68000000 		.4byte	0x68
+ 1320 01e0 00000000 		.4byte	.LFB68
+ 1321 01e4 54000000 		.4byte	.LFE68-.LFB68
+ 1322 01e8 01       		.uleb128 0x1
+ 1323 01e9 9C       		.byte	0x9c
+ 1324 01ea 51020000 		.4byte	0x251
+ 1325 01ee 09       		.uleb128 0x9
+ 1326 01ef 44010000 		.4byte	.LASF22
+ 1327 01f3 01       		.byte	0x1
+ 1328 01f4 78       		.byte	0x78
+ 1329 01f5 6F000000 		.4byte	0x6f
+ 1330 01f9 02       		.uleb128 0x2
+ 1331 01fa 91       		.byte	0x91
+ 1332 01fb 6C       		.sleb128 -20
+ 1333 01fc 09       		.uleb128 0x9
+ 1334 01fd 72010000 		.4byte	.LASF23
+ 1335 0201 01       		.byte	0x1
+ 1336 0202 78       		.byte	0x78
+ 1337 0203 6F000000 		.4byte	0x6f
+ 1338 0207 02       		.uleb128 0x2
+ 1339 0208 91       		.byte	0x91
+ 1340 0209 68       		.sleb128 -24
+ 1341 020a 09       		.uleb128 0x9
+ 1342 020b 7A010000 		.4byte	.LASF24
+ 1343 020f 01       		.byte	0x1
+ 1344 0210 79       		.byte	0x79
+ 1345 0211 6F000000 		.4byte	0x6f
+ 1346 0215 02       		.uleb128 0x2
+ 1347 0216 91       		.byte	0x91
+ 1348 0217 64       		.sleb128 -28
+ 1349 0218 09       		.uleb128 0x9
+ 1350 0219 C9000000 		.4byte	.LASF25
+ 1351 021d 01       		.byte	0x1
+ 1352 021e 79       		.byte	0x79
+ 1353 021f 6F000000 		.4byte	0x6f
+ 1354 0223 02       		.uleb128 0x2
+ 1355 0224 91       		.byte	0x91
+ 1356 0225 60       		.sleb128 -32
+ 1357 0226 09       		.uleb128 0x9
+ 1358 0227 82010000 		.4byte	.LASF26
+ 1359 022b 01       		.byte	0x1
+ 1360 022c 79       		.byte	0x79
+ 1361 022d 6F000000 		.4byte	0x6f
+ 1362 0231 02       		.uleb128 0x2
+ 1363 0232 91       		.byte	0x91
+ 1364 0233 00       		.sleb128 0
+ 1365 0234 09       		.uleb128 0x9
+ 1366 0235 D2030000 		.4byte	.LASF27
+ 1367 0239 01       		.byte	0x1
+ 1368 023a 79       		.byte	0x79
+ 1369 023b 6F000000 		.4byte	0x6f
+ 1370 023f 02       		.uleb128 0x2
+ 1371 0240 91       		.byte	0x91
+ 1372 0241 04       		.sleb128 4
+ 1373 0242 0B       		.uleb128 0xb
+ 1374 0243 ED000000 		.4byte	.LASF32
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 32
+
+
+ 1375 0247 01       		.byte	0x1
+ 1376 0248 7B       		.byte	0x7b
+ 1377 0249 8D000000 		.4byte	0x8d
+ 1378 024d 02       		.uleb128 0x2
+ 1379 024e 91       		.byte	0x91
+ 1380 024f 76       		.sleb128 -10
+ 1381 0250 00       		.byte	0
+ 1382 0251 08       		.uleb128 0x8
+ 1383 0252 4C010000 		.4byte	.LASF31
+ 1384 0256 01       		.byte	0x1
+ 1385 0257 8D       		.byte	0x8d
+ 1386 0258 68000000 		.4byte	0x68
+ 1387 025c 00000000 		.4byte	.LFB69
+ 1388 0260 4C000000 		.4byte	.LFE69-.LFB69
+ 1389 0264 01       		.uleb128 0x1
+ 1390 0265 9C       		.byte	0x9c
+ 1391 0266 CD020000 		.4byte	0x2cd
+ 1392 026a 09       		.uleb128 0x9
+ 1393 026b 44010000 		.4byte	.LASF22
+ 1394 026f 01       		.byte	0x1
+ 1395 0270 8D       		.byte	0x8d
+ 1396 0271 6F000000 		.4byte	0x6f
+ 1397 0275 02       		.uleb128 0x2
+ 1398 0276 91       		.byte	0x91
+ 1399 0277 6C       		.sleb128 -20
+ 1400 0278 09       		.uleb128 0x9
+ 1401 0279 72010000 		.4byte	.LASF23
+ 1402 027d 01       		.byte	0x1
+ 1403 027e 8D       		.byte	0x8d
+ 1404 027f 6F000000 		.4byte	0x6f
+ 1405 0283 02       		.uleb128 0x2
+ 1406 0284 91       		.byte	0x91
+ 1407 0285 68       		.sleb128 -24
+ 1408 0286 09       		.uleb128 0x9
+ 1409 0287 7A010000 		.4byte	.LASF24
+ 1410 028b 01       		.byte	0x1
+ 1411 028c 8E       		.byte	0x8e
+ 1412 028d 6F000000 		.4byte	0x6f
+ 1413 0291 02       		.uleb128 0x2
+ 1414 0292 91       		.byte	0x91
+ 1415 0293 64       		.sleb128 -28
+ 1416 0294 09       		.uleb128 0x9
+ 1417 0295 C9000000 		.4byte	.LASF25
+ 1418 0299 01       		.byte	0x1
+ 1419 029a 8E       		.byte	0x8e
+ 1420 029b 6F000000 		.4byte	0x6f
+ 1421 029f 02       		.uleb128 0x2
+ 1422 02a0 91       		.byte	0x91
+ 1423 02a1 60       		.sleb128 -32
+ 1424 02a2 09       		.uleb128 0x9
+ 1425 02a3 82010000 		.4byte	.LASF26
+ 1426 02a7 01       		.byte	0x1
+ 1427 02a8 8E       		.byte	0x8e
+ 1428 02a9 6F000000 		.4byte	0x6f
+ 1429 02ad 02       		.uleb128 0x2
+ 1430 02ae 91       		.byte	0x91
+ 1431 02af 00       		.sleb128 0
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 33
+
+
+ 1432 02b0 09       		.uleb128 0x9
+ 1433 02b1 D2030000 		.4byte	.LASF27
+ 1434 02b5 01       		.byte	0x1
+ 1435 02b6 8E       		.byte	0x8e
+ 1436 02b7 6F000000 		.4byte	0x6f
+ 1437 02bb 02       		.uleb128 0x2
+ 1438 02bc 91       		.byte	0x91
+ 1439 02bd 04       		.sleb128 4
+ 1440 02be 0B       		.uleb128 0xb
+ 1441 02bf ED000000 		.4byte	.LASF32
+ 1442 02c3 01       		.byte	0x1
+ 1443 02c4 90       		.byte	0x90
+ 1444 02c5 8D000000 		.4byte	0x8d
+ 1445 02c9 02       		.uleb128 0x2
+ 1446 02ca 91       		.byte	0x91
+ 1447 02cb 76       		.sleb128 -10
+ 1448 02cc 00       		.byte	0
+ 1449 02cd 08       		.uleb128 0x8
+ 1450 02ce FA030000 		.4byte	.LASF33
+ 1451 02d2 01       		.byte	0x1
+ 1452 02d3 A3       		.byte	0xa3
+ 1453 02d4 68000000 		.4byte	0x68
+ 1454 02d8 00000000 		.4byte	.LFB70
+ 1455 02dc 70000000 		.4byte	.LFE70-.LFB70
+ 1456 02e0 01       		.uleb128 0x1
+ 1457 02e1 9C       		.byte	0x9c
+ 1458 02e2 49030000 		.4byte	0x349
+ 1459 02e6 09       		.uleb128 0x9
+ 1460 02e7 44010000 		.4byte	.LASF22
+ 1461 02eb 01       		.byte	0x1
+ 1462 02ec A3       		.byte	0xa3
+ 1463 02ed 6F000000 		.4byte	0x6f
+ 1464 02f1 02       		.uleb128 0x2
+ 1465 02f2 91       		.byte	0x91
+ 1466 02f3 6C       		.sleb128 -20
+ 1467 02f4 09       		.uleb128 0x9
+ 1468 02f5 72010000 		.4byte	.LASF23
+ 1469 02f9 01       		.byte	0x1
+ 1470 02fa A3       		.byte	0xa3
+ 1471 02fb 6F000000 		.4byte	0x6f
+ 1472 02ff 02       		.uleb128 0x2
+ 1473 0300 91       		.byte	0x91
+ 1474 0301 68       		.sleb128 -24
+ 1475 0302 09       		.uleb128 0x9
+ 1476 0303 7A010000 		.4byte	.LASF24
+ 1477 0307 01       		.byte	0x1
+ 1478 0308 A4       		.byte	0xa4
+ 1479 0309 6F000000 		.4byte	0x6f
+ 1480 030d 02       		.uleb128 0x2
+ 1481 030e 91       		.byte	0x91
+ 1482 030f 64       		.sleb128 -28
+ 1483 0310 09       		.uleb128 0x9
+ 1484 0311 C9000000 		.4byte	.LASF25
+ 1485 0315 01       		.byte	0x1
+ 1486 0316 A4       		.byte	0xa4
+ 1487 0317 6F000000 		.4byte	0x6f
+ 1488 031b 02       		.uleb128 0x2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 34
+
+
+ 1489 031c 91       		.byte	0x91
+ 1490 031d 60       		.sleb128 -32
+ 1491 031e 09       		.uleb128 0x9
+ 1492 031f 82010000 		.4byte	.LASF26
+ 1493 0323 01       		.byte	0x1
+ 1494 0324 A4       		.byte	0xa4
+ 1495 0325 6F000000 		.4byte	0x6f
+ 1496 0329 02       		.uleb128 0x2
+ 1497 032a 91       		.byte	0x91
+ 1498 032b 00       		.sleb128 0
+ 1499 032c 09       		.uleb128 0x9
+ 1500 032d D2030000 		.4byte	.LASF27
+ 1501 0331 01       		.byte	0x1
+ 1502 0332 A4       		.byte	0xa4
+ 1503 0333 6F000000 		.4byte	0x6f
+ 1504 0337 02       		.uleb128 0x2
+ 1505 0338 91       		.byte	0x91
+ 1506 0339 04       		.sleb128 4
+ 1507 033a 0B       		.uleb128 0xb
+ 1508 033b B3010000 		.4byte	.LASF34
+ 1509 033f 01       		.byte	0x1
+ 1510 0340 AB       		.byte	0xab
+ 1511 0341 8D000000 		.4byte	0x8d
+ 1512 0345 02       		.uleb128 0x2
+ 1513 0346 91       		.byte	0x91
+ 1514 0347 76       		.sleb128 -10
+ 1515 0348 00       		.byte	0
+ 1516 0349 08       		.uleb128 0x8
+ 1517 034a 79040000 		.4byte	.LASF35
+ 1518 034e 01       		.byte	0x1
+ 1519 034f D2       		.byte	0xd2
+ 1520 0350 68000000 		.4byte	0x68
+ 1521 0354 00000000 		.4byte	.LFB71
+ 1522 0358 84000000 		.4byte	.LFE71-.LFB71
+ 1523 035c 01       		.uleb128 0x1
+ 1524 035d 9C       		.byte	0x9c
+ 1525 035e C5030000 		.4byte	0x3c5
+ 1526 0362 09       		.uleb128 0x9
+ 1527 0363 44010000 		.4byte	.LASF22
+ 1528 0367 01       		.byte	0x1
+ 1529 0368 D2       		.byte	0xd2
+ 1530 0369 6F000000 		.4byte	0x6f
+ 1531 036d 02       		.uleb128 0x2
+ 1532 036e 91       		.byte	0x91
+ 1533 036f 6C       		.sleb128 -20
+ 1534 0370 09       		.uleb128 0x9
+ 1535 0371 72010000 		.4byte	.LASF23
+ 1536 0375 01       		.byte	0x1
+ 1537 0376 D2       		.byte	0xd2
+ 1538 0377 6F000000 		.4byte	0x6f
+ 1539 037b 02       		.uleb128 0x2
+ 1540 037c 91       		.byte	0x91
+ 1541 037d 68       		.sleb128 -24
+ 1542 037e 09       		.uleb128 0x9
+ 1543 037f 7A010000 		.4byte	.LASF24
+ 1544 0383 01       		.byte	0x1
+ 1545 0384 D3       		.byte	0xd3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 35
+
+
+ 1546 0385 6F000000 		.4byte	0x6f
+ 1547 0389 02       		.uleb128 0x2
+ 1548 038a 91       		.byte	0x91
+ 1549 038b 64       		.sleb128 -28
+ 1550 038c 09       		.uleb128 0x9
+ 1551 038d C9000000 		.4byte	.LASF25
+ 1552 0391 01       		.byte	0x1
+ 1553 0392 D3       		.byte	0xd3
+ 1554 0393 6F000000 		.4byte	0x6f
+ 1555 0397 02       		.uleb128 0x2
+ 1556 0398 91       		.byte	0x91
+ 1557 0399 60       		.sleb128 -32
+ 1558 039a 09       		.uleb128 0x9
+ 1559 039b 82010000 		.4byte	.LASF26
+ 1560 039f 01       		.byte	0x1
+ 1561 03a0 D3       		.byte	0xd3
+ 1562 03a1 6F000000 		.4byte	0x6f
+ 1563 03a5 02       		.uleb128 0x2
+ 1564 03a6 91       		.byte	0x91
+ 1565 03a7 00       		.sleb128 0
+ 1566 03a8 09       		.uleb128 0x9
+ 1567 03a9 D2030000 		.4byte	.LASF27
+ 1568 03ad 01       		.byte	0x1
+ 1569 03ae D3       		.byte	0xd3
+ 1570 03af 6F000000 		.4byte	0x6f
+ 1571 03b3 02       		.uleb128 0x2
+ 1572 03b4 91       		.byte	0x91
+ 1573 03b5 04       		.sleb128 4
+ 1574 03b6 0B       		.uleb128 0xb
+ 1575 03b7 37030000 		.4byte	.LASF36
+ 1576 03bb 01       		.byte	0x1
+ 1577 03bc D5       		.byte	0xd5
+ 1578 03bd 68000000 		.4byte	0x68
+ 1579 03c1 02       		.uleb128 0x2
+ 1580 03c2 91       		.byte	0x91
+ 1581 03c3 74       		.sleb128 -12
+ 1582 03c4 00       		.byte	0
+ 1583 03c5 08       		.uleb128 0x8
+ 1584 03c6 E0000000 		.4byte	.LASF37
+ 1585 03ca 01       		.byte	0x1
+ 1586 03cb EE       		.byte	0xee
+ 1587 03cc 68000000 		.4byte	0x68
+ 1588 03d0 00000000 		.4byte	.LFB72
+ 1589 03d4 28000000 		.4byte	.LFE72-.LFB72
+ 1590 03d8 01       		.uleb128 0x1
+ 1591 03d9 9C       		.byte	0x9c
+ 1592 03da 33040000 		.4byte	0x433
+ 1593 03de 09       		.uleb128 0x9
+ 1594 03df 44010000 		.4byte	.LASF22
+ 1595 03e3 01       		.byte	0x1
+ 1596 03e4 EE       		.byte	0xee
+ 1597 03e5 6F000000 		.4byte	0x6f
+ 1598 03e9 02       		.uleb128 0x2
+ 1599 03ea 91       		.byte	0x91
+ 1600 03eb 74       		.sleb128 -12
+ 1601 03ec 09       		.uleb128 0x9
+ 1602 03ed 72010000 		.4byte	.LASF23
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 36
+
+
+ 1603 03f1 01       		.byte	0x1
+ 1604 03f2 EE       		.byte	0xee
+ 1605 03f3 6F000000 		.4byte	0x6f
+ 1606 03f7 02       		.uleb128 0x2
+ 1607 03f8 91       		.byte	0x91
+ 1608 03f9 70       		.sleb128 -16
+ 1609 03fa 09       		.uleb128 0x9
+ 1610 03fb 7A010000 		.4byte	.LASF24
+ 1611 03ff 01       		.byte	0x1
+ 1612 0400 EF       		.byte	0xef
+ 1613 0401 6F000000 		.4byte	0x6f
+ 1614 0405 02       		.uleb128 0x2
+ 1615 0406 91       		.byte	0x91
+ 1616 0407 6C       		.sleb128 -20
+ 1617 0408 09       		.uleb128 0x9
+ 1618 0409 C9000000 		.4byte	.LASF25
+ 1619 040d 01       		.byte	0x1
+ 1620 040e EF       		.byte	0xef
+ 1621 040f 6F000000 		.4byte	0x6f
+ 1622 0413 02       		.uleb128 0x2
+ 1623 0414 91       		.byte	0x91
+ 1624 0415 68       		.sleb128 -24
+ 1625 0416 09       		.uleb128 0x9
+ 1626 0417 82010000 		.4byte	.LASF26
+ 1627 041b 01       		.byte	0x1
+ 1628 041c EF       		.byte	0xef
+ 1629 041d 6F000000 		.4byte	0x6f
+ 1630 0421 02       		.uleb128 0x2
+ 1631 0422 91       		.byte	0x91
+ 1632 0423 00       		.sleb128 0
+ 1633 0424 09       		.uleb128 0x9
+ 1634 0425 D2030000 		.4byte	.LASF27
+ 1635 0429 01       		.byte	0x1
+ 1636 042a EF       		.byte	0xef
+ 1637 042b 6F000000 		.4byte	0x6f
+ 1638 042f 02       		.uleb128 0x2
+ 1639 0430 91       		.byte	0x91
+ 1640 0431 04       		.sleb128 4
+ 1641 0432 00       		.byte	0
+ 1642 0433 08       		.uleb128 0x8
+ 1643 0434 E7030000 		.4byte	.LASF38
+ 1644 0438 01       		.byte	0x1
+ 1645 0439 F9       		.byte	0xf9
+ 1646 043a 68000000 		.4byte	0x68
+ 1647 043e 00000000 		.4byte	.LFB73
+ 1648 0442 44000000 		.4byte	.LFE73-.LFB73
+ 1649 0446 01       		.uleb128 0x1
+ 1650 0447 9C       		.byte	0x9c
+ 1651 0448 A1040000 		.4byte	0x4a1
+ 1652 044c 09       		.uleb128 0x9
+ 1653 044d 44010000 		.4byte	.LASF22
+ 1654 0451 01       		.byte	0x1
+ 1655 0452 F9       		.byte	0xf9
+ 1656 0453 6F000000 		.4byte	0x6f
+ 1657 0457 02       		.uleb128 0x2
+ 1658 0458 91       		.byte	0x91
+ 1659 0459 74       		.sleb128 -12
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 37
+
+
+ 1660 045a 09       		.uleb128 0x9
+ 1661 045b 72010000 		.4byte	.LASF23
+ 1662 045f 01       		.byte	0x1
+ 1663 0460 F9       		.byte	0xf9
+ 1664 0461 6F000000 		.4byte	0x6f
+ 1665 0465 02       		.uleb128 0x2
+ 1666 0466 91       		.byte	0x91
+ 1667 0467 70       		.sleb128 -16
+ 1668 0468 09       		.uleb128 0x9
+ 1669 0469 7A010000 		.4byte	.LASF24
+ 1670 046d 01       		.byte	0x1
+ 1671 046e FA       		.byte	0xfa
+ 1672 046f 6F000000 		.4byte	0x6f
+ 1673 0473 02       		.uleb128 0x2
+ 1674 0474 91       		.byte	0x91
+ 1675 0475 6C       		.sleb128 -20
+ 1676 0476 09       		.uleb128 0x9
+ 1677 0477 C9000000 		.4byte	.LASF25
+ 1678 047b 01       		.byte	0x1
+ 1679 047c FA       		.byte	0xfa
+ 1680 047d 6F000000 		.4byte	0x6f
+ 1681 0481 02       		.uleb128 0x2
+ 1682 0482 91       		.byte	0x91
+ 1683 0483 68       		.sleb128 -24
+ 1684 0484 09       		.uleb128 0x9
+ 1685 0485 82010000 		.4byte	.LASF26
+ 1686 0489 01       		.byte	0x1
+ 1687 048a FA       		.byte	0xfa
+ 1688 048b 6F000000 		.4byte	0x6f
+ 1689 048f 02       		.uleb128 0x2
+ 1690 0490 91       		.byte	0x91
+ 1691 0491 00       		.sleb128 0
+ 1692 0492 09       		.uleb128 0x9
+ 1693 0493 D2030000 		.4byte	.LASF27
+ 1694 0497 01       		.byte	0x1
+ 1695 0498 FA       		.byte	0xfa
+ 1696 0499 6F000000 		.4byte	0x6f
+ 1697 049d 02       		.uleb128 0x2
+ 1698 049e 91       		.byte	0x91
+ 1699 049f 04       		.sleb128 4
+ 1700 04a0 00       		.byte	0
+ 1701 04a1 0C       		.uleb128 0xc
+ 1702 04a2 4E020000 		.4byte	.LASF39
+ 1703 04a6 01       		.byte	0x1
+ 1704 04a7 0801     		.2byte	0x108
+ 1705 04a9 68000000 		.4byte	0x68
+ 1706 04ad 00000000 		.4byte	.LFB74
+ 1707 04b1 2C000000 		.4byte	.LFE74-.LFB74
+ 1708 04b5 01       		.uleb128 0x1
+ 1709 04b6 9C       		.byte	0x9c
+ 1710 04b7 16050000 		.4byte	0x516
+ 1711 04bb 0D       		.uleb128 0xd
+ 1712 04bc 44010000 		.4byte	.LASF22
+ 1713 04c0 01       		.byte	0x1
+ 1714 04c1 0801     		.2byte	0x108
+ 1715 04c3 6F000000 		.4byte	0x6f
+ 1716 04c7 02       		.uleb128 0x2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 38
+
+
+ 1717 04c8 91       		.byte	0x91
+ 1718 04c9 74       		.sleb128 -12
+ 1719 04ca 0D       		.uleb128 0xd
+ 1720 04cb 72010000 		.4byte	.LASF23
+ 1721 04cf 01       		.byte	0x1
+ 1722 04d0 0801     		.2byte	0x108
+ 1723 04d2 6F000000 		.4byte	0x6f
+ 1724 04d6 02       		.uleb128 0x2
+ 1725 04d7 91       		.byte	0x91
+ 1726 04d8 70       		.sleb128 -16
+ 1727 04d9 0D       		.uleb128 0xd
+ 1728 04da 7A010000 		.4byte	.LASF24
+ 1729 04de 01       		.byte	0x1
+ 1730 04df 0901     		.2byte	0x109
+ 1731 04e1 6F000000 		.4byte	0x6f
+ 1732 04e5 02       		.uleb128 0x2
+ 1733 04e6 91       		.byte	0x91
+ 1734 04e7 6C       		.sleb128 -20
+ 1735 04e8 0D       		.uleb128 0xd
+ 1736 04e9 C9000000 		.4byte	.LASF25
+ 1737 04ed 01       		.byte	0x1
+ 1738 04ee 0901     		.2byte	0x109
+ 1739 04f0 6F000000 		.4byte	0x6f
+ 1740 04f4 02       		.uleb128 0x2
+ 1741 04f5 91       		.byte	0x91
+ 1742 04f6 68       		.sleb128 -24
+ 1743 04f7 0D       		.uleb128 0xd
+ 1744 04f8 82010000 		.4byte	.LASF26
+ 1745 04fc 01       		.byte	0x1
+ 1746 04fd 0901     		.2byte	0x109
+ 1747 04ff 6F000000 		.4byte	0x6f
+ 1748 0503 02       		.uleb128 0x2
+ 1749 0504 91       		.byte	0x91
+ 1750 0505 00       		.sleb128 0
+ 1751 0506 0D       		.uleb128 0xd
+ 1752 0507 D2030000 		.4byte	.LASF27
+ 1753 050b 01       		.byte	0x1
+ 1754 050c 0901     		.2byte	0x109
+ 1755 050e 6F000000 		.4byte	0x6f
+ 1756 0512 02       		.uleb128 0x2
+ 1757 0513 91       		.byte	0x91
+ 1758 0514 04       		.sleb128 4
+ 1759 0515 00       		.byte	0
+ 1760 0516 0C       		.uleb128 0xc
+ 1761 0517 38040000 		.4byte	.LASF40
+ 1762 051b 01       		.byte	0x1
+ 1763 051c 1A01     		.2byte	0x11a
+ 1764 051e 68000000 		.4byte	0x68
+ 1765 0522 00000000 		.4byte	.LFB75
+ 1766 0526 44000000 		.4byte	.LFE75-.LFB75
+ 1767 052a 01       		.uleb128 0x1
+ 1768 052b 9C       		.byte	0x9c
+ 1769 052c 8B050000 		.4byte	0x58b
+ 1770 0530 0D       		.uleb128 0xd
+ 1771 0531 44010000 		.4byte	.LASF22
+ 1772 0535 01       		.byte	0x1
+ 1773 0536 1A01     		.2byte	0x11a
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 39
+
+
+ 1774 0538 6F000000 		.4byte	0x6f
+ 1775 053c 02       		.uleb128 0x2
+ 1776 053d 91       		.byte	0x91
+ 1777 053e 74       		.sleb128 -12
+ 1778 053f 0D       		.uleb128 0xd
+ 1779 0540 72010000 		.4byte	.LASF23
+ 1780 0544 01       		.byte	0x1
+ 1781 0545 1A01     		.2byte	0x11a
+ 1782 0547 6F000000 		.4byte	0x6f
+ 1783 054b 02       		.uleb128 0x2
+ 1784 054c 91       		.byte	0x91
+ 1785 054d 70       		.sleb128 -16
+ 1786 054e 0D       		.uleb128 0xd
+ 1787 054f 7A010000 		.4byte	.LASF24
+ 1788 0553 01       		.byte	0x1
+ 1789 0554 1B01     		.2byte	0x11b
+ 1790 0556 6F000000 		.4byte	0x6f
+ 1791 055a 02       		.uleb128 0x2
+ 1792 055b 91       		.byte	0x91
+ 1793 055c 6C       		.sleb128 -20
+ 1794 055d 0D       		.uleb128 0xd
+ 1795 055e C9000000 		.4byte	.LASF25
+ 1796 0562 01       		.byte	0x1
+ 1797 0563 1B01     		.2byte	0x11b
+ 1798 0565 6F000000 		.4byte	0x6f
+ 1799 0569 02       		.uleb128 0x2
+ 1800 056a 91       		.byte	0x91
+ 1801 056b 68       		.sleb128 -24
+ 1802 056c 0D       		.uleb128 0xd
+ 1803 056d 82010000 		.4byte	.LASF26
+ 1804 0571 01       		.byte	0x1
+ 1805 0572 1B01     		.2byte	0x11b
+ 1806 0574 6F000000 		.4byte	0x6f
+ 1807 0578 02       		.uleb128 0x2
+ 1808 0579 91       		.byte	0x91
+ 1809 057a 00       		.sleb128 0
+ 1810 057b 0D       		.uleb128 0xd
+ 1811 057c D2030000 		.4byte	.LASF27
+ 1812 0580 01       		.byte	0x1
+ 1813 0581 1B01     		.2byte	0x11b
+ 1814 0583 6F000000 		.4byte	0x6f
+ 1815 0587 02       		.uleb128 0x2
+ 1816 0588 91       		.byte	0x91
+ 1817 0589 04       		.sleb128 4
+ 1818 058a 00       		.byte	0
+ 1819 058b 0C       		.uleb128 0xc
+ 1820 058c 23030000 		.4byte	.LASF41
+ 1821 0590 01       		.byte	0x1
+ 1822 0591 3501     		.2byte	0x135
+ 1823 0593 68000000 		.4byte	0x68
+ 1824 0597 00000000 		.4byte	.LFB76
+ 1825 059b B8000000 		.4byte	.LFE76-.LFB76
+ 1826 059f 01       		.uleb128 0x1
+ 1827 05a0 9C       		.byte	0x9c
+ 1828 05a1 2D060000 		.4byte	0x62d
+ 1829 05a5 0D       		.uleb128 0xd
+ 1830 05a6 44010000 		.4byte	.LASF22
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 40
+
+
+ 1831 05aa 01       		.byte	0x1
+ 1832 05ab 3501     		.2byte	0x135
+ 1833 05ad 6F000000 		.4byte	0x6f
+ 1834 05b1 02       		.uleb128 0x2
+ 1835 05b2 91       		.byte	0x91
+ 1836 05b3 5C       		.sleb128 -36
+ 1837 05b4 0D       		.uleb128 0xd
+ 1838 05b5 72010000 		.4byte	.LASF23
+ 1839 05b9 01       		.byte	0x1
+ 1840 05ba 3501     		.2byte	0x135
+ 1841 05bc 6F000000 		.4byte	0x6f
+ 1842 05c0 02       		.uleb128 0x2
+ 1843 05c1 91       		.byte	0x91
+ 1844 05c2 58       		.sleb128 -40
+ 1845 05c3 0D       		.uleb128 0xd
+ 1846 05c4 7A010000 		.4byte	.LASF24
+ 1847 05c8 01       		.byte	0x1
+ 1848 05c9 3601     		.2byte	0x136
+ 1849 05cb 6F000000 		.4byte	0x6f
+ 1850 05cf 02       		.uleb128 0x2
+ 1851 05d0 91       		.byte	0x91
+ 1852 05d1 54       		.sleb128 -44
+ 1853 05d2 0D       		.uleb128 0xd
+ 1854 05d3 C9000000 		.4byte	.LASF25
+ 1855 05d7 01       		.byte	0x1
+ 1856 05d8 3601     		.2byte	0x136
+ 1857 05da 6F000000 		.4byte	0x6f
+ 1858 05de 02       		.uleb128 0x2
+ 1859 05df 91       		.byte	0x91
+ 1860 05e0 50       		.sleb128 -48
+ 1861 05e1 0D       		.uleb128 0xd
+ 1862 05e2 82010000 		.4byte	.LASF26
+ 1863 05e6 01       		.byte	0x1
+ 1864 05e7 3601     		.2byte	0x136
+ 1865 05e9 6F000000 		.4byte	0x6f
+ 1866 05ed 02       		.uleb128 0x2
+ 1867 05ee 91       		.byte	0x91
+ 1868 05ef 00       		.sleb128 0
+ 1869 05f0 0D       		.uleb128 0xd
+ 1870 05f1 D2030000 		.4byte	.LASF27
+ 1871 05f5 01       		.byte	0x1
+ 1872 05f6 3601     		.2byte	0x136
+ 1873 05f8 6F000000 		.4byte	0x6f
+ 1874 05fc 02       		.uleb128 0x2
+ 1875 05fd 91       		.byte	0x91
+ 1876 05fe 04       		.sleb128 4
+ 1877 05ff 0E       		.uleb128 0xe
+ 1878 0600 66010000 		.4byte	.LASF42
+ 1879 0604 01       		.byte	0x1
+ 1880 0605 3801     		.2byte	0x138
+ 1881 0607 B1000000 		.4byte	0xb1
+ 1882 060b 02       		.uleb128 0x2
+ 1883 060c 91       		.byte	0x91
+ 1884 060d 6C       		.sleb128 -20
+ 1885 060e 0E       		.uleb128 0xe
+ 1886 060f D1000000 		.4byte	.LASF43
+ 1887 0613 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 41
+
+
+ 1888 0614 3901     		.2byte	0x139
+ 1889 0616 B1000000 		.4byte	0xb1
+ 1890 061a 02       		.uleb128 0x2
+ 1891 061b 91       		.byte	0x91
+ 1892 061c 68       		.sleb128 -24
+ 1893 061d 0E       		.uleb128 0xe
+ 1894 061e 7F030000 		.4byte	.LASF44
+ 1895 0622 01       		.byte	0x1
+ 1896 0623 3A01     		.2byte	0x13a
+ 1897 0625 B1000000 		.4byte	0xb1
+ 1898 0629 02       		.uleb128 0x2
+ 1899 062a 91       		.byte	0x91
+ 1900 062b 64       		.sleb128 -28
+ 1901 062c 00       		.byte	0
+ 1902 062d 0C       		.uleb128 0xc
+ 1903 062e A5030000 		.4byte	.LASF45
+ 1904 0632 01       		.byte	0x1
+ 1905 0633 5901     		.2byte	0x159
+ 1906 0635 68000000 		.4byte	0x68
+ 1907 0639 00000000 		.4byte	.LFB77
+ 1908 063d 34000000 		.4byte	.LFE77-.LFB77
+ 1909 0641 01       		.uleb128 0x1
+ 1910 0642 9C       		.byte	0x9c
+ 1911 0643 B1060000 		.4byte	0x6b1
+ 1912 0647 0D       		.uleb128 0xd
+ 1913 0648 44010000 		.4byte	.LASF22
+ 1914 064c 01       		.byte	0x1
+ 1915 064d 5901     		.2byte	0x159
+ 1916 064f 6F000000 		.4byte	0x6f
+ 1917 0653 02       		.uleb128 0x2
+ 1918 0654 91       		.byte	0x91
+ 1919 0655 6C       		.sleb128 -20
+ 1920 0656 0D       		.uleb128 0xd
+ 1921 0657 72010000 		.4byte	.LASF23
+ 1922 065b 01       		.byte	0x1
+ 1923 065c 5901     		.2byte	0x159
+ 1924 065e 6F000000 		.4byte	0x6f
+ 1925 0662 02       		.uleb128 0x2
+ 1926 0663 91       		.byte	0x91
+ 1927 0664 68       		.sleb128 -24
+ 1928 0665 0D       		.uleb128 0xd
+ 1929 0666 7A010000 		.4byte	.LASF24
+ 1930 066a 01       		.byte	0x1
+ 1931 066b 5A01     		.2byte	0x15a
+ 1932 066d 6F000000 		.4byte	0x6f
+ 1933 0671 02       		.uleb128 0x2
+ 1934 0672 91       		.byte	0x91
+ 1935 0673 64       		.sleb128 -28
+ 1936 0674 0D       		.uleb128 0xd
+ 1937 0675 C9000000 		.4byte	.LASF25
+ 1938 0679 01       		.byte	0x1
+ 1939 067a 5A01     		.2byte	0x15a
+ 1940 067c 6F000000 		.4byte	0x6f
+ 1941 0680 02       		.uleb128 0x2
+ 1942 0681 91       		.byte	0x91
+ 1943 0682 60       		.sleb128 -32
+ 1944 0683 0D       		.uleb128 0xd
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 42
+
+
+ 1945 0684 82010000 		.4byte	.LASF26
+ 1946 0688 01       		.byte	0x1
+ 1947 0689 5A01     		.2byte	0x15a
+ 1948 068b 6F000000 		.4byte	0x6f
+ 1949 068f 02       		.uleb128 0x2
+ 1950 0690 91       		.byte	0x91
+ 1951 0691 00       		.sleb128 0
+ 1952 0692 0D       		.uleb128 0xd
+ 1953 0693 D2030000 		.4byte	.LASF27
+ 1954 0697 01       		.byte	0x1
+ 1955 0698 5A01     		.2byte	0x15a
+ 1956 069a 6F000000 		.4byte	0x6f
+ 1957 069e 02       		.uleb128 0x2
+ 1958 069f 91       		.byte	0x91
+ 1959 06a0 04       		.sleb128 4
+ 1960 06a1 0E       		.uleb128 0xe
+ 1961 06a2 ED000000 		.4byte	.LASF32
+ 1962 06a6 01       		.byte	0x1
+ 1963 06a7 5C01     		.2byte	0x15c
+ 1964 06a9 8D000000 		.4byte	0x8d
+ 1965 06ad 02       		.uleb128 0x2
+ 1966 06ae 91       		.byte	0x91
+ 1967 06af 76       		.sleb128 -10
+ 1968 06b0 00       		.byte	0
+ 1969 06b1 0C       		.uleb128 0xc
+ 1970 06b2 FC000000 		.4byte	.LASF46
+ 1971 06b6 01       		.byte	0x1
+ 1972 06b7 7001     		.2byte	0x170
+ 1973 06b9 68000000 		.4byte	0x68
+ 1974 06bd 00000000 		.4byte	.LFB78
+ 1975 06c1 20000000 		.4byte	.LFE78-.LFB78
+ 1976 06c5 01       		.uleb128 0x1
+ 1977 06c6 9C       		.byte	0x9c
+ 1978 06c7 26070000 		.4byte	0x726
+ 1979 06cb 0D       		.uleb128 0xd
+ 1980 06cc 44010000 		.4byte	.LASF22
+ 1981 06d0 01       		.byte	0x1
+ 1982 06d1 7001     		.2byte	0x170
+ 1983 06d3 6F000000 		.4byte	0x6f
+ 1984 06d7 02       		.uleb128 0x2
+ 1985 06d8 91       		.byte	0x91
+ 1986 06d9 74       		.sleb128 -12
+ 1987 06da 0D       		.uleb128 0xd
+ 1988 06db 72010000 		.4byte	.LASF23
+ 1989 06df 01       		.byte	0x1
+ 1990 06e0 7001     		.2byte	0x170
+ 1991 06e2 6F000000 		.4byte	0x6f
+ 1992 06e6 02       		.uleb128 0x2
+ 1993 06e7 91       		.byte	0x91
+ 1994 06e8 70       		.sleb128 -16
+ 1995 06e9 0D       		.uleb128 0xd
+ 1996 06ea 7A010000 		.4byte	.LASF24
+ 1997 06ee 01       		.byte	0x1
+ 1998 06ef 7101     		.2byte	0x171
+ 1999 06f1 6F000000 		.4byte	0x6f
+ 2000 06f5 02       		.uleb128 0x2
+ 2001 06f6 91       		.byte	0x91
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 43
+
+
+ 2002 06f7 6C       		.sleb128 -20
+ 2003 06f8 0D       		.uleb128 0xd
+ 2004 06f9 C9000000 		.4byte	.LASF25
+ 2005 06fd 01       		.byte	0x1
+ 2006 06fe 7101     		.2byte	0x171
+ 2007 0700 6F000000 		.4byte	0x6f
+ 2008 0704 02       		.uleb128 0x2
+ 2009 0705 91       		.byte	0x91
+ 2010 0706 68       		.sleb128 -24
+ 2011 0707 0D       		.uleb128 0xd
+ 2012 0708 82010000 		.4byte	.LASF26
+ 2013 070c 01       		.byte	0x1
+ 2014 070d 7101     		.2byte	0x171
+ 2015 070f 6F000000 		.4byte	0x6f
+ 2016 0713 02       		.uleb128 0x2
+ 2017 0714 91       		.byte	0x91
+ 2018 0715 00       		.sleb128 0
+ 2019 0716 0D       		.uleb128 0xd
+ 2020 0717 D2030000 		.4byte	.LASF27
+ 2021 071b 01       		.byte	0x1
+ 2022 071c 7101     		.2byte	0x171
+ 2023 071e 6F000000 		.4byte	0x6f
+ 2024 0722 02       		.uleb128 0x2
+ 2025 0723 91       		.byte	0x91
+ 2026 0724 04       		.sleb128 4
+ 2027 0725 00       		.byte	0
+ 2028 0726 0C       		.uleb128 0xc
+ 2029 0727 87020000 		.4byte	.LASF47
+ 2030 072b 01       		.byte	0x1
+ 2031 072c 7901     		.2byte	0x179
+ 2032 072e 68000000 		.4byte	0x68
+ 2033 0732 00000000 		.4byte	.LFB79
+ 2034 0736 1C000000 		.4byte	.LFE79-.LFB79
+ 2035 073a 01       		.uleb128 0x1
+ 2036 073b 9C       		.byte	0x9c
+ 2037 073c 9B070000 		.4byte	0x79b
+ 2038 0740 0D       		.uleb128 0xd
+ 2039 0741 44010000 		.4byte	.LASF22
+ 2040 0745 01       		.byte	0x1
+ 2041 0746 7901     		.2byte	0x179
+ 2042 0748 6F000000 		.4byte	0x6f
+ 2043 074c 02       		.uleb128 0x2
+ 2044 074d 91       		.byte	0x91
+ 2045 074e 74       		.sleb128 -12
+ 2046 074f 0D       		.uleb128 0xd
+ 2047 0750 72010000 		.4byte	.LASF23
+ 2048 0754 01       		.byte	0x1
+ 2049 0755 7901     		.2byte	0x179
+ 2050 0757 6F000000 		.4byte	0x6f
+ 2051 075b 02       		.uleb128 0x2
+ 2052 075c 91       		.byte	0x91
+ 2053 075d 70       		.sleb128 -16
+ 2054 075e 0D       		.uleb128 0xd
+ 2055 075f 7A010000 		.4byte	.LASF24
+ 2056 0763 01       		.byte	0x1
+ 2057 0764 7A01     		.2byte	0x17a
+ 2058 0766 6F000000 		.4byte	0x6f
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 44
+
+
+ 2059 076a 02       		.uleb128 0x2
+ 2060 076b 91       		.byte	0x91
+ 2061 076c 6C       		.sleb128 -20
+ 2062 076d 0D       		.uleb128 0xd
+ 2063 076e C9000000 		.4byte	.LASF25
+ 2064 0772 01       		.byte	0x1
+ 2065 0773 7A01     		.2byte	0x17a
+ 2066 0775 6F000000 		.4byte	0x6f
+ 2067 0779 02       		.uleb128 0x2
+ 2068 077a 91       		.byte	0x91
+ 2069 077b 68       		.sleb128 -24
+ 2070 077c 0D       		.uleb128 0xd
+ 2071 077d 82010000 		.4byte	.LASF26
+ 2072 0781 01       		.byte	0x1
+ 2073 0782 7A01     		.2byte	0x17a
+ 2074 0784 6F000000 		.4byte	0x6f
+ 2075 0788 02       		.uleb128 0x2
+ 2076 0789 91       		.byte	0x91
+ 2077 078a 00       		.sleb128 0
+ 2078 078b 0D       		.uleb128 0xd
+ 2079 078c D2030000 		.4byte	.LASF27
+ 2080 0790 01       		.byte	0x1
+ 2081 0791 7A01     		.2byte	0x17a
+ 2082 0793 6F000000 		.4byte	0x6f
+ 2083 0797 02       		.uleb128 0x2
+ 2084 0798 91       		.byte	0x91
+ 2085 0799 04       		.sleb128 4
+ 2086 079a 00       		.byte	0
+ 2087 079b 0C       		.uleb128 0xc
+ 2088 079c 53040000 		.4byte	.LASF48
+ 2089 07a0 01       		.byte	0x1
+ 2090 07a1 8001     		.2byte	0x180
+ 2091 07a3 68000000 		.4byte	0x68
+ 2092 07a7 00000000 		.4byte	.LFB80
+ 2093 07ab 1C000000 		.4byte	.LFE80-.LFB80
+ 2094 07af 01       		.uleb128 0x1
+ 2095 07b0 9C       		.byte	0x9c
+ 2096 07b1 10080000 		.4byte	0x810
+ 2097 07b5 0D       		.uleb128 0xd
+ 2098 07b6 44010000 		.4byte	.LASF22
+ 2099 07ba 01       		.byte	0x1
+ 2100 07bb 8001     		.2byte	0x180
+ 2101 07bd 6F000000 		.4byte	0x6f
+ 2102 07c1 02       		.uleb128 0x2
+ 2103 07c2 91       		.byte	0x91
+ 2104 07c3 74       		.sleb128 -12
+ 2105 07c4 0D       		.uleb128 0xd
+ 2106 07c5 72010000 		.4byte	.LASF23
+ 2107 07c9 01       		.byte	0x1
+ 2108 07ca 8001     		.2byte	0x180
+ 2109 07cc 6F000000 		.4byte	0x6f
+ 2110 07d0 02       		.uleb128 0x2
+ 2111 07d1 91       		.byte	0x91
+ 2112 07d2 70       		.sleb128 -16
+ 2113 07d3 0D       		.uleb128 0xd
+ 2114 07d4 7A010000 		.4byte	.LASF24
+ 2115 07d8 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 45
+
+
+ 2116 07d9 8101     		.2byte	0x181
+ 2117 07db 6F000000 		.4byte	0x6f
+ 2118 07df 02       		.uleb128 0x2
+ 2119 07e0 91       		.byte	0x91
+ 2120 07e1 6C       		.sleb128 -20
+ 2121 07e2 0D       		.uleb128 0xd
+ 2122 07e3 C9000000 		.4byte	.LASF25
+ 2123 07e7 01       		.byte	0x1
+ 2124 07e8 8101     		.2byte	0x181
+ 2125 07ea 6F000000 		.4byte	0x6f
+ 2126 07ee 02       		.uleb128 0x2
+ 2127 07ef 91       		.byte	0x91
+ 2128 07f0 68       		.sleb128 -24
+ 2129 07f1 0D       		.uleb128 0xd
+ 2130 07f2 82010000 		.4byte	.LASF26
+ 2131 07f6 01       		.byte	0x1
+ 2132 07f7 8101     		.2byte	0x181
+ 2133 07f9 6F000000 		.4byte	0x6f
+ 2134 07fd 02       		.uleb128 0x2
+ 2135 07fe 91       		.byte	0x91
+ 2136 07ff 00       		.sleb128 0
+ 2137 0800 0D       		.uleb128 0xd
+ 2138 0801 D2030000 		.4byte	.LASF27
+ 2139 0805 01       		.byte	0x1
+ 2140 0806 8101     		.2byte	0x181
+ 2141 0808 6F000000 		.4byte	0x6f
+ 2142 080c 02       		.uleb128 0x2
+ 2143 080d 91       		.byte	0x91
+ 2144 080e 04       		.sleb128 4
+ 2145 080f 00       		.byte	0
+ 2146 0810 0B       		.uleb128 0xb
+ 2147 0811 AF040000 		.4byte	.LASF49
+ 2148 0815 01       		.byte	0x1
+ 2149 0816 12       		.byte	0x12
+ 2150 0817 B1000000 		.4byte	0xb1
+ 2151 081b 05       		.uleb128 0x5
+ 2152 081c 03       		.byte	0x3
+ 2153 081d 00000000 		.4byte	reference_resistance
+ 2154 0821 0B       		.uleb128 0xb
+ 2155 0822 D7030000 		.4byte	.LASF50
+ 2156 0826 01       		.byte	0x1
+ 2157 0827 13       		.byte	0x13
+ 2158 0828 A5000000 		.4byte	0xa5
+ 2159 082c 05       		.uleb128 0x5
+ 2160 082d 03       		.byte	0x3
+ 2161 082e 04000000 		.4byte	current_channel
+ 2162 0832 0B       		.uleb128 0xb
+ 2163 0833 DA010000 		.4byte	.LASF51
+ 2164 0837 01       		.byte	0x1
+ 2165 0838 14       		.byte	0x14
+ 2166 0839 A5000000 		.4byte	0xa5
+ 2167 083d 05       		.uleb128 0x5
+ 2168 083e 03       		.byte	0x3
+ 2169 083f 08000000 		.4byte	source_voltage
+ 2170 0843 0B       		.uleb128 0xb
+ 2171 0844 66020000 		.4byte	.LASF52
+ 2172 0848 01       		.byte	0x1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 46
+
+
+ 2173 0849 16       		.byte	0x16
+ 2174 084a 99000000 		.4byte	0x99
+ 2175 084e 05       		.uleb128 0x5
+ 2176 084f 03       		.byte	0x3
+ 2177 0850 0C000000 		.4byte	logging_flag
+ 2178 0854 0B       		.uleb128 0xb
+ 2179 0855 99030000 		.4byte	.LASF53
+ 2180 0859 01       		.byte	0x1
+ 2181 085a 17       		.byte	0x17
+ 2182 085b 99000000 		.4byte	0x99
+ 2183 085f 05       		.uleb128 0x5
+ 2184 0860 03       		.byte	0x3
+ 2185 0861 10000000 		.4byte	active_flag
+ 2186 0865 0B       		.uleb128 0xb
+ 2187 0866 9A010000 		.4byte	.LASF54
+ 2188 086a 01       		.byte	0x1
+ 2189 086b 18       		.byte	0x18
+ 2190 086c 99000000 		.4byte	0x99
+ 2191 0870 05       		.uleb128 0x5
+ 2192 0871 03       		.byte	0x3
+ 2193 0872 14000000 		.4byte	measurement_minute_count
+ 2194 0876 0B       		.uleb128 0xb
+ 2195 0877 C6030000 		.4byte	.LASF55
+ 2196 087b 01       		.byte	0x1
+ 2197 087c 19       		.byte	0x19
+ 2198 087d 99000000 		.4byte	0x99
+ 2199 0881 05       		.uleb128 0x5
+ 2200 0882 03       		.byte	0x3
+ 2201 0883 18000000 		.4byte	sensor_type
+ 2202 0887 0B       		.uleb128 0xb
+ 2203 0888 A0040000 		.4byte	.LASF56
+ 2204 088c 01       		.byte	0x1
+ 2205 088d 1B       		.byte	0x1b
+ 2206 088e A5000000 		.4byte	0xa5
+ 2207 0892 05       		.uleb128 0x5
+ 2208 0893 03       		.byte	0x3
+ 2209 0894 1C000000 		.4byte	sigma_a_d_high
+ 2210 0898 0F       		.uleb128 0xf
+ 2211 0899 B1000000 		.4byte	0xb1
+ 2212 089d A8080000 		.4byte	0x8a8
+ 2213 08a1 10       		.uleb128 0x10
+ 2214 08a2 C6000000 		.4byte	0xc6
+ 2215 08a6 0F       		.byte	0xf
+ 2216 08a7 00       		.byte	0
+ 2217 08a8 0B       		.uleb128 0xb
+ 2218 08a9 01030000 		.4byte	.LASF57
+ 2219 08ad 01       		.byte	0x1
+ 2220 08ae 1F       		.byte	0x1f
+ 2221 08af 98080000 		.4byte	0x898
+ 2222 08b3 05       		.uleb128 0x5
+ 2223 08b4 03       		.byte	0x3
+ 2224 08b5 20000000 		.4byte	moisture_meaurements
+ 2225 08b9 11       		.uleb128 0x11
+ 2226 08ba 93040000 		.4byte	.LASF58
+ 2227 08be 05       		.byte	0x5
+ 2228 08bf 9606     		.2byte	0x696
+ 2229 08c1 C5080000 		.4byte	0x8c5
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 47
+
+
+ 2230 08c5 12       		.uleb128 0x12
+ 2231 08c6 76000000 		.4byte	0x76
+ 2232 08ca 0F       		.uleb128 0xf
+ 2233 08cb 8D000000 		.4byte	0x8d
+ 2234 08cf DA080000 		.4byte	0x8da
+ 2235 08d3 10       		.uleb128 0x10
+ 2236 08d4 C6000000 		.4byte	0xc6
+ 2237 08d8 01       		.byte	0x1
+ 2238 08d9 00       		.byte	0
+ 2239 08da 13       		.uleb128 0x13
+ 2240 08db B5000000 		.4byte	.LASF59
+ 2241 08df 06       		.byte	0x6
+ 2242 08e0 77       		.byte	0x77
+ 2243 08e1 E5080000 		.4byte	0x8e5
+ 2244 08e5 14       		.uleb128 0x14
+ 2245 08e6 CA080000 		.4byte	0x8ca
+ 2246 08ea 00       		.byte	0
+ 2247              		.section	.debug_abbrev,"",%progbits
+ 2248              	.Ldebug_abbrev0:
+ 2249 0000 01       		.uleb128 0x1
+ 2250 0001 11       		.uleb128 0x11
+ 2251 0002 01       		.byte	0x1
+ 2252 0003 25       		.uleb128 0x25
+ 2253 0004 0E       		.uleb128 0xe
+ 2254 0005 13       		.uleb128 0x13
+ 2255 0006 0B       		.uleb128 0xb
+ 2256 0007 03       		.uleb128 0x3
+ 2257 0008 0E       		.uleb128 0xe
+ 2258 0009 1B       		.uleb128 0x1b
+ 2259 000a 0E       		.uleb128 0xe
+ 2260 000b 55       		.uleb128 0x55
+ 2261 000c 17       		.uleb128 0x17
+ 2262 000d 11       		.uleb128 0x11
+ 2263 000e 01       		.uleb128 0x1
+ 2264 000f 10       		.uleb128 0x10
+ 2265 0010 17       		.uleb128 0x17
+ 2266 0011 00       		.byte	0
+ 2267 0012 00       		.byte	0
+ 2268 0013 02       		.uleb128 0x2
+ 2269 0014 24       		.uleb128 0x24
+ 2270 0015 00       		.byte	0
+ 2271 0016 0B       		.uleb128 0xb
+ 2272 0017 0B       		.uleb128 0xb
+ 2273 0018 3E       		.uleb128 0x3e
+ 2274 0019 0B       		.uleb128 0xb
+ 2275 001a 03       		.uleb128 0x3
+ 2276 001b 0E       		.uleb128 0xe
+ 2277 001c 00       		.byte	0
+ 2278 001d 00       		.byte	0
+ 2279 001e 03       		.uleb128 0x3
+ 2280 001f 16       		.uleb128 0x16
+ 2281 0020 00       		.byte	0
+ 2282 0021 03       		.uleb128 0x3
+ 2283 0022 0E       		.uleb128 0xe
+ 2284 0023 3A       		.uleb128 0x3a
+ 2285 0024 0B       		.uleb128 0xb
+ 2286 0025 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 48
+
+
+ 2287 0026 0B       		.uleb128 0xb
+ 2288 0027 49       		.uleb128 0x49
+ 2289 0028 13       		.uleb128 0x13
+ 2290 0029 00       		.byte	0
+ 2291 002a 00       		.byte	0
+ 2292 002b 04       		.uleb128 0x4
+ 2293 002c 24       		.uleb128 0x24
+ 2294 002d 00       		.byte	0
+ 2295 002e 0B       		.uleb128 0xb
+ 2296 002f 0B       		.uleb128 0xb
+ 2297 0030 3E       		.uleb128 0x3e
+ 2298 0031 0B       		.uleb128 0xb
+ 2299 0032 03       		.uleb128 0x3
+ 2300 0033 08       		.uleb128 0x8
+ 2301 0034 00       		.byte	0
+ 2302 0035 00       		.byte	0
+ 2303 0036 05       		.uleb128 0x5
+ 2304 0037 16       		.uleb128 0x16
+ 2305 0038 00       		.byte	0
+ 2306 0039 03       		.uleb128 0x3
+ 2307 003a 0E       		.uleb128 0xe
+ 2308 003b 3A       		.uleb128 0x3a
+ 2309 003c 0B       		.uleb128 0xb
+ 2310 003d 3B       		.uleb128 0x3b
+ 2311 003e 05       		.uleb128 0x5
+ 2312 003f 49       		.uleb128 0x49
+ 2313 0040 13       		.uleb128 0x13
+ 2314 0041 00       		.byte	0
+ 2315 0042 00       		.byte	0
+ 2316 0043 06       		.uleb128 0x6
+ 2317 0044 04       		.uleb128 0x4
+ 2318 0045 01       		.byte	0x1
+ 2319 0046 0B       		.uleb128 0xb
+ 2320 0047 0B       		.uleb128 0xb
+ 2321 0048 3A       		.uleb128 0x3a
+ 2322 0049 0B       		.uleb128 0xb
+ 2323 004a 3B       		.uleb128 0x3b
+ 2324 004b 0B       		.uleb128 0xb
+ 2325 004c 01       		.uleb128 0x1
+ 2326 004d 13       		.uleb128 0x13
+ 2327 004e 00       		.byte	0
+ 2328 004f 00       		.byte	0
+ 2329 0050 07       		.uleb128 0x7
+ 2330 0051 28       		.uleb128 0x28
+ 2331 0052 00       		.byte	0
+ 2332 0053 03       		.uleb128 0x3
+ 2333 0054 0E       		.uleb128 0xe
+ 2334 0055 1C       		.uleb128 0x1c
+ 2335 0056 0D       		.uleb128 0xd
+ 2336 0057 00       		.byte	0
+ 2337 0058 00       		.byte	0
+ 2338 0059 08       		.uleb128 0x8
+ 2339 005a 2E       		.uleb128 0x2e
+ 2340 005b 01       		.byte	0x1
+ 2341 005c 3F       		.uleb128 0x3f
+ 2342 005d 19       		.uleb128 0x19
+ 2343 005e 03       		.uleb128 0x3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 49
+
+
+ 2344 005f 0E       		.uleb128 0xe
+ 2345 0060 3A       		.uleb128 0x3a
+ 2346 0061 0B       		.uleb128 0xb
+ 2347 0062 3B       		.uleb128 0x3b
+ 2348 0063 0B       		.uleb128 0xb
+ 2349 0064 27       		.uleb128 0x27
+ 2350 0065 19       		.uleb128 0x19
+ 2351 0066 49       		.uleb128 0x49
+ 2352 0067 13       		.uleb128 0x13
+ 2353 0068 11       		.uleb128 0x11
+ 2354 0069 01       		.uleb128 0x1
+ 2355 006a 12       		.uleb128 0x12
+ 2356 006b 06       		.uleb128 0x6
+ 2357 006c 40       		.uleb128 0x40
+ 2358 006d 18       		.uleb128 0x18
+ 2359 006e 9642     		.uleb128 0x2116
+ 2360 0070 19       		.uleb128 0x19
+ 2361 0071 01       		.uleb128 0x1
+ 2362 0072 13       		.uleb128 0x13
+ 2363 0073 00       		.byte	0
+ 2364 0074 00       		.byte	0
+ 2365 0075 09       		.uleb128 0x9
+ 2366 0076 05       		.uleb128 0x5
+ 2367 0077 00       		.byte	0
+ 2368 0078 03       		.uleb128 0x3
+ 2369 0079 0E       		.uleb128 0xe
+ 2370 007a 3A       		.uleb128 0x3a
+ 2371 007b 0B       		.uleb128 0xb
+ 2372 007c 3B       		.uleb128 0x3b
+ 2373 007d 0B       		.uleb128 0xb
+ 2374 007e 49       		.uleb128 0x49
+ 2375 007f 13       		.uleb128 0x13
+ 2376 0080 02       		.uleb128 0x2
+ 2377 0081 18       		.uleb128 0x18
+ 2378 0082 00       		.byte	0
+ 2379 0083 00       		.byte	0
+ 2380 0084 0A       		.uleb128 0xa
+ 2381 0085 2E       		.uleb128 0x2e
+ 2382 0086 00       		.byte	0
+ 2383 0087 3F       		.uleb128 0x3f
+ 2384 0088 19       		.uleb128 0x19
+ 2385 0089 03       		.uleb128 0x3
+ 2386 008a 0E       		.uleb128 0xe
+ 2387 008b 3A       		.uleb128 0x3a
+ 2388 008c 0B       		.uleb128 0xb
+ 2389 008d 3B       		.uleb128 0x3b
+ 2390 008e 0B       		.uleb128 0xb
+ 2391 008f 27       		.uleb128 0x27
+ 2392 0090 19       		.uleb128 0x19
+ 2393 0091 11       		.uleb128 0x11
+ 2394 0092 01       		.uleb128 0x1
+ 2395 0093 12       		.uleb128 0x12
+ 2396 0094 06       		.uleb128 0x6
+ 2397 0095 40       		.uleb128 0x40
+ 2398 0096 18       		.uleb128 0x18
+ 2399 0097 9642     		.uleb128 0x2116
+ 2400 0099 19       		.uleb128 0x19
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 50
+
+
+ 2401 009a 00       		.byte	0
+ 2402 009b 00       		.byte	0
+ 2403 009c 0B       		.uleb128 0xb
+ 2404 009d 34       		.uleb128 0x34
+ 2405 009e 00       		.byte	0
+ 2406 009f 03       		.uleb128 0x3
+ 2407 00a0 0E       		.uleb128 0xe
+ 2408 00a1 3A       		.uleb128 0x3a
+ 2409 00a2 0B       		.uleb128 0xb
+ 2410 00a3 3B       		.uleb128 0x3b
+ 2411 00a4 0B       		.uleb128 0xb
+ 2412 00a5 49       		.uleb128 0x49
+ 2413 00a6 13       		.uleb128 0x13
+ 2414 00a7 02       		.uleb128 0x2
+ 2415 00a8 18       		.uleb128 0x18
+ 2416 00a9 00       		.byte	0
+ 2417 00aa 00       		.byte	0
+ 2418 00ab 0C       		.uleb128 0xc
+ 2419 00ac 2E       		.uleb128 0x2e
+ 2420 00ad 01       		.byte	0x1
+ 2421 00ae 3F       		.uleb128 0x3f
+ 2422 00af 19       		.uleb128 0x19
+ 2423 00b0 03       		.uleb128 0x3
+ 2424 00b1 0E       		.uleb128 0xe
+ 2425 00b2 3A       		.uleb128 0x3a
+ 2426 00b3 0B       		.uleb128 0xb
+ 2427 00b4 3B       		.uleb128 0x3b
+ 2428 00b5 05       		.uleb128 0x5
+ 2429 00b6 27       		.uleb128 0x27
+ 2430 00b7 19       		.uleb128 0x19
+ 2431 00b8 49       		.uleb128 0x49
+ 2432 00b9 13       		.uleb128 0x13
+ 2433 00ba 11       		.uleb128 0x11
+ 2434 00bb 01       		.uleb128 0x1
+ 2435 00bc 12       		.uleb128 0x12
+ 2436 00bd 06       		.uleb128 0x6
+ 2437 00be 40       		.uleb128 0x40
+ 2438 00bf 18       		.uleb128 0x18
+ 2439 00c0 9642     		.uleb128 0x2116
+ 2440 00c2 19       		.uleb128 0x19
+ 2441 00c3 01       		.uleb128 0x1
+ 2442 00c4 13       		.uleb128 0x13
+ 2443 00c5 00       		.byte	0
+ 2444 00c6 00       		.byte	0
+ 2445 00c7 0D       		.uleb128 0xd
+ 2446 00c8 05       		.uleb128 0x5
+ 2447 00c9 00       		.byte	0
+ 2448 00ca 03       		.uleb128 0x3
+ 2449 00cb 0E       		.uleb128 0xe
+ 2450 00cc 3A       		.uleb128 0x3a
+ 2451 00cd 0B       		.uleb128 0xb
+ 2452 00ce 3B       		.uleb128 0x3b
+ 2453 00cf 05       		.uleb128 0x5
+ 2454 00d0 49       		.uleb128 0x49
+ 2455 00d1 13       		.uleb128 0x13
+ 2456 00d2 02       		.uleb128 0x2
+ 2457 00d3 18       		.uleb128 0x18
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 51
+
+
+ 2458 00d4 00       		.byte	0
+ 2459 00d5 00       		.byte	0
+ 2460 00d6 0E       		.uleb128 0xe
+ 2461 00d7 34       		.uleb128 0x34
+ 2462 00d8 00       		.byte	0
+ 2463 00d9 03       		.uleb128 0x3
+ 2464 00da 0E       		.uleb128 0xe
+ 2465 00db 3A       		.uleb128 0x3a
+ 2466 00dc 0B       		.uleb128 0xb
+ 2467 00dd 3B       		.uleb128 0x3b
+ 2468 00de 05       		.uleb128 0x5
+ 2469 00df 49       		.uleb128 0x49
+ 2470 00e0 13       		.uleb128 0x13
+ 2471 00e1 02       		.uleb128 0x2
+ 2472 00e2 18       		.uleb128 0x18
+ 2473 00e3 00       		.byte	0
+ 2474 00e4 00       		.byte	0
+ 2475 00e5 0F       		.uleb128 0xf
+ 2476 00e6 01       		.uleb128 0x1
+ 2477 00e7 01       		.byte	0x1
+ 2478 00e8 49       		.uleb128 0x49
+ 2479 00e9 13       		.uleb128 0x13
+ 2480 00ea 01       		.uleb128 0x1
+ 2481 00eb 13       		.uleb128 0x13
+ 2482 00ec 00       		.byte	0
+ 2483 00ed 00       		.byte	0
+ 2484 00ee 10       		.uleb128 0x10
+ 2485 00ef 21       		.uleb128 0x21
+ 2486 00f0 00       		.byte	0
+ 2487 00f1 49       		.uleb128 0x49
+ 2488 00f2 13       		.uleb128 0x13
+ 2489 00f3 2F       		.uleb128 0x2f
+ 2490 00f4 0B       		.uleb128 0xb
+ 2491 00f5 00       		.byte	0
+ 2492 00f6 00       		.byte	0
+ 2493 00f7 11       		.uleb128 0x11
+ 2494 00f8 34       		.uleb128 0x34
+ 2495 00f9 00       		.byte	0
+ 2496 00fa 03       		.uleb128 0x3
+ 2497 00fb 0E       		.uleb128 0xe
+ 2498 00fc 3A       		.uleb128 0x3a
+ 2499 00fd 0B       		.uleb128 0xb
+ 2500 00fe 3B       		.uleb128 0x3b
+ 2501 00ff 05       		.uleb128 0x5
+ 2502 0100 49       		.uleb128 0x49
+ 2503 0101 13       		.uleb128 0x13
+ 2504 0102 3F       		.uleb128 0x3f
+ 2505 0103 19       		.uleb128 0x19
+ 2506 0104 3C       		.uleb128 0x3c
+ 2507 0105 19       		.uleb128 0x19
+ 2508 0106 00       		.byte	0
+ 2509 0107 00       		.byte	0
+ 2510 0108 12       		.uleb128 0x12
+ 2511 0109 35       		.uleb128 0x35
+ 2512 010a 00       		.byte	0
+ 2513 010b 49       		.uleb128 0x49
+ 2514 010c 13       		.uleb128 0x13
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 52
+
+
+ 2515 010d 00       		.byte	0
+ 2516 010e 00       		.byte	0
+ 2517 010f 13       		.uleb128 0x13
+ 2518 0110 34       		.uleb128 0x34
+ 2519 0111 00       		.byte	0
+ 2520 0112 03       		.uleb128 0x3
+ 2521 0113 0E       		.uleb128 0xe
+ 2522 0114 3A       		.uleb128 0x3a
+ 2523 0115 0B       		.uleb128 0xb
+ 2524 0116 3B       		.uleb128 0x3b
+ 2525 0117 0B       		.uleb128 0xb
+ 2526 0118 49       		.uleb128 0x49
+ 2527 0119 13       		.uleb128 0x13
+ 2528 011a 3F       		.uleb128 0x3f
+ 2529 011b 19       		.uleb128 0x19
+ 2530 011c 3C       		.uleb128 0x3c
+ 2531 011d 19       		.uleb128 0x19
+ 2532 011e 00       		.byte	0
+ 2533 011f 00       		.byte	0
+ 2534 0120 14       		.uleb128 0x14
+ 2535 0121 26       		.uleb128 0x26
+ 2536 0122 00       		.byte	0
+ 2537 0123 49       		.uleb128 0x49
+ 2538 0124 13       		.uleb128 0x13
+ 2539 0125 00       		.byte	0
+ 2540 0126 00       		.byte	0
+ 2541 0127 00       		.byte	0
+ 2542              		.section	.debug_aranges,"",%progbits
+ 2543 0000 94000000 		.4byte	0x94
+ 2544 0004 0200     		.2byte	0x2
+ 2545 0006 00000000 		.4byte	.Ldebug_info0
+ 2546 000a 04       		.byte	0x4
+ 2547 000b 00       		.byte	0
+ 2548 000c 0000     		.2byte	0
+ 2549 000e 0000     		.2byte	0
+ 2550 0010 00000000 		.4byte	.LFB65
+ 2551 0014 94000000 		.4byte	.LFE65-.LFB65
+ 2552 0018 00000000 		.4byte	.LFB66
+ 2553 001c 12000000 		.4byte	.LFE66-.LFB66
+ 2554 0020 00000000 		.4byte	.LFB67
+ 2555 0024 28000000 		.4byte	.LFE67-.LFB67
+ 2556 0028 00000000 		.4byte	.LFB68
+ 2557 002c 54000000 		.4byte	.LFE68-.LFB68
+ 2558 0030 00000000 		.4byte	.LFB69
+ 2559 0034 4C000000 		.4byte	.LFE69-.LFB69
+ 2560 0038 00000000 		.4byte	.LFB70
+ 2561 003c 70000000 		.4byte	.LFE70-.LFB70
+ 2562 0040 00000000 		.4byte	.LFB71
+ 2563 0044 84000000 		.4byte	.LFE71-.LFB71
+ 2564 0048 00000000 		.4byte	.LFB72
+ 2565 004c 28000000 		.4byte	.LFE72-.LFB72
+ 2566 0050 00000000 		.4byte	.LFB73
+ 2567 0054 44000000 		.4byte	.LFE73-.LFB73
+ 2568 0058 00000000 		.4byte	.LFB74
+ 2569 005c 2C000000 		.4byte	.LFE74-.LFB74
+ 2570 0060 00000000 		.4byte	.LFB75
+ 2571 0064 44000000 		.4byte	.LFE75-.LFB75
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 53
+
+
+ 2572 0068 00000000 		.4byte	.LFB76
+ 2573 006c B8000000 		.4byte	.LFE76-.LFB76
+ 2574 0070 00000000 		.4byte	.LFB77
+ 2575 0074 34000000 		.4byte	.LFE77-.LFB77
+ 2576 0078 00000000 		.4byte	.LFB78
+ 2577 007c 20000000 		.4byte	.LFE78-.LFB78
+ 2578 0080 00000000 		.4byte	.LFB79
+ 2579 0084 1C000000 		.4byte	.LFE79-.LFB79
+ 2580 0088 00000000 		.4byte	.LFB80
+ 2581 008c 1C000000 		.4byte	.LFE80-.LFB80
+ 2582 0090 00000000 		.4byte	0
+ 2583 0094 00000000 		.4byte	0
+ 2584              		.section	.debug_ranges,"",%progbits
+ 2585              	.Ldebug_ranges0:
+ 2586 0000 00000000 		.4byte	.LFB65
+ 2587 0004 94000000 		.4byte	.LFE65
+ 2588 0008 00000000 		.4byte	.LFB66
+ 2589 000c 12000000 		.4byte	.LFE66
+ 2590 0010 00000000 		.4byte	.LFB67
+ 2591 0014 28000000 		.4byte	.LFE67
+ 2592 0018 00000000 		.4byte	.LFB68
+ 2593 001c 54000000 		.4byte	.LFE68
+ 2594 0020 00000000 		.4byte	.LFB69
+ 2595 0024 4C000000 		.4byte	.LFE69
+ 2596 0028 00000000 		.4byte	.LFB70
+ 2597 002c 70000000 		.4byte	.LFE70
+ 2598 0030 00000000 		.4byte	.LFB71
+ 2599 0034 84000000 		.4byte	.LFE71
+ 2600 0038 00000000 		.4byte	.LFB72
+ 2601 003c 28000000 		.4byte	.LFE72
+ 2602 0040 00000000 		.4byte	.LFB73
+ 2603 0044 44000000 		.4byte	.LFE73
+ 2604 0048 00000000 		.4byte	.LFB74
+ 2605 004c 2C000000 		.4byte	.LFE74
+ 2606 0050 00000000 		.4byte	.LFB75
+ 2607 0054 44000000 		.4byte	.LFE75
+ 2608 0058 00000000 		.4byte	.LFB76
+ 2609 005c B8000000 		.4byte	.LFE76
+ 2610 0060 00000000 		.4byte	.LFB77
+ 2611 0064 34000000 		.4byte	.LFE77
+ 2612 0068 00000000 		.4byte	.LFB78
+ 2613 006c 20000000 		.4byte	.LFE78
+ 2614 0070 00000000 		.4byte	.LFB79
+ 2615 0074 1C000000 		.4byte	.LFE79
+ 2616 0078 00000000 		.4byte	.LFB80
+ 2617 007c 1C000000 		.4byte	.LFE80
+ 2618 0080 00000000 		.4byte	0
+ 2619 0084 00000000 		.4byte	0
+ 2620              		.section	.debug_line,"",%progbits
+ 2621              	.Ldebug_line0:
+ 2622 0000 28030000 		.section	.debug_str,"MS",%progbits,1
+ 2622      0200A801 
+ 2622      00000201 
+ 2622      FB0E0D00 
+ 2622      01010101 
+ 2623              	.LASF28:
+ 2624 0000 696E6974 		.ascii	"init_moisture_processing\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 54
+
+
+ 2624      5F6D6F69 
+ 2624      73747572 
+ 2624      655F7072 
+ 2624      6F636573 
+ 2625              	.LASF19:
+ 2626 0019 4E4F545F 		.ascii	"NOT_POPULATED\000"
+ 2626      504F5055 
+ 2626      4C415445 
+ 2626      4400
+ 2627              	.LASF60:
+ 2628 0027 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 2628      4320342E 
+ 2628      392E3320 
+ 2628      32303135 
+ 2628      30333033 
+ 2629 005a 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 2629      20726576 
+ 2629      6973696F 
+ 2629      6E203232 
+ 2629      31323230 
+ 2630 008d 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 2630      66756E63 
+ 2630      74696F6E 
+ 2630      2D736563 
+ 2630      74696F6E 
+ 2631              	.LASF59:
+ 2632 00b5 6D6F6462 		.ascii	"modbus_address_data\000"
+ 2632      75735F61 
+ 2632      64647265 
+ 2632      73735F64 
+ 2632      61746100 
+ 2633              	.LASF25:
+ 2634 00c9 70617261 		.ascii	"param_3\000"
+ 2634      6D5F3300 
+ 2635              	.LASF43:
+ 2636 00d1 736F7572 		.ascii	"source_current\000"
+ 2636      63655F63 
+ 2636      75727265 
+ 2636      6E7400
+ 2637              	.LASF37:
+ 2638 00e0 72656D6F 		.ascii	"remove_power\000"
+ 2638      76655F70 
+ 2638      6F776572 
+ 2638      00
+ 2639              	.LASF32:
+ 2640 00ed 74656D70 		.ascii	"temp\000"
+ 2640      00
+ 2641              	.LASF2:
+ 2642 00f2 73686F72 		.ascii	"short int\000"
+ 2642      7420696E 
+ 2642      7400
+ 2643              	.LASF46:
+ 2644 00fc 73657475 		.ascii	"setup_soil_temperature_measurements\000"
+ 2644      705F736F 
+ 2644      696C5F74 
+ 2644      656D7065 
+ 2644      72617475 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 55
+
+
+ 2645              	.LASF18:
+ 2646 0120 73697A65 		.ascii	"sizetype\000"
+ 2646      74797065 
+ 2646      00
+ 2647              	.LASF30:
+ 2648 0129 63686563 		.ascii	"check_moisture_active_flag\000"
+ 2648      6B5F6D6F 
+ 2648      69737475 
+ 2648      72655F61 
+ 2648      63746976 
+ 2649              	.LASF22:
+ 2650 0144 6C696E6B 		.ascii	"link_id\000"
+ 2650      5F696400 
+ 2651              	.LASF31:
+ 2652 014c 63686563 		.ascii	"check_logging_active_flag\000"
+ 2652      6B5F6C6F 
+ 2652      6767696E 
+ 2652      675F6163 
+ 2652      74697665 
+ 2653              	.LASF42:
+ 2654 0166 6D656173 		.ascii	"measurement\000"
+ 2654      7572656D 
+ 2654      656E7400 
+ 2655              	.LASF23:
+ 2656 0172 70617261 		.ascii	"param_1\000"
+ 2656      6D5F3100 
+ 2657              	.LASF24:
+ 2658 017a 70617261 		.ascii	"param_2\000"
+ 2658      6D5F3200 
+ 2659              	.LASF26:
+ 2660 0182 6576656E 		.ascii	"event\000"
+ 2660      7400
+ 2661              	.LASF21:
+ 2662 0188 57415445 		.ascii	"WATER_MARK\000"
+ 2662      525F4D41 
+ 2662      524B00
+ 2663              	.LASF12:
+ 2664 0193 75696E74 		.ascii	"uint16\000"
+ 2664      313600
+ 2665              	.LASF54:
+ 2666 019a 6D656173 		.ascii	"measurement_minute_count\000"
+ 2666      7572656D 
+ 2666      656E745F 
+ 2666      6D696E75 
+ 2666      74655F63 
+ 2667              	.LASF34:
+ 2668 01b3 6D696E75 		.ascii	"minute_count_limit\000"
+ 2668      74655F63 
+ 2668      6F756E74 
+ 2668      5F6C696D 
+ 2668      697400
+ 2669              	.LASF15:
+ 2670 01c6 666C6F61 		.ascii	"float\000"
+ 2670      7400
+ 2671              	.LASF6:
+ 2672 01cc 6C6F6E67 		.ascii	"long long int\000"
+ 2672      206C6F6E 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 56
+
+
+ 2672      6720696E 
+ 2672      7400
+ 2673              	.LASF51:
+ 2674 01da 736F7572 		.ascii	"source_voltage\000"
+ 2674      63655F76 
+ 2674      6F6C7461 
+ 2674      676500
+ 2675              	.LASF61:
+ 2676 01e9 2E5C6D6F 		.ascii	".\\moisture_measurement\\moisture_measurements.c\000"
+ 2676      69737475 
+ 2676      72655F6D 
+ 2676      65617375 
+ 2676      72656D65 
+ 2677              	.LASF20:
+ 2678 0218 52455349 		.ascii	"RESISTIVE_ELEMENT\000"
+ 2678      53544956 
+ 2678      455F454C 
+ 2678      454D454E 
+ 2678      5400
+ 2679              	.LASF63:
+ 2680 022a 70726F63 		.ascii	"process_moisture_interval_interrupt\000"
+ 2680      6573735F 
+ 2680      6D6F6973 
+ 2680      74757265 
+ 2680      5F696E74 
+ 2681              	.LASF39:
+ 2682 024e 6D616B65 		.ascii	"make_source_measurement\000"
+ 2682      5F736F75 
+ 2682      7263655F 
+ 2682      6D656173 
+ 2682      7572656D 
+ 2683              	.LASF52:
+ 2684 0266 6C6F6767 		.ascii	"logging_flag\000"
+ 2684      696E675F 
+ 2684      666C6167 
+ 2684      00
+ 2685              	.LASF11:
+ 2686 0273 75696E74 		.ascii	"uint8\000"
+ 2686      3800
+ 2687              	.LASF1:
+ 2688 0279 756E7369 		.ascii	"unsigned char\000"
+ 2688      676E6564 
+ 2688      20636861 
+ 2688      7200
+ 2689              	.LASF47:
+ 2690 0287 6D656173 		.ascii	"measure_soil_temperature\000"
+ 2690      7572655F 
+ 2690      736F696C 
+ 2690      5F74656D 
+ 2690      70657261 
+ 2691              	.LASF0:
+ 2692 02a0 7369676E 		.ascii	"signed char\000"
+ 2692      65642063 
+ 2692      68617200 
+ 2693              	.LASF7:
+ 2694 02ac 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2694      206C6F6E 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 57
+
+
+ 2694      6720756E 
+ 2694      7369676E 
+ 2694      65642069 
+ 2695              	.LASF62:
+ 2696 02c3 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 2696      73657273 
+ 2696      5C676C65 
+ 2696      6E6E5C4F 
+ 2696      6E654472 
+ 2697 02f0 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ 2697      55415254 
+ 2697      30312E63 
+ 2697      7964736E 
+ 2697      00
+ 2698              	.LASF57:
+ 2699 0301 6D6F6973 		.ascii	"moisture_meaurements\000"
+ 2699      74757265 
+ 2699      5F6D6561 
+ 2699      7572656D 
+ 2699      656E7473 
+ 2700              	.LASF8:
+ 2701 0316 756E7369 		.ascii	"unsigned int\000"
+ 2701      676E6564 
+ 2701      20696E74 
+ 2701      00
+ 2702              	.LASF41:
+ 2703 0323 73746F72 		.ascii	"store_moisture_data\000"
+ 2703      655F6D6F 
+ 2703      69737475 
+ 2703      72655F64 
+ 2703      61746100 
+ 2704              	.LASF36:
+ 2705 0337 72657475 		.ascii	"return_value\000"
+ 2705      726E5F76 
+ 2705      616C7565 
+ 2705      00
+ 2706              	.LASF3:
+ 2707 0344 73686F72 		.ascii	"short unsigned int\000"
+ 2707      7420756E 
+ 2707      7369676E 
+ 2707      65642069 
+ 2707      6E7400
+ 2708              	.LASF29:
+ 2709 0357 7365745F 		.ascii	"set_up_moisture_interrupt\000"
+ 2709      75705F6D 
+ 2709      6F697374 
+ 2709      7572655F 
+ 2709      696E7465 
+ 2710              	.LASF17:
+ 2711 0371 63686172 		.ascii	"char\000"
+ 2711      00
+ 2712              	.LASF4:
+ 2713 0376 6C6F6E67 		.ascii	"long int\000"
+ 2713      20696E74 
+ 2713      00
+ 2714              	.LASF44:
+ 2715 037f 736F7572 		.ascii	"source_resistance\000"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 58
+
+
+ 2715      63655F72 
+ 2715      65736973 
+ 2715      74616E63 
+ 2715      6500
+ 2716              	.LASF10:
+ 2717 0391 696E7433 		.ascii	"int32_t\000"
+ 2717      325F7400 
+ 2718              	.LASF53:
+ 2719 0399 61637469 		.ascii	"active_flag\000"
+ 2719      76655F66 
+ 2719      6C616700 
+ 2720              	.LASF45:
+ 2721 03a5 75706461 		.ascii	"update_new_measurement_available\000"
+ 2721      74655F6E 
+ 2721      65775F6D 
+ 2721      65617375 
+ 2721      72656D65 
+ 2722              	.LASF55:
+ 2723 03c6 73656E73 		.ascii	"sensor_type\000"
+ 2723      6F725F74 
+ 2723      79706500 
+ 2724              	.LASF27:
+ 2725 03d2 64617461 		.ascii	"data\000"
+ 2725      00
+ 2726              	.LASF50:
+ 2727 03d7 63757272 		.ascii	"current_channel\000"
+ 2727      656E745F 
+ 2727      6368616E 
+ 2727      6E656C00 
+ 2728              	.LASF38:
+ 2729 03e7 7365745F 		.ascii	"set_source_channel\000"
+ 2729      736F7572 
+ 2729      63655F63 
+ 2729      68616E6E 
+ 2729      656C00
+ 2730              	.LASF33:
+ 2731 03fa 63686563 		.ascii	"check_for_moisture_measurement\000"
+ 2731      6B5F666F 
+ 2731      725F6D6F 
+ 2731      69737475 
+ 2731      72655F6D 
+ 2732              	.LASF5:
+ 2733 0419 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2733      20756E73 
+ 2733      69676E65 
+ 2733      6420696E 
+ 2733      7400
+ 2734              	.LASF14:
+ 2735 042b 696E7433 		.ascii	"int32\000"
+ 2735      3200
+ 2736              	.LASF13:
+ 2737 0431 75696E74 		.ascii	"uint32\000"
+ 2737      333200
+ 2738              	.LASF40:
+ 2739 0438 7365745F 		.ascii	"set_sink_channel\000"
+ 2739      73696E6B 
+ 2739      5F636861 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccE5UpDN.s 			page 59
+
+
+ 2739      6E6E656C 
+ 2739      00
+ 2740              	.LASF9:
+ 2741 0449 5F5F696E 		.ascii	"__int32_t\000"
+ 2741      7433325F 
+ 2741      7400
+ 2742              	.LASF48:
+ 2743 0453 75706461 		.ascii	"update_soil_temperature_minute\000"
+ 2743      74655F73 
+ 2743      6F696C5F 
+ 2743      74656D70 
+ 2743      65726174 
+ 2744              	.LASF16:
+ 2745 0472 646F7562 		.ascii	"double\000"
+ 2745      6C6500
+ 2746              	.LASF35:
+ 2747 0479 73657475 		.ascii	"setup_measurement_channel\000"
+ 2747      705F6D65 
+ 2747      61737572 
+ 2747      656D656E 
+ 2747      745F6368 
+ 2748              	.LASF58:
+ 2749 0493 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2749      52784275 
+ 2749      66666572 
+ 2749      00
+ 2750              	.LASF56:
+ 2751 04a0 7369676D 		.ascii	"sigma_a_d_high\000"
+ 2751      615F615F 
+ 2751      645F6869 
+ 2751      676800
+ 2752              	.LASF49:
+ 2753 04af 72656665 		.ascii	"reference_resistance\000"
+ 2753      72656E63 
+ 2753      655F7265 
+ 2753      73697374 
+ 2753      616E6365 
+ 2754              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

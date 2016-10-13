@@ -1,0 +1,691 @@
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccJ5BPaa.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"heart_beat.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.bss
+  19              		.align	2
+  20              	ref_count:
+  21 0000 00000000 		.space	4
+  22              		.align	2
+  23              	ref_interval:
+  24 0004 00000000 		.space	4
+  25              		.align	2
+  26              	read_pin:
+  27 0008 00000000 		.space	4
+  28              		.section	.text.initialize_heart_beat,"ax",%progbits
+  29              		.align	2
+  30              		.global	initialize_heart_beat
+  31              		.thumb
+  32              		.thumb_func
+  33              		.type	initialize_heart_beat, %function
+  34              	initialize_heart_beat:
+  35              	.LFB63:
+  36              		.file 1 ".\\heart_beat.c"
+   1:.\heart_beat.c **** /* ========================================
+   2:.\heart_beat.c ****  *
+   3:.\heart_beat.c ****  * Copyright YOUR COMPANY, THE YEAR
+   4:.\heart_beat.c ****  * All Rights Reserved
+   5:.\heart_beat.c ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:.\heart_beat.c ****  *
+   7:.\heart_beat.c ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:.\heart_beat.c ****  * WHICH IS THE PROPERTY OF your company.
+   9:.\heart_beat.c ****  *
+  10:.\heart_beat.c ****  * ========================================
+  11:.\heart_beat.c **** */
+  12:.\heart_beat.c **** #include <device.h>
+  13:.\heart_beat.c **** #include "stdio.h"
+  14:.\heart_beat.c **** 
+  15:.\heart_beat.c **** 
+  16:.\heart_beat.c **** static int ref_count;
+  17:.\heart_beat.c **** static int ref_interval;
+  18:.\heart_beat.c **** static volatile int read_pin;
+  19:.\heart_beat.c **** 
+  20:.\heart_beat.c **** void initialize_heart_beat( int interval_ms )
+  21:.\heart_beat.c **** {
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccJ5BPaa.s 			page 2
+
+
+  37              		.loc 1 21 0
+  38              		.cfi_startproc
+  39              		@ args = 0, pretend = 0, frame = 8
+  40              		@ frame_needed = 1, uses_anonymous_args = 0
+  41 0000 80B5     		push	{r7, lr}
+  42              		.cfi_def_cfa_offset 8
+  43              		.cfi_offset 7, -8
+  44              		.cfi_offset 14, -4
+  45 0002 82B0     		sub	sp, sp, #8
+  46              		.cfi_def_cfa_offset 16
+  47 0004 00AF     		add	r7, sp, #0
+  48              		.cfi_def_cfa_register 7
+  49 0006 7860     		str	r0, [r7, #4]
+  22:.\heart_beat.c ****     ref_interval = interval_ms;
+  50              		.loc 1 22 0
+  51 0008 054A     		ldr	r2, .L2
+  52 000a 7B68     		ldr	r3, [r7, #4]
+  53 000c 1360     		str	r3, [r2]
+  23:.\heart_beat.c ****     ref_count    = 0;
+  54              		.loc 1 23 0
+  55 000e 054B     		ldr	r3, .L2+4
+  56 0010 0022     		movs	r2, #0
+  57 0012 1A60     		str	r2, [r3]
+  24:.\heart_beat.c ****     heart_beat_pin_Write(1);
+  58              		.loc 1 24 0
+  59 0014 0120     		movs	r0, #1
+  60 0016 FFF7FEFF 		bl	heart_beat_pin_Write
+  25:.\heart_beat.c **** }
+  61              		.loc 1 25 0
+  62 001a 0837     		adds	r7, r7, #8
+  63              		.cfi_def_cfa_offset 8
+  64 001c BD46     		mov	sp, r7
+  65              		.cfi_def_cfa_register 13
+  66              		@ sp needed
+  67 001e 80BD     		pop	{r7, pc}
+  68              	.L3:
+  69              		.align	2
+  70              	.L2:
+  71 0020 04000000 		.word	ref_interval
+  72 0024 00000000 		.word	ref_count
+  73              		.cfi_endproc
+  74              	.LFE63:
+  75              		.size	initialize_heart_beat, .-initialize_heart_beat
+  76              		.section	.text.feed_heart_beat,"ax",%progbits
+  77              		.align	2
+  78              		.global	feed_heart_beat
+  79              		.thumb
+  80              		.thumb_func
+  81              		.type	feed_heart_beat, %function
+  82              	feed_heart_beat:
+  83              	.LFB64:
+  26:.\heart_beat.c **** 
+  27:.\heart_beat.c **** void feed_heart_beat( int input_event, int tick_ms )
+  28:.\heart_beat.c **** {
+  84              		.loc 1 28 0
+  85              		.cfi_startproc
+  86              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccJ5BPaa.s 			page 3
+
+
+  87              		@ frame_needed = 1, uses_anonymous_args = 0
+  88 0000 80B5     		push	{r7, lr}
+  89              		.cfi_def_cfa_offset 8
+  90              		.cfi_offset 7, -8
+  91              		.cfi_offset 14, -4
+  92 0002 82B0     		sub	sp, sp, #8
+  93              		.cfi_def_cfa_offset 16
+  94 0004 00AF     		add	r7, sp, #0
+  95              		.cfi_def_cfa_register 7
+  96 0006 7860     		str	r0, [r7, #4]
+  97 0008 3960     		str	r1, [r7]
+  29:.\heart_beat.c ****         ref_count += tick_ms;
+  98              		.loc 1 29 0
+  99 000a 134B     		ldr	r3, .L6
+ 100 000c 1A68     		ldr	r2, [r3]
+ 101 000e 3B68     		ldr	r3, [r7]
+ 102 0010 1344     		add	r3, r3, r2
+ 103 0012 114A     		ldr	r2, .L6
+ 104 0014 1360     		str	r3, [r2]
+  30:.\heart_beat.c ****         if( ref_count > ref_interval)
+ 105              		.loc 1 30 0
+ 106 0016 104B     		ldr	r3, .L6
+ 107 0018 1A68     		ldr	r2, [r3]
+ 108 001a 104B     		ldr	r3, .L6+4
+ 109 001c 1B68     		ldr	r3, [r3]
+ 110 001e 9A42     		cmp	r2, r3
+ 111 0020 17DD     		ble	.L4
+  31:.\heart_beat.c ****         {
+  32:.\heart_beat.c ****            read_pin = heart_beat_pin_Read();
+ 112              		.loc 1 32 0
+ 113 0022 FFF7FEFF 		bl	heart_beat_pin_Read
+ 114 0026 0346     		mov	r3, r0
+ 115 0028 1A46     		mov	r2, r3
+ 116 002a 0D4B     		ldr	r3, .L6+8
+ 117 002c 1A60     		str	r2, [r3]
+  33:.\heart_beat.c ****            heart_beat_pin_Write( !heart_beat_pin_Read() );
+ 118              		.loc 1 33 0
+ 119 002e FFF7FEFF 		bl	heart_beat_pin_Read
+ 120 0032 0346     		mov	r3, r0
+ 121 0034 002B     		cmp	r3, #0
+ 122 0036 0CBF     		ite	eq
+ 123 0038 0123     		moveq	r3, #1
+ 124 003a 0023     		movne	r3, #0
+ 125 003c DBB2     		uxtb	r3, r3
+ 126 003e 1846     		mov	r0, r3
+ 127 0040 FFF7FEFF 		bl	heart_beat_pin_Write
+  34:.\heart_beat.c ****            ref_count -= ref_interval;
+ 128              		.loc 1 34 0
+ 129 0044 044B     		ldr	r3, .L6
+ 130 0046 1A68     		ldr	r2, [r3]
+ 131 0048 044B     		ldr	r3, .L6+4
+ 132 004a 1B68     		ldr	r3, [r3]
+ 133 004c D31A     		subs	r3, r2, r3
+ 134 004e 024A     		ldr	r2, .L6
+ 135 0050 1360     		str	r3, [r2]
+ 136              	.L4:
+  35:.\heart_beat.c ****         }
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccJ5BPaa.s 			page 4
+
+
+  36:.\heart_beat.c ****     
+  37:.\heart_beat.c **** }
+ 137              		.loc 1 37 0
+ 138 0052 0837     		adds	r7, r7, #8
+ 139              		.cfi_def_cfa_offset 8
+ 140 0054 BD46     		mov	sp, r7
+ 141              		.cfi_def_cfa_register 13
+ 142              		@ sp needed
+ 143 0056 80BD     		pop	{r7, pc}
+ 144              	.L7:
+ 145              		.align	2
+ 146              	.L6:
+ 147 0058 00000000 		.word	ref_count
+ 148 005c 04000000 		.word	ref_interval
+ 149 0060 08000000 		.word	read_pin
+ 150              		.cfi_endproc
+ 151              	.LFE64:
+ 152              		.size	feed_heart_beat, .-feed_heart_beat
+ 153              		.text
+ 154              	.Letext0:
+ 155              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 156              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 157              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
+ 158              		.section	.debug_info,"",%progbits
+ 159              	.Ldebug_info0:
+ 160 0000 39010000 		.4byte	0x139
+ 161 0004 0400     		.2byte	0x4
+ 162 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 163 000a 04       		.byte	0x4
+ 164 000b 01       		.uleb128 0x1
+ 165 000c 9C000000 		.4byte	.LASF23
+ 166 0010 01       		.byte	0x1
+ 167 0011 50000000 		.4byte	.LASF24
+ 168 0015 44010000 		.4byte	.LASF25
+ 169 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 170 001d 00000000 		.4byte	0
+ 171 0021 00000000 		.4byte	.Ldebug_line0
+ 172 0025 02       		.uleb128 0x2
+ 173 0026 01       		.byte	0x1
+ 174 0027 06       		.byte	0x6
+ 175 0028 99010000 		.4byte	.LASF0
+ 176 002c 02       		.uleb128 0x2
+ 177 002d 01       		.byte	0x1
+ 178 002e 08       		.byte	0x8
+ 179 002f 77000000 		.4byte	.LASF1
+ 180 0033 02       		.uleb128 0x2
+ 181 0034 02       		.byte	0x2
+ 182 0035 05       		.byte	0x5
+ 183 0036 D8010000 		.4byte	.LASF2
+ 184 003a 02       		.uleb128 0x2
+ 185 003b 02       		.byte	0x2
+ 186 003c 07       		.byte	0x7
+ 187 003d 2A010000 		.4byte	.LASF3
+ 188 0041 03       		.uleb128 0x3
+ 189 0042 A5010000 		.4byte	.LASF9
+ 190 0046 02       		.byte	0x2
+ 191 0047 3F       		.byte	0x3f
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccJ5BPaa.s 			page 5
+
+
+ 192 0048 4C000000 		.4byte	0x4c
+ 193 004c 02       		.uleb128 0x2
+ 194 004d 04       		.byte	0x4
+ 195 004e 05       		.byte	0x5
+ 196 004f 93000000 		.4byte	.LASF4
+ 197 0053 02       		.uleb128 0x2
+ 198 0054 04       		.byte	0x4
+ 199 0055 07       		.byte	0x7
+ 200 0056 27000000 		.4byte	.LASF5
+ 201 005a 02       		.uleb128 0x2
+ 202 005b 08       		.byte	0x8
+ 203 005c 05       		.byte	0x5
+ 204 005d 00000000 		.4byte	.LASF6
+ 205 0061 02       		.uleb128 0x2
+ 206 0062 08       		.byte	0x8
+ 207 0063 07       		.byte	0x7
+ 208 0064 39000000 		.4byte	.LASF7
+ 209 0068 04       		.uleb128 0x4
+ 210 0069 04       		.byte	0x4
+ 211 006a 05       		.byte	0x5
+ 212 006b 696E7400 		.ascii	"int\000"
+ 213 006f 02       		.uleb128 0x2
+ 214 0070 04       		.byte	0x4
+ 215 0071 07       		.byte	0x7
+ 216 0072 1A000000 		.4byte	.LASF8
+ 217 0076 03       		.uleb128 0x3
+ 218 0077 E2010000 		.4byte	.LASF10
+ 219 007b 03       		.byte	0x3
+ 220 007c 2C       		.byte	0x2c
+ 221 007d 41000000 		.4byte	0x41
+ 222 0081 02       		.uleb128 0x2
+ 223 0082 04       		.byte	0x4
+ 224 0083 04       		.byte	0x4
+ 225 0084 BC010000 		.4byte	.LASF11
+ 226 0088 02       		.uleb128 0x2
+ 227 0089 08       		.byte	0x8
+ 228 008a 04       		.byte	0x4
+ 229 008b 3D010000 		.4byte	.LASF12
+ 230 008f 02       		.uleb128 0x2
+ 231 0090 01       		.byte	0x1
+ 232 0091 08       		.byte	0x8
+ 233 0092 85000000 		.4byte	.LASF13
+ 234 0096 02       		.uleb128 0x2
+ 235 0097 04       		.byte	0x4
+ 236 0098 07       		.byte	0x7
+ 237 0099 EA010000 		.4byte	.LASF14
+ 238 009d 05       		.uleb128 0x5
+ 239 009e C2010000 		.4byte	.LASF15
+ 240 00a2 01       		.byte	0x1
+ 241 00a3 14       		.byte	0x14
+ 242 00a4 00000000 		.4byte	.LFB63
+ 243 00a8 28000000 		.4byte	.LFE63-.LFB63
+ 244 00ac 01       		.uleb128 0x1
+ 245 00ad 9C       		.byte	0x9c
+ 246 00ae C1000000 		.4byte	0xc1
+ 247 00b2 06       		.uleb128 0x6
+ 248 00b3 F3010000 		.4byte	.LASF17
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccJ5BPaa.s 			page 6
+
+
+ 249 00b7 01       		.byte	0x1
+ 250 00b8 14       		.byte	0x14
+ 251 00b9 68000000 		.4byte	0x68
+ 252 00bd 02       		.uleb128 0x2
+ 253 00be 91       		.byte	0x91
+ 254 00bf 74       		.sleb128 -12
+ 255 00c0 00       		.byte	0
+ 256 00c1 05       		.uleb128 0x5
+ 257 00c2 5F000000 		.4byte	.LASF16
+ 258 00c6 01       		.byte	0x1
+ 259 00c7 1B       		.byte	0x1b
+ 260 00c8 00000000 		.4byte	.LFB64
+ 261 00cc 64000000 		.4byte	.LFE64-.LFB64
+ 262 00d0 01       		.uleb128 0x1
+ 263 00d1 9C       		.byte	0x9c
+ 264 00d2 F3000000 		.4byte	0xf3
+ 265 00d6 06       		.uleb128 0x6
+ 266 00d7 0E000000 		.4byte	.LASF18
+ 267 00db 01       		.byte	0x1
+ 268 00dc 1B       		.byte	0x1b
+ 269 00dd 68000000 		.4byte	0x68
+ 270 00e1 02       		.uleb128 0x2
+ 271 00e2 91       		.byte	0x91
+ 272 00e3 74       		.sleb128 -12
+ 273 00e4 06       		.uleb128 0x6
+ 274 00e5 6F000000 		.4byte	.LASF19
+ 275 00e9 01       		.byte	0x1
+ 276 00ea 1B       		.byte	0x1b
+ 277 00eb 68000000 		.4byte	0x68
+ 278 00ef 02       		.uleb128 0x2
+ 279 00f0 91       		.byte	0x91
+ 280 00f1 70       		.sleb128 -16
+ 281 00f2 00       		.byte	0
+ 282 00f3 07       		.uleb128 0x7
+ 283 00f4 82010000 		.4byte	.LASF20
+ 284 00f8 01       		.byte	0x1
+ 285 00f9 10       		.byte	0x10
+ 286 00fa 68000000 		.4byte	0x68
+ 287 00fe 05       		.uleb128 0x5
+ 288 00ff 03       		.byte	0x3
+ 289 0100 00000000 		.4byte	ref_count
+ 290 0104 07       		.uleb128 0x7
+ 291 0105 AF010000 		.4byte	.LASF21
+ 292 0109 01       		.byte	0x1
+ 293 010a 11       		.byte	0x11
+ 294 010b 68000000 		.4byte	0x68
+ 295 010f 05       		.uleb128 0x5
+ 296 0110 03       		.byte	0x3
+ 297 0111 04000000 		.4byte	ref_interval
+ 298 0115 07       		.uleb128 0x7
+ 299 0116 8A000000 		.4byte	.LASF22
+ 300 011a 01       		.byte	0x1
+ 301 011b 12       		.byte	0x12
+ 302 011c 26010000 		.4byte	0x126
+ 303 0120 05       		.uleb128 0x5
+ 304 0121 03       		.byte	0x3
+ 305 0122 08000000 		.4byte	read_pin
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccJ5BPaa.s 			page 7
+
+
+ 306 0126 08       		.uleb128 0x8
+ 307 0127 68000000 		.4byte	0x68
+ 308 012b 09       		.uleb128 0x9
+ 309 012c 8C010000 		.4byte	.LASF26
+ 310 0130 04       		.byte	0x4
+ 311 0131 2A06     		.2byte	0x62a
+ 312 0133 37010000 		.4byte	0x137
+ 313 0137 08       		.uleb128 0x8
+ 314 0138 76000000 		.4byte	0x76
+ 315 013c 00       		.byte	0
+ 316              		.section	.debug_abbrev,"",%progbits
+ 317              	.Ldebug_abbrev0:
+ 318 0000 01       		.uleb128 0x1
+ 319 0001 11       		.uleb128 0x11
+ 320 0002 01       		.byte	0x1
+ 321 0003 25       		.uleb128 0x25
+ 322 0004 0E       		.uleb128 0xe
+ 323 0005 13       		.uleb128 0x13
+ 324 0006 0B       		.uleb128 0xb
+ 325 0007 03       		.uleb128 0x3
+ 326 0008 0E       		.uleb128 0xe
+ 327 0009 1B       		.uleb128 0x1b
+ 328 000a 0E       		.uleb128 0xe
+ 329 000b 55       		.uleb128 0x55
+ 330 000c 17       		.uleb128 0x17
+ 331 000d 11       		.uleb128 0x11
+ 332 000e 01       		.uleb128 0x1
+ 333 000f 10       		.uleb128 0x10
+ 334 0010 17       		.uleb128 0x17
+ 335 0011 00       		.byte	0
+ 336 0012 00       		.byte	0
+ 337 0013 02       		.uleb128 0x2
+ 338 0014 24       		.uleb128 0x24
+ 339 0015 00       		.byte	0
+ 340 0016 0B       		.uleb128 0xb
+ 341 0017 0B       		.uleb128 0xb
+ 342 0018 3E       		.uleb128 0x3e
+ 343 0019 0B       		.uleb128 0xb
+ 344 001a 03       		.uleb128 0x3
+ 345 001b 0E       		.uleb128 0xe
+ 346 001c 00       		.byte	0
+ 347 001d 00       		.byte	0
+ 348 001e 03       		.uleb128 0x3
+ 349 001f 16       		.uleb128 0x16
+ 350 0020 00       		.byte	0
+ 351 0021 03       		.uleb128 0x3
+ 352 0022 0E       		.uleb128 0xe
+ 353 0023 3A       		.uleb128 0x3a
+ 354 0024 0B       		.uleb128 0xb
+ 355 0025 3B       		.uleb128 0x3b
+ 356 0026 0B       		.uleb128 0xb
+ 357 0027 49       		.uleb128 0x49
+ 358 0028 13       		.uleb128 0x13
+ 359 0029 00       		.byte	0
+ 360 002a 00       		.byte	0
+ 361 002b 04       		.uleb128 0x4
+ 362 002c 24       		.uleb128 0x24
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccJ5BPaa.s 			page 8
+
+
+ 363 002d 00       		.byte	0
+ 364 002e 0B       		.uleb128 0xb
+ 365 002f 0B       		.uleb128 0xb
+ 366 0030 3E       		.uleb128 0x3e
+ 367 0031 0B       		.uleb128 0xb
+ 368 0032 03       		.uleb128 0x3
+ 369 0033 08       		.uleb128 0x8
+ 370 0034 00       		.byte	0
+ 371 0035 00       		.byte	0
+ 372 0036 05       		.uleb128 0x5
+ 373 0037 2E       		.uleb128 0x2e
+ 374 0038 01       		.byte	0x1
+ 375 0039 3F       		.uleb128 0x3f
+ 376 003a 19       		.uleb128 0x19
+ 377 003b 03       		.uleb128 0x3
+ 378 003c 0E       		.uleb128 0xe
+ 379 003d 3A       		.uleb128 0x3a
+ 380 003e 0B       		.uleb128 0xb
+ 381 003f 3B       		.uleb128 0x3b
+ 382 0040 0B       		.uleb128 0xb
+ 383 0041 27       		.uleb128 0x27
+ 384 0042 19       		.uleb128 0x19
+ 385 0043 11       		.uleb128 0x11
+ 386 0044 01       		.uleb128 0x1
+ 387 0045 12       		.uleb128 0x12
+ 388 0046 06       		.uleb128 0x6
+ 389 0047 40       		.uleb128 0x40
+ 390 0048 18       		.uleb128 0x18
+ 391 0049 9642     		.uleb128 0x2116
+ 392 004b 19       		.uleb128 0x19
+ 393 004c 01       		.uleb128 0x1
+ 394 004d 13       		.uleb128 0x13
+ 395 004e 00       		.byte	0
+ 396 004f 00       		.byte	0
+ 397 0050 06       		.uleb128 0x6
+ 398 0051 05       		.uleb128 0x5
+ 399 0052 00       		.byte	0
+ 400 0053 03       		.uleb128 0x3
+ 401 0054 0E       		.uleb128 0xe
+ 402 0055 3A       		.uleb128 0x3a
+ 403 0056 0B       		.uleb128 0xb
+ 404 0057 3B       		.uleb128 0x3b
+ 405 0058 0B       		.uleb128 0xb
+ 406 0059 49       		.uleb128 0x49
+ 407 005a 13       		.uleb128 0x13
+ 408 005b 02       		.uleb128 0x2
+ 409 005c 18       		.uleb128 0x18
+ 410 005d 00       		.byte	0
+ 411 005e 00       		.byte	0
+ 412 005f 07       		.uleb128 0x7
+ 413 0060 34       		.uleb128 0x34
+ 414 0061 00       		.byte	0
+ 415 0062 03       		.uleb128 0x3
+ 416 0063 0E       		.uleb128 0xe
+ 417 0064 3A       		.uleb128 0x3a
+ 418 0065 0B       		.uleb128 0xb
+ 419 0066 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccJ5BPaa.s 			page 9
+
+
+ 420 0067 0B       		.uleb128 0xb
+ 421 0068 49       		.uleb128 0x49
+ 422 0069 13       		.uleb128 0x13
+ 423 006a 02       		.uleb128 0x2
+ 424 006b 18       		.uleb128 0x18
+ 425 006c 00       		.byte	0
+ 426 006d 00       		.byte	0
+ 427 006e 08       		.uleb128 0x8
+ 428 006f 35       		.uleb128 0x35
+ 429 0070 00       		.byte	0
+ 430 0071 49       		.uleb128 0x49
+ 431 0072 13       		.uleb128 0x13
+ 432 0073 00       		.byte	0
+ 433 0074 00       		.byte	0
+ 434 0075 09       		.uleb128 0x9
+ 435 0076 34       		.uleb128 0x34
+ 436 0077 00       		.byte	0
+ 437 0078 03       		.uleb128 0x3
+ 438 0079 0E       		.uleb128 0xe
+ 439 007a 3A       		.uleb128 0x3a
+ 440 007b 0B       		.uleb128 0xb
+ 441 007c 3B       		.uleb128 0x3b
+ 442 007d 05       		.uleb128 0x5
+ 443 007e 49       		.uleb128 0x49
+ 444 007f 13       		.uleb128 0x13
+ 445 0080 3F       		.uleb128 0x3f
+ 446 0081 19       		.uleb128 0x19
+ 447 0082 3C       		.uleb128 0x3c
+ 448 0083 19       		.uleb128 0x19
+ 449 0084 00       		.byte	0
+ 450 0085 00       		.byte	0
+ 451 0086 00       		.byte	0
+ 452              		.section	.debug_aranges,"",%progbits
+ 453 0000 24000000 		.4byte	0x24
+ 454 0004 0200     		.2byte	0x2
+ 455 0006 00000000 		.4byte	.Ldebug_info0
+ 456 000a 04       		.byte	0x4
+ 457 000b 00       		.byte	0
+ 458 000c 0000     		.2byte	0
+ 459 000e 0000     		.2byte	0
+ 460 0010 00000000 		.4byte	.LFB63
+ 461 0014 28000000 		.4byte	.LFE63-.LFB63
+ 462 0018 00000000 		.4byte	.LFB64
+ 463 001c 64000000 		.4byte	.LFE64-.LFB64
+ 464 0020 00000000 		.4byte	0
+ 465 0024 00000000 		.4byte	0
+ 466              		.section	.debug_ranges,"",%progbits
+ 467              	.Ldebug_ranges0:
+ 468 0000 00000000 		.4byte	.LFB63
+ 469 0004 28000000 		.4byte	.LFE63
+ 470 0008 00000000 		.4byte	.LFB64
+ 471 000c 64000000 		.4byte	.LFE64
+ 472 0010 00000000 		.4byte	0
+ 473 0014 00000000 		.4byte	0
+ 474              		.section	.debug_line,"",%progbits
+ 475              	.Ldebug_line0:
+ 476 0000 70010000 		.section	.debug_str,"MS",%progbits,1
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccJ5BPaa.s 			page 10
+
+
+ 476      02004201 
+ 476      00000201 
+ 476      FB0E0D00 
+ 476      01010101 
+ 477              	.LASF6:
+ 478 0000 6C6F6E67 		.ascii	"long long int\000"
+ 478      206C6F6E 
+ 478      6720696E 
+ 478      7400
+ 479              	.LASF18:
+ 480 000e 696E7075 		.ascii	"input_event\000"
+ 480      745F6576 
+ 480      656E7400 
+ 481              	.LASF8:
+ 482 001a 756E7369 		.ascii	"unsigned int\000"
+ 482      676E6564 
+ 482      20696E74 
+ 482      00
+ 483              	.LASF5:
+ 484 0027 6C6F6E67 		.ascii	"long unsigned int\000"
+ 484      20756E73 
+ 484      69676E65 
+ 484      6420696E 
+ 484      7400
+ 485              	.LASF7:
+ 486 0039 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 486      206C6F6E 
+ 486      6720756E 
+ 486      7369676E 
+ 486      65642069 
+ 487              	.LASF24:
+ 488 0050 2E5C6865 		.ascii	".\\heart_beat.c\000"
+ 488      6172745F 
+ 488      62656174 
+ 488      2E6300
+ 489              	.LASF16:
+ 490 005f 66656564 		.ascii	"feed_heart_beat\000"
+ 490      5F686561 
+ 490      72745F62 
+ 490      65617400 
+ 491              	.LASF19:
+ 492 006f 7469636B 		.ascii	"tick_ms\000"
+ 492      5F6D7300 
+ 493              	.LASF1:
+ 494 0077 756E7369 		.ascii	"unsigned char\000"
+ 494      676E6564 
+ 494      20636861 
+ 494      7200
+ 495              	.LASF13:
+ 496 0085 63686172 		.ascii	"char\000"
+ 496      00
+ 497              	.LASF22:
+ 498 008a 72656164 		.ascii	"read_pin\000"
+ 498      5F70696E 
+ 498      00
+ 499              	.LASF4:
+ 500 0093 6C6F6E67 		.ascii	"long int\000"
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccJ5BPaa.s 			page 11
+
+
+ 500      20696E74 
+ 500      00
+ 501              	.LASF23:
+ 502 009c 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 502      4320342E 
+ 502      392E3320 
+ 502      32303135 
+ 502      30333033 
+ 503 00cf 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 503      20726576 
+ 503      6973696F 
+ 503      6E203232 
+ 503      31323230 
+ 504 0102 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 504      66756E63 
+ 504      74696F6E 
+ 504      2D736563 
+ 504      74696F6E 
+ 505              	.LASF3:
+ 506 012a 73686F72 		.ascii	"short unsigned int\000"
+ 506      7420756E 
+ 506      7369676E 
+ 506      65642069 
+ 506      6E7400
+ 507              	.LASF12:
+ 508 013d 646F7562 		.ascii	"double\000"
+ 508      6C6500
+ 509              	.LASF25:
+ 510 0144 433A5C55 		.ascii	"C:\\Users\\Glenn\\Desktop\\PSOC\\psoc-5lp\\5lp-rtu\\"
+ 510      73657273 
+ 510      5C476C65 
+ 510      6E6E5C44 
+ 510      65736B74 
+ 511 0171 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ 511      55415254 
+ 511      30312E63 
+ 511      7964736E 
+ 511      00
+ 512              	.LASF20:
+ 513 0182 7265665F 		.ascii	"ref_count\000"
+ 513      636F756E 
+ 513      7400
+ 514              	.LASF26:
+ 515 018c 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 515      52784275 
+ 515      66666572 
+ 515      00
+ 516              	.LASF0:
+ 517 0199 7369676E 		.ascii	"signed char\000"
+ 517      65642063 
+ 517      68617200 
+ 518              	.LASF9:
+ 519 01a5 5F5F696E 		.ascii	"__int32_t\000"
+ 519      7433325F 
+ 519      7400
+ 520              	.LASF21:
+ 521 01af 7265665F 		.ascii	"ref_interval\000"
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccJ5BPaa.s 			page 12
+
+
+ 521      696E7465 
+ 521      7276616C 
+ 521      00
+ 522              	.LASF11:
+ 523 01bc 666C6F61 		.ascii	"float\000"
+ 523      7400
+ 524              	.LASF15:
+ 525 01c2 696E6974 		.ascii	"initialize_heart_beat\000"
+ 525      69616C69 
+ 525      7A655F68 
+ 525      65617274 
+ 525      5F626561 
+ 526              	.LASF2:
+ 527 01d8 73686F72 		.ascii	"short int\000"
+ 527      7420696E 
+ 527      7400
+ 528              	.LASF10:
+ 529 01e2 696E7433 		.ascii	"int32_t\000"
+ 529      325F7400 
+ 530              	.LASF14:
+ 531 01ea 73697A65 		.ascii	"sizetype\000"
+ 531      74797065 
+ 531      00
+ 532              	.LASF17:
+ 533 01f3 696E7465 		.ascii	"interval_ms\000"
+ 533      7276616C 
+ 533      5F6D7300 
+ 534              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

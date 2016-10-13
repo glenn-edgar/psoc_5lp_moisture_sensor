@@ -37,11 +37,17 @@
 #include <device.h>
 #include "stdio.h"
 
+// software reset
+// CySoftwareReset();
 
 
 #include "cf_chain_flow_support.h"
 #include "a_to_d_functions.h"
 #include "cf_events.h"
+#include "sigma_mux.h"
+#include "cf_status_bit.h"
+#include "modbus_serial_ctrl.h"
+
 #if defined (__GNUC__)
     /* Add an explicit reference to the floating point printf library */
     /* to allow the usage of floating point conversion specifiers. */
@@ -57,61 +63,58 @@
 
 
 
-static inline int  process_high_priority_events( int event_id, int event_data)
+static inline void  process_status_data( unsigned status_data)
 {
-    int return_value;
+
     
-    switch( event_id)   
+    if( status_data & CF_PROCESS_AD_RESULTS )
     {
-        case CF_PROCESS_AD_RESULTS:
-           ad_process_se();  // process single ended
-           ad_process_de();
-           ad_process_sigma_delta();
-           return_value = 1;  // prevent event from being passed throug
-        
-        
-        
-        default:
-            return_value = 0;
+        ad_process_se();
     }
-    return return_value;
+    if( status_data & CF_PROCESS_MODBUS )
+    {
+      process_rx_modbus_rtu_message( );
+    }
     
 }
 
+// static varibles to save stack space
 static int event_number;
 static unsigned event_id;
 static unsigned event_data;
+static unsigned status_data;
 
 int main()
 {
-                            
+    cf_initialize_status_manager();             
     cf_initialize_event_manager();
     initialize_cf_system(  );
-    /* Enable Global Interrupts */
-    
-    /* Start USBFS Operation with 5V operation */
-    USBUART_1_Start(0u, USBUART_1_5V_OPERATION);
+    CyGlobalIntDisable;  // Chain Global Interrupts  initialization chain will enable interrupts 
     
     
-    //CyWdtStart( CYWDT_1024_TICKS, CYWDT_LPMODE_NOCHANGE ); // 2 -3 second interval
+    
+    
+    
     
     cf_process_cf_event( CF_SYSTEM_INIT , 0);
     for(;;)
     {
-        event_number = cf_rx_event( &event_id, &event_data );
-        if( event_number > 0 )
+        status_data = cf_get_status();
+        if( status_data != 0 )
         {
-           if( process_high_priority_events( event_id, event_data ) == 0 )
+            process_status_data( status_data);
+        }
+        else
+        {
+           event_number = cf_rx_event( &event_id, &event_data );
+           if( event_number > 0 )
            {
               cf_process_cf_event( event_id, event_data);
            }
            else
            {
-              ; //  process_high_priority_events absorbed the results
+             ; // add sleep for low power apps
            }
-            
-          //process_usb_serial( input_event );
-   
         }  
     }   
 }

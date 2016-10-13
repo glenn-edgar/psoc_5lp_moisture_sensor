@@ -1,0 +1,16 @@
+--------------- Rebuild Started: 09/23/2016 19:01:03 Project: digitial_io.c, Configuration: ARM GCC 4.9-2015-q1-update Debug ---------------
+arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -Wno-main -I.\chain_flow -I.\chain_flow\chain_flow_assembler -I.\utilities -I.\a_to_d_functions -I.\rtu_modbus -I.\usb_serial -I.\cap_sense -I.\rtc_functions -I.\i2c_master -I.\event_fifo -I.\Die_Temp -I.\cb_measurement -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\ARM_GCC_493\Debug/digitial_io.lst -g -Wall -ffunction-sections -O0 -ffat-lto-objects -c ..\..\utilities\digitial_io.c -o .\ARM_GCC_493\Debug\digitial_io.o
+..\..\utilities\digitial_io.c: In function 'read_and_clear_counter':
+..\..\utilities\digitial_io.c:25:5: warning: implicit declaration of function 'Counter_1_ReadCounter' [-Wimplicit-function-declaration]
+     counter = Counter_1_ReadCounter();
+     ^
+..\..\utilities\digitial_io.c:26:5: warning: implicit declaration of function 'Counter_1_Stop' [-Wimplicit-function-declaration]
+     Counter_1_Stop(); 
+     ^
+..\..\utilities\digitial_io.c:27:5: warning: implicit declaration of function 'Counter_1_WriteCounter' [-Wimplicit-function-declaration]
+     Counter_1_WriteCounter(0);
+     ^
+..\..\utilities\digitial_io.c:28:5: warning: implicit declaration of function 'Counter_1_Start' [-Wimplicit-function-declaration]
+     Counter_1_Start();    
+     ^
+--------------- Rebuild Succeeded: 09/23/2016 19:01:04 ---------------

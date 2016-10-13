@@ -1,0 +1,903 @@
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"Moisture_Drive_Pins_B.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.Moisture_Drive_Pins_B_Write,"ax",%progbits
+  19              		.align	2
+  20              		.global	Moisture_Drive_Pins_B_Write
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	Moisture_Drive_Pins_B_Write, %function
+  24              	Moisture_Drive_Pins_B_Write:
+  25              	.LFB0:
+  26              		.file 1 ".\\Generated_Source\\PSoC5\\Moisture_Drive_Pins_B.c"
+   1:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** /*******************************************************************************
+   2:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * File Name: Moisture_Drive_Pins_B.c  
+   3:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * Version 2.20
+   4:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+   5:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * Description:
+   6:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  This file contains API to enable firmware control of a Pins component.
+   7:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+   8:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * Note:
+   9:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+  10:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** ********************************************************************************
+  11:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  12:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  13:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  14:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * the software package with which this file was provided.
+  15:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *******************************************************************************/
+  16:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 
+  17:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** #include "cytypes.h"
+  18:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** #include "Moisture_Drive_Pins_B.h"
+  19:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 
+  20:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** /* APIs are not generated for P15[7:6] on PSoC 5 */
+  21:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** #if !(CY_PSOC5A &&\
+  22:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 	 Moisture_Drive_Pins_B__PORT == 15 && ((Moisture_Drive_Pins_B__MASK & 0xC0) != 0))
+  23:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 
+  24:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 
+  25:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** /*******************************************************************************
+  26:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * Function Name: Moisture_Drive_Pins_B_Write
+  27:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** ****************************************************************************//**
+  28:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+  29:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \brief Writes the value to the physical port (data output register), masking
+  30:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  and shifting the bits appropriately. 
+  31:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 2
+
+
+  32:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * The data output register controls the signal applied to the physical pin in 
+  33:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * conjunction with the drive mode parameter. This function avoids changing 
+  34:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * other bits in the port by using the appropriate method (read-modify-write or
+  35:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * bit banding).
+  36:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+  37:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * <b>Note</b> This function should not be used on a hardware digital output pin 
+  38:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * as it is driven by the hardware signal attached to it.
+  39:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+  40:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \param value
+  41:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  Value to write to the component instance.
+  42:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+  43:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \return 
+  44:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  None 
+  45:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+  46:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \sideeffect
+  47:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  If you use read-modify-write operations that are not atomic; the Interrupt 
+  48:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  Service Routines (ISR) can cause corruption of this function. An ISR that 
+  49:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  interrupts this function and performs writes to the Pins component data 
+  50:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  register can cause corrupted port data. To avoid this issue, you should 
+  51:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  either use the Per-Pin APIs (primary method) or disable interrupts around 
+  52:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  this function.
+  53:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+  54:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \funcusage
+  55:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  \snippet Moisture_Drive_Pins_B_SUT.c usage_Moisture_Drive_Pins_B_Write
+  56:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *******************************************************************************/
+  57:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** void Moisture_Drive_Pins_B_Write(uint8 value)
+  58:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** {
+  27              		.loc 1 58 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 16
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 7, -4
+  35 0002 85B0     		sub	sp, sp, #20
+  36              		.cfi_def_cfa_offset 24
+  37 0004 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+  39 0006 0346     		mov	r3, r0
+  40 0008 FB71     		strb	r3, [r7, #7]
+  59:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c ****     uint8 staticBits = (Moisture_Drive_Pins_B_DR & (uint8)(~Moisture_Drive_Pins_B_MASK));
+  41              		.loc 1 59 0
+  42 000a 0A4B     		ldr	r3, .L2
+  43 000c 1B78     		ldrb	r3, [r3]
+  44 000e DBB2     		uxtb	r3, r3
+  45 0010 23F00F03 		bic	r3, r3, #15
+  46 0014 FB73     		strb	r3, [r7, #15]
+  60:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c ****     Moisture_Drive_Pins_B_DR = staticBits | ((uint8)(value << Moisture_Drive_Pins_B_SHIFT) & Moistu
+  47              		.loc 1 60 0
+  48 0016 0749     		ldr	r1, .L2
+  49 0018 FB79     		ldrb	r3, [r7, #7]
+  50 001a 03F00F03 		and	r3, r3, #15
+  51 001e DAB2     		uxtb	r2, r3
+  52 0020 FB7B     		ldrb	r3, [r7, #15]
+  53 0022 1343     		orrs	r3, r3, r2
+  54 0024 DBB2     		uxtb	r3, r3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 3
+
+
+  55 0026 0B70     		strb	r3, [r1]
+  61:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** }
+  56              		.loc 1 61 0
+  57 0028 1437     		adds	r7, r7, #20
+  58              		.cfi_def_cfa_offset 4
+  59 002a BD46     		mov	sp, r7
+  60              		.cfi_def_cfa_register 13
+  61              		@ sp needed
+  62 002c 5DF8047B 		ldr	r7, [sp], #4
+  63              		.cfi_restore 7
+  64              		.cfi_def_cfa_offset 0
+  65 0030 7047     		bx	lr
+  66              	.L3:
+  67 0032 00BF     		.align	2
+  68              	.L2:
+  69 0034 00510040 		.word	1073762560
+  70              		.cfi_endproc
+  71              	.LFE0:
+  72              		.size	Moisture_Drive_Pins_B_Write, .-Moisture_Drive_Pins_B_Write
+  73              		.section	.text.Moisture_Drive_Pins_B_SetDriveMode,"ax",%progbits
+  74              		.align	2
+  75              		.global	Moisture_Drive_Pins_B_SetDriveMode
+  76              		.thumb
+  77              		.thumb_func
+  78              		.type	Moisture_Drive_Pins_B_SetDriveMode, %function
+  79              	Moisture_Drive_Pins_B_SetDriveMode:
+  80              	.LFB1:
+  62:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 
+  63:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 
+  64:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** /*******************************************************************************
+  65:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * Function Name: Moisture_Drive_Pins_B_SetDriveMode
+  66:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** ****************************************************************************//**
+  67:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+  68:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \brief Sets the drive mode for each of the Pins component's pins.
+  69:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * 
+  70:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * <b>Note</b> This affects all pins in the Pins component instance. Use the
+  71:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * Per-Pin APIs if you wish to control individual pin's drive modes.
+  72:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+  73:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \param mode
+  74:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  Mode for the selected signals. Valid options are documented in 
+  75:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  \ref driveMode.
+  76:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+  77:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \return
+  78:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  None
+  79:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+  80:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \sideeffect
+  81:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  If you use read-modify-write operations that are not atomic, the ISR can
+  82:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  cause corruption of this function. An ISR that interrupts this function 
+  83:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  and performs writes to the Pins component Drive Mode registers can cause 
+  84:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  corrupted port data. To avoid this issue, you should either use the Per-Pin
+  85:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  APIs (primary method) or disable interrupts around this function.
+  86:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+  87:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \funcusage
+  88:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  \snippet Moisture_Drive_Pins_B_SUT.c usage_Moisture_Drive_Pins_B_SetDriveMode
+  89:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *******************************************************************************/
+  90:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** void Moisture_Drive_Pins_B_SetDriveMode(uint8 mode)
+  91:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** {
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 4
+
+
+  81              		.loc 1 91 0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 8
+  84              		@ frame_needed = 1, uses_anonymous_args = 0
+  85              		@ link register save eliminated.
+  86 0000 80B4     		push	{r7}
+  87              		.cfi_def_cfa_offset 4
+  88              		.cfi_offset 7, -4
+  89 0002 83B0     		sub	sp, sp, #12
+  90              		.cfi_def_cfa_offset 16
+  91 0004 00AF     		add	r7, sp, #0
+  92              		.cfi_def_cfa_register 7
+  93 0006 0346     		mov	r3, r0
+  94 0008 FB71     		strb	r3, [r7, #7]
+  92:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 	CyPins_SetPinDriveMode(Moisture_Drive_Pins_B_0, mode);
+  95              		.loc 1 92 0
+  96 000a 224B     		ldr	r3, .L5
+  97 000c 214A     		ldr	r2, .L5
+  98 000e 1278     		ldrb	r2, [r2]
+  99 0010 D2B2     		uxtb	r2, r2
+ 100 0012 D2B2     		uxtb	r2, r2
+ 101 0014 22F00E02 		bic	r2, r2, #14
+ 102 0018 D1B2     		uxtb	r1, r2
+ 103 001a FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 104 001c 02F00E02 		and	r2, r2, #14
+ 105 0020 D2B2     		uxtb	r2, r2
+ 106 0022 0A43     		orrs	r2, r2, r1
+ 107 0024 D2B2     		uxtb	r2, r2
+ 108 0026 D2B2     		uxtb	r2, r2
+ 109 0028 1A70     		strb	r2, [r3]
+  93:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 	CyPins_SetPinDriveMode(Moisture_Drive_Pins_B_1, mode);
+ 110              		.loc 1 93 0
+ 111 002a 1B4B     		ldr	r3, .L5+4
+ 112 002c 1A4A     		ldr	r2, .L5+4
+ 113 002e 1278     		ldrb	r2, [r2]
+ 114 0030 D2B2     		uxtb	r2, r2
+ 115 0032 D2B2     		uxtb	r2, r2
+ 116 0034 22F00E02 		bic	r2, r2, #14
+ 117 0038 D1B2     		uxtb	r1, r2
+ 118 003a FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 119 003c 02F00E02 		and	r2, r2, #14
+ 120 0040 D2B2     		uxtb	r2, r2
+ 121 0042 0A43     		orrs	r2, r2, r1
+ 122 0044 D2B2     		uxtb	r2, r2
+ 123 0046 D2B2     		uxtb	r2, r2
+ 124 0048 1A70     		strb	r2, [r3]
+  94:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 	CyPins_SetPinDriveMode(Moisture_Drive_Pins_B_2, mode);
+ 125              		.loc 1 94 0
+ 126 004a 144B     		ldr	r3, .L5+8
+ 127 004c 134A     		ldr	r2, .L5+8
+ 128 004e 1278     		ldrb	r2, [r2]
+ 129 0050 D2B2     		uxtb	r2, r2
+ 130 0052 D2B2     		uxtb	r2, r2
+ 131 0054 22F00E02 		bic	r2, r2, #14
+ 132 0058 D1B2     		uxtb	r1, r2
+ 133 005a FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 134 005c 02F00E02 		and	r2, r2, #14
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 5
+
+
+ 135 0060 D2B2     		uxtb	r2, r2
+ 136 0062 0A43     		orrs	r2, r2, r1
+ 137 0064 D2B2     		uxtb	r2, r2
+ 138 0066 D2B2     		uxtb	r2, r2
+ 139 0068 1A70     		strb	r2, [r3]
+  95:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 	CyPins_SetPinDriveMode(Moisture_Drive_Pins_B_3, mode);
+ 140              		.loc 1 95 0
+ 141 006a 0D4B     		ldr	r3, .L5+12
+ 142 006c 0C4A     		ldr	r2, .L5+12
+ 143 006e 1278     		ldrb	r2, [r2]
+ 144 0070 D2B2     		uxtb	r2, r2
+ 145 0072 D2B2     		uxtb	r2, r2
+ 146 0074 22F00E02 		bic	r2, r2, #14
+ 147 0078 D1B2     		uxtb	r1, r2
+ 148 007a FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 149 007c 02F00E02 		and	r2, r2, #14
+ 150 0080 D2B2     		uxtb	r2, r2
+ 151 0082 0A43     		orrs	r2, r2, r1
+ 152 0084 D2B2     		uxtb	r2, r2
+ 153 0086 D2B2     		uxtb	r2, r2
+ 154 0088 1A70     		strb	r2, [r3]
+  96:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** }
+ 155              		.loc 1 96 0
+ 156 008a 0C37     		adds	r7, r7, #12
+ 157              		.cfi_def_cfa_offset 4
+ 158 008c BD46     		mov	sp, r7
+ 159              		.cfi_def_cfa_register 13
+ 160              		@ sp needed
+ 161 008e 5DF8047B 		ldr	r7, [sp], #4
+ 162              		.cfi_restore 7
+ 163              		.cfi_def_cfa_offset 0
+ 164 0092 7047     		bx	lr
+ 165              	.L6:
+ 166              		.align	2
+ 167              	.L5:
+ 168 0094 00500040 		.word	1073762304
+ 169 0098 01500040 		.word	1073762305
+ 170 009c 02500040 		.word	1073762306
+ 171 00a0 03500040 		.word	1073762307
+ 172              		.cfi_endproc
+ 173              	.LFE1:
+ 174              		.size	Moisture_Drive_Pins_B_SetDriveMode, .-Moisture_Drive_Pins_B_SetDriveMode
+ 175              		.section	.text.Moisture_Drive_Pins_B_Read,"ax",%progbits
+ 176              		.align	2
+ 177              		.global	Moisture_Drive_Pins_B_Read
+ 178              		.thumb
+ 179              		.thumb_func
+ 180              		.type	Moisture_Drive_Pins_B_Read, %function
+ 181              	Moisture_Drive_Pins_B_Read:
+ 182              	.LFB2:
+  97:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 
+  98:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 
+  99:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** /*******************************************************************************
+ 100:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * Function Name: Moisture_Drive_Pins_B_Read
+ 101:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** ****************************************************************************//**
+ 102:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+ 103:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \brief Reads the associated physical port (pin status register) and masks 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 6
+
+
+ 104:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  the required bits according to the width and bit position of the component
+ 105:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  instance. 
+ 106:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+ 107:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * The pin's status register returns the current logic level present on the 
+ 108:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * physical pin.
+ 109:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+ 110:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \return 
+ 111:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  The current value for the pins in the component as a right justified number.
+ 112:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+ 113:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \funcusage
+ 114:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  \snippet Moisture_Drive_Pins_B_SUT.c usage_Moisture_Drive_Pins_B_Read  
+ 115:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *******************************************************************************/
+ 116:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** uint8 Moisture_Drive_Pins_B_Read(void)
+ 117:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** {
+ 183              		.loc 1 117 0
+ 184              		.cfi_startproc
+ 185              		@ args = 0, pretend = 0, frame = 0
+ 186              		@ frame_needed = 1, uses_anonymous_args = 0
+ 187              		@ link register save eliminated.
+ 188 0000 80B4     		push	{r7}
+ 189              		.cfi_def_cfa_offset 4
+ 190              		.cfi_offset 7, -4
+ 191 0002 00AF     		add	r7, sp, #0
+ 192              		.cfi_def_cfa_register 7
+ 118:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c ****     return (Moisture_Drive_Pins_B_PS & Moisture_Drive_Pins_B_MASK) >> Moisture_Drive_Pins_B_SHIFT;
+ 193              		.loc 1 118 0
+ 194 0004 054B     		ldr	r3, .L9
+ 195 0006 1B78     		ldrb	r3, [r3]
+ 196 0008 DBB2     		uxtb	r3, r3
+ 197 000a 03F00F03 		and	r3, r3, #15
+ 198 000e DBB2     		uxtb	r3, r3
+ 119:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** }
+ 199              		.loc 1 119 0
+ 200 0010 1846     		mov	r0, r3
+ 201 0012 BD46     		mov	sp, r7
+ 202              		.cfi_def_cfa_register 13
+ 203              		@ sp needed
+ 204 0014 5DF8047B 		ldr	r7, [sp], #4
+ 205              		.cfi_restore 7
+ 206              		.cfi_def_cfa_offset 0
+ 207 0018 7047     		bx	lr
+ 208              	.L10:
+ 209 001a 00BF     		.align	2
+ 210              	.L9:
+ 211 001c 01510040 		.word	1073762561
+ 212              		.cfi_endproc
+ 213              	.LFE2:
+ 214              		.size	Moisture_Drive_Pins_B_Read, .-Moisture_Drive_Pins_B_Read
+ 215              		.section	.text.Moisture_Drive_Pins_B_ReadDataReg,"ax",%progbits
+ 216              		.align	2
+ 217              		.global	Moisture_Drive_Pins_B_ReadDataReg
+ 218              		.thumb
+ 219              		.thumb_func
+ 220              		.type	Moisture_Drive_Pins_B_ReadDataReg, %function
+ 221              	Moisture_Drive_Pins_B_ReadDataReg:
+ 222              	.LFB3:
+ 120:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 7
+
+
+ 121:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** 
+ 122:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** /*******************************************************************************
+ 123:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * Function Name: Moisture_Drive_Pins_B_ReadDataReg
+ 124:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** ****************************************************************************//**
+ 125:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+ 126:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \brief Reads the associated physical port's data output register and masks 
+ 127:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  the correct bits according to the width and bit position of the component 
+ 128:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  instance. 
+ 129:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+ 130:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * The data output register controls the signal applied to the physical pin in 
+ 131:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * conjunction with the drive mode parameter. This is not the same as the 
+ 132:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * preferred Moisture_Drive_Pins_B_Read() API because the 
+ 133:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * Moisture_Drive_Pins_B_ReadDataReg() reads the data register instead of the status 
+ 134:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * register. For output pins this is a useful function to determine the value 
+ 135:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * just written to the pin.
+ 136:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+ 137:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \return 
+ 138:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  The current value of the data register masked and shifted into a right 
+ 139:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  justified number for the component instance.
+ 140:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *
+ 141:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** * \funcusage
+ 142:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *  \snippet Moisture_Drive_Pins_B_SUT.c usage_Moisture_Drive_Pins_B_ReadDataReg 
+ 143:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** *******************************************************************************/
+ 144:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** uint8 Moisture_Drive_Pins_B_ReadDataReg(void)
+ 145:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** {
+ 223              		.loc 1 145 0
+ 224              		.cfi_startproc
+ 225              		@ args = 0, pretend = 0, frame = 0
+ 226              		@ frame_needed = 1, uses_anonymous_args = 0
+ 227              		@ link register save eliminated.
+ 228 0000 80B4     		push	{r7}
+ 229              		.cfi_def_cfa_offset 4
+ 230              		.cfi_offset 7, -4
+ 231 0002 00AF     		add	r7, sp, #0
+ 232              		.cfi_def_cfa_register 7
+ 146:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c ****     return (Moisture_Drive_Pins_B_DR & Moisture_Drive_Pins_B_MASK) >> Moisture_Drive_Pins_B_SHIFT;
+ 233              		.loc 1 146 0
+ 234 0004 054B     		ldr	r3, .L13
+ 235 0006 1B78     		ldrb	r3, [r3]
+ 236 0008 DBB2     		uxtb	r3, r3
+ 237 000a 03F00F03 		and	r3, r3, #15
+ 238 000e DBB2     		uxtb	r3, r3
+ 147:.\Generated_Source\PSoC5/Moisture_Drive_Pins_B.c **** }
+ 239              		.loc 1 147 0
+ 240 0010 1846     		mov	r0, r3
+ 241 0012 BD46     		mov	sp, r7
+ 242              		.cfi_def_cfa_register 13
+ 243              		@ sp needed
+ 244 0014 5DF8047B 		ldr	r7, [sp], #4
+ 245              		.cfi_restore 7
+ 246              		.cfi_def_cfa_offset 0
+ 247 0018 7047     		bx	lr
+ 248              	.L14:
+ 249 001a 00BF     		.align	2
+ 250              	.L13:
+ 251 001c 00510040 		.word	1073762560
+ 252              		.cfi_endproc
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 8
+
+
+ 253              	.LFE3:
+ 254              		.size	Moisture_Drive_Pins_B_ReadDataReg, .-Moisture_Drive_Pins_B_ReadDataReg
+ 255              		.text
+ 256              	.Letext0:
+ 257              		.file 2 ".\\Generated_Source\\PSoC5\\cytypes.h"
+ 258              		.section	.debug_info,"",%progbits
+ 259              	.Ldebug_info0:
+ 260 0000 1A010000 		.4byte	0x11a
+ 261 0004 0400     		.2byte	0x4
+ 262 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 263 000a 04       		.byte	0x4
+ 264 000b 01       		.uleb128 0x1
+ 265 000c 33000000 		.4byte	.LASF20
+ 266 0010 01       		.byte	0x1
+ 267 0011 6D010000 		.4byte	.LASF21
+ 268 0015 C7000000 		.4byte	.LASF22
+ 269 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 270 001d 00000000 		.4byte	0
+ 271 0021 00000000 		.4byte	.Ldebug_line0
+ 272 0025 02       		.uleb128 0x2
+ 273 0026 01       		.byte	0x1
+ 274 0027 06       		.byte	0x6
+ 275 0028 09020000 		.4byte	.LASF0
+ 276 002c 02       		.uleb128 0x2
+ 277 002d 01       		.byte	0x1
+ 278 002e 08       		.byte	0x8
+ 279 002f 2F010000 		.4byte	.LASF1
+ 280 0033 02       		.uleb128 0x2
+ 281 0034 02       		.byte	0x2
+ 282 0035 05       		.byte	0x5
+ 283 0036 F0010000 		.4byte	.LASF2
+ 284 003a 02       		.uleb128 0x2
+ 285 003b 02       		.byte	0x2
+ 286 003c 07       		.byte	0x7
+ 287 003d 1C010000 		.4byte	.LASF3
+ 288 0041 02       		.uleb128 0x2
+ 289 0042 04       		.byte	0x4
+ 290 0043 05       		.byte	0x5
+ 291 0044 00020000 		.4byte	.LASF4
+ 292 0048 02       		.uleb128 0x2
+ 293 0049 04       		.byte	0x4
+ 294 004a 07       		.byte	0x7
+ 295 004b 0A010000 		.4byte	.LASF5
+ 296 004f 02       		.uleb128 0x2
+ 297 0050 08       		.byte	0x8
+ 298 0051 05       		.byte	0x5
+ 299 0052 C1010000 		.4byte	.LASF6
+ 300 0056 02       		.uleb128 0x2
+ 301 0057 08       		.byte	0x8
+ 302 0058 07       		.byte	0x7
+ 303 0059 51010000 		.4byte	.LASF7
+ 304 005d 03       		.uleb128 0x3
+ 305 005e 04       		.byte	0x4
+ 306 005f 05       		.byte	0x5
+ 307 0060 696E7400 		.ascii	"int\000"
+ 308 0064 02       		.uleb128 0x2
+ 309 0065 04       		.byte	0x4
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 9
+
+
+ 310 0066 07       		.byte	0x7
+ 311 0067 44010000 		.4byte	.LASF8
+ 312 006b 04       		.uleb128 0x4
+ 313 006c FA010000 		.4byte	.LASF12
+ 314 0070 02       		.byte	0x2
+ 315 0071 9201     		.2byte	0x192
+ 316 0073 2C000000 		.4byte	0x2c
+ 317 0077 02       		.uleb128 0x2
+ 318 0078 04       		.byte	0x4
+ 319 0079 04       		.byte	0x4
+ 320 007a C1000000 		.4byte	.LASF9
+ 321 007e 02       		.uleb128 0x2
+ 322 007f 08       		.byte	0x8
+ 323 0080 04       		.byte	0x4
+ 324 0081 3D010000 		.4byte	.LASF10
+ 325 0085 02       		.uleb128 0x2
+ 326 0086 01       		.byte	0x1
+ 327 0087 08       		.byte	0x8
+ 328 0088 EB010000 		.4byte	.LASF11
+ 329 008c 04       		.uleb128 0x4
+ 330 008d 05010000 		.4byte	.LASF13
+ 331 0091 02       		.byte	0x2
+ 332 0092 3C02     		.2byte	0x23c
+ 333 0094 98000000 		.4byte	0x98
+ 334 0098 05       		.uleb128 0x5
+ 335 0099 6B000000 		.4byte	0x6b
+ 336 009d 06       		.uleb128 0x6
+ 337 009e CF010000 		.4byte	.LASF14
+ 338 00a2 01       		.byte	0x1
+ 339 00a3 39       		.byte	0x39
+ 340 00a4 00000000 		.4byte	.LFB0
+ 341 00a8 38000000 		.4byte	.LFE0-.LFB0
+ 342 00ac 01       		.uleb128 0x1
+ 343 00ad 9C       		.byte	0x9c
+ 344 00ae CF000000 		.4byte	0xcf
+ 345 00b2 07       		.uleb128 0x7
+ 346 00b3 22000000 		.4byte	.LASF16
+ 347 00b7 01       		.byte	0x1
+ 348 00b8 39       		.byte	0x39
+ 349 00b9 6B000000 		.4byte	0x6b
+ 350 00bd 02       		.uleb128 0x2
+ 351 00be 91       		.byte	0x91
+ 352 00bf 6F       		.sleb128 -17
+ 353 00c0 08       		.uleb128 0x8
+ 354 00c1 28000000 		.4byte	.LASF23
+ 355 00c5 01       		.byte	0x1
+ 356 00c6 3B       		.byte	0x3b
+ 357 00c7 6B000000 		.4byte	0x6b
+ 358 00cb 02       		.uleb128 0x2
+ 359 00cc 91       		.byte	0x91
+ 360 00cd 77       		.sleb128 -9
+ 361 00ce 00       		.byte	0
+ 362 00cf 06       		.uleb128 0x6
+ 363 00d0 9E010000 		.4byte	.LASF15
+ 364 00d4 01       		.byte	0x1
+ 365 00d5 5A       		.byte	0x5a
+ 366 00d6 00000000 		.4byte	.LFB1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 10
+
+
+ 367 00da A4000000 		.4byte	.LFE1-.LFB1
+ 368 00de 01       		.uleb128 0x1
+ 369 00df 9C       		.byte	0x9c
+ 370 00e0 F3000000 		.4byte	0xf3
+ 371 00e4 07       		.uleb128 0x7
+ 372 00e5 68010000 		.4byte	.LASF17
+ 373 00e9 01       		.byte	0x1
+ 374 00ea 5A       		.byte	0x5a
+ 375 00eb 6B000000 		.4byte	0x6b
+ 376 00ef 02       		.uleb128 0x2
+ 377 00f0 91       		.byte	0x91
+ 378 00f1 77       		.sleb128 -9
+ 379 00f2 00       		.byte	0
+ 380 00f3 09       		.uleb128 0x9
+ 381 00f4 15020000 		.4byte	.LASF18
+ 382 00f8 01       		.byte	0x1
+ 383 00f9 74       		.byte	0x74
+ 384 00fa 6B000000 		.4byte	0x6b
+ 385 00fe 00000000 		.4byte	.LFB2
+ 386 0102 20000000 		.4byte	.LFE2-.LFB2
+ 387 0106 01       		.uleb128 0x1
+ 388 0107 9C       		.byte	0x9c
+ 389 0108 09       		.uleb128 0x9
+ 390 0109 00000000 		.4byte	.LASF19
+ 391 010d 01       		.byte	0x1
+ 392 010e 90       		.byte	0x90
+ 393 010f 6B000000 		.4byte	0x6b
+ 394 0113 00000000 		.4byte	.LFB3
+ 395 0117 20000000 		.4byte	.LFE3-.LFB3
+ 396 011b 01       		.uleb128 0x1
+ 397 011c 9C       		.byte	0x9c
+ 398 011d 00       		.byte	0
+ 399              		.section	.debug_abbrev,"",%progbits
+ 400              	.Ldebug_abbrev0:
+ 401 0000 01       		.uleb128 0x1
+ 402 0001 11       		.uleb128 0x11
+ 403 0002 01       		.byte	0x1
+ 404 0003 25       		.uleb128 0x25
+ 405 0004 0E       		.uleb128 0xe
+ 406 0005 13       		.uleb128 0x13
+ 407 0006 0B       		.uleb128 0xb
+ 408 0007 03       		.uleb128 0x3
+ 409 0008 0E       		.uleb128 0xe
+ 410 0009 1B       		.uleb128 0x1b
+ 411 000a 0E       		.uleb128 0xe
+ 412 000b 55       		.uleb128 0x55
+ 413 000c 17       		.uleb128 0x17
+ 414 000d 11       		.uleb128 0x11
+ 415 000e 01       		.uleb128 0x1
+ 416 000f 10       		.uleb128 0x10
+ 417 0010 17       		.uleb128 0x17
+ 418 0011 00       		.byte	0
+ 419 0012 00       		.byte	0
+ 420 0013 02       		.uleb128 0x2
+ 421 0014 24       		.uleb128 0x24
+ 422 0015 00       		.byte	0
+ 423 0016 0B       		.uleb128 0xb
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 11
+
+
+ 424 0017 0B       		.uleb128 0xb
+ 425 0018 3E       		.uleb128 0x3e
+ 426 0019 0B       		.uleb128 0xb
+ 427 001a 03       		.uleb128 0x3
+ 428 001b 0E       		.uleb128 0xe
+ 429 001c 00       		.byte	0
+ 430 001d 00       		.byte	0
+ 431 001e 03       		.uleb128 0x3
+ 432 001f 24       		.uleb128 0x24
+ 433 0020 00       		.byte	0
+ 434 0021 0B       		.uleb128 0xb
+ 435 0022 0B       		.uleb128 0xb
+ 436 0023 3E       		.uleb128 0x3e
+ 437 0024 0B       		.uleb128 0xb
+ 438 0025 03       		.uleb128 0x3
+ 439 0026 08       		.uleb128 0x8
+ 440 0027 00       		.byte	0
+ 441 0028 00       		.byte	0
+ 442 0029 04       		.uleb128 0x4
+ 443 002a 16       		.uleb128 0x16
+ 444 002b 00       		.byte	0
+ 445 002c 03       		.uleb128 0x3
+ 446 002d 0E       		.uleb128 0xe
+ 447 002e 3A       		.uleb128 0x3a
+ 448 002f 0B       		.uleb128 0xb
+ 449 0030 3B       		.uleb128 0x3b
+ 450 0031 05       		.uleb128 0x5
+ 451 0032 49       		.uleb128 0x49
+ 452 0033 13       		.uleb128 0x13
+ 453 0034 00       		.byte	0
+ 454 0035 00       		.byte	0
+ 455 0036 05       		.uleb128 0x5
+ 456 0037 35       		.uleb128 0x35
+ 457 0038 00       		.byte	0
+ 458 0039 49       		.uleb128 0x49
+ 459 003a 13       		.uleb128 0x13
+ 460 003b 00       		.byte	0
+ 461 003c 00       		.byte	0
+ 462 003d 06       		.uleb128 0x6
+ 463 003e 2E       		.uleb128 0x2e
+ 464 003f 01       		.byte	0x1
+ 465 0040 3F       		.uleb128 0x3f
+ 466 0041 19       		.uleb128 0x19
+ 467 0042 03       		.uleb128 0x3
+ 468 0043 0E       		.uleb128 0xe
+ 469 0044 3A       		.uleb128 0x3a
+ 470 0045 0B       		.uleb128 0xb
+ 471 0046 3B       		.uleb128 0x3b
+ 472 0047 0B       		.uleb128 0xb
+ 473 0048 27       		.uleb128 0x27
+ 474 0049 19       		.uleb128 0x19
+ 475 004a 11       		.uleb128 0x11
+ 476 004b 01       		.uleb128 0x1
+ 477 004c 12       		.uleb128 0x12
+ 478 004d 06       		.uleb128 0x6
+ 479 004e 40       		.uleb128 0x40
+ 480 004f 18       		.uleb128 0x18
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 12
+
+
+ 481 0050 9742     		.uleb128 0x2117
+ 482 0052 19       		.uleb128 0x19
+ 483 0053 01       		.uleb128 0x1
+ 484 0054 13       		.uleb128 0x13
+ 485 0055 00       		.byte	0
+ 486 0056 00       		.byte	0
+ 487 0057 07       		.uleb128 0x7
+ 488 0058 05       		.uleb128 0x5
+ 489 0059 00       		.byte	0
+ 490 005a 03       		.uleb128 0x3
+ 491 005b 0E       		.uleb128 0xe
+ 492 005c 3A       		.uleb128 0x3a
+ 493 005d 0B       		.uleb128 0xb
+ 494 005e 3B       		.uleb128 0x3b
+ 495 005f 0B       		.uleb128 0xb
+ 496 0060 49       		.uleb128 0x49
+ 497 0061 13       		.uleb128 0x13
+ 498 0062 02       		.uleb128 0x2
+ 499 0063 18       		.uleb128 0x18
+ 500 0064 00       		.byte	0
+ 501 0065 00       		.byte	0
+ 502 0066 08       		.uleb128 0x8
+ 503 0067 34       		.uleb128 0x34
+ 504 0068 00       		.byte	0
+ 505 0069 03       		.uleb128 0x3
+ 506 006a 0E       		.uleb128 0xe
+ 507 006b 3A       		.uleb128 0x3a
+ 508 006c 0B       		.uleb128 0xb
+ 509 006d 3B       		.uleb128 0x3b
+ 510 006e 0B       		.uleb128 0xb
+ 511 006f 49       		.uleb128 0x49
+ 512 0070 13       		.uleb128 0x13
+ 513 0071 02       		.uleb128 0x2
+ 514 0072 18       		.uleb128 0x18
+ 515 0073 00       		.byte	0
+ 516 0074 00       		.byte	0
+ 517 0075 09       		.uleb128 0x9
+ 518 0076 2E       		.uleb128 0x2e
+ 519 0077 00       		.byte	0
+ 520 0078 3F       		.uleb128 0x3f
+ 521 0079 19       		.uleb128 0x19
+ 522 007a 03       		.uleb128 0x3
+ 523 007b 0E       		.uleb128 0xe
+ 524 007c 3A       		.uleb128 0x3a
+ 525 007d 0B       		.uleb128 0xb
+ 526 007e 3B       		.uleb128 0x3b
+ 527 007f 0B       		.uleb128 0xb
+ 528 0080 27       		.uleb128 0x27
+ 529 0081 19       		.uleb128 0x19
+ 530 0082 49       		.uleb128 0x49
+ 531 0083 13       		.uleb128 0x13
+ 532 0084 11       		.uleb128 0x11
+ 533 0085 01       		.uleb128 0x1
+ 534 0086 12       		.uleb128 0x12
+ 535 0087 06       		.uleb128 0x6
+ 536 0088 40       		.uleb128 0x40
+ 537 0089 18       		.uleb128 0x18
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 13
+
+
+ 538 008a 9742     		.uleb128 0x2117
+ 539 008c 19       		.uleb128 0x19
+ 540 008d 00       		.byte	0
+ 541 008e 00       		.byte	0
+ 542 008f 00       		.byte	0
+ 543              		.section	.debug_aranges,"",%progbits
+ 544 0000 34000000 		.4byte	0x34
+ 545 0004 0200     		.2byte	0x2
+ 546 0006 00000000 		.4byte	.Ldebug_info0
+ 547 000a 04       		.byte	0x4
+ 548 000b 00       		.byte	0
+ 549 000c 0000     		.2byte	0
+ 550 000e 0000     		.2byte	0
+ 551 0010 00000000 		.4byte	.LFB0
+ 552 0014 38000000 		.4byte	.LFE0-.LFB0
+ 553 0018 00000000 		.4byte	.LFB1
+ 554 001c A4000000 		.4byte	.LFE1-.LFB1
+ 555 0020 00000000 		.4byte	.LFB2
+ 556 0024 20000000 		.4byte	.LFE2-.LFB2
+ 557 0028 00000000 		.4byte	.LFB3
+ 558 002c 20000000 		.4byte	.LFE3-.LFB3
+ 559 0030 00000000 		.4byte	0
+ 560 0034 00000000 		.4byte	0
+ 561              		.section	.debug_ranges,"",%progbits
+ 562              	.Ldebug_ranges0:
+ 563 0000 00000000 		.4byte	.LFB0
+ 564 0004 38000000 		.4byte	.LFE0
+ 565 0008 00000000 		.4byte	.LFB1
+ 566 000c A4000000 		.4byte	.LFE1
+ 567 0010 00000000 		.4byte	.LFB2
+ 568 0014 20000000 		.4byte	.LFE2
+ 569 0018 00000000 		.4byte	.LFB3
+ 570 001c 20000000 		.4byte	.LFE3
+ 571 0020 00000000 		.4byte	0
+ 572 0024 00000000 		.4byte	0
+ 573              		.section	.debug_line,"",%progbits
+ 574              	.Ldebug_line0:
+ 575 0000 A5000000 		.section	.debug_str,"MS",%progbits,1
+ 575      02005400 
+ 575      00000201 
+ 575      FB0E0D00 
+ 575      01010101 
+ 576              	.LASF19:
+ 577 0000 4D6F6973 		.ascii	"Moisture_Drive_Pins_B_ReadDataReg\000"
+ 577      74757265 
+ 577      5F447269 
+ 577      76655F50 
+ 577      696E735F 
+ 578              	.LASF16:
+ 579 0022 76616C75 		.ascii	"value\000"
+ 579      6500
+ 580              	.LASF23:
+ 581 0028 73746174 		.ascii	"staticBits\000"
+ 581      69634269 
+ 581      747300
+ 582              	.LASF20:
+ 583 0033 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 14
+
+
+ 583      4320342E 
+ 583      392E3320 
+ 583      32303135 
+ 583      30333033 
+ 584 0066 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 584      20726576 
+ 584      6973696F 
+ 584      6E203232 
+ 584      31323230 
+ 585 0099 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 585      66756E63 
+ 585      74696F6E 
+ 585      2D736563 
+ 585      74696F6E 
+ 586              	.LASF9:
+ 587 00c1 666C6F61 		.ascii	"float\000"
+ 587      7400
+ 588              	.LASF22:
+ 589 00c7 433A5C55 		.ascii	"C:\\Users\\glenn\\OneDrive\\PSOC\\moisture_sensor\\"
+ 589      73657273 
+ 589      5C676C65 
+ 589      6E6E5C4F 
+ 589      6E654472 
+ 590 00f4 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ 590      55415254 
+ 590      30312E63 
+ 590      7964736E 
+ 590      00
+ 591              	.LASF13:
+ 592 0105 72656738 		.ascii	"reg8\000"
+ 592      00
+ 593              	.LASF5:
+ 594 010a 6C6F6E67 		.ascii	"long unsigned int\000"
+ 594      20756E73 
+ 594      69676E65 
+ 594      6420696E 
+ 594      7400
+ 595              	.LASF3:
+ 596 011c 73686F72 		.ascii	"short unsigned int\000"
+ 596      7420756E 
+ 596      7369676E 
+ 596      65642069 
+ 596      6E7400
+ 597              	.LASF1:
+ 598 012f 756E7369 		.ascii	"unsigned char\000"
+ 598      676E6564 
+ 598      20636861 
+ 598      7200
+ 599              	.LASF10:
+ 600 013d 646F7562 		.ascii	"double\000"
+ 600      6C6500
+ 601              	.LASF8:
+ 602 0144 756E7369 		.ascii	"unsigned int\000"
+ 602      676E6564 
+ 602      20696E74 
+ 602      00
+ 603              	.LASF7:
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 15
+
+
+ 604 0151 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 604      206C6F6E 
+ 604      6720756E 
+ 604      7369676E 
+ 604      65642069 
+ 605              	.LASF17:
+ 606 0168 6D6F6465 		.ascii	"mode\000"
+ 606      00
+ 607              	.LASF21:
+ 608 016d 2E5C4765 		.ascii	".\\Generated_Source\\PSoC5\\Moisture_Drive_Pins_B.c"
+ 608      6E657261 
+ 608      7465645F 
+ 608      536F7572 
+ 608      63655C50 
+ 609 019d 00       		.ascii	"\000"
+ 610              	.LASF15:
+ 611 019e 4D6F6973 		.ascii	"Moisture_Drive_Pins_B_SetDriveMode\000"
+ 611      74757265 
+ 611      5F447269 
+ 611      76655F50 
+ 611      696E735F 
+ 612              	.LASF6:
+ 613 01c1 6C6F6E67 		.ascii	"long long int\000"
+ 613      206C6F6E 
+ 613      6720696E 
+ 613      7400
+ 614              	.LASF14:
+ 615 01cf 4D6F6973 		.ascii	"Moisture_Drive_Pins_B_Write\000"
+ 615      74757265 
+ 615      5F447269 
+ 615      76655F50 
+ 615      696E735F 
+ 616              	.LASF11:
+ 617 01eb 63686172 		.ascii	"char\000"
+ 617      00
+ 618              	.LASF2:
+ 619 01f0 73686F72 		.ascii	"short int\000"
+ 619      7420696E 
+ 619      7400
+ 620              	.LASF12:
+ 621 01fa 75696E74 		.ascii	"uint8\000"
+ 621      3800
+ 622              	.LASF4:
+ 623 0200 6C6F6E67 		.ascii	"long int\000"
+ 623      20696E74 
+ 623      00
+ 624              	.LASF0:
+ 625 0209 7369676E 		.ascii	"signed char\000"
+ 625      65642063 
+ 625      68617200 
+ 626              	.LASF18:
+ 627 0215 4D6F6973 		.ascii	"Moisture_Drive_Pins_B_Read\000"
+ 627      74757265 
+ 627      5F447269 
+ 627      76655F50 
+ 627      696E735F 
+ 628              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccCQ06T7.s 			page 16
+
+

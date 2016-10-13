@@ -1,0 +1,748 @@
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"events.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.bss
+  19              		.align	2
+  20              	event_mask:
+  21 0000 00000000 		.space	4
+  22              		.section	.text.init_event_mask,"ax",%progbits
+  23              		.align	2
+  24              		.global	init_event_mask
+  25              		.thumb
+  26              		.thumb_func
+  27              		.type	init_event_mask, %function
+  28              	init_event_mask:
+  29              	.LFB63:
+  30              		.file 1 ".\\events.c"
+   1:.\events.c    **** /* ========================================
+   2:.\events.c    ****  *
+   3:.\events.c    ****  * Copyright YOUR COMPANY, THE YEAR
+   4:.\events.c    ****  * All Rights Reserved
+   5:.\events.c    ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:.\events.c    ****  *
+   7:.\events.c    ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:.\events.c    ****  * WHICH IS THE PROPERTY OF your company.
+   9:.\events.c    ****  *
+  10:.\events.c    ****  * ========================================
+  11:.\events.c    **** */
+  12:.\events.c    **** #ifndef _EVENTS_H_
+  13:.\events.c    **** #define _EVENTS_H_
+  14:.\events.c    ****     
+  15:.\events.c    **** #include "device.h"
+  16:.\events.c    **** #include "events.h"
+  17:.\events.c    **** 
+  18:.\events.c    **** static volatile int event_mask;
+  19:.\events.c    ****     
+  20:.\events.c    **** void init_event_mask( void )
+  21:.\events.c    **** {
+  31              		.loc 1 21 0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 1, uses_anonymous_args = 0
+  35              		@ link register save eliminated.
+  36 0000 80B4     		push	{r7}
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 2
+
+
+  37              		.cfi_def_cfa_offset 4
+  38              		.cfi_offset 7, -4
+  39 0002 00AF     		add	r7, sp, #0
+  40              		.cfi_def_cfa_register 7
+  22:.\events.c    ****     event_mask = 0;
+  41              		.loc 1 22 0
+  42 0004 034B     		ldr	r3, .L2
+  43 0006 0022     		movs	r2, #0
+  44 0008 1A60     		str	r2, [r3]
+  23:.\events.c    **** }
+  45              		.loc 1 23 0
+  46 000a BD46     		mov	sp, r7
+  47              		.cfi_def_cfa_register 13
+  48              		@ sp needed
+  49 000c 5DF8047B 		ldr	r7, [sp], #4
+  50              		.cfi_restore 7
+  51              		.cfi_def_cfa_offset 0
+  52 0010 7047     		bx	lr
+  53              	.L3:
+  54 0012 00BF     		.align	2
+  55              	.L2:
+  56 0014 00000000 		.word	event_mask
+  57              		.cfi_endproc
+  58              	.LFE63:
+  59              		.size	init_event_mask, .-init_event_mask
+  60              		.section	.text.set_event,"ax",%progbits
+  61              		.align	2
+  62              		.global	set_event
+  63              		.thumb
+  64              		.thumb_func
+  65              		.type	set_event, %function
+  66              	set_event:
+  67              	.LFB64:
+  24:.\events.c    **** 
+  25:.\events.c    ****     
+  26:.\events.c    **** void set_event( int event )
+  27:.\events.c    **** {
+  68              		.loc 1 27 0
+  69              		.cfi_startproc
+  70              		@ args = 0, pretend = 0, frame = 8
+  71              		@ frame_needed = 1, uses_anonymous_args = 0
+  72              		@ link register save eliminated.
+  73 0000 80B4     		push	{r7}
+  74              		.cfi_def_cfa_offset 4
+  75              		.cfi_offset 7, -4
+  76 0002 83B0     		sub	sp, sp, #12
+  77              		.cfi_def_cfa_offset 16
+  78 0004 00AF     		add	r7, sp, #0
+  79              		.cfi_def_cfa_register 7
+  80 0006 7860     		str	r0, [r7, #4]
+  28:.\events.c    ****    CyGlobalIntDisable;
+  81              		.loc 1 28 0
+  82              	@ 28 ".\events.c" 1
+  83 0008 72B6     		CPSID   i
+  84              	@ 0 "" 2
+  29:.\events.c    ****    event_mask |= event;
+  85              		.loc 1 29 0
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 3
+
+
+  86              		.thumb
+  87 000a 064B     		ldr	r3, .L5
+  88 000c 1A68     		ldr	r2, [r3]
+  89 000e 7B68     		ldr	r3, [r7, #4]
+  90 0010 1343     		orrs	r3, r3, r2
+  91 0012 044A     		ldr	r2, .L5
+  92 0014 1360     		str	r3, [r2]
+  30:.\events.c    ****    CyGlobalIntEnable;
+  93              		.loc 1 30 0
+  94              	@ 30 ".\events.c" 1
+  95 0016 62B6     		CPSIE   i
+  96              	@ 0 "" 2
+  31:.\events.c    **** }
+  97              		.loc 1 31 0
+  98              		.thumb
+  99 0018 0C37     		adds	r7, r7, #12
+ 100              		.cfi_def_cfa_offset 4
+ 101 001a BD46     		mov	sp, r7
+ 102              		.cfi_def_cfa_register 13
+ 103              		@ sp needed
+ 104 001c 5DF8047B 		ldr	r7, [sp], #4
+ 105              		.cfi_restore 7
+ 106              		.cfi_def_cfa_offset 0
+ 107 0020 7047     		bx	lr
+ 108              	.L6:
+ 109 0022 00BF     		.align	2
+ 110              	.L5:
+ 111 0024 00000000 		.word	event_mask
+ 112              		.cfi_endproc
+ 113              	.LFE64:
+ 114              		.size	set_event, .-set_event
+ 115              		.section	.text.read_and_clear_event,"ax",%progbits
+ 116              		.align	2
+ 117              		.global	read_and_clear_event
+ 118              		.thumb
+ 119              		.thumb_func
+ 120              		.type	read_and_clear_event, %function
+ 121              	read_and_clear_event:
+ 122              	.LFB65:
+  32:.\events.c    **** 
+  33:.\events.c    **** int read_and_clear_event( void)
+  34:.\events.c    **** {
+ 123              		.loc 1 34 0
+ 124              		.cfi_startproc
+ 125              		@ args = 0, pretend = 0, frame = 8
+ 126              		@ frame_needed = 1, uses_anonymous_args = 0
+ 127              		@ link register save eliminated.
+ 128 0000 80B4     		push	{r7}
+ 129              		.cfi_def_cfa_offset 4
+ 130              		.cfi_offset 7, -4
+ 131 0002 83B0     		sub	sp, sp, #12
+ 132              		.cfi_def_cfa_offset 16
+ 133 0004 00AF     		add	r7, sp, #0
+ 134              		.cfi_def_cfa_register 7
+  35:.\events.c    ****     int return_value;
+  36:.\events.c    ****     CyGlobalIntDisable;
+ 135              		.loc 1 36 0
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 4
+
+
+ 136              	@ 36 ".\events.c" 1
+ 137 0006 72B6     		CPSID   i
+ 138              	@ 0 "" 2
+  37:.\events.c    ****     return_value = event_mask;
+ 139              		.loc 1 37 0
+ 140              		.thumb
+ 141 0008 064B     		ldr	r3, .L9
+ 142 000a 1B68     		ldr	r3, [r3]
+ 143 000c 7B60     		str	r3, [r7, #4]
+  38:.\events.c    ****     event_mask = 0;
+ 144              		.loc 1 38 0
+ 145 000e 054B     		ldr	r3, .L9
+ 146 0010 0022     		movs	r2, #0
+ 147 0012 1A60     		str	r2, [r3]
+  39:.\events.c    ****     CyGlobalIntEnable;
+ 148              		.loc 1 39 0
+ 149              	@ 39 ".\events.c" 1
+ 150 0014 62B6     		CPSIE   i
+ 151              	@ 0 "" 2
+  40:.\events.c    ****     return return_value;
+ 152              		.loc 1 40 0
+ 153              		.thumb
+ 154 0016 7B68     		ldr	r3, [r7, #4]
+  41:.\events.c    **** }
+ 155              		.loc 1 41 0
+ 156 0018 1846     		mov	r0, r3
+ 157 001a 0C37     		adds	r7, r7, #12
+ 158              		.cfi_def_cfa_offset 4
+ 159 001c BD46     		mov	sp, r7
+ 160              		.cfi_def_cfa_register 13
+ 161              		@ sp needed
+ 162 001e 5DF8047B 		ldr	r7, [sp], #4
+ 163              		.cfi_restore 7
+ 164              		.cfi_def_cfa_offset 0
+ 165 0022 7047     		bx	lr
+ 166              	.L10:
+ 167              		.align	2
+ 168              	.L9:
+ 169 0024 00000000 		.word	event_mask
+ 170              		.cfi_endproc
+ 171              	.LFE65:
+ 172              		.size	read_and_clear_event, .-read_and_clear_event
+ 173              		.text
+ 174              	.Letext0:
+ 175              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 176              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 177              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
+ 178              		.section	.debug_info,"",%progbits
+ 179              	.Ldebug_info0:
+ 180 0000 1E010000 		.4byte	0x11e
+ 181 0004 0400     		.2byte	0x4
+ 182 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 183 000a 04       		.byte	0x4
+ 184 000b 01       		.uleb128 0x1
+ 185 000c C0000000 		.4byte	.LASF17
+ 186 0010 01       		.byte	0x1
+ 187 0011 A7000000 		.4byte	.LASF18
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 5
+
+
+ 188 0015 55010000 		.4byte	.LASF19
+ 189 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 190 001d 00000000 		.4byte	0
+ 191 0021 00000000 		.4byte	.Ldebug_line0
+ 192 0025 02       		.uleb128 0x2
+ 193 0026 01       		.byte	0x1
+ 194 0027 06       		.byte	0x6
+ 195 0028 A0010000 		.4byte	.LASF0
+ 196 002c 02       		.uleb128 0x2
+ 197 002d 01       		.byte	0x1
+ 198 002e 08       		.byte	0x8
+ 199 002f 3E000000 		.4byte	.LASF1
+ 200 0033 02       		.uleb128 0x2
+ 201 0034 02       		.byte	0x2
+ 202 0035 05       		.byte	0x5
+ 203 0036 BC010000 		.4byte	.LASF2
+ 204 003a 02       		.uleb128 0x2
+ 205 003b 02       		.byte	0x2
+ 206 003c 07       		.byte	0x7
+ 207 003d 0E000000 		.4byte	.LASF3
+ 208 0041 03       		.uleb128 0x3
+ 209 0042 AC010000 		.4byte	.LASF9
+ 210 0046 02       		.byte	0x2
+ 211 0047 3F       		.byte	0x3f
+ 212 0048 4C000000 		.4byte	0x4c
+ 213 004c 02       		.uleb128 0x2
+ 214 004d 04       		.byte	0x4
+ 215 004e 05       		.byte	0x5
+ 216 004f B7000000 		.4byte	.LASF4
+ 217 0053 02       		.uleb128 0x2
+ 218 0054 04       		.byte	0x4
+ 219 0055 07       		.byte	0x7
+ 220 0056 6B000000 		.4byte	.LASF5
+ 221 005a 02       		.uleb128 0x2
+ 222 005b 08       		.byte	0x8
+ 223 005c 05       		.byte	0x5
+ 224 005d 00000000 		.4byte	.LASF6
+ 225 0061 02       		.uleb128 0x2
+ 226 0062 08       		.byte	0x8
+ 227 0063 07       		.byte	0x7
+ 228 0064 7D000000 		.4byte	.LASF7
+ 229 0068 04       		.uleb128 0x4
+ 230 0069 04       		.byte	0x4
+ 231 006a 05       		.byte	0x5
+ 232 006b 696E7400 		.ascii	"int\000"
+ 233 006f 02       		.uleb128 0x2
+ 234 0070 04       		.byte	0x4
+ 235 0071 07       		.byte	0x7
+ 236 0072 21000000 		.4byte	.LASF8
+ 237 0076 03       		.uleb128 0x3
+ 238 0077 C6010000 		.4byte	.LASF10
+ 239 007b 03       		.byte	0x3
+ 240 007c 2C       		.byte	0x2c
+ 241 007d 41000000 		.4byte	0x41
+ 242 0081 02       		.uleb128 0x2
+ 243 0082 04       		.byte	0x4
+ 244 0083 04       		.byte	0x4
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 6
+
+
+ 245 0084 B6010000 		.4byte	.LASF11
+ 246 0088 02       		.uleb128 0x2
+ 247 0089 08       		.byte	0x8
+ 248 008a 04       		.byte	0x4
+ 249 008b 4E010000 		.4byte	.LASF12
+ 250 008f 02       		.uleb128 0x2
+ 251 0090 01       		.byte	0x1
+ 252 0091 08       		.byte	0x8
+ 253 0092 B2000000 		.4byte	.LASF13
+ 254 0096 02       		.uleb128 0x2
+ 255 0097 04       		.byte	0x4
+ 256 0098 07       		.byte	0x7
+ 257 0099 CE010000 		.4byte	.LASF14
+ 258 009d 05       		.uleb128 0x5
+ 259 009e 2E000000 		.4byte	.LASF20
+ 260 00a2 01       		.byte	0x1
+ 261 00a3 14       		.byte	0x14
+ 262 00a4 00000000 		.4byte	.LFB63
+ 263 00a8 18000000 		.4byte	.LFE63-.LFB63
+ 264 00ac 01       		.uleb128 0x1
+ 265 00ad 9C       		.byte	0x9c
+ 266 00ae 06       		.uleb128 0x6
+ 267 00af 4C000000 		.4byte	.LASF21
+ 268 00b3 01       		.byte	0x1
+ 269 00b4 1A       		.byte	0x1a
+ 270 00b5 00000000 		.4byte	.LFB64
+ 271 00b9 28000000 		.4byte	.LFE64-.LFB64
+ 272 00bd 01       		.uleb128 0x1
+ 273 00be 9C       		.byte	0x9c
+ 274 00bf D2000000 		.4byte	0xd2
+ 275 00c3 07       		.uleb128 0x7
+ 276 00c4 A1000000 		.4byte	.LASF22
+ 277 00c8 01       		.byte	0x1
+ 278 00c9 1A       		.byte	0x1a
+ 279 00ca 68000000 		.4byte	0x68
+ 280 00ce 02       		.uleb128 0x2
+ 281 00cf 91       		.byte	0x91
+ 282 00d0 74       		.sleb128 -12
+ 283 00d1 00       		.byte	0
+ 284 00d2 08       		.uleb128 0x8
+ 285 00d3 56000000 		.4byte	.LASF23
+ 286 00d7 01       		.byte	0x1
+ 287 00d8 21       		.byte	0x21
+ 288 00d9 68000000 		.4byte	0x68
+ 289 00dd 00000000 		.4byte	.LFB65
+ 290 00e1 28000000 		.4byte	.LFE65-.LFB65
+ 291 00e5 01       		.uleb128 0x1
+ 292 00e6 9C       		.byte	0x9c
+ 293 00e7 FA000000 		.4byte	0xfa
+ 294 00eb 09       		.uleb128 0x9
+ 295 00ec 94000000 		.4byte	.LASF15
+ 296 00f0 01       		.byte	0x1
+ 297 00f1 23       		.byte	0x23
+ 298 00f2 68000000 		.4byte	0x68
+ 299 00f6 02       		.uleb128 0x2
+ 300 00f7 91       		.byte	0x91
+ 301 00f8 74       		.sleb128 -12
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 7
+
+
+ 302 00f9 00       		.byte	0
+ 303 00fa 09       		.uleb128 0x9
+ 304 00fb D7010000 		.4byte	.LASF16
+ 305 00ff 01       		.byte	0x1
+ 306 0100 12       		.byte	0x12
+ 307 0101 0B010000 		.4byte	0x10b
+ 308 0105 05       		.uleb128 0x5
+ 309 0106 03       		.byte	0x3
+ 310 0107 00000000 		.4byte	event_mask
+ 311 010b 0A       		.uleb128 0xa
+ 312 010c 68000000 		.4byte	0x68
+ 313 0110 0B       		.uleb128 0xb
+ 314 0111 93010000 		.4byte	.LASF24
+ 315 0115 04       		.byte	0x4
+ 316 0116 2A06     		.2byte	0x62a
+ 317 0118 1C010000 		.4byte	0x11c
+ 318 011c 0A       		.uleb128 0xa
+ 319 011d 76000000 		.4byte	0x76
+ 320 0121 00       		.byte	0
+ 321              		.section	.debug_abbrev,"",%progbits
+ 322              	.Ldebug_abbrev0:
+ 323 0000 01       		.uleb128 0x1
+ 324 0001 11       		.uleb128 0x11
+ 325 0002 01       		.byte	0x1
+ 326 0003 25       		.uleb128 0x25
+ 327 0004 0E       		.uleb128 0xe
+ 328 0005 13       		.uleb128 0x13
+ 329 0006 0B       		.uleb128 0xb
+ 330 0007 03       		.uleb128 0x3
+ 331 0008 0E       		.uleb128 0xe
+ 332 0009 1B       		.uleb128 0x1b
+ 333 000a 0E       		.uleb128 0xe
+ 334 000b 55       		.uleb128 0x55
+ 335 000c 17       		.uleb128 0x17
+ 336 000d 11       		.uleb128 0x11
+ 337 000e 01       		.uleb128 0x1
+ 338 000f 10       		.uleb128 0x10
+ 339 0010 17       		.uleb128 0x17
+ 340 0011 00       		.byte	0
+ 341 0012 00       		.byte	0
+ 342 0013 02       		.uleb128 0x2
+ 343 0014 24       		.uleb128 0x24
+ 344 0015 00       		.byte	0
+ 345 0016 0B       		.uleb128 0xb
+ 346 0017 0B       		.uleb128 0xb
+ 347 0018 3E       		.uleb128 0x3e
+ 348 0019 0B       		.uleb128 0xb
+ 349 001a 03       		.uleb128 0x3
+ 350 001b 0E       		.uleb128 0xe
+ 351 001c 00       		.byte	0
+ 352 001d 00       		.byte	0
+ 353 001e 03       		.uleb128 0x3
+ 354 001f 16       		.uleb128 0x16
+ 355 0020 00       		.byte	0
+ 356 0021 03       		.uleb128 0x3
+ 357 0022 0E       		.uleb128 0xe
+ 358 0023 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 8
+
+
+ 359 0024 0B       		.uleb128 0xb
+ 360 0025 3B       		.uleb128 0x3b
+ 361 0026 0B       		.uleb128 0xb
+ 362 0027 49       		.uleb128 0x49
+ 363 0028 13       		.uleb128 0x13
+ 364 0029 00       		.byte	0
+ 365 002a 00       		.byte	0
+ 366 002b 04       		.uleb128 0x4
+ 367 002c 24       		.uleb128 0x24
+ 368 002d 00       		.byte	0
+ 369 002e 0B       		.uleb128 0xb
+ 370 002f 0B       		.uleb128 0xb
+ 371 0030 3E       		.uleb128 0x3e
+ 372 0031 0B       		.uleb128 0xb
+ 373 0032 03       		.uleb128 0x3
+ 374 0033 08       		.uleb128 0x8
+ 375 0034 00       		.byte	0
+ 376 0035 00       		.byte	0
+ 377 0036 05       		.uleb128 0x5
+ 378 0037 2E       		.uleb128 0x2e
+ 379 0038 00       		.byte	0
+ 380 0039 3F       		.uleb128 0x3f
+ 381 003a 19       		.uleb128 0x19
+ 382 003b 03       		.uleb128 0x3
+ 383 003c 0E       		.uleb128 0xe
+ 384 003d 3A       		.uleb128 0x3a
+ 385 003e 0B       		.uleb128 0xb
+ 386 003f 3B       		.uleb128 0x3b
+ 387 0040 0B       		.uleb128 0xb
+ 388 0041 27       		.uleb128 0x27
+ 389 0042 19       		.uleb128 0x19
+ 390 0043 11       		.uleb128 0x11
+ 391 0044 01       		.uleb128 0x1
+ 392 0045 12       		.uleb128 0x12
+ 393 0046 06       		.uleb128 0x6
+ 394 0047 40       		.uleb128 0x40
+ 395 0048 18       		.uleb128 0x18
+ 396 0049 9742     		.uleb128 0x2117
+ 397 004b 19       		.uleb128 0x19
+ 398 004c 00       		.byte	0
+ 399 004d 00       		.byte	0
+ 400 004e 06       		.uleb128 0x6
+ 401 004f 2E       		.uleb128 0x2e
+ 402 0050 01       		.byte	0x1
+ 403 0051 3F       		.uleb128 0x3f
+ 404 0052 19       		.uleb128 0x19
+ 405 0053 03       		.uleb128 0x3
+ 406 0054 0E       		.uleb128 0xe
+ 407 0055 3A       		.uleb128 0x3a
+ 408 0056 0B       		.uleb128 0xb
+ 409 0057 3B       		.uleb128 0x3b
+ 410 0058 0B       		.uleb128 0xb
+ 411 0059 27       		.uleb128 0x27
+ 412 005a 19       		.uleb128 0x19
+ 413 005b 11       		.uleb128 0x11
+ 414 005c 01       		.uleb128 0x1
+ 415 005d 12       		.uleb128 0x12
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 9
+
+
+ 416 005e 06       		.uleb128 0x6
+ 417 005f 40       		.uleb128 0x40
+ 418 0060 18       		.uleb128 0x18
+ 419 0061 9742     		.uleb128 0x2117
+ 420 0063 19       		.uleb128 0x19
+ 421 0064 01       		.uleb128 0x1
+ 422 0065 13       		.uleb128 0x13
+ 423 0066 00       		.byte	0
+ 424 0067 00       		.byte	0
+ 425 0068 07       		.uleb128 0x7
+ 426 0069 05       		.uleb128 0x5
+ 427 006a 00       		.byte	0
+ 428 006b 03       		.uleb128 0x3
+ 429 006c 0E       		.uleb128 0xe
+ 430 006d 3A       		.uleb128 0x3a
+ 431 006e 0B       		.uleb128 0xb
+ 432 006f 3B       		.uleb128 0x3b
+ 433 0070 0B       		.uleb128 0xb
+ 434 0071 49       		.uleb128 0x49
+ 435 0072 13       		.uleb128 0x13
+ 436 0073 02       		.uleb128 0x2
+ 437 0074 18       		.uleb128 0x18
+ 438 0075 00       		.byte	0
+ 439 0076 00       		.byte	0
+ 440 0077 08       		.uleb128 0x8
+ 441 0078 2E       		.uleb128 0x2e
+ 442 0079 01       		.byte	0x1
+ 443 007a 3F       		.uleb128 0x3f
+ 444 007b 19       		.uleb128 0x19
+ 445 007c 03       		.uleb128 0x3
+ 446 007d 0E       		.uleb128 0xe
+ 447 007e 3A       		.uleb128 0x3a
+ 448 007f 0B       		.uleb128 0xb
+ 449 0080 3B       		.uleb128 0x3b
+ 450 0081 0B       		.uleb128 0xb
+ 451 0082 27       		.uleb128 0x27
+ 452 0083 19       		.uleb128 0x19
+ 453 0084 49       		.uleb128 0x49
+ 454 0085 13       		.uleb128 0x13
+ 455 0086 11       		.uleb128 0x11
+ 456 0087 01       		.uleb128 0x1
+ 457 0088 12       		.uleb128 0x12
+ 458 0089 06       		.uleb128 0x6
+ 459 008a 40       		.uleb128 0x40
+ 460 008b 18       		.uleb128 0x18
+ 461 008c 9742     		.uleb128 0x2117
+ 462 008e 19       		.uleb128 0x19
+ 463 008f 01       		.uleb128 0x1
+ 464 0090 13       		.uleb128 0x13
+ 465 0091 00       		.byte	0
+ 466 0092 00       		.byte	0
+ 467 0093 09       		.uleb128 0x9
+ 468 0094 34       		.uleb128 0x34
+ 469 0095 00       		.byte	0
+ 470 0096 03       		.uleb128 0x3
+ 471 0097 0E       		.uleb128 0xe
+ 472 0098 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 10
+
+
+ 473 0099 0B       		.uleb128 0xb
+ 474 009a 3B       		.uleb128 0x3b
+ 475 009b 0B       		.uleb128 0xb
+ 476 009c 49       		.uleb128 0x49
+ 477 009d 13       		.uleb128 0x13
+ 478 009e 02       		.uleb128 0x2
+ 479 009f 18       		.uleb128 0x18
+ 480 00a0 00       		.byte	0
+ 481 00a1 00       		.byte	0
+ 482 00a2 0A       		.uleb128 0xa
+ 483 00a3 35       		.uleb128 0x35
+ 484 00a4 00       		.byte	0
+ 485 00a5 49       		.uleb128 0x49
+ 486 00a6 13       		.uleb128 0x13
+ 487 00a7 00       		.byte	0
+ 488 00a8 00       		.byte	0
+ 489 00a9 0B       		.uleb128 0xb
+ 490 00aa 34       		.uleb128 0x34
+ 491 00ab 00       		.byte	0
+ 492 00ac 03       		.uleb128 0x3
+ 493 00ad 0E       		.uleb128 0xe
+ 494 00ae 3A       		.uleb128 0x3a
+ 495 00af 0B       		.uleb128 0xb
+ 496 00b0 3B       		.uleb128 0x3b
+ 497 00b1 05       		.uleb128 0x5
+ 498 00b2 49       		.uleb128 0x49
+ 499 00b3 13       		.uleb128 0x13
+ 500 00b4 3F       		.uleb128 0x3f
+ 501 00b5 19       		.uleb128 0x19
+ 502 00b6 3C       		.uleb128 0x3c
+ 503 00b7 19       		.uleb128 0x19
+ 504 00b8 00       		.byte	0
+ 505 00b9 00       		.byte	0
+ 506 00ba 00       		.byte	0
+ 507              		.section	.debug_aranges,"",%progbits
+ 508 0000 2C000000 		.4byte	0x2c
+ 509 0004 0200     		.2byte	0x2
+ 510 0006 00000000 		.4byte	.Ldebug_info0
+ 511 000a 04       		.byte	0x4
+ 512 000b 00       		.byte	0
+ 513 000c 0000     		.2byte	0
+ 514 000e 0000     		.2byte	0
+ 515 0010 00000000 		.4byte	.LFB63
+ 516 0014 18000000 		.4byte	.LFE63-.LFB63
+ 517 0018 00000000 		.4byte	.LFB64
+ 518 001c 28000000 		.4byte	.LFE64-.LFB64
+ 519 0020 00000000 		.4byte	.LFB65
+ 520 0024 28000000 		.4byte	.LFE65-.LFB65
+ 521 0028 00000000 		.4byte	0
+ 522 002c 00000000 		.4byte	0
+ 523              		.section	.debug_ranges,"",%progbits
+ 524              	.Ldebug_ranges0:
+ 525 0000 00000000 		.4byte	.LFB63
+ 526 0004 18000000 		.4byte	.LFE63
+ 527 0008 00000000 		.4byte	.LFB64
+ 528 000c 28000000 		.4byte	.LFE64
+ 529 0010 00000000 		.4byte	.LFB65
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 11
+
+
+ 530 0014 28000000 		.4byte	.LFE65
+ 531 0018 00000000 		.4byte	0
+ 532 001c 00000000 		.4byte	0
+ 533              		.section	.debug_line,"",%progbits
+ 534              	.Ldebug_line0:
+ 535 0000 7D010000 		.section	.debug_str,"MS",%progbits,1
+ 535      02003E01 
+ 535      00000201 
+ 535      FB0E0D00 
+ 535      01010101 
+ 536              	.LASF6:
+ 537 0000 6C6F6E67 		.ascii	"long long int\000"
+ 537      206C6F6E 
+ 537      6720696E 
+ 537      7400
+ 538              	.LASF3:
+ 539 000e 73686F72 		.ascii	"short unsigned int\000"
+ 539      7420756E 
+ 539      7369676E 
+ 539      65642069 
+ 539      6E7400
+ 540              	.LASF8:
+ 541 0021 756E7369 		.ascii	"unsigned int\000"
+ 541      676E6564 
+ 541      20696E74 
+ 541      00
+ 542              	.LASF20:
+ 543 002e 696E6974 		.ascii	"init_event_mask\000"
+ 543      5F657665 
+ 543      6E745F6D 
+ 543      61736B00 
+ 544              	.LASF1:
+ 545 003e 756E7369 		.ascii	"unsigned char\000"
+ 545      676E6564 
+ 545      20636861 
+ 545      7200
+ 546              	.LASF21:
+ 547 004c 7365745F 		.ascii	"set_event\000"
+ 547      6576656E 
+ 547      7400
+ 548              	.LASF23:
+ 549 0056 72656164 		.ascii	"read_and_clear_event\000"
+ 549      5F616E64 
+ 549      5F636C65 
+ 549      61725F65 
+ 549      76656E74 
+ 550              	.LASF5:
+ 551 006b 6C6F6E67 		.ascii	"long unsigned int\000"
+ 551      20756E73 
+ 551      69676E65 
+ 551      6420696E 
+ 551      7400
+ 552              	.LASF7:
+ 553 007d 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 553      206C6F6E 
+ 553      6720756E 
+ 553      7369676E 
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 12
+
+
+ 553      65642069 
+ 554              	.LASF15:
+ 555 0094 72657475 		.ascii	"return_value\000"
+ 555      726E5F76 
+ 555      616C7565 
+ 555      00
+ 556              	.LASF22:
+ 557 00a1 6576656E 		.ascii	"event\000"
+ 557      7400
+ 558              	.LASF18:
+ 559 00a7 2E5C6576 		.ascii	".\\events.c\000"
+ 559      656E7473 
+ 559      2E6300
+ 560              	.LASF13:
+ 561 00b2 63686172 		.ascii	"char\000"
+ 561      00
+ 562              	.LASF4:
+ 563 00b7 6C6F6E67 		.ascii	"long int\000"
+ 563      20696E74 
+ 563      00
+ 564              	.LASF17:
+ 565 00c0 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 565      4320342E 
+ 565      392E3320 
+ 565      32303135 
+ 565      30333033 
+ 566 00f3 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 566      20726576 
+ 566      6973696F 
+ 566      6E203232 
+ 566      31323230 
+ 567 0126 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 567      66756E63 
+ 567      74696F6E 
+ 567      2D736563 
+ 567      74696F6E 
+ 568              	.LASF12:
+ 569 014e 646F7562 		.ascii	"double\000"
+ 569      6C6500
+ 570              	.LASF19:
+ 571 0155 433A5C55 		.ascii	"C:\\Users\\Glenn\\Desktop\\PSOC\\psoc-5lp\\5lp-rtu\\"
+ 571      73657273 
+ 571      5C476C65 
+ 571      6E6E5C44 
+ 571      65736B74 
+ 572 0182 5553425F 		.ascii	"USB_UART01.cydsn\000"
+ 572      55415254 
+ 572      30312E63 
+ 572      7964736E 
+ 572      00
+ 573              	.LASF24:
+ 574 0193 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 574      52784275 
+ 574      66666572 
+ 574      00
+ 575              	.LASF0:
+ 576 01a0 7369676E 		.ascii	"signed char\000"
+ARM GAS  C:\Users\Glenn\AppData\Local\Temp\ccHq8yM6.s 			page 13
+
+
+ 576      65642063 
+ 576      68617200 
+ 577              	.LASF9:
+ 578 01ac 5F5F696E 		.ascii	"__int32_t\000"
+ 578      7433325F 
+ 578      7400
+ 579              	.LASF11:
+ 580 01b6 666C6F61 		.ascii	"float\000"
+ 580      7400
+ 581              	.LASF2:
+ 582 01bc 73686F72 		.ascii	"short int\000"
+ 582      7420696E 
+ 582      7400
+ 583              	.LASF10:
+ 584 01c6 696E7433 		.ascii	"int32_t\000"
+ 584      325F7400 
+ 585              	.LASF14:
+ 586 01ce 73697A65 		.ascii	"sizetype\000"
+ 586      74797065 
+ 586      00
+ 587              	.LASF16:
+ 588 01d7 6576656E 		.ascii	"event_mask\000"
+ 588      745F6D61 
+ 588      736B00
+ 589              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br
