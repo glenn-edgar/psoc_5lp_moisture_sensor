@@ -1,4 +1,4 @@
-Loading plugins phase: Elapsed time ==> 0s.231ms
+Loading plugins phase: Elapsed time ==> 0s.243ms
 Initializing data phase: Elapsed time ==> 0s.000ms
 <CYPRESSTAG name="CyDsfit arguments...">
 cydsfit arguments: -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -p C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\USB_UART01.cyprj -d CY8C5888LTI-LP097 -s C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\Generated_Source\PSoC5 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE</CYPRESSTAG>
@@ -9,10 +9,10 @@ ADD: sdb.M0065: information: Analog terminal "vdac_ref" on ADC_SAR_SEQ_v2_0 is u
  * C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\PSoC5\ADC_SAR_SEQ_v2_0.cysch (Shape_885)
 
 </CYPRESSTAG>
-Elaboration phase: Elapsed time ==> 3s.089ms
+Elaboration phase: Elapsed time ==> 2s.797ms
 <CYPRESSTAG name="HDL generation results...">
 </CYPRESSTAG>
-HDL generation phase: Elapsed time ==> 0s.116ms
+HDL generation phase: Elapsed time ==> 0s.107ms
 <CYPRESSTAG name="Synthesis results...">
 
      | | | | | | |
@@ -46,7 +46,7 @@ Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\glenn
 ======================================================================
 
 vlogfe V6.3 IR 41:  Verilog parser
-Fri Oct 07 19:03:23 2016
+Wed Oct 12 19:24:37 2016
 
 
 ======================================================================
@@ -56,7 +56,7 @@ Options  :    -yv2 -q10 USB_UART01.v
 ======================================================================
 
 vpp V6.3 IR 41:  Verilog Pre-Processor
-Fri Oct 07 19:03:23 2016
+Wed Oct 12 19:24:37 2016
 
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\B_UART_v2_50\B_UART_v2_50.v'
@@ -120,7 +120,7 @@ Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\glenn
 ======================================================================
 
 tovif V6.3 IR 41:  High-level synthesis
-Fri Oct 07 19:03:23 2016
+Wed Oct 12 19:24:38 2016
 
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\warp\lib\common\std.vhd'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\warp\lib\common\cypress.vhd'.
@@ -165,7 +165,7 @@ Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\glenn
 ======================================================================
 
 topld V6.3 IR 41:  Synthesis and optimization
-Fri Oct 07 19:03:24 2016
+Wed Oct 12 19:24:38 2016
 
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\warp\lib\common\std.vhd'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\warp\lib\common\cypress.vhd'.
@@ -1138,14 +1138,14 @@ CYPRESS_DIR    : C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\wa
 Warp Program   : C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\warp\bin/warp.exe
 Warp Arguments : -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\USB_UART01.cyprj -dcpsoc3 USB_UART01.v -verilog
 </CYPRESSTAG>
-Warp synthesis phase: Elapsed time ==> 1s.349ms
+Warp synthesis phase: Elapsed time ==> 1s.274ms
 <CYPRESSTAG name="Fitter results...">
 <CYPRESSTAG name="Fitter startup details...">
-cyp3fit: V3.3.0.9604, Family: PSoC3, Started at: Friday, 07 October 2016 19:03:24
+cyp3fit: V3.3.0.9604, Family: PSoC3, Started at: Wednesday, 12 October 2016 19:24:38
 Options: -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\USB_UART01.cyprj -d CY8C5888LTI-LP097 USB_UART01.v -verilog
 </CYPRESSTAG>
 <CYPRESSTAG name="Design parsing">
-Design parsing phase: Elapsed time ==> 0s.031ms
+Design parsing phase: Elapsed time ==> 0s.040ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Tech mapping">
 <CYPRESSTAG name="Initial Mapping" icon="FILE_RPT_TECHM">
@@ -4591,8 +4591,8 @@ Analog (SC/CT) Blocks         :    0 :    4 :    4 :  0.00 %
 DAC                           :      :      :      :        
   VIDAC                       :    0 :    4 :    4 :  0.00 %
 </CYPRESSTAG>
-Technology Mapping: Elapsed time ==> 0s.184ms
-Tech mapping phase: Elapsed time ==> 0s.316ms
+Technology Mapping: Elapsed time ==> 0s.209ms
+Tech mapping phase: Elapsed time ==> 0s.295ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Placement">
 Info: apr.M0002: Analog signal "Net_5988" is connected to one terminal only. (App=cydsfit)
@@ -4682,7 +4682,7 @@ IO_7@[IOP=(3)][IoId=(7)] : Reference_Pin(7) (fixed)
 IO_0@[IOP=(0)][IoId=(0)] : Reference_Pin(8) (fixed)
 IO_1@[IOP=(0)][IoId=(1)] : Reference_Pin(9) (fixed)
 IO_1@[IOP=(15)][IoId=(1)] : Sink_Pin(0) (fixed)
-IO_4@[IOP=(15)][IoId=(4)] : Source_Pin(0) (fixed)
+IO_5@[IOP=(15)][IoId=(5)] : Source_Pin(0) (fixed)
 IO_3@[IOP=(2)][IoId=(3)] : Temp_Sensor(0) (fixed)
 IO_1@[IOP=(2)][IoId=(1)] : heart_beat_pin(0) (fixed)
 IO_2@[IOP=(2)][IoId=(2)] : switch_pin(0) (fixed)
@@ -4691,7 +4691,8 @@ Vref[13]@[FFB(Vref,13)] : \ADC_SAR_Seq_1:SAR:vRef_Vdda_1\
 DSM[0]@[FFB(DSM,0)] : \SIGMA_A_D:DSM\
 Vref[6]@[FFB(Vref,6)] : \SIGMA_A_D:vRef_2\
 Vref[8]@[FFB(Vref,8)] : vRef_1
-Log: apr.M0058: The analog placement iterative improvement is 54% done. (App=cydsfit)
+Log: apr.M0058: The analog placement iterative improvement is 27% done. (App=cydsfit)
+Log: apr.M0058: The analog placement iterative improvement is 77% done. (App=cydsfit)
 Analog Placement Results:
 IO_4@[IOP=(1)][IoId=(4)] : Active_Pin(0) (fixed)
 IO_0@[IOP=(2)][IoId=(0)] : Log_Pin(0) (fixed)
@@ -4715,7 +4716,7 @@ IO_7@[IOP=(3)][IoId=(7)] : Reference_Pin(7) (fixed)
 IO_0@[IOP=(0)][IoId=(0)] : Reference_Pin(8) (fixed)
 IO_1@[IOP=(0)][IoId=(1)] : Reference_Pin(9) (fixed)
 IO_1@[IOP=(15)][IoId=(1)] : Sink_Pin(0) (fixed)
-IO_4@[IOP=(15)][IoId=(4)] : Source_Pin(0) (fixed)
+IO_5@[IOP=(15)][IoId=(5)] : Source_Pin(0) (fixed)
 IO_3@[IOP=(2)][IoId=(3)] : Temp_Sensor(0) (fixed)
 IO_1@[IOP=(2)][IoId=(1)] : heart_beat_pin(0) (fixed)
 IO_2@[IOP=(2)][IoId=(2)] : switch_pin(0) (fixed)
@@ -4725,12 +4726,12 @@ DSM[0]@[FFB(DSM,0)] : \SIGMA_A_D:DSM\
 Vref[6]@[FFB(Vref,6)] : \SIGMA_A_D:vRef_2\
 Vref[8]@[FFB(Vref,8)] : vRef_1
 
-Analog Placement phase: Elapsed time ==> 2s.073ms
+Analog Placement phase: Elapsed time ==> 2s.783ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Routing">
 Net "AmuxEye::Sink_Source_Setup" overuses wire "AGL[3]"
 Net "AmuxEye::\ADC_SAR_Seq_1:AMuxHw_2\" overuses wire "AGL[3]"
-Analog Routing phase: Elapsed time ==> 0s.069ms
+Analog Routing phase: Elapsed time ==> 0s.068ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Code Generation">
 ============ Analog Final Answer Routes ============
@@ -4957,55 +4958,55 @@ Map of net to items {
     agl3_x_dsm_0_vplus
     agl3
     agl3_x_pin_vddd
-    agl4_x_dsm_0_vplus
-    agl4
-    agl4_x_agr4
-    agr4
-    agr4_x_p3_4
-    agl7_x_dsm_0_vplus
-    agl7
-    agl7_x_agr7
-    agr7
-    agr7_x_p3_3
-    agl6_x_dsm_0_vplus
-    agl6
-    agl6_x_agr6
-    agr6
-    agr6_x_p3_6
     agl5_x_dsm_0_vplus
     agl5
     agl5_x_agr5
     agr5
     agr5_x_p3_5
-    agl7_x_p0_7
-    agl4_x_p0_0
-    agl5_x_p0_1
-    agr4_x_p3_0
-    agl7_x_p0_3
-    agr7_x_p3_7
-    agl6_x_p0_6
-    agl4_x_p0_4
+    agl4_x_dsm_0_vplus
+    agl4
+    agl4_x_agr4
+    agr4
+    agr4_x_p3_4
+    agl6_x_dsm_0_vplus
+    agl6
+    agl6_x_agr6
+    agr6
     agr6_x_p3_2
-    agl6_x_p0_2
-    agl5_x_p0_5
+    agl7_x_dsm_0_vplus
+    agl7
+    agl7_x_agr7
+    agr7
+    agr7_x_p3_3
+    agl6_x_p0_6
     agr5_x_p3_1
+    agl5_x_p0_1
+    agl4_x_p0_0
+    agr6_x_p3_6
+    agl5_x_p0_5
+    agl4_x_p0_4
+    agl7_x_p0_7
+    agl6_x_p0_2
+    agr7_x_p3_7
+    agl7_x_p0_3
+    agr4_x_p3_0
     pin_vddd
-    p3_4
-    p3_3
-    p3_6
     p3_5
-    p0_7
-    p0_0
-    p0_1
-    p3_0
-    p0_3
-    p3_7
-    p0_6
-    p0_4
+    p3_4
     p3_2
-    p0_2
-    p0_5
+    p3_3
+    p0_6
     p3_1
+    p0_1
+    p0_0
+    p3_6
+    p0_5
+    p0_4
+    p0_7
+    p0_2
+    p3_7
+    p0_3
+    p3_0
   }
   Net: AmuxNet::\ADC_SAR_Seq_1:AMuxHw_2\ {
     sar_0_vplus
@@ -5055,38 +5056,38 @@ Map of item to net {
   agl3_x_dsm_0_vplus                               -> AmuxNet::Sink_Source_Setup
   agl3                                             -> AmuxNet::Sink_Source_Setup
   agl3_x_pin_vddd                                  -> AmuxNet::Sink_Source_Setup
-  agl4_x_dsm_0_vplus                               -> AmuxNet::Sink_Source_Setup
-  agl4                                             -> AmuxNet::Sink_Source_Setup
-  agl4_x_agr4                                      -> AmuxNet::Sink_Source_Setup
-  agr4                                             -> AmuxNet::Sink_Source_Setup
-  agr4_x_p3_4                                      -> AmuxNet::Sink_Source_Setup
-  agl7_x_dsm_0_vplus                               -> AmuxNet::Sink_Source_Setup
-  agl7                                             -> AmuxNet::Sink_Source_Setup
-  agl7_x_agr7                                      -> AmuxNet::Sink_Source_Setup
-  agr7                                             -> AmuxNet::Sink_Source_Setup
-  agr7_x_p3_3                                      -> AmuxNet::Sink_Source_Setup
-  agl6_x_dsm_0_vplus                               -> AmuxNet::Sink_Source_Setup
-  agl6                                             -> AmuxNet::Sink_Source_Setup
-  agl6_x_agr6                                      -> AmuxNet::Sink_Source_Setup
-  agr6                                             -> AmuxNet::Sink_Source_Setup
-  agr6_x_p3_6                                      -> AmuxNet::Sink_Source_Setup
   agl5_x_dsm_0_vplus                               -> AmuxNet::Sink_Source_Setup
   agl5                                             -> AmuxNet::Sink_Source_Setup
   agl5_x_agr5                                      -> AmuxNet::Sink_Source_Setup
   agr5                                             -> AmuxNet::Sink_Source_Setup
   agr5_x_p3_5                                      -> AmuxNet::Sink_Source_Setup
-  agl7_x_p0_7                                      -> AmuxNet::Sink_Source_Setup
-  agl4_x_p0_0                                      -> AmuxNet::Sink_Source_Setup
-  agl5_x_p0_1                                      -> AmuxNet::Sink_Source_Setup
-  agr4_x_p3_0                                      -> AmuxNet::Sink_Source_Setup
-  agl7_x_p0_3                                      -> AmuxNet::Sink_Source_Setup
-  agr7_x_p3_7                                      -> AmuxNet::Sink_Source_Setup
-  agl6_x_p0_6                                      -> AmuxNet::Sink_Source_Setup
-  agl4_x_p0_4                                      -> AmuxNet::Sink_Source_Setup
+  agl4_x_dsm_0_vplus                               -> AmuxNet::Sink_Source_Setup
+  agl4                                             -> AmuxNet::Sink_Source_Setup
+  agl4_x_agr4                                      -> AmuxNet::Sink_Source_Setup
+  agr4                                             -> AmuxNet::Sink_Source_Setup
+  agr4_x_p3_4                                      -> AmuxNet::Sink_Source_Setup
+  agl6_x_dsm_0_vplus                               -> AmuxNet::Sink_Source_Setup
+  agl6                                             -> AmuxNet::Sink_Source_Setup
+  agl6_x_agr6                                      -> AmuxNet::Sink_Source_Setup
+  agr6                                             -> AmuxNet::Sink_Source_Setup
   agr6_x_p3_2                                      -> AmuxNet::Sink_Source_Setup
-  agl6_x_p0_2                                      -> AmuxNet::Sink_Source_Setup
-  agl5_x_p0_5                                      -> AmuxNet::Sink_Source_Setup
+  agl7_x_dsm_0_vplus                               -> AmuxNet::Sink_Source_Setup
+  agl7                                             -> AmuxNet::Sink_Source_Setup
+  agl7_x_agr7                                      -> AmuxNet::Sink_Source_Setup
+  agr7                                             -> AmuxNet::Sink_Source_Setup
+  agr7_x_p3_3                                      -> AmuxNet::Sink_Source_Setup
+  agl6_x_p0_6                                      -> AmuxNet::Sink_Source_Setup
   agr5_x_p3_1                                      -> AmuxNet::Sink_Source_Setup
+  agl5_x_p0_1                                      -> AmuxNet::Sink_Source_Setup
+  agl4_x_p0_0                                      -> AmuxNet::Sink_Source_Setup
+  agr6_x_p3_6                                      -> AmuxNet::Sink_Source_Setup
+  agl5_x_p0_5                                      -> AmuxNet::Sink_Source_Setup
+  agl4_x_p0_4                                      -> AmuxNet::Sink_Source_Setup
+  agl7_x_p0_7                                      -> AmuxNet::Sink_Source_Setup
+  agl6_x_p0_2                                      -> AmuxNet::Sink_Source_Setup
+  agr7_x_p3_7                                      -> AmuxNet::Sink_Source_Setup
+  agl7_x_p0_3                                      -> AmuxNet::Sink_Source_Setup
+  agr4_x_p3_0                                      -> AmuxNet::Sink_Source_Setup
   amuxbusl_x_sar_0_vplus                           -> AmuxNet::\ADC_SAR_Seq_1:AMuxHw_2\
   amuxbusl                                         -> AmuxNet::\ADC_SAR_Seq_1:AMuxHw_2\
   amuxbusl_x_p2_3                                  -> AmuxNet::\ADC_SAR_Seq_1:AMuxHw_2\
@@ -5811,11 +5812,11 @@ Dump of CyP35AnalogRoutingResultsDB
 IsVddaHalfUsedForComp = False
 IsVddaHalfUsedForSar0 = True
 IsVddaHalfUsedForSar1 = False
-Analog Code Generation phase: Elapsed time ==> 0s.347ms
+Analog Code Generation phase: Elapsed time ==> 0s.375ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Digital Placement">
 <CYPRESSTAG name="Detailed placement messages">
-I2076: Total run-time: 3.5 sec.
+I2076: Total run-time: 3.8 sec.
 
 </CYPRESSTAG>
 <CYPRESSTAG name="PLD Packing">
@@ -5839,17 +5840,17 @@ PLD Packing Summary
 <CYPRESSTAG name="Packed PLD Contents">
 Packed PLD Contents not displayed at this verbose level.</CYPRESSTAG>
 </CYPRESSTAG>
-PLD Packing: Elapsed time ==> 0s.000ms
+PLD Packing: Elapsed time ==> 0s.003ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Partitioning">
 <CYPRESSTAG name="Initial Partitioning Summary">
 Initial Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
 <CYPRESSTAG name="Final Partitioning Summary">
 Final Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
-Partitioning: Elapsed time ==> 0s.122ms
+Partitioning: Elapsed time ==> 0s.146ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Simulated Annealing">
-Annealing: Elapsed time ==> 0s.015ms
+Annealing: Elapsed time ==> 0s.002ms
 <CYPRESSTAG name="Simulated Annealing Results">
 The seed used for moves was 114161200.
 Inital cost was 701, final cost is 701 (0.00% improvement).</CYPRESSTAG>
@@ -9519,7 +9520,7 @@ Pin : Name = Sink_Pin(0)
     {
     }
 
-[IoId=4]: 
+[IoId=5]: 
 Pin : Name = Source_Pin(0)
     Attributes:
         In Group/Port: True
@@ -9961,37 +9962,37 @@ Port | Pin | Fixed |      Type |       Drive Mode |                 Name | Conne
      |   7 |     * |      NONE |      HI_Z_ANALOG |     Reference_Pin(7) | Analog(Net_9368)
 -----+-----+-------+-----------+------------------+----------------------+-----------------------------------------------------------------
   15 |   1 |     * |      NONE |         CMOS_OUT |          Sink_Pin(0) | In(Net_9199), OE(tmpOE__Sink_Pin_net_0)
-     |   4 |     * |      NONE |         CMOS_OUT |        Source_Pin(0) | In(Net_9346), OE(tmpOE__Source_Pin_net_0)
+     |   5 |     * |      NONE |         CMOS_OUT |        Source_Pin(0) | In(Net_9346), OE(tmpOE__Source_Pin_net_0)
 -------------------------------------------------------------------------------------------------------------------------------------------
 </CYPRESSTAG>
 </CYPRESSTAG>
 </CYPRESSTAG>
-Digital component placer commit/Report: Elapsed time ==> 0s.000ms
-Digital Placement phase: Elapsed time ==> 3s.975ms
+Digital component placer commit/Report: Elapsed time ==> 0s.005ms
+Digital Placement phase: Elapsed time ==> 4s.350ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Digital Routing">
 Routing successful.
-Digital Routing phase: Elapsed time ==> 3s.973ms
+Digital Routing phase: Elapsed time ==> 4s.126ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Bitstream and API generation">
-Bitstream and API generation phase: Elapsed time ==> 0s.247ms
+Bitstream and API generation phase: Elapsed time ==> 0s.266ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Bitstream verification">
-Bitstream verification phase: Elapsed time ==> 0s.049ms
+Bitstream verification phase: Elapsed time ==> 0s.040ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Static timing analysis">
 Timing report is in USB_UART01_timing.html.
-Static timing analysis phase: Elapsed time ==> 0s.831ms
+Static timing analysis phase: Elapsed time ==> 0s.935ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Data reporting">
 Data reporting phase: Elapsed time ==> 0s.000ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Database update...">
-Design database save phase: Elapsed time ==> 0s.316ms
+Design database save phase: Elapsed time ==> 0s.286ms
 </CYPRESSTAG>
-cydsfit: Elapsed time ==> 12s.247ms
+cydsfit: Elapsed time ==> 13s.592ms
 </CYPRESSTAG>
-Fitter phase: Elapsed time ==> 12s.300ms
-API generation phase: Elapsed time ==> 2s.774ms
-Dependency generation phase: Elapsed time ==> 0s.031ms
-Cleanup phase: Elapsed time ==> 0s.000ms
+Fitter phase: Elapsed time ==> 13s.638ms
+API generation phase: Elapsed time ==> 2s.723ms
+Dependency generation phase: Elapsed time ==> 0s.029ms
+Cleanup phase: Elapsed time ==> 0s.002ms

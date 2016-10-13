@@ -395,11 +395,11 @@
 .set Active_Pin__SLW, CYREG_PRT1_SLW
 
 /* Source_Pin */
-.set Source_Pin__0__INTTYPE, CYREG_PICU15_INTTYPE4
-.set Source_Pin__0__MASK, 0x10
-.set Source_Pin__0__PC, CYREG_IO_PC_PRT15_PC4
+.set Source_Pin__0__INTTYPE, CYREG_PICU15_INTTYPE5
+.set Source_Pin__0__MASK, 0x20
+.set Source_Pin__0__PC, CYREG_IO_PC_PRT15_PC5
 .set Source_Pin__0__PORT, 15
-.set Source_Pin__0__SHIFT, 4
+.set Source_Pin__0__SHIFT, 5
 .set Source_Pin__AG, CYREG_PRT15_AG
 .set Source_Pin__AMUX, CYREG_PRT15_AMUX
 .set Source_Pin__BIE, CYREG_PRT15_BIE
@@ -414,7 +414,7 @@
 .set Source_Pin__INTTYPE_BASE, CYDEV_PICU_INTTYPE_PICU15_BASE
 .set Source_Pin__LCD_COM_SEG, CYREG_PRT15_LCD_COM_SEG
 .set Source_Pin__LCD_EN, CYREG_PRT15_LCD_EN
-.set Source_Pin__MASK, 0x10
+.set Source_Pin__MASK, 0x20
 .set Source_Pin__PORT, 15
 .set Source_Pin__PRT, CYREG_PRT15_PRT
 .set Source_Pin__PRTDSI__CAPS_SEL, CYREG_PRT15_CAPS_SEL
@@ -425,7 +425,7 @@
 .set Source_Pin__PRTDSI__OUT_SEL1, CYREG_PRT15_OUT_SEL1
 .set Source_Pin__PRTDSI__SYNC_OUT, CYREG_PRT15_SYNC_OUT
 .set Source_Pin__PS, CYREG_PRT15_PS
-.set Source_Pin__SHIFT, 4
+.set Source_Pin__SHIFT, 5
 .set Source_Pin__SLW, CYREG_PRT15_SLW
 
 /* Source_Reg */

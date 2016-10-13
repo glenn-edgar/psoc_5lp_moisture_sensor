@@ -6,7 +6,7 @@
 
 #Build Date:         Apr 25 2016 12:55:34
 
-#File Generated:     Oct 7 2016 19:03:27
+#File Generated:     Oct 12 2016 19:24:42
 
 #Purpose:            
 
@@ -138,7 +138,7 @@ Clock: moisture_interval_clock(routed) | Frequency: N/A       | Target:   0.0 MH
 ======================================================================
                      End of Clock Summary
 ######################################################################
-D2088: Phase 7, elapsed time : 2.6 (sec)
+D2088: Phase 7, elapsed time : 2.8 (sec)
 
 Final Design Statistics
     Number of Combinational MCs 	:	12
@@ -200,5 +200,5 @@ D2088: Phase 8, elapsed time : 0.0 (sec)
 
 D2054: Placement of the design completed successfully
 
-I2076: Total run-time: 3.5 sec.
+I2076: Total run-time: 3.8 sec.
 

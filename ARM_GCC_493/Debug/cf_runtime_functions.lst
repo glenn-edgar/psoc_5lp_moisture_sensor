@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
   34              		.cfi_offset 7, -4
   35 0002 85B0     		sub	sp, sp, #20
   36              		.cfi_def_cfa_offset 24
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 2
 
 
   37 0004 00AF     		add	r7, sp, #0
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
   30:.\chain_flow/cf_runtime_functions.c ****   return CF_HALT;
   83              		.loc 1 30 0
   84 000e 0123     		movs	r3, #1
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 3
 
 
   31:.\chain_flow/cf_runtime_functions.c **** }
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  128              		.cfi_def_cfa_offset 4
  129 0014 BD46     		mov	sp, r7
  130              		.cfi_def_cfa_register 13
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 4
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 4
 
 
  131              		@ sp needed
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  176 0022 3A68     		ldr	r2, [r7]
  177 0024 BB6A     		ldr	r3, [r7, #40]
  178 0026 A047     		blx	r4
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 5
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 5
 
 
   51:.\chain_flow/cf_runtime_functions.c ****       return_value = CF_DISABLE;
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  221              		.cfi_def_cfa 7, 32
  222 0006 F860     		str	r0, [r7, #12]
  223 0008 B960     		str	r1, [r7, #8]
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 6
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 6
 
 
  224 000a 7A60     		str	r2, [r7, #4]
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  269 0006 F860     		str	r0, [r7, #12]
  270 0008 B960     		str	r1, [r7, #8]
  271 000a 7A60     		str	r2, [r7, #4]
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 7
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 7
 
 
  272 000c 3B60     		str	r3, [r7]
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  314              		.cfi_def_cfa_register 7
  315 0006 F860     		str	r0, [r7, #12]
  316 0008 B960     		str	r1, [r7, #8]
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 8
 
 
  317 000a 7A60     		str	r2, [r7, #4]
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  357 0050 FB69     		ldr	r3, [r7, #28]
  358 0052 9A42     		cmp	r2, r3
  359 0054 01D1     		bne	.L18
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 9
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 9
 
 
  360              	.L20:
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  401 000a 7A60     		str	r2, [r7, #4]
  402 000c 3B60     		str	r3, [r7]
  111:.\chain_flow/cf_runtime_functions.c ****   unsigned value; 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 10
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 10
 
 
  112:.\chain_flow/cf_runtime_functions.c ****   int      return_value;
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  127:.\chain_flow/cf_runtime_functions.c ****        }
  128:.\chain_flow/cf_runtime_functions.c ****        else
  129:.\chain_flow/cf_runtime_functions.c ****        {
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 11
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 11
 
 
  130:.\chain_flow/cf_runtime_functions.c **** 	   return_value = CF_HALT;
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  481              		.cfi_def_cfa_offset 32
  482 0004 00AF     		add	r7, sp, #0
  483              		.cfi_def_cfa_register 7
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 12
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 12
 
 
  484 0006 F860     		str	r0, [r7, #12]
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  520 003e 3861     		str	r0, [r7, #16]
  163:.\chain_flow/cf_runtime_functions.c ****          value += event_data;
  521              		.loc 1 163 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 13
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 13
 
 
  522 0040 3A69     		ldr	r2, [r7, #16]
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  554 006c 7B69     		ldr	r3, [r7, #20]
  555              	.L31:
  186:.\chain_flow/cf_runtime_functions.c **** 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 14
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 14
 
 
  187:.\chain_flow/cf_runtime_functions.c **** }
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  597 0016 0021     		movs	r1, #0
  598 0018 FFF7FEFF 		bl	cf_store_cell_value
  200:.\chain_flow/cf_runtime_functions.c ****        return CF_CONTINUE;
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 15
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 15
 
 
  599              		.loc 1 200 0
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  219:.\chain_flow/cf_runtime_functions.c ****   {
  220:.\chain_flow/cf_runtime_functions.c ****        return_value = CF_HALT;
  635              		.loc 1 220 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 16
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 16
 
 
  636 0052 0123     		movs	r3, #1
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  679 000e FB6A     		ldr	r3, [r7, #44]
  680 0010 012B     		cmp	r3, #1
  681 0012 0FD1     		bne	.L46
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 17
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 17
 
 
  232:.\chain_flow/cf_runtime_functions.c ****   {
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  724              		.loc 1 243 0 is_stmt 0 discriminator 1
  725 005a BB6A     		ldr	r3, [r7, #40]
  726 005c 002B     		cmp	r3, #0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 18
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 18
 
 
  727 005e 15D0     		beq	.L50
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  261:.\chain_flow/cf_runtime_functions.c ****    }
  262:.\chain_flow/cf_runtime_functions.c ****  
  263:.\chain_flow/cf_runtime_functions.c ****    return return_value;
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 19
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 19
 
 
  762              		.loc 1 263 0
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  806 0016 BC68     		ldr	r4, [r7, #8]
  807 0018 F868     		ldr	r0, [r7, #12]
  808 001a 7968     		ldr	r1, [r7, #4]
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 20
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 20
 
 
  809 001c 3A68     		ldr	r2, [r7]
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  849 0000 80B5     		push	{r7, lr}
  850              		.cfi_def_cfa_offset 8
  851              		.cfi_offset 7, -8
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 21
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 21
 
 
  852              		.cfi_offset 14, -4
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  303:.\chain_flow/cf_runtime_functions.c ****      if( value >= param_2 )
  891              		.loc 1 303 0
  892 0040 3A69     		ldr	r2, [r7, #16]
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 22
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 22
 
 
  893 0042 7B68     		ldr	r3, [r7, #4]
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  320:.\chain_flow/cf_runtime_functions.c **** 
  321:.\chain_flow/cf_runtime_functions.c **** int verify_not_event_fn( unsigned link_id, CF_FUN_AUX param_1, unsigned param_2, 
  322:.\chain_flow/cf_runtime_functions.c ****     unsigned param_3, unsigned param_4,  unsigned event, unsigned event_data)
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 23
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 23
 
 
  323:.\chain_flow/cf_runtime_functions.c **** {
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  970 0028 5DF8047B 		ldr	r7, [sp], #4
  971              		.cfi_restore 7
  972              		.cfi_def_cfa_offset 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 24
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 24
 
 
  973 002c 7047     		bx	lr
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1013              		.loc 1 351 0
  1014 0026 7B68     		ldr	r3, [r7, #4]
  1015 0028 B3F1FF3F 		cmp	r3, #-1
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 25
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 25
 
 
  1016 002c 03D0     		beq	.L69
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1058              		.cfi_endproc
  1059              	.LFE77:
  1060              		.size	verify_not_tod_fn, .-verify_not_tod_fn
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 26
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 26
 
 
  1061              		.section	.text.nop_fn,"ax",%progbits
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1100 001e BD46     		mov	sp, r7
  1101              		.cfi_def_cfa_register 13
  1102              		@ sp needed
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 27
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 27
 
 
  1103 0020 5DF8047B 		ldr	r7, [sp], #4
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  391:.\chain_flow/cf_runtime_functions.c **** 
  392:.\chain_flow/cf_runtime_functions.c **** }
  1145              		.loc 1 392 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 28
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 28
 
 
  1146 001e 1846     		mov	r0, r3
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1193              	.LFE80:
  1194              		.size	system_reset_fn, .-system_reset_fn
  1195              		.section	.text.enable_chain_fn,"ax",%progbits
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 29
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 29
 
 
  1196              		.align	2
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1237 002c FFF7FEFF 		bl	cf_enable_chain
  1238              	.L85:
  413:.\chain_flow/cf_runtime_functions.c ****       }
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 30
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 30
 
 
  414:.\chain_flow/cf_runtime_functions.c **** 
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1279              		.cfi_def_cfa_register 7
  1280 0006 F860     		str	r0, [r7, #12]
  1281 0008 B960     		str	r1, [r7, #8]
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 31
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 31
 
 
  1282 000a 7A60     		str	r2, [r7, #4]
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  450:.\chain_flow/cf_runtime_functions.c **** 
  451:.\chain_flow/cf_runtime_functions.c **** }
  1314              		.loc 1 451 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 32
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 32
 
 
  1315 0040 1846     		mov	r0, r3
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1360 0020 B869     		ldr	r0, [r7, #24]
  1361 0022 FFF7FEFF 		bl	cf_suspend_chain
  1362              	.L93:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 33
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 33
 
 
  461:.\chain_flow/cf_runtime_functions.c ****    }
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1406 0016 FFF7FEFF 		bl	cf_resume_chain
  472:.\chain_flow/cf_runtime_functions.c ****       cf_resume_chain((intptr_t)param_3);
  1407              		.loc 1 472 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 34
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 34
 
 
  1408 001a 3868     		ldr	r0, [r7]
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1457 0035 05       		.byte	0x5
  1458 0036 F6020000 		.4byte	.LASF2
  1459 003a 02       		.uleb128 0x2
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 35
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 35
 
 
  1460 003b 02       		.byte	0x2
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1514 00a1 4E020000 		.4byte	.LASF14
  1515 00a5 02       		.uleb128 0x2
  1516 00a6 04       		.byte	0x4
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 36
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 36
 
 
  1517 00a7 04       		.byte	0x4
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1571 011f 91       		.byte	0x91
  1572 0120 70       		.sleb128 -16
  1573 0121 09       		.uleb128 0x9
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 37
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 37
 
 
  1574 0122 6B010000 		.4byte	.LASF20
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1628 0188 7A000000 		.4byte	0x7a
  1629 018c 02       		.uleb128 0x2
  1630 018d 91       		.byte	0x91
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 38
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 38
 
 
  1631 018e 74       		.sleb128 -12
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1685 01eb 73000000 		.4byte	0x73
  1686 01ef 00000000 		.4byte	.LFB65
  1687 01f3 1C000000 		.4byte	.LFE65-.LFB65
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 39
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 39
 
 
  1688 01f7 01       		.uleb128 0x1
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1742 0257 24       		.byte	0x24
  1743 0258 7A000000 		.4byte	0x7a
  1744 025c 02       		.uleb128 0x2
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 40
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 40
 
 
  1745 025d 91       		.byte	0x91
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1799 02c0 AE010000 		.4byte	.LASF23
  1800 02c4 01       		.byte	0x1
  1801 02c5 2C       		.byte	0x2c
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 41
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 41
 
 
  1802 02c6 7A000000 		.4byte	0x7a
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1856 032c 64       		.sleb128 -28
  1857 032d 09       		.uleb128 0x9
  1858 032e 73010000 		.4byte	.LASF21
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 42
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 42
 
 
  1859 0332 01       		.byte	0x1
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1913 0398 02       		.uleb128 0x2
  1914 0399 91       		.byte	0x91
  1915 039a 70       		.sleb128 -16
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 43
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 43
 
 
  1916 039b 09       		.uleb128 0x9
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  1970 0401 51       		.byte	0x51
  1971 0402 7A000000 		.4byte	0x7a
  1972 0406 02       		.uleb128 0x2
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 44
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 44
 
 
  1973 0407 91       		.byte	0x91
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2027 0464 7A000000 		.4byte	0x7a
  2028 0468 02       		.uleb128 0x2
  2029 0469 91       		.byte	0x91
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 45
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 45
 
 
  2030 046a 6C       		.sleb128 -20
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2084 04d0 01       		.byte	0x1
  2085 04d1 6D       		.byte	0x6d
  2086 04d2 7A000000 		.4byte	0x7a
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 46
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 46
 
 
  2087 04d6 02       		.uleb128 0x2
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2141 0539 09       		.uleb128 0x9
  2142 053a 95010000 		.4byte	.LASF18
  2143 053e 01       		.byte	0x1
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 47
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 47
 
 
  2144 053f 8E       		.byte	0x8e
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2198 059c 97000000 		.4byte	.LASF32
  2199 05a0 01       		.byte	0x1
  2200 05a1 91       		.byte	0x91
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 48
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 48
 
 
  2201 05a2 73000000 		.4byte	0x73
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2255 0608 60       		.sleb128 -32
  2256 0609 09       		.uleb128 0x9
  2257 060a 7B010000 		.4byte	.LASF22
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 49
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 49
 
 
  2258 060e 01       		.byte	0x1
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2312 0674 02       		.uleb128 0x2
  2313 0675 91       		.byte	0x91
  2314 0676 64       		.sleb128 -28
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 50
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 50
 
 
  2315 0677 09       		.uleb128 0x9
@@ -2998,7 +2998,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2369 06d7 91       		.byte	0x91
  2370 06d8 6C       		.sleb128 -20
  2371 06d9 0B       		.uleb128 0xb
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 51
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 51
 
 
  2372 06da 3C000000 		.4byte	.LASF39
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2426 0746 7A000000 		.4byte	0x7a
  2427 074a 02       		.uleb128 0x2
  2428 074b 91       		.byte	0x91
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 52
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 52
 
 
  2429 074c 00       		.sleb128 0
@@ -3118,7 +3118,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2483 07b8 01       		.byte	0x1
  2484 07b9 1D01     		.2byte	0x11d
  2485 07bb 7A000000 		.4byte	0x7a
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 53
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 53
 
 
  2486 07bf 02       		.uleb128 0x2
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2540 0822 01       		.byte	0x1
  2541 0823 4101     		.2byte	0x141
  2542 0825 73000000 		.4byte	0x73
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 54
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 54
 
 
  2543 0829 00000000 		.4byte	.LFB76
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2597 0892 0C010000 		.4byte	.LASF24
  2598 0896 01       		.byte	0x1
  2599 0897 4201     		.2byte	0x142
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 55
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 55
 
 
  2600 0899 7A000000 		.4byte	0x7a
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2654 0905 58       		.sleb128 -40
  2655 0906 0D       		.uleb128 0xd
  2656 0907 7B010000 		.4byte	.LASF22
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 56
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 56
 
 
  2657 090b 01       		.byte	0x1
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2711 0975 01       		.uleb128 0x1
  2712 0976 9C       		.byte	0x9c
  2713 0977 E5090000 		.4byte	0x9e5
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 57
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 57
 
 
  2714 097b 0D       		.uleb128 0xd
@@ -3418,7 +3418,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2768 09e2 91       		.byte	0x91
  2769 09e3 08       		.sleb128 8
  2770 09e4 00       		.byte	0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 58
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 58
 
 
  2771 09e5 0C       		.uleb128 0xc
@@ -3478,7 +3478,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2825 0a52 7A000000 		.4byte	0x7a
  2826 0a56 02       		.uleb128 0x2
  2827 0a57 91       		.byte	0x91
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 59
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 59
 
 
  2828 0a58 04       		.sleb128 4
@@ -3538,7 +3538,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2882 0ac4 01       		.byte	0x1
  2883 0ac5 8B01     		.2byte	0x18b
  2884 0ac7 7A000000 		.4byte	0x7a
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 60
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 60
 
 
  2885 0acb 02       		.uleb128 0x2
@@ -3598,7 +3598,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2939 0b34 0D       		.uleb128 0xd
  2940 0b35 73010000 		.4byte	.LASF21
  2941 0b39 01       		.byte	0x1
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 61
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 61
 
 
  2942 0b3a 9201     		.2byte	0x192
@@ -3658,7 +3658,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  2996 0ba7 91       		.byte	0x91
  2997 0ba8 70       		.sleb128 -16
  2998 0ba9 0D       		.uleb128 0xd
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 62
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 62
 
 
  2999 0baa 6B010000 		.4byte	.LASF20
@@ -3718,7 +3718,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3053 0c17 7A000000 		.4byte	0x7a
  3054 0c1b 02       		.uleb128 0x2
  3055 0c1c 91       		.byte	0x91
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 63
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 63
 
 
  3056 0c1d 74       		.sleb128 -12
@@ -3778,7 +3778,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3110 0c81 73000000 		.4byte	0x73
  3111 0c85 00000000 		.4byte	.LFB84
  3112 0c89 30000000 		.4byte	.LFE84-.LFB84
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 64
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 64
 
 
  3113 0c8d 01       		.uleb128 0x1
@@ -3838,7 +3838,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3167 0cf3 D201     		.2byte	0x1d2
  3168 0cf5 7A000000 		.4byte	0x7a
  3169 0cf9 02       		.uleb128 0x2
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 65
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 65
 
 
  3170 0cfa 91       		.byte	0x91
@@ -3898,7 +3898,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3224 0029 00       		.byte	0
  3225 002a 00       		.byte	0
  3226 002b 04       		.uleb128 0x4
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 66
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 66
 
 
  3227 002c 24       		.uleb128 0x24
@@ -3958,7 +3958,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3281 0062 12       		.uleb128 0x12
  3282 0063 06       		.uleb128 0x6
  3283 0064 40       		.uleb128 0x40
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 67
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 67
 
 
  3284 0065 18       		.uleb128 0x18
@@ -4018,7 +4018,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3338 009d 3A       		.uleb128 0x3a
  3339 009e 0B       		.uleb128 0xb
  3340 009f 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 68
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 68
 
 
  3341 00a0 0B       		.uleb128 0xb
@@ -4078,7 +4078,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3395 00d7 3A       		.uleb128 0x3a
  3396 00d8 0B       		.uleb128 0xb
  3397 00d9 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 69
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 69
 
 
  3398 00da 05       		.uleb128 0x5
@@ -4138,7 +4138,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3452 0111 49       		.uleb128 0x49
  3453 0112 13       		.uleb128 0x13
  3454 0113 00       		.byte	0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 70
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 70
 
 
  3455 0114 00       		.byte	0
@@ -4198,7 +4198,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3509 00c0 00000000 		.4byte	0
  3510 00c4 00000000 		.4byte	0
  3511              		.section	.debug_ranges,"",%progbits
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 71
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 71
 
 
  3512              	.Ldebug_ranges0:
@@ -4258,7 +4258,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3562              	.LASF6:
  3563 0000 6C6F6E67 		.ascii	"long long int\000"
  3563      206C6F6E 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 72
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 72
 
 
  3563      6720696E 
@@ -4318,7 +4318,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3588              	.LASF37:
  3589 00aa 72785F65 		.ascii	"rx_event\000"
  3589      76656E74 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 73
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 73
 
 
  3589      00
@@ -4378,7 +4378,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3612 0163 70617261 		.ascii	"param_1\000"
  3612      6D5F3100 
  3613              	.LASF20:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 74
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 74
 
 
  3614 016b 70617261 		.ascii	"param_2\000"
@@ -4438,7 +4438,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3638      65642069 
  3639              	.LASF51:
  3640 020c 6C696E6B 		.ascii	"link_index\000"
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 75
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 75
 
 
  3640      5F696E64 
@@ -4498,7 +4498,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 1
  3663              	.LASF44:
  3664 0300 76657269 		.ascii	"verify_condition_fn\000"
  3664      66795F63 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWiBs74.s 			page 76
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccUb5ldA.s 			page 76
 
 
  3664      6F6E6469 

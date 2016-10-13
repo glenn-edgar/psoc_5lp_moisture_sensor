@@ -312,7 +312,6 @@
 <v>USB_UART01-000\USB_UART01\Source Files\rtu_modbus\process_modbus_message.h</v>
 <v>USB_UART01-000\USB_UART01\Source Files\rtu_modbus\process_type_16_message.c</v>
 <v>USB_UART01-000\USB_UART01\Source Files\rtu_modbus\process_type_16_message.h</v>
-<v>USB_UART01-000\USB_UART01\Source Files\rtu_modbus\process_type_24_message.c</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="USB_UART01-000">
@@ -576,8 +575,8 @@
 <name v=".\moisture_measurement\moisture_measurements.h" />
 <name v=".\rtu_modbus\process_modbus_message.h" />
 <name v=".\rtu_modbus\process_modbus_message.c" />
-<name v="${CyRoot}\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\ADC_SAR_SEQ_v2_0\PSoC5\ADC_SAR_SEQ_v2_0.cysch" />
 <name v=".\rtu_modbus\process_type_16_message.c" />
+<name v=".\chain_flow\cf_status_bit.c" />
 </OpenDocs>
 <config v="" />
 <AutoUpdate v="true" />

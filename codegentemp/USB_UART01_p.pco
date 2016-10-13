@@ -167,4 +167,4 @@ set_location "isr_1" interrupt -1 -1 7
 set_location "\ADC_SAR_Seq_1:TempBuf\" drqcell -1 -1 1
 set_location "\ADC_SAR_Seq_1:SAR:ADC_SAR\" sarcell -1 -1 0
 # Note: port 15 is the logical name for port 8
-set_io "Source_Pin(0)" iocell 15 4
+set_io "Source_Pin(0)" iocell 15 5

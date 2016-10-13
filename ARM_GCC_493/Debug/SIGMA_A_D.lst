@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
   55              		.thumb_func
   56              		.type	SIGMA_A_D_Init, %function
   57              	SIGMA_A_D_Init:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 2
 
 
   58              	.LFB0:
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
   53:.\Generated_Source\PSoC5/SIGMA_A_D.c **** volatile int32 SIGMA_A_D_CountsPerVolt;
   54:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
   55:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 3
 
 
   56:.\Generated_Source\PSoC5/SIGMA_A_D.c **** /***************************************
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
   75 000a 1A70     		strb	r2, [r3]
   95:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     SIGMA_A_D_convDone = 0u;
   76              		.loc 1 95 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 4
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 4
 
 
   77 000c 314B     		ldr	r3, .L2+4
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  112 004a 0022     		movs	r2, #0
  113 004c 1A70     		strb	r2, [r3]
  115:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 5
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 5
 
 
  116:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     SIGMA_A_D_DSM_OUT0_REG    = SIGMA_A_D_CFG1_DSM_OUT0;
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  150              		.loc 1 133 0
  151 0084 0123     		movs	r3, #1
  152 0086 0093     		str	r3, [sp]
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 6
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 6
 
 
  153 0088 0320     		movs	r0, #3
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  163:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
  164:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     /* Initialize the registers with default customizer settings for config1 */
  165:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     SIGMA_A_D_InitConfig(SIGMA_A_D_Config);
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 7
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 7
 
 
  178              		.loc 1 165 0
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  176:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *
  177:.\Generated_Source\PSoC5/SIGMA_A_D.c **** * Parameters:
  178:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *  None
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 8
 
 
  179:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  197:.\Generated_Source\PSoC5/SIGMA_A_D.c ****      /* Enable alternative active mode power for ADC */
  198:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     SIGMA_A_D_STBY_PWRMGR_DEC_REG |= SIGMA_A_D_STBY_PWR_DEC_EN;
  258              		.loc 1 198 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 9
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 9
 
 
  259 0034 3C4A     		ldr	r2, .L5+8
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  214:.\Generated_Source\PSoC5/SIGMA_A_D.c ****           ((SIGMA_A_D_CFG3_REFERENCE == SIGMA_A_D_EXT_REF_ON_P03) ||  \
  215:.\Generated_Source\PSoC5/SIGMA_A_D.c ****            (SIGMA_A_D_CFG3_REFERENCE == SIGMA_A_D_EXT_REF_ON_P32))) || \
  216:.\Generated_Source\PSoC5/SIGMA_A_D.c ****          ((SIGMA_A_D_DEFAULT_NUM_CONFIGS > 3) && \
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 10
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 10
 
 
  217:.\Generated_Source\PSoC5/SIGMA_A_D.c ****           ((SIGMA_A_D_CFG4_REFERENCE == SIGMA_A_D_EXT_REF_ON_P03) || \
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  271:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     CyDelayUs(SIGMA_A_D_PRES_DELAY_TIME);
  298              		.loc 1 271 0
  299 0084 0320     		movs	r0, #3
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 11
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 11
 
 
  300 0086 FFF7FEFF 		bl	CyDelayUs
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  339 00d2 1C4B     		ldr	r3, .L5+36
  340 00d4 1B78     		ldrb	r3, [r3]
  341 00d6 DBB2     		uxtb	r3, r3
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 12
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 12
 
 
  342 00d8 43F00103 		orr	r3, r3, #1
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  380              	.L6:
  381 011e 00BF     		.align	2
  382              	.L5:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 13
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 13
 
 
  383 0120 00000000 		.word	SIGMA_A_D_Config
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  409              		.cfi_startproc
  410              		@ args = 0, pretend = 0, frame = 0
  411              		@ frame_needed = 1, uses_anonymous_args = 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 14
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 14
 
 
  412 0000 80B5     		push	{r7, lr}
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  454              		.type	SIGMA_A_D_Stop, %function
  455              	SIGMA_A_D_Stop:
  456              	.LFB3:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 15
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 15
 
 
  343:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  484 0022 1B78     		ldrb	r3, [r3]
  485 0024 DBB2     		uxtb	r3, r3
  486 0026 43F00403 		orr	r3, r3, #4
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 16
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 16
 
 
  487 002a DBB2     		uxtb	r3, r3
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  527 0078 1B78     		ldrb	r3, [r3]
  528 007a DBB2     		uxtb	r3, r3
  529 007c 23F00203 		bic	r3, r3, #2
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 17
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 17
 
 
  530 0080 DBB2     		uxtb	r3, r3
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  396:.\Generated_Source\PSoC5/SIGMA_A_D.c ****    /* Disable negative pumps for DSM  */
  397:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     SIGMA_A_D_PUMP_CR1_REG &= (uint8)~(SIGMA_A_D_PUMP_CR1_CLKSEL | SIGMA_A_D_PUMP_CR1_FORCE );
  572              		.loc 1 397 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 18
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 18
 
 
  573 00d4 234A     		ldr	r2, .L13+32
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  615 0128 1B78     		ldrb	r3, [r3]
  616 012a DBB2     		uxtb	r3, r3
  617 012c 23F00103 		bic	r3, r3, #1
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 19
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 19
 
 
  618 0130 DBB2     		uxtb	r3, r3
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  423:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *  gain:  Two bit value to select a gain of 1, 2, 4, or 8.
  424:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *
  425:.\Generated_Source\PSoC5/SIGMA_A_D.c **** * Return:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 20
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 20
 
 
  426:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *  None
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  703              		.align	2
  704              	.L16:
  705 0038 9B580040 		.word	1073764507
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 21
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 21
 
 
  706              		.cfi_endproc
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  729 0006 0346     		mov	r3, r0
  730 0008 FB71     		strb	r3, [r7, #7]
  467:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     uint8 tmpReg;
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 22
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 22
 
 
  468:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  474:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
  475:.\Generated_Source\PSoC5/SIGMA_A_D.c **** /*******************************************************************************
  476:.\Generated_Source\PSoC5/SIGMA_A_D.c **** * Function Name: SIGMA_A_D_SetGCOR
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 23
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 23
 
 
  477:.\Generated_Source\PSoC5/SIGMA_A_D.c **** ********************************************************************************
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  798 0012 32F82330 		ldrh	r3, [r2, r3, lsl #2]	@ movhi
  799 0016 BB81     		strh	r3, [r7, #12]	@ movhi
  512:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     tmpValue = ((float32)tmpReg / (float32)SIGMA_A_D_IDEAL_GAIN_CONST);
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 24
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 24
 
 
  800              		.loc 1 512 0
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  844 0076 BB81     		strh	r3, [r7, #12]	@ movhi
  523:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         CY_SET_REG16(SIGMA_A_D_DEC_GCOR_16B_PTR, tmpReg);
  845              		.loc 1 523 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 25
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 25
 
 
  846 0078 0D4A     		ldr	r2, .L28+16
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  534:.\Generated_Source\PSoC5/SIGMA_A_D.c **** /******************************************************************************
  535:.\Generated_Source\PSoC5/SIGMA_A_D.c **** * Function Name: SIGMA_A_D_ReadGCOR
  536:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *******************************************************************************
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 26
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 26
 
 
  537:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  918 0020 9340     		lsls	r3, r3, r2
  919 0022 FB80     		strh	r3, [r7, #6]	@ movhi
  920              	.L31:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 27
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 27
 
 
  563:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     }
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  950              		.loc 1 587 0
  951              		.cfi_startproc
  952              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 28
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 28
 
 
  953              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  604:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *
  605:.\Generated_Source\PSoC5/SIGMA_A_D.c **** * Return:
  606:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *  None
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 29
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 29
 
 
  607:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  620:.\Generated_Source\PSoC5/SIGMA_A_D.c **** * Summary:
  621:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *  Checks the status that the most recently started conversion has completed.
  622:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *  The status is cleared by any of ADC_GetResult8(), ADC_GetResult16() or 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 30
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 30
 
 
  623:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *  ADC_GetResult32() API.
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1053              		.loc 1 655 0
  1054 0014 0C4B     		ldr	r3, .L47+4
  1055 0016 1B78     		ldrb	r3, [r3]
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 31
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 31
 
 
  1056 0018 FB73     		strb	r3, [r7, #15]
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1101              		.thumb_func
  1102              		.type	SIGMA_A_D_GetResult8, %function
  1103              	SIGMA_A_D_GetResult8:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 32
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 32
 
 
  1104              	.LFB11:
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1123              		.loc 1 699 0
  1124 0012 104B     		ldr	r3, .L54+4
  1125 0014 1B78     		ldrb	r3, [r3]
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 33
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 33
 
 
  1126 0016 DBB2     		uxtb	r3, r3
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1161 0046 0C37     		adds	r7, r7, #12
  1162              		.cfi_def_cfa_offset 4
  1163 0048 BD46     		mov	sp, r7
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 34
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 34
 
 
  1164              		.cfi_def_cfa_register 13
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1190              		.loc 1 746 0
  1191              		.cfi_startproc
  1192              		@ args = 0, pretend = 0, frame = 8
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 35
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 35
 
 
  1193              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1225 002a 1B78     		ldrb	r3, [r3]
  1226 002c DBB2     		uxtb	r3, r3
  1227 002e 9BB2     		uxth	r3, r3
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 36
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 36
 
 
  1228 0030 1B02     		lsls	r3, r3, #8
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1268              	.L61:
  1269 0064 144E0040 		.word	1073761812
  1270 0068 104E0040 		.word	1073761808
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 37
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 37
 
 
  1271 006c 114E0040 		.word	1073761809
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  810:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 	    uint16 tmp;
  811:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     #endif /* CY_PSOC3 */
  812:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 38
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 38
 
 
  813:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     /* Read active coherency configuration */
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  838:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             }
  839:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             result = (result << 16u) | (CY_GET_REG16(SIGMA_A_D_DEC_SAMP_16B_PTR));
  840:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         #else
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 39
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 39
 
 
  841:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             result = CY_GET_REG16(SIGMA_A_D_DEC_SAMPH_16B_PTR);
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1362 0070 7B60     		str	r3, [r7, #4]
  1363              	.L65:
  860:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         #endif /* CY_PSOC3 */
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 40
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 40
 
 
  861:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     }
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  871:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
  872:.\Generated_Source\PSoC5/SIGMA_A_D.c **** /*******************************************************************************
  873:.\Generated_Source\PSoC5/SIGMA_A_D.c **** * Function Name: SIGMA_A_D_SetOffset
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 41
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 41
 
 
  874:.\Generated_Source\PSoC5/SIGMA_A_D.c **** ********************************************************************************
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1433              		.cfi_def_cfa_offset 0
  1434 0016 7047     		bx	lr
  1435              	.L73:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 42
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 42
 
 
  1436              		.align	2
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1458 0002 83B0     		sub	sp, sp, #12
  1459              		.cfi_def_cfa_offset 16
  1460 0004 00AF     		add	r7, sp, #0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 43
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 43
 
 
  1461              		.cfi_def_cfa_register 7
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  958:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *
  959:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *******************************************************************************/
  960:.\Generated_Source\PSoC5/SIGMA_A_D.c **** int16 SIGMA_A_D_CountsTo_mVolts(int32 adcCounts) 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 44
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 44
 
 
  961:.\Generated_Source\PSoC5/SIGMA_A_D.c **** {
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1512 0012 7B68     		ldr	r3, [r7, #4]
  1513 0014 4FF47A72 		mov	r2, #1000
  1514 0018 02FB03F2 		mul	r2, r2, r3
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 45
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 45
 
 
  1515 001c 074B     		ldr	r3, .L79+4
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1014:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *
 1015:.\Generated_Source\PSoC5/SIGMA_A_D.c **** * Global variables:
 1016:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *  SIGMA_A_D_CountsPerVolt:  used to convert to Volts.
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 46
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 46
 
 
 1017:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *  SIGMA_A_D_Offset:  Used as the offset while converting ADC counts
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1567 000c 7A68     		ldr	r2, [r7, #4]
  1568 000e D31A     		subs	r3, r2, r3
  1569 0010 7B60     		str	r3, [r7, #4]
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 47
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 47
 
 
 1054:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1068:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *
 1069:.\Generated_Source\PSoC5/SIGMA_A_D.c **** * Parameters:
 1070:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *  int32 adcCounts: Result from the ADC conversion.
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 48
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 48
 
 
 1071:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1101:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             adcCounts /= SIGMA_A_D_CFG1_DEC_DIV;
 1102:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         #endif /* SIGMA_A_D_CFG1_DEC_DIV */
 1103:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     }
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 49
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 49
 
 
 1104:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     else if (SIGMA_A_D_Config == SIGMA_A_D_CFG2)
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1665 0044 06D0     		beq	.L92
  1666 0046 0BE0     		b	.L95
  1667              	.L91:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 50
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 50
 
 
 1127:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     {
@@ -2998,7 +2998,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1172:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         #endif /* SIGMA_A_D__BITS_16 */    
 1173:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         #if( (SIGMA_A_D_CFG1_RESOLUTION == SIGMA_A_D__BITS_17) || \
 1174:.\Generated_Source\PSoC5/SIGMA_A_D.c ****              (SIGMA_A_D_CFG2_RESOLUTION == SIGMA_A_D__BITS_17) || \
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 51
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 51
 
 
 1175:.\Generated_Source\PSoC5/SIGMA_A_D.c ****              (SIGMA_A_D_CFG3_RESOLUTION == SIGMA_A_D__BITS_17) || \
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1692              		.loc 1 1213 0
  1693 0068 00BF     		nop
  1694              	.L93:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 52
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 52
 
 
 1214:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     }
@@ -3118,7 +3118,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1743              	SIGMA_A_D_InitConfig:
  1744              	.LFB19:
 1220:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 53
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 53
 
 
 1221:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1770 001a 1A70     		strb	r2, [r3]
 1250:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         SIGMA_A_D_DEC_SHIFT1_REG  = SIGMA_A_D_CFG1_DEC_SHIFT1;
  1771              		.loc 1 1250 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 54
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 54
 
 
  1772 001c 344B     		ldr	r3, .L100+8
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1262:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         SIGMA_A_D_DSM_CR6_REG     = SIGMA_A_D_CFG1_DSM_CR6;
  1815              		.loc 1 1262 0
  1816 005e 2F4B     		ldr	r3, .L100+52
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 55
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 55
 
 
  1817 0060 2922     		movs	r2, #41
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1859 00a0 284B     		ldr	r3, .L100+92
  1860 00a2 0022     		movs	r2, #0
  1861 00a4 1A70     		strb	r2, [r3]
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 56
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 56
 
 
 1275:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1888 00ce FFF7FEFF 		bl	SIGMA_A_D_Ext_CP_Clk_SetDividerRegister
 1303:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
 1304:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         /* This is only valid if there is an internal clock */
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 57
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 57
 
 
 1305:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         #if(SIGMA_A_D_DEFAULT_INTERNAL_CLK)
@@ -3418,7 +3418,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1350:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
 1351:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             /* To select either Vssa or Vref to -ve input of DSM depending on
 1352:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             *  the input range selected.
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 58
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 58
 
 
 1353:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             */
@@ -3478,7 +3478,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1407:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             SIGMA_A_D_DSM_CR11_REG    = SIGMA_A_D_CFG3_DSM_CR11;
 1408:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             SIGMA_A_D_DSM_CR12_REG    = SIGMA_A_D_CFG3_DSM_CR12;
 1409:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             SIGMA_A_D_DSM_CR14_REG    = SIGMA_A_D_CFG3_DSM_CR14;
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 59
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 59
 
 
 1410:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             SIGMA_A_D_DSM_CR15_REG    = SIGMA_A_D_CFG3_DSM_CR15;
@@ -3538,7 +3538,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1464:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             SIGMA_A_D_DEC_DR2_REG     = SIGMA_A_D_CFG4_DEC_DR2;
 1465:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             SIGMA_A_D_DEC_DR2H_REG    = SIGMA_A_D_CFG4_DEC_DR2H;
 1466:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             SIGMA_A_D_DEC_DR1_REG     = SIGMA_A_D_CFG4_DEC_DR1;
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 60
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 60
 
 
 1467:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             SIGMA_A_D_DEC_OCOR_REG    = SIGMA_A_D_CFG4_DEC_OCOR;
@@ -3598,7 +3598,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1521:.\Generated_Source\PSoC5/SIGMA_A_D.c ****                 /* Set interrupt vector */
 1522:.\Generated_Source\PSoC5/SIGMA_A_D.c ****                 (void)CyIntSetVector(SIGMA_A_D_INTC_NUMBER, &SIGMA_A_D_ISR4);
 1523:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             #endif   /* End SIGMA_A_D_IRQ_REMOVE */
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 61
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 61
 
 
 1524:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         }
@@ -3658,7 +3658,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  1949              	.LFB20:
 1527:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
 1528:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 62
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 62
 
 
 1529:.\Generated_Source\PSoC5/SIGMA_A_D.c **** /*******************************************************************************
@@ -3718,7 +3718,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1558:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         /* Set the flag to ensure Start() API doesn't override the 
 1559:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 		*  selected configuration
 1560:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 		*/
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 63
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 63
 
 
 1561:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         if(SIGMA_A_D_initVar == 0u)
@@ -3778,7 +3778,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1579:.\Generated_Source\PSoC5/SIGMA_A_D.c ****         if(restart == 1u)
  2011              		.loc 1 1579 0
  2012 005a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 64
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 64
 
 
  2013 005c 012B     		cmp	r3, #1
@@ -3838,7 +3838,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2052              	SIGMA_A_D_GainCompensation:
  2053              	.LFB21:
 1594:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 65
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 65
 
 
 1595:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
@@ -3898,7 +3898,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1624:.\Generated_Source\PSoC5/SIGMA_A_D.c **** 
 1625:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     if((config > 0u) && (config <= SIGMA_A_D_DEFAULT_NUM_CONFIGS))
  2079              		.loc 1 1625 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 66
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 66
 
 
  2080 001e 97F82830 		ldrb	r3, [r7, #40]	@ zero_extendqisi2
@@ -3958,7 +3958,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2119              	.L117:
 1638:.\Generated_Source\PSoC5/SIGMA_A_D.c ****                 }
  2120              		.loc 1 1638 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 67
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 67
 
 
  2121 0078 344B     		ldr	r3, .L129+4
@@ -4018,7 +4018,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2156 00a8 FB75     		strb	r3, [r7, #23]
 1659:.\Generated_Source\PSoC5/SIGMA_A_D.c ****                 }
 1660:.\Generated_Source\PSoC5/SIGMA_A_D.c ****                 else
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 68
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 68
 
 
 1661:.\Generated_Source\PSoC5/SIGMA_A_D.c ****                 {
@@ -4078,7 +4078,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2190 00d2 FB75     		strb	r3, [r7, #23]
 1680:.\Generated_Source\PSoC5/SIGMA_A_D.c ****                 break;
  2191              		.loc 1 1680 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 69
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 69
 
 
  2192 00d4 00BF     		nop
@@ -4138,7 +4138,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1695:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             /* Use all 16 bits */
 1696:.\Generated_Source\PSoC5/SIGMA_A_D.c ****             SIGMA_A_D_gcor[config - 1u].gval = SIGMA_A_D_MAX_GVAL;
  2232              		.loc 1 1696 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 70
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 70
 
 
  2233 011c 97F82830 		ldrb	r3, [r7, #40]	@ zero_extendqisi2
@@ -4198,7 +4198,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2276              		.align	2
  2277              		.thumb
  2278              		.thumb_func
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 71
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 71
 
 
  2279              		.type	SIGMA_A_D_SetDSMRef0Reg, %function
@@ -4258,7 +4258,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2309 0022 134A     		ldr	r2, .L132+4
  2310 0024 124B     		ldr	r3, .L132+4
  2311 0026 1B78     		ldrb	r3, [r3]
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 72
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 72
 
 
  2312 0028 DBB2     		uxtb	r3, r3
@@ -4318,7 +4318,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2356              		.cfi_endproc
  2357              	.LFE22:
  2358              		.size	SIGMA_A_D_SetDSMRef0Reg, .-SIGMA_A_D_SetDSMRef0Reg
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 73
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 73
 
 
  2359              		.section	.text.SIGMA_A_D_Read8,"ax",%progbits
@@ -4378,7 +4378,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1768:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     SIGMA_A_D_StartConvert();
  2387              		.loc 1 1768 0
  2388 0016 FFF7FEFF 		bl	SIGMA_A_D_StartConvert
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 74
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 74
 
 
 1769:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     (void)SIGMA_A_D_IsEndConversion(SIGMA_A_D_WAIT_FOR_RESULT);
@@ -4438,7 +4438,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1788:.\Generated_Source\PSoC5/SIGMA_A_D.c **** * Parameters:
 1789:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *   void
 1790:.\Generated_Source\PSoC5/SIGMA_A_D.c **** *
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 75
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 75
 
 
 1791:.\Generated_Source\PSoC5/SIGMA_A_D.c **** * Return:
@@ -4498,7 +4498,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2461              		.cfi_def_cfa_offset 8
  2462 0034 BD46     		mov	sp, r7
  2463              		.cfi_def_cfa_register 13
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 76
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 76
 
 
  2464              		@ sp needed
@@ -4558,7 +4558,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
 1833:.\Generated_Source\PSoC5/SIGMA_A_D.c ****     SIGMA_A_D_DEC_SR_REG |= SIGMA_A_D_DEC_INTR_CLEAR;
  2493              		.loc 1 1833 0
  2494 0006 0B4A     		ldr	r2, .L144
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 77
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 77
 
 
  2495 0008 0A4B     		ldr	r3, .L144
@@ -4618,7 +4618,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2542 0015 34020000 		.4byte	.LASF91
  2543 0019 00000000 		.4byte	.Ldebug_ranges0+0
  2544 001d 00000000 		.4byte	0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 78
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 78
 
 
  2545 0021 00000000 		.4byte	.Ldebug_line0
@@ -4678,7 +4678,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2599 0089 9401     		.2byte	0x194
  2600 008b 48000000 		.4byte	0x48
  2601 008f 04       		.uleb128 0x4
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 79
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 79
 
 
  2602 0090 1E020000 		.4byte	.LASF12
@@ -4738,7 +4738,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2656 0109 07       		.byte	0x7
  2657 010a B8020000 		.4byte	.LASF22
  2658 010e 06       		.uleb128 0x6
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 80
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 80
 
 
  2659 010f 04       		.byte	0x4
@@ -4798,7 +4798,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2713 017b 77       		.sleb128 -9
  2714 017c 00       		.byte	0
  2715 017d 0C       		.uleb128 0xc
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 81
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 81
 
 
  2716 017e 92050000 		.4byte	.LASF29
@@ -4858,7 +4858,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2770 01f0 D101     		.2byte	0x1d1
  2771 01f2 00000000 		.4byte	.LFB5
  2772 01f6 38000000 		.4byte	.LFE5-.LFB5
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 82
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 82
 
 
  2773 01fa 01       		.uleb128 0x1
@@ -4918,7 +4918,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2827 0266 0E       		.uleb128 0xe
  2828 0267 AC040000 		.4byte	.LASF39
  2829 026b 01       		.byte	0x1
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 83
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 83
 
 
  2830 026c FD01     		.2byte	0x1fd
@@ -4978,7 +4978,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2884 02df 00000000 		.4byte	.LFB10
  2885 02e3 50000000 		.4byte	.LFE10-.LFB10
  2886 02e7 01       		.uleb128 0x1
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 84
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 84
 
 
  2887 02e8 9C       		.byte	0x9c
@@ -5038,7 +5038,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2941 035a 9C       		.byte	0x9c
  2942 035b 7E030000 		.4byte	0x37e
  2943 035f 0E       		.uleb128 0xe
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 85
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 85
 
 
  2944 0360 A2050000 		.4byte	.LASF49
@@ -5098,7 +5098,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  2998 03d2 01       		.byte	0x1
  2999 03d3 8203     		.2byte	0x382
  3000 03d5 A7000000 		.4byte	0xa7
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 86
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 86
 
 
  3001 03d9 02       		.uleb128 0x2
@@ -5158,7 +5158,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3055 0448 00000000 		.4byte	.LFB17
  3056 044c 44000000 		.4byte	.LFE17-.LFB17
  3057 0450 01       		.uleb128 0x1
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 87
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 87
 
 
  3058 0451 9C       		.byte	0x9c
@@ -5218,7 +5218,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3112 04bd 31040000 		.4byte	.LASF64
  3113 04c1 01       		.byte	0x1
  3114 04c2 4404     		.2byte	0x444
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 88
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 88
 
 
  3115 04c4 A7000000 		.4byte	0xa7
@@ -5278,7 +5278,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3169 0533 91       		.byte	0x91
  3170 0534 76       		.sleb128 -10
  3171 0535 00       		.byte	0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 89
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 89
 
 
  3172 0536 14       		.uleb128 0x14
@@ -5338,7 +5338,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3226 05a3 02       		.uleb128 0x2
  3227 05a4 91       		.byte	0x91
  3228 05a5 6F       		.sleb128 -17
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 90
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 90
 
 
  3229 05a6 0E       		.uleb128 0xe
@@ -5398,7 +5398,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3283 060f E206     		.2byte	0x6e2
  3284 0611 8F000000 		.4byte	0x8f
  3285 0615 00000000 		.4byte	.LFB23
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 91
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 91
 
 
  3286 0619 3C000000 		.4byte	.LFE23-.LFB23
@@ -5458,7 +5458,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3340 0690 16       		.uleb128 0x16
  3341 0691 07010000 		.4byte	0x107
  3342 0695 00       		.byte	0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 92
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 92
 
 
  3343 0696 00       		.byte	0
@@ -5518,7 +5518,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3397 0708 05       		.uleb128 0x5
  3398 0709 03       		.byte	0x3
  3399 070a 00000000 		.4byte	SIGMA_A_D_Offset
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 93
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 93
 
 
  3400 070e 05       		.uleb128 0x5
@@ -5578,7 +5578,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3454 0029 04       		.uleb128 0x4
  3455 002a 16       		.uleb128 0x16
  3456 002b 00       		.byte	0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 94
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 94
 
 
  3457 002c 03       		.uleb128 0x3
@@ -5638,7 +5638,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3511 0062 49       		.uleb128 0x49
  3512 0063 13       		.uleb128 0x13
  3513 0064 00       		.byte	0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 95
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 95
 
 
  3514 0065 00       		.byte	0
@@ -5698,7 +5698,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3568 009d 3A       		.uleb128 0x3a
  3569 009e 0B       		.uleb128 0xb
  3570 009f 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 96
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 96
 
 
  3571 00a0 0B       		.uleb128 0xb
@@ -5758,7 +5758,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3625 00d8 00       		.byte	0
  3626 00d9 0E       		.uleb128 0xe
  3627 00da 34       		.uleb128 0x34
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 97
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 97
 
 
  3628 00db 00       		.byte	0
@@ -5818,7 +5818,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3682 0112 2E       		.uleb128 0x2e
  3683 0113 01       		.byte	0x1
  3684 0114 3F       		.uleb128 0x3f
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 98
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 98
 
 
  3685 0115 19       		.uleb128 0x19
@@ -5878,7 +5878,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3739 014d 19       		.uleb128 0x19
  3740 014e 03       		.uleb128 0x3
  3741 014f 0E       		.uleb128 0xe
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 99
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 99
 
 
  3742 0150 3A       		.uleb128 0x3a
@@ -5938,7 +5938,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3796 0188 0B       		.uleb128 0xb
  3797 0189 00       		.byte	0
  3798 018a 00       		.byte	0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 100
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 100
 
 
  3799 018b 17       		.uleb128 0x17
@@ -5998,7 +5998,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3853 0080 00000000 		.4byte	.LFB14
  3854 0084 1C000000 		.4byte	.LFE14-.LFB14
  3855 0088 00000000 		.4byte	.LFB15
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 101
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 101
 
 
  3856 008c 1C000000 		.4byte	.LFE15-.LFB15
@@ -6058,7 +6058,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3910 0074 1C000000 		.4byte	.LFE14
  3911 0078 00000000 		.4byte	.LFB15
  3912 007c 1C000000 		.4byte	.LFE15
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 102
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 102
 
 
  3913 0080 00000000 		.4byte	.LFB16
@@ -6118,7 +6118,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3949      74476169 
  3949      6E00
  3950              	.LASF23:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 103
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 103
 
 
  3951 005a 67636F72 		.ascii	"gcor\000"
@@ -6178,7 +6178,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  3972              	.LASF4:
  3973 0108 6C6F6E67 		.ascii	"long int\000"
  3973      20696E74 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 104
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 104
 
 
  3973      00
@@ -6238,7 +6238,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  4001 01a2 6C6F6E67 		.ascii	"long unsigned int\000"
  4001      20756E73 
  4001      69676E65 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 105
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 105
 
 
  4001      6420696E 
@@ -6298,7 +6298,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  4022 0272 5349474D 		.ascii	"SIGMA_A_D_InitConfig\000"
  4022      415F415F 
  4022      445F496E 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 106
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 106
 
 
  4022      6974436F 
@@ -6358,7 +6358,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  4044      72656E63 
  4044      7900
  4045              	.LASF35:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 107
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 107
 
 
  4046 0387 6761696E 		.ascii	"gain\000"
@@ -6418,7 +6418,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  4070      445F436F 
  4070      756E7473 
  4070      546F5F6D 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 108
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 108
 
 
  4071              	.LASF63:
@@ -6478,7 +6478,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  4098      415F415F 
  4098      445F7374 
  4098      61727465 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 109
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 109
 
 
  4098      6400
@@ -6538,7 +6538,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 1
  4120      7447434F 
  4120      5200
  4121              	.LASF29:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccWaSLaQ.s 			page 110
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccoFgRlM.s 			page 110
 
 
  4122 0592 5349474D 		.ascii	"SIGMA_A_D_Start\000"

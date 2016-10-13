@@ -94,7 +94,7 @@ Port Name                 Clock to Out  Clock Name:Phase
 RS_485_OUTPUT(0)_PAD      33446         UART_1_IntClock:R  
 RS_485_TX_ENBABLE(0)_PAD  25158         UART_1_IntClock:R  
 Sink_Pin(0)_PAD           23472         CyBUS_CLK:R        
-Source_Pin(0)_PAD         24056         CyBUS_CLK:R        
+Source_Pin(0)_PAD         24133         CyBUS_CLK:R        
 
 
                          3.3::Pad to Pad

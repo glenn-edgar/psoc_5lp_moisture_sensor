@@ -395,11 +395,11 @@
 #define Active_Pin__SLW CYREG_PRT1_SLW
 
 /* Source_Pin */
-#define Source_Pin__0__INTTYPE CYREG_PICU15_INTTYPE4
-#define Source_Pin__0__MASK 0x10u
-#define Source_Pin__0__PC CYREG_IO_PC_PRT15_PC4
+#define Source_Pin__0__INTTYPE CYREG_PICU15_INTTYPE5
+#define Source_Pin__0__MASK 0x20u
+#define Source_Pin__0__PC CYREG_IO_PC_PRT15_PC5
 #define Source_Pin__0__PORT 15u
-#define Source_Pin__0__SHIFT 4u
+#define Source_Pin__0__SHIFT 5u
 #define Source_Pin__AG CYREG_PRT15_AG
 #define Source_Pin__AMUX CYREG_PRT15_AMUX
 #define Source_Pin__BIE CYREG_PRT15_BIE
@@ -414,7 +414,7 @@
 #define Source_Pin__INTTYPE_BASE CYDEV_PICU_INTTYPE_PICU15_BASE
 #define Source_Pin__LCD_COM_SEG CYREG_PRT15_LCD_COM_SEG
 #define Source_Pin__LCD_EN CYREG_PRT15_LCD_EN
-#define Source_Pin__MASK 0x10u
+#define Source_Pin__MASK 0x20u
 #define Source_Pin__PORT 15u
 #define Source_Pin__PRT CYREG_PRT15_PRT
 #define Source_Pin__PRTDSI__CAPS_SEL CYREG_PRT15_CAPS_SEL
@@ -425,7 +425,7 @@
 #define Source_Pin__PRTDSI__OUT_SEL1 CYREG_PRT15_OUT_SEL1
 #define Source_Pin__PRTDSI__SYNC_OUT CYREG_PRT15_SYNC_OUT
 #define Source_Pin__PS CYREG_PRT15_PS
-#define Source_Pin__SHIFT 4u
+#define Source_Pin__SHIFT 5u
 #define Source_Pin__SLW CYREG_PRT15_SLW
 
 /* Source_Reg */

@@ -1,5 +1,5 @@
 -- Project:   C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\USB_UART01.cyprj
--- Generated: 10/07/2016 19:03:35
+-- Generated: 10/12/2016 19:24:51
 -- PSoC Creator  3.3 CP3
 
 ENTITY USB_UART01 IS
@@ -452,7 +452,7 @@ ARCHITECTURE __DEFAULT__ OF USB_UART01 IS
     ATTRIBUTE lib_model OF Sink_Pin(0) : LABEL IS "iocell25";
     ATTRIBUTE Location OF Sink_Pin(0) : LABEL IS "P15[1]";
     ATTRIBUTE lib_model OF Source_Pin(0) : LABEL IS "iocell26";
-    ATTRIBUTE Location OF Source_Pin(0) : LABEL IS "P15[4]";
+    ATTRIBUTE Location OF Source_Pin(0) : LABEL IS "P15[5]";
     ATTRIBUTE lib_model OF Net_116 : LABEL IS "macrocell2";
     ATTRIBUTE Location OF Net_116 : LABEL IS "U(0,3)";
     ATTRIBUTE lib_model OF \UART_1:BUART:counter_load_not\ : LABEL IS "macrocell3";

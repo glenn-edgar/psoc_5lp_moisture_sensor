@@ -1,5 +1,5 @@
 -- Project:   USB_UART01
--- Generated: 10/07/2016 19:03:27
+-- Generated: 10/12/2016 19:24:42
 -- PSoC Creator  3.3 CP3
 
 ENTITY USB_UART01 IS
@@ -345,7 +345,7 @@ ARCHITECTURE __DEFAULT__ OF USB_UART01 IS
     ATTRIBUTE lib_model OF Sink_Pin(0) : LABEL IS "iocell25";
     ATTRIBUTE Location OF Sink_Pin(0) : LABEL IS "P15[1]";
     ATTRIBUTE lib_model OF Source_Pin(0) : LABEL IS "iocell26";
-    ATTRIBUTE Location OF Source_Pin(0) : LABEL IS "P15[4]";
+    ATTRIBUTE Location OF Source_Pin(0) : LABEL IS "P15[5]";
     ATTRIBUTE lib_model OF Net_116 : LABEL IS "macrocell2";
     ATTRIBUTE lib_model OF \UART_1:BUART:counter_load_not\ : LABEL IS "macrocell3";
     ATTRIBUTE lib_model OF \UART_1:BUART:tx_status_0\ : LABEL IS "macrocell4";

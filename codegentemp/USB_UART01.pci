@@ -1,5 +1,5 @@
 # USB_UART01
-# 2016-10-08 02:03:27Z
+# 2016-10-13 02:24:42Z
 
 # IO_0@[IOP=(1)][IoId=(0)] is reserved: SWDDebugEnabled
 dont_use_io iocell 1 0
@@ -38,6 +38,6 @@ set_io "Reference_Pin(15)" iocell 0 7
 set_io "Temp_Sensor(0)" iocell 2 3
 set_io "Log_Pin(0)" iocell 2 0
 set_io "Sink_Pin(0)" iocell 15 1
-set_io "Source_Pin(0)" iocell 15 4
+set_io "Source_Pin(0)" iocell 15 5
 set_location "\SIGMA_A_D:DSM\" dsmodcell -1 -1 0
 set_location "\ADC_SAR_Seq_1:SAR:ADC_SAR\" sarcell -1 -1 0

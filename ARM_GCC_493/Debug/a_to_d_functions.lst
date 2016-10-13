@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
   47              		.type	process_ad_interrupt, %function
   48              	process_ad_interrupt:
   49              	.LFB65:
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 2
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 2
 
 
   50              		.file 1 ".\\a_to_d_functions\\a_to_d_functions.c"
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
   60              		.cfi_def_cfa_register 7
   45:.\a_to_d_functions/a_to_d_functions.c ****     ad_interrupt_1_ClearPending();
   61              		.loc 1 45 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 3
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 3
 
 
   62 0004 FFF7FEFF 		bl	ad_interrupt_1_ClearPending
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  102              		.size	ad_setup_interrupt, .-ad_setup_interrupt
  103              		.section	.text.ad_init_se,"ax",%progbits
  104              		.align	2
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 4
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 4
 
 
  105              		.global	ad_init_se
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  150 0038 4FF00002 		mov	r2, #0
  151 003c FFF7FEFF 		bl	ma_initialize
   69:.\a_to_d_functions/a_to_d_functions.c ****         ma_initialize( &se_dc_min[i], ALPHA_VALUE_MIN,0);
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 5
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 5
 
 
  152              		.loc 1 69 0 discriminator 3
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  197 008e 00BF     		.align	2
  198              	.L8:
  199 0090 00000000 		.word	se_dc_sec
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 6
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 6
 
 
  200 0094 0AD7233C 		.word	1008981770
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  241 0016 0346     		mov	r3, r0
  242 0018 3B61     		str	r3, [r7, #16]
   90:.\a_to_d_functions/a_to_d_functions.c ****          mvolts = ADC_SAR_Seq_1_CountsTo_mVolts(temp);
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 7
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 7
 
 
  243              		.loc 1 90 0 discriminator 3
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  293              		.loc 1 87 0 discriminator 3
  294 0082 7B69     		ldr	r3, [r7, #20]
  295 0084 0133     		adds	r3, r3, #1
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 8
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 8
 
 
  296 0086 7B61     		str	r3, [r7, #20]
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  104:.\a_to_d_functions/a_to_d_functions.c ****     
  105:.\a_to_d_functions/a_to_d_functions.c ****     for( i = 0; i< SE_NUMBER; i++ )
  339              		.loc 1 105 0
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 9
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 9
 
 
  340 0006 0023     		movs	r3, #0
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  388 0062 1046     		mov	r0, r2
  389 0064 1946     		mov	r1, r3
  390 0066 FFF7FEFF 		bl	__aeabi_fmul
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 10
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 10
 
 
  391 006a 0346     		mov	r3, r0
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  440              		.loc 1 116 0 discriminator 3
  441 00d0 2823     		movs	r3, #40
  442 00d2 0633     		adds	r3, r3, #6
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 11
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 11
 
 
  443 00d4 1A46     		mov	r2, r3
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  489              		.cfi_offset 7, -8
  490              		.cfi_offset 14, -4
  491 0002 84B0     		sub	sp, sp, #16
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 12
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 12
 
 
  492              		.cfi_def_cfa_offset 24
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  535 0052 0346     		mov	r3, r0
  536 0054 1A46     		mov	r2, r3
  537 0056 3B68     		ldr	r3, [r7]	@ float
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 13
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 13
 
 
  538 0058 1046     		mov	r0, r2
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  586 00b8 FB68     		ldr	r3, [r7, #12]
  587 00ba 002B     		cmp	r3, #0
  588 00bc A6DD     		ble	.L22
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 14
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 14
 
 
  138:.\a_to_d_functions/a_to_d_functions.c ****     
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  638 003a 02       		.uleb128 0x2
  639 003b 01       		.byte	0x1
  640 003c 08       		.byte	0x8
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 15
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 15
 
 
  641 003d 5D010000 		.4byte	.LASF2
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  695 00a8 4A010000 		.4byte	.LASF15
  696 00ac 04       		.byte	0x4
  697 00ad 9701     		.2byte	0x197
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 16
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 16
 
 
  698 00af 5A000000 		.4byte	0x5a
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  752 011b 09       		.uleb128 0x9
  753 011c 72010000 		.4byte	.LASF24
  754 0120 01       		.byte	0x1
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 17
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 17
 
 
  755 0121 3E       		.byte	0x3e
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  809 0186 91       		.byte	0x91
  810 0187 5C       		.sleb128 -36
  811 0188 0B       		.uleb128 0xb
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 18
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 18
 
 
  812 0189 A7010000 		.4byte	.LASF29
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  866 01ea 00000000 		.4byte	.LFB70
  867 01ee CC000000 		.4byte	.LFE70-.LFB70
  868 01f2 01       		.uleb128 0x1
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 19
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 19
 
 
  869 01f3 9C       		.byte	0x9c
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  923 025a 01       		.byte	0x1
  924 025b 21       		.byte	0x21
  925 025c 66020000 		.4byte	0x266
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 20
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 20
 
 
  926 0260 05       		.uleb128 0x5
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  980 02d9 0D       		.uleb128 0xd
  981 02da 76000000 		.4byte	0x76
  982 02de 01       		.byte	0x1
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 21
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 21
 
 
  983 02df 00       		.byte	0
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  1037 002b 00       		.byte	0
  1038 002c 03       		.uleb128 0x3
  1039 002d 0E       		.uleb128 0xe
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 22
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 22
 
 
  1040 002e 3A       		.uleb128 0x3a
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  1094 0064 03       		.uleb128 0x3
  1095 0065 0E       		.uleb128 0xe
  1096 0066 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 23
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 23
 
 
  1097 0067 0B       		.uleb128 0xb
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  1151 009f 00       		.byte	0
  1152 00a0 0B       		.uleb128 0xb
  1153 00a1 34       		.uleb128 0x34
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 24
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 24
 
 
  1154 00a2 00       		.byte	0
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  1208 00d8 00       		.byte	0
  1209 00d9 10       		.uleb128 0x10
  1210 00da 35       		.uleb128 0x35
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 25
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 25
 
 
  1211 00db 00       		.byte	0
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  1265 001c 9C000000 		.4byte	.LFE68
  1266 0020 00000000 		.4byte	.LFB69
  1267 0024 08010000 		.4byte	.LFE69
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 26
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 26
 
 
  1268 0028 00000000 		.4byte	.LFB70
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  1292      4E475F41 
  1292      56455241 
  1292      47455F53 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 27
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 27
 
 
  1292      54525543 
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  1317 0196 73655F61 		.ascii	"se_ac_sec\000"
  1317      635F7365 
  1317      6300
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 28
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 28
 
 
  1318              	.LASF13:
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  1343 0236 73686F72 		.ascii	"short unsigned int\000"
  1343      7420756E 
  1343      7369676E 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 29
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 29
 
 
  1343      65642069 
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 1
  1367      65747570 
  1367      5F696E74 
  1367      65727275 
-ARM GAS  C:\Users\glenn\AppData\Local\Temp\ccc3ektd.s 			page 30
+ARM GAS  C:\Users\glenn\AppData\Local\Temp\cc1AMuMA.s 			page 30
 
 
  1367      707400

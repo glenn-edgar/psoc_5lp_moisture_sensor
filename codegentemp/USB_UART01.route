@@ -3188,8 +3188,8 @@ net Net_9346
 	switch ":dsiswitch_top@[DSI=(0,3)][side=top]:dsihc_top:84,11_f"
 	switch "IStub-:dsiswitch_top@[DSI=(0,3)][side=top]:dsihc_top:v80+:dsiswitch_top@[DSI=(0,3)][side=top]:dsihc_top:v82+:dsiswitch_top@[DSI=(0,3)][side=top]:dsihc_top:v84"
 	switch "Stub-:dsiswitch_top@[DSI=(0,3)][side=top]:dsihc_top:v80+:dsiswitch_top@[DSI=(0,3)][side=top]:dsihc_top:v82+:dsiswitch_top@[DSI=(0,3)][side=top]:dsihc_top:v84==>:ioport15:inputs2_mux.in_0"
-	switch ":ioport15:inputs2_mux.pin4__pin_input==>:ioport15:pin4.pin_input"
-	term   ":ioport15:pin4.pin_input"
+	switch ":ioport15:inputs2_mux.pin5__pin_input==>:ioport15:pin5.pin_input"
+	term   ":ioport15:pin5.pin_input"
 end Net_9346
 net OPPS_OUT
 	term   ":pmcell.onepps_int"
@@ -3404,6 +3404,6 @@ net tmpOE__Source_Pin_net_0
 	switch ":dsiswitch_top@[DSI=(0,2)][side=top]:dsihc_top:87,2_f"
 	switch "IStub-:dsiswitch_top@[DSI=(0,2)][side=top]:dsihc_top:v87+:dsiswitch_top@[DSI=(0,2)][side=top]:dsihc_top:v89+:dsiswitch_top@[DSI=(0,2)][side=top]:dsihc_top:v91"
 	switch "Stub-:dsiswitch_top@[DSI=(0,2)][side=top]:dsihc_top:v87+:dsiswitch_top@[DSI=(0,2)][side=top]:dsihc_top:v89+:dsiswitch_top@[DSI=(0,2)][side=top]:dsihc_top:v91==>:ioport15:enables_mux.in_1"
-	switch ":ioport15:enables_mux.pin4__oe==>:ioport15:pin4.oe"
-	term   ":ioport15:pin4.oe"
+	switch ":ioport15:enables_mux.pin5__oe==>:ioport15:pin5.oe"
+	term   ":ioport15:pin5.oe"
 end tmpOE__Source_Pin_net_0
