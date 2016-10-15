@@ -1,5 +1,5 @@
 # USB_UART01
-# 2016-10-13 02:24:42Z
+# 2016-10-14 21:08:28Z
 
 # IO_0@[IOP=(1)][IoId=(0)] is reserved: SWDDebugEnabled
 dont_use_io iocell 1 0
@@ -21,23 +21,18 @@ set_io "switch_pin(0)" iocell 2 2
 set_io "Active_Pin(0)" iocell 1 4
 set_io "Reference_Pin(0)" iocell 3 0
 set_io "Reference_Pin(1)" iocell 3 1
-set_io "Reference_Pin(2)" iocell 3 2
-set_io "Reference_Pin(3)" iocell 3 3
-set_io "Reference_Pin(4)" iocell 3 4
-set_io "Reference_Pin(5)" iocell 3 5
-set_io "Reference_Pin(6)" iocell 3 6
-set_io "Reference_Pin(7)" iocell 3 7
-set_io "Reference_Pin(8)" iocell 0 0
-set_io "Reference_Pin(9)" iocell 0 1
-set_io "Reference_Pin(10)" iocell 0 2
-set_io "Reference_Pin(11)" iocell 0 3
-set_io "Reference_Pin(12)" iocell 0 4
-set_io "Reference_Pin(13)" iocell 0 5
-set_io "Reference_Pin(14)" iocell 0 6
-set_io "Reference_Pin(15)" iocell 0 7
-set_io "Temp_Sensor(0)" iocell 2 3
+set_io "Reference_Pin(2)" iocell 3 3
+set_io "Reference_Pin(3)" iocell 3 4
+set_io "Reference_Pin(4)" iocell 3 5
+set_io "Reference_Pin(5)" iocell 3 6
+set_io "Reference_Pin(6)" iocell 3 7
+set_io "Reference_Pin(7)" iocell 15 0
+set_io "Reference_Pin(8)" iocell 15 1
+set_io "Temp_Sensor(0)" iocell 0 7
 set_io "Log_Pin(0)" iocell 2 0
-set_io "Sink_Pin(0)" iocell 15 1
-set_io "Source_Pin(0)" iocell 15 5
+set_io "Sink_Pin(0)" iocell 15 5
+set_io "Source_Pin(0)" iocell 0 0
+set_io "Analog_Drive_High(0)" iocell 0 6
+set_io "Analog_Drive_Low(0)" iocell 0 5
 set_location "\SIGMA_A_D:DSM\" dsmodcell -1 -1 0
 set_location "\ADC_SAR_Seq_1:SAR:ADC_SAR\" sarcell -1 -1 0

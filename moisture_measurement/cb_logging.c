@@ -33,16 +33,7 @@ const float reference_resistance_array [ MOISTURE_SENSOR_NUMBER ] =
   9930.,  // 5
   9930.,   // 6
   9930.,   // 7
-  9930.,   // 8
-  9930.,  // 0
-  9930.,  // 1
-  9930.,  // 2 
-  9930.,  // 3
-  9930.,  // 4
-  9930.,  // 5
-  9930.,   // 6
- 
-  
+  9930.   // 8
   
 };
 
@@ -50,6 +41,8 @@ const float reference_resistance_array [ MOISTURE_SENSOR_NUMBER ] =
 
 const uint16 moisture_configuration_data[ MOISTURE_SENSOR_NUMBER ] =
 {
+   WATER_MARK,
+   WATER_MARK,
    RESISTIVE_ELEMENT,
    RESISTIVE_ELEMENT,
    RESISTIVE_ELEMENT,
@@ -57,15 +50,6 @@ const uint16 moisture_configuration_data[ MOISTURE_SENSOR_NUMBER ] =
    RESISTIVE_ELEMENT,
    RESISTIVE_ELEMENT,
    RESISTIVE_ELEMENT,
-   RESISTIVE_ELEMENT,
-   RESISTIVE_ELEMENT,
-   RESISTIVE_ELEMENT,
-   RESISTIVE_ELEMENT,
-   RESISTIVE_ELEMENT,
-   RESISTIVE_ELEMENT,
-   RESISTIVE_ELEMENT,
-   RESISTIVE_ELEMENT,
-   RESISTIVE_ELEMENT
     
 };
 

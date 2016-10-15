@@ -52,28 +52,7 @@
 #define Reference_Pin_8			(Reference_Pin__8__PC)
 #define Reference_Pin_8_INTR	((uint16)((uint16)0x0001u << Reference_Pin__8__SHIFT))
 
-#define Reference_Pin_9			(Reference_Pin__9__PC)
-#define Reference_Pin_9_INTR	((uint16)((uint16)0x0001u << Reference_Pin__9__SHIFT))
-
-#define Reference_Pin_10			(Reference_Pin__10__PC)
-#define Reference_Pin_10_INTR	((uint16)((uint16)0x0001u << Reference_Pin__10__SHIFT))
-
-#define Reference_Pin_11			(Reference_Pin__11__PC)
-#define Reference_Pin_11_INTR	((uint16)((uint16)0x0001u << Reference_Pin__11__SHIFT))
-
-#define Reference_Pin_12			(Reference_Pin__12__PC)
-#define Reference_Pin_12_INTR	((uint16)((uint16)0x0001u << Reference_Pin__12__SHIFT))
-
-#define Reference_Pin_13			(Reference_Pin__13__PC)
-#define Reference_Pin_13_INTR	((uint16)((uint16)0x0001u << Reference_Pin__13__SHIFT))
-
-#define Reference_Pin_14			(Reference_Pin__14__PC)
-#define Reference_Pin_14_INTR	((uint16)((uint16)0x0001u << Reference_Pin__14__SHIFT))
-
-#define Reference_Pin_15			(Reference_Pin__15__PC)
-#define Reference_Pin_15_INTR	((uint16)((uint16)0x0001u << Reference_Pin__15__SHIFT))
-
-#define Reference_Pin_INTR_ALL	 ((uint16)(Reference_Pin_0_INTR| Reference_Pin_1_INTR| Reference_Pin_2_INTR| Reference_Pin_3_INTR| Reference_Pin_4_INTR| Reference_Pin_5_INTR| Reference_Pin_6_INTR| Reference_Pin_7_INTR| Reference_Pin_8_INTR| Reference_Pin_9_INTR| Reference_Pin_10_INTR| Reference_Pin_11_INTR| Reference_Pin_12_INTR| Reference_Pin_13_INTR| Reference_Pin_14_INTR| Reference_Pin_15_INTR))
+#define Reference_Pin_INTR_ALL	 ((uint16)(Reference_Pin_0_INTR| Reference_Pin_1_INTR| Reference_Pin_2_INTR| Reference_Pin_3_INTR| Reference_Pin_4_INTR| Reference_Pin_5_INTR| Reference_Pin_6_INTR| Reference_Pin_7_INTR| Reference_Pin_8_INTR))
 
 #endif /* End Pins Reference_Pin_ALIASES_H */
 

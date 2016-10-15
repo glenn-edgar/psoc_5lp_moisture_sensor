@@ -28,11 +28,11 @@ extern void Sink_Source_Setup_Unset(uint8 channel);
 /* Sink_Source_Setup__addrTable is an implementation detail of the AMux.
    Code that depends on it may be incompatible with other versions
    of PSoC Creator. */
-extern uint8 CYXDATA * const CYCODE Sink_Source_Setup__addrTable[34];
+extern uint8 CYXDATA * const CYCODE Sink_Source_Setup__addrTable[22];
 /* Sink_Source_Setup__maskTable is an implementation detail of the AMux.
    Code that depends on it may be incompatible with other versions
    of PSoC Creator. */
-extern const uint8 CYCODE Sink_Source_Setup__maskTable[34];
+extern const uint8 CYCODE Sink_Source_Setup__maskTable[22];
 extern void SIGMA_A_D_AMux_Set(uint8 channel);
 extern void SIGMA_A_D_AMux_Unset(uint8 channel);
 /* SIGMA_A_D_AMux__addrTable is an implementation detail of the AMux.

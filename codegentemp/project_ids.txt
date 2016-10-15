@@ -1,6 +1,6 @@
-C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\USB_UART01.cyprj|fbbaa7bb-e2d7-49c0-943c-0b30b3ad2172
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|2c737dc6-ce55-4887-ad21-a5b6d4e739e8
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyReferenceLibrary\CyReferenceLibrary.cylib\CyReferenceLibrary.cyprj|6531cbd5-6a41-49fd-b094-fae30dbdcdac
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|90b88915-3d76-4d6e-b70d-0dedbf545384
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|e18800b3-39ac-457a-9e67-62690a100e18
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|6c91be76-346a-4d20-a86d-3f5fdc6e99d2
+C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\USB_UART01.cyprj|5e241324-84c2-4134-a70e-5669b264f61c
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|05638b3d-2088-4f91-a985-6c28fdc6ac97
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyReferenceLibrary\CyReferenceLibrary.cylib\CyReferenceLibrary.cyprj|67195de9-1cd5-4342-affb-169401e394fe
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|c198d508-eb32-491f-8bec-9e1b28f16a6b
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|b5c98ccf-ba64-4223-a5bb-bcb54aa5a95f
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|e78f8f3e-2a30-4499-8b6b-8f1af129121c

@@ -104,6 +104,12 @@
   <file name="C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\codegentemp\Source_Reg.h" value="NONE;Source_Reg" />
   <file name="C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\codegentemp\Source_Reg.c" value="ARM_C_FILE;Source_Reg" />
   <file name="C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\codegentemp\Source_Reg_PM.c" value="ARM_C_FILE;Source_Reg" />
+  <file name="C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\codegentemp\Analog_Drive_High_aliases.h" value="NONE;Analog_Drive_High" />
+  <file name="C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\codegentemp\Analog_Drive_High.c" value="ARM_C_FILE;Analog_Drive_High" />
+  <file name="C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\codegentemp\Analog_Drive_High.h" value="NONE;Analog_Drive_High" />
+  <file name="C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\codegentemp\Analog_Drive_Low_aliases.h" value="NONE;Analog_Drive_Low" />
+  <file name="C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\codegentemp\Analog_Drive_Low.c" value="ARM_C_FILE;Analog_Drive_Low" />
+  <file name="C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\codegentemp\Analog_Drive_Low.h" value="NONE;Analog_Drive_Low" />
   <file name="C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\codegentemp\UART_1_IntClock.c" value="ARM_C_FILE;UART_1_IntClock" />
   <file name="C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\codegentemp\UART_1_IntClock.h" value="NONE;UART_1_IntClock" />
   <file name="C:\Users\glenn\OneDrive\PSOC\moisture_sensor\USB_UART01.cydsn\codegentemp\SIGMA_A_D_AMux.c" value="ARM_C_FILE;SIGMA_A_D_AMux" />

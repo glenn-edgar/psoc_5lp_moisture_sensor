@@ -15,20 +15,83 @@
 #include "process_modbus_message.h"
 #include "digitial_io.h"
 
-static float reference_resistance;
-static int32 current_channel;
-static int32 source_voltage;
+
 
 static uint32 logging_flag;
 static uint32 active_flag = 0;
 static uint32 measurement_minute_count = 0;
-static uint32 sensor_type;
 
-static int32 sigma_a_d_high;
+
+
 
 
 
 static float moisture_meaurements[ MOISTURE_SENSOR_NUMBER ];
+static float temp_c;
+static float inline get_soil_temperature( void )
+{
+    float temp_f;
+    
+    
+    get_modbus_data_registers( MOISTURE_TEMP_DC_SEC_FLOAT , 2, (uint16 *)&temp_f );
+    if( temp_f < 0 )
+    {
+        temp_c = 20.0;
+    }
+    else
+    {
+        temp_c = (temp_f-32)*5.0/9.0;
+    }
+    return temp_c;
+}
+
+
+/*
+**
+** Routines to store data
+** resistance unknow resistance equals
+** reference resistance is stored in modbus location REFERENECE_RESISTANCE
+** i = ( sigma_v_rail)/known_resistance
+** unknown resistance = v_measurement/i
+*/
+static inline int store_moisture_data(unsigned current_channel, float high_voltage, float low_voltage, float sensor_voltage )
+{
+    float measurement;
+    float source_current;
+    float source_resistance;
+    float reference_resistance;
+    int sensor_type;
+    float temperature;
+    
+    sensor_type = get_moisture_sensor_configuration( current_channel );
+    
+    reference_resistance = get_reference_resistor( current_channel );
+    source_current = ((float) high_voltage -(float)sensor_voltage)/reference_resistance;
+    source_resistance = (sensor_voltage - low_voltage)/source_current;
+    switch( sensor_type )
+    {
+        case NOT_POPULATED:  // not connected sensor -- should not reach this poi
+           measurement = 0;
+           break;
+        
+        case RESISTIVE_ELEMENT:
+            measurement = source_resistance;
+            break;
+            
+        case WATER_MARK:
+            temperature = get_soil_temperature();
+            source_resistance = source_resistance/1000.;
+            //kPa=(4.093+3.213*R)/(1-0.009733*R-0.01205*T)
+            measurement = ( 4.093 + 3.213* source_resistance  )/( 1. - .009733*source_resistance - .01205* temperature );
+            break;
+       default:
+            CYASSERT(0);
+    }
+    
+    moisture_meaurements[ current_channel ] = measurement;
+    return 0;
+}
+
 
 
 
@@ -54,26 +117,14 @@ int init_moisture_processing(unsigned link_id, unsigned param_1,
    logging_flag     = 0;
    active_flag      = 0;
    measurement_minute_count = 0;
-   SIGMA_A_D_Start();
 
    Source_Reg_Write(0);
    Sink_Reg_Write(0);
- 
-   SWITCH_CLOCK_Start();
-   Sink_Source_Setup_Start() ;
-   Sink_Source_Setup_FastSelect(9) ;
-   SIGMA_A_D_SelectConfiguration( 1,1);
-   SIGMA_A_D_StartConvert();
-   SIGMA_A_D_IsEndConversion( SIGMA_A_D_WAIT_FOR_RESULT );  // conversion is 3000/sec  max wait time is no more than .3 millisecond
    Sink_Source_Setup_Start();
-   Sink_Source_Setup_FastSelect(MOISTURE_SENSOR_NUMBER) ;
-   SIGMA_A_D_SelectConfiguration( 1,1);
-   SIGMA_A_D_StartConvert();
-   SIGMA_A_D_IsEndConversion( SIGMA_A_D_WAIT_FOR_RESULT );  // conversion is 3000/sec  max wait time is no more than .3 millisecond
-   sigma_a_d_high  =   SIGMA_A_D_GetResult32();
-   
-
+   Sink_Source_Setup_FastSelect(MOISTURE_SENSOR_NUMBER);
+   SIGMA_A_D_Start();
    SIGMA_A_D_Sleep();
+   moisture_interval_clock_Stop();
    return 0;
 }
 
@@ -98,7 +149,7 @@ CY_ISR_PROTO(process_moisture_interval_interrupt)
 int set_up_moisture_interrupt(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
 {
-    moisture_interval_clock_Start();
+    moisture_interval_clock_Stop();
     moisture_interval_interrupt_StartEx(process_moisture_interval_interrupt);
     return 0;
 }
@@ -207,71 +258,89 @@ int check_for_moisture_measurement(unsigned link_id, unsigned param_1,
 **
 **/
 
-int setup_measurement_channel(unsigned link_id, unsigned param_1,
-  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
-{
-    int return_value;
-    
-   if( event== CF_INIT_EVENT )
-   {
-      return_value = CF_CONTINUE;
-   }
-   else
-   {
-      current_channel = data;
-      reference_resistance = get_reference_resistor( current_channel );
-      sensor_type = get_moisture_sensor_configuration( current_channel );
-      if( sensor_type == NOT_POPULATED)
-      {
-         cf_send_event( CF_MOISTURE_CHANNEL_DONE,0 );
-         moisture_meaurements[ current_channel ] = 0.0;
-         return_value = CF_RESET;
-      }
-      else
-      {
-        return_value = CF_DISABLE;
-      }
-   }     
-    return return_value;
-}
+
 
 int remove_power(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
 {
+     Sink_Source_Setup_FastSelect(MOISTURE_SENSOR_NUMBER);
      SIGMA_A_D_Sleep();
      Sink_Reg_Write(0);
      Source_Reg_Write( 0);
+     moisture_interval_clock_Stop();
     
      return 0;
 }
 
 
+int turn_on_timer_clock(unsigned link_id, unsigned param_1,
+  unsigned param_2, unsigned param_3, unsigned event, unsigned data)
+{
+
+    moisture_interval_clock_Start();
+    return 0;
+}
+
 int set_source_channel(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
 {
+    SIGMA_A_D_Wakeup();
    
-    
     Sink_Reg_Write( 2 );
     Source_Reg_Write( 3 ) ;
-   
-    Sink_Source_Setup_FastSelect(current_channel) ;
-    SIGMA_A_D_Wakeup();
-    SIGMA_A_D_SelectConfiguration( 1,1);
-    SIGMA_A_D_StartConvert();
     return 0;
 }
 
 int make_source_measurement(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
 {
+    unsigned i;
+    float    low_voltage;
+    float    high_voltage;
+    float    sensor_voltage;
+    
+
+    
+    Sink_Source_Setup_FastSelect(MOISTURE_SENSOR_NUMBER);
+    SIGMA_A_D_SelectConfiguration( 1,1);
+
+    SIGMA_A_D_StartConvert();
 
     SIGMA_A_D_IsEndConversion( SIGMA_A_D_WAIT_FOR_RESULT );  // conversion is 3000/sec  max wait time is no more than .3 millisecond
-    source_voltage =   SIGMA_A_D_GetResult32();
+    
+    low_voltage = SIGMA_A_D_GetResult32();
 
+    Sink_Source_Setup_FastSelect(MOISTURE_SENSOR_NUMBER+1);
+    SIGMA_A_D_SelectConfiguration( 1,1);
+    SIGMA_A_D_StartConvert();
+
+    SIGMA_A_D_IsEndConversion( SIGMA_A_D_WAIT_FOR_RESULT );  // conversion is 3000/sec  max wait time is no more than .3 millisecond
+    
+    high_voltage = SIGMA_A_D_GetResult32();
+    
+
+    
+    for( i = 0; i < MOISTURE_SENSOR_NUMBER; i++ )
+    {
+       if( get_moisture_sensor_configuration( i) != NOT_POPULATED )
+       {
+          Sink_Source_Setup_FastSelect(i);
+          SIGMA_A_D_SelectConfiguration( 1,1);
+          SIGMA_A_D_StartConvert();
+          SIGMA_A_D_IsEndConversion( SIGMA_A_D_WAIT_FOR_RESULT );  // conversion is 3000/sec  max wait time is no more than .3 millisecond
+         
+          sensor_voltage = SIGMA_A_D_GetResult32();
+          store_moisture_data(i, high_voltage, low_voltage, sensor_voltage );
+       }
+       else
+       {
+          moisture_meaurements[ i] = 0.0;
+       }
+    
+    }
     return 0;
 
 }
-
 
 
 
@@ -287,54 +356,67 @@ int set_sink_channel(unsigned link_id, unsigned param_1,
     Source_Reg_Write (2 );
     
     
-    Sink_Source_Setup_FastSelect(current_channel);
-    SIGMA_A_D_Wakeup();
-    SIGMA_A_D_SelectConfiguration( 1,1);
-    SIGMA_A_D_StartConvert();
     return 0;
 }
-
-
 
 /*
 **
-** Routines to store data
-** resistance unknow resistance equals
-** reference resistance is stored in modbus location REFERENECE_RESISTANCE
-** i = ( sigma_v_rail)/known_resistance
-** unknown resistance = v_measurement/i
+**  This Routine is used to balance time on opposite leg but make no measurement
+**
+**
+**
+**
 */
 
 
-int store_moisture_data(unsigned link_id, unsigned param_1,
+int make_dummy_measurement(unsigned link_id, unsigned param_1,
   unsigned param_2, unsigned param_3, unsigned event, unsigned data)
 {
-    float measurement;
-    float source_current;
-    float source_resistance;
+    unsigned i;
+    //float    low_voltage;
+    //float    high_voltage;
+    //float    sensor_voltage;
     
-    source_current = ((float) sigma_a_d_high -(float)source_voltage)/reference_resistance;
-    source_resistance = source_voltage/source_current;
-    switch( sensor_type )
+    
+    
+    Sink_Source_Setup_FastSelect(MOISTURE_SENSOR_NUMBER);
+    SIGMA_A_D_SelectConfiguration( 1,1);
+
+    SIGMA_A_D_StartConvert();
+    SIGMA_A_D_IsEndConversion( SIGMA_A_D_WAIT_FOR_RESULT );  // conversion is 3000/sec  max wait time is no more than .3 millisecond
+ 
+    //low_voltage = SIGMA_A_D_GetResult32();
+
+    Sink_Source_Setup_FastSelect(MOISTURE_SENSOR_NUMBER+1);
+    SIGMA_A_D_SelectConfiguration( 1,1);
+    SIGMA_A_D_StartConvert();
+    SIGMA_A_D_IsEndConversion( SIGMA_A_D_WAIT_FOR_RESULT );  // conversion is 3000/sec  max wait time is no more than .3 millisecond
+
+   // high_voltage = SIGMA_A_D_GetResult32();
+    
+
+
+    for( i = 0; i < MOISTURE_SENSOR_NUMBER; i++ )
     {
-        case NOT_POPULATED:  // not connected sensor -- should not reach this poi
-           CYASSERT(0);
-           break;
-        
-        case RESISTIVE_ELEMENT:
-            measurement = source_resistance;
-            break;
-            
-        case WATER_MARK:
-            measurement = 0; // call watermark function;
-            break;
-       default:
-            CYASSERT(0);
-    }
+       Sink_Source_Setup_FastSelect(i);
+       SIGMA_A_D_SelectConfiguration( 1,1);
+       SIGMA_A_D_StartConvert();
+       SIGMA_A_D_IsEndConversion( SIGMA_A_D_WAIT_FOR_RESULT );  // conversion is 3000/sec  max wait time is no more than .3 millisecond
+  
+       //sensor_voltage = SIGMA_A_D_GetResult32();
+       ; //store_moisture_data(i, high_voltage, low_voltage, sensor_voltage );
     
-    moisture_meaurements[ current_channel ] = measurement;
+    }
     return 0;
+
 }
+
+
+
+
+
+
+
 
 
 /*
@@ -351,10 +433,7 @@ int update_new_measurement_available(unsigned link_id, unsigned param_1,
     return 0;
     
     
-}
-
-
-
+} 
 
 
 /*

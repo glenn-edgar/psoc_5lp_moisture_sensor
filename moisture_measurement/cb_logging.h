@@ -16,7 +16,7 @@
 #define EEPROM_MAX_NUMBER_OF_ENTRIES    16
 #define EEPROM_LOG_DATA_START_INDEX     20
     
-#define MOISTURE_SENSOR_NUMBER           16
+#define MOISTURE_SENSOR_NUMBER           9
 
     
 

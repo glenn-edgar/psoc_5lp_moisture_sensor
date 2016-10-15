@@ -1,13 +1,13 @@
 /*
-** Build Time: 2016-10-12 17:45:46.158000  
+** Build Time: 2016-10-14 11:42:16.385000  
 */
 #ifndef _CF_ASSEMBLER_H_
 #define _CF_ASSEMBLER_H_
 
 
 
-#define CHAIN_NUM   14
-#define LINK_NUM    116
+#define CHAIN_NUM   13
+#define LINK_NUM    81
 
 
 
@@ -16,10 +16,10 @@
 #include "cf_chain_flow_support.h" 
 #include "cf_runtime_functions.h" 
 #include "cf_external_functions.h" 
-char  chain_state[14];
-char  link_state[116];
-unsigned link_data[116];
-const unsigned start_state[]={1,1,1,1,1,1,1,1,1,1,1,0,0,1};
+char  chain_state[13];
+char  link_state[81];
+unsigned link_data[81];
+const unsigned start_state[]={1,1,1,1,1,1,1,1,1,1,0,0,1};
 
 
 
@@ -62,49 +62,11 @@ const LINK_CELL CHAIN_minute_tick_chain_LINKS[]=
 { one_step_fn,(CF_FUN_AUX)set_minute_rollover,(unsigned)0,(unsigned)0,(unsigned)0},
 { reset_fn,(CF_FUN_AUX)NULL,(unsigned)0,(unsigned)0,(unsigned)0},
 };
-const LINK_CELL CHAIN_sequence_moisture_measurement_LINKS[]= 
-{
-{ wait_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_START_MOISTURE_READING,(unsigned)0,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)0,(unsigned)0},
-{ wait_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)0,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)1,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)2,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)3,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)4,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)5,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)6,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)7,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)8,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)9,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)10,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)11,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)12,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)13,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)14,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)15,(unsigned)0},
-{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)2,(unsigned)0},
-{ one_step_fn,(CF_FUN_AUX)update_new_measurement_available,(unsigned)0,(unsigned)0,(unsigned)0},
-{ reset_fn,(CF_FUN_AUX)NULL,(unsigned)0,(unsigned)0,(unsigned)0},
-};
 const LINK_CELL CHAIN_measure_channel_LINKS[]= 
 {
-{ wait_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MEASURE_MOISTURE_CHANNEL,(unsigned)0,(unsigned)0},
-{ code_step_fn,(CF_FUN_AUX)setup_measurement_channel,(unsigned)0,(unsigned)0,(unsigned)0},
-{ wait_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_120HZ_TICK,(unsigned)0,(unsigned)0},
+{ wait_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_START_MOISTURE_READING,(unsigned)0,(unsigned)0},
+{ one_step_fn,(CF_FUN_AUX)turn_on_timer_clock,(unsigned)0,(unsigned)0,(unsigned)0},
+{ wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_120HZ_TICK,(unsigned)1,(unsigned)0},
 { one_step_fn,(CF_FUN_AUX)set_source_channel,(unsigned)0,(unsigned)0,(unsigned)0},
 { wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_120HZ_TICK,(unsigned)2,(unsigned)0},
 { one_step_fn,(CF_FUN_AUX)make_source_measurement,(unsigned)0,(unsigned)0,(unsigned)0},
@@ -112,9 +74,9 @@ const LINK_CELL CHAIN_measure_channel_LINKS[]=
 { wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_120HZ_TICK,(unsigned)2,(unsigned)0},
 { one_step_fn,(CF_FUN_AUX)set_sink_channel,(unsigned)0,(unsigned)0,(unsigned)0},
 { wait_event_count_fn,(CF_FUN_AUX)NULL,(unsigned)CF_120HZ_TICK,(unsigned)2,(unsigned)0},
+{ one_step_fn,(CF_FUN_AUX)make_dummy_measurement,(unsigned)0,(unsigned)0,(unsigned)0},
 { one_step_fn,(CF_FUN_AUX)remove_power,(unsigned)0,(unsigned)0,(unsigned)0},
-{ one_step_fn,(CF_FUN_AUX)store_moisture_data,(unsigned)0,(unsigned)0,(unsigned)0},
-{ send_event_fn,(CF_FUN_AUX)NULL,(unsigned)CF_MOISTURE_CHANNEL_DONE,(unsigned)0,(unsigned)0},
+{ one_step_fn,(CF_FUN_AUX)update_new_measurement_available,(unsigned)0,(unsigned)0,(unsigned)0},
 { reset_fn,(CF_FUN_AUX)NULL,(unsigned)0,(unsigned)0,(unsigned)0},
 };
 const LINK_CELL CHAIN_reset_log_LINKS[]= 
@@ -189,16 +151,15 @@ const CHAIN_LINK chain_control[] =
 { 0,0,17,CHAIN_initialization_LINKS},
 { 17,1,9,CHAIN_second_tick_chain_LINKS},
 { 26,2,4,CHAIN_minute_tick_chain_LINKS},
-{ 30,3,35,CHAIN_sequence_moisture_measurement_LINKS},
-{ 65,4,14,CHAIN_measure_channel_LINKS},
-{ 79,5,3,CHAIN_reset_log_LINKS},
-{ 82,6,3,CHAIN_set_measurement_rate_LINKS},
-{ 85,7,3,CHAIN_update_moisture_configuration_parameters_LINKS},
-{ 88,8,3,CHAIN_update_reference_resistor_LINKS},
-{ 91,9,3,CHAIN_update_temperature_parameters_LINKS},
-{ 94,10,2,CHAIN_hour_tick_chain_LINKS},
-{ 96,11,4,CHAIN_commissioning_heart_beat_LINKS},
-{ 100,12,4,CHAIN_heart_beat_LINKS},
-{ 104,13,12,CHAIN_handle_commissioning_LINKS},
+{ 30,3,14,CHAIN_measure_channel_LINKS},
+{ 44,4,3,CHAIN_reset_log_LINKS},
+{ 47,5,3,CHAIN_set_measurement_rate_LINKS},
+{ 50,6,3,CHAIN_update_moisture_configuration_parameters_LINKS},
+{ 53,7,3,CHAIN_update_reference_resistor_LINKS},
+{ 56,8,3,CHAIN_update_temperature_parameters_LINKS},
+{ 59,9,2,CHAIN_hour_tick_chain_LINKS},
+{ 61,10,4,CHAIN_commissioning_heart_beat_LINKS},
+{ 65,11,4,CHAIN_heart_beat_LINKS},
+{ 69,12,12,CHAIN_handle_commissioning_LINKS},
 };
 #endif

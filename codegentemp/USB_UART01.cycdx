@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
+  <block name="Em_EEPROM_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="ADC_SAR_Seq_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="or_internal" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="BusClock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -51,13 +52,15 @@
     <block name="VirtualMux_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="bSAR_SEQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   </block>
-  <block name="Board_Switch_Debug" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="moisture_interval_interrupt" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="moisture_interval_clock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Em_EEPROM_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Board_Switch_Debug" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Log_Switch_Debounce" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Log_Pin" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Status_Reg_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
-    <register name="Status_Reg_1_STATUS_REG" address="0x4000646A" bitWidth="8" desc="" hidden="false" />
-    <register name="Status_Reg_1_MASK_REG" address="0x4000648A" bitWidth="8" desc="" hidden="false" />
-    <register name="Status_Reg_1_STATUS_AUX_CTL_REG" address="0x4000649A" bitWidth="8" desc="" hidden="false">
+    <register name="Status_Reg_1_STATUS_REG" address="0x4000646E" bitWidth="8" desc="" hidden="false" />
+    <register name="Status_Reg_1_MASK_REG" address="0x4000648E" bitWidth="8" desc="" hidden="false" />
+    <register name="Status_Reg_1_STATUS_AUX_CTL_REG" address="0x4000649E" bitWidth="8" desc="" hidden="false">
       <field name="FIFO0" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
         <value name="ENABLED" value="1" desc="Enable counter" />
         <value name="DISABLED" value="0" desc="Disable counter" />
@@ -84,8 +87,6 @@
       </field>
     </register>
   </block>
-  <block name="Log_Pin" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="SWITCH_CLOCK" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="SIGMA_A_D" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="cy_analog_virtualmux_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="cy_analog_noconnect_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -907,32 +908,29 @@
       </field>
     </register>
   </block>
-  <block name="Log_Switch_Debounce" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="moisture_interval_interrupt" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Source_Reg" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
-    <register name="Source_Reg_CONTROL_REG" address="0x4000647A" bitWidth="8" desc="" hidden="false" />
-  </block>
-  <block name="Source_Pin" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="cy_boot" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="vRef_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Sink_Reg" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
-    <register name="Sink_Reg_CONTROL_REG" address="0x40006576" bitWidth="8" desc="" hidden="false" />
-  </block>
-  <block name="ad_interrupt_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="AD_CLOCK" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Sink_Pin" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Analog_Drive_High" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Source_Reg" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <register name="Source_Reg_CONTROL_REG" address="0x40006476" bitWidth="8" desc="" hidden="false" />
+  </block>
+  <block name="cy_boot" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Analog_Drive_Low" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Source_Pin" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Sink_Source_Setup" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="ad_interrupt_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Sink_Reg" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <register name="Sink_Reg_CONTROL_REG" address="0x4000647A" bitWidth="8" desc="" hidden="false" />
+  </block>
+  <block name="Sink_Pin" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="SWITCH_CLOCK" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="UART_1" BASE="0x0" SIZE="0x0" desc="UART" visible="true" hidden="false">
-    <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="RXInternalInterrupt" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="TXInternalInterrupt" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="IntClock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="TXInternalInterrupt" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="RXInternalInterrupt" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="BUART" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="RX_UART_1_RX_ADDRESS1" address="0x4000642B" bitWidth="8" desc="RX Address1 Register" hidden="false" />
-    <register name="RX_UART_1_RX_ADDRESS2" address="0x4000643B" bitWidth="8" desc="RX Address2 Register" hidden="false" />
-    <register name="RX_UART_1_RX_DATA" address="0x4000644B" bitWidth="8" desc="RX Data Register" hidden="false" />
+    <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <register name="TX_UART_1_TX_DATA" address="0x4000644D" bitWidth="8" desc="TX Data Register" hidden="false" />
-    <register name="RX_UART_1_RX_STATUS" address="0x4000646B" bitWidth="8" desc="RX status register" hidden="false">
+    <register name="RX_UART_1_RX_STATUS" address="0x40006468" bitWidth="8" desc="RX status register" hidden="false">
       <field name="UART_1_RX_STS_MRKSPC" from="0" to="0" access="R" resetVal="" desc="" />
       <field name="UART_1_RX_STS_BREAK" from="1" to="1" access="R" resetVal="" desc="" />
       <field name="UART_1_RX_STS_PAR_ERROR" from="2" to="2" access="R" resetVal="" desc="" />
@@ -941,12 +939,15 @@
       <field name="UART_1_RX_STS_FIFO_NOTEMPTY" from="5" to="5" access="R" resetVal="" desc="" />
       <field name="UART_1_RX_STS_ADDR_MATCH" from="6" to="6" access="R" resetVal="" desc="" />
     </register>
-    <register name="TX_UART_1_TX_STATUS" address="0x4000646E" bitWidth="8" desc="TX status register" hidden="false">
+    <register name="TX_UART_1_TX_STATUS" address="0x4000646A" bitWidth="8" desc="TX status register" hidden="false">
       <field name="UART_1_TX_STS_COMPLETE" from="0" to="0" access="R" resetVal="" desc="" />
       <field name="UART_1_TX_STS_FIFO_EMPTY" from="1" to="1" access="R" resetVal="" desc="" />
       <field name="UART_1_TX_STS_FIFO_FULL" from="2" to="2" access="R" resetVal="" desc="" />
       <field name="UART_1_TX_STS_FIFO_NOT_FULL" from="3" to="3" access="R" resetVal="" desc="" />
     </register>
+    <register name="RX_UART_1_RX_ADDRESS1" address="0x40006528" bitWidth="8" desc="RX Address1 Register" hidden="false" />
+    <register name="RX_UART_1_RX_ADDRESS2" address="0x40006538" bitWidth="8" desc="RX Address2 Register" hidden="false" />
+    <register name="RX_UART_1_RX_DATA" address="0x40006548" bitWidth="8" desc="RX Data Register" hidden="false" />
   </block>
   <block name="RS_485_TX_ENBABLE" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="DieTemp_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />

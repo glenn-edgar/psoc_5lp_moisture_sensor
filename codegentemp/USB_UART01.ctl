@@ -1,6 +1,6 @@
 -- ======================================================================
 -- USB_UART01.ctl generated from USB_UART01
--- 10/12/2016 at 19:24
+-- 10/14/2016 at 14:08
 -- This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 -- ======================================================================
 

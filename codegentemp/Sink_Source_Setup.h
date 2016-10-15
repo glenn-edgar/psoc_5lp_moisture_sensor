@@ -42,7 +42,7 @@ void Sink_Source_Setup_FastSelect(uint8 channel) ;
 *         Parameter Constants
 ***************************************/
 
-#define Sink_Source_Setup_CHANNELS  17u
+#define Sink_Source_Setup_CHANNELS  11u
 #define Sink_Source_Setup_MUXTYPE   1
 #define Sink_Source_Setup_ATMOSTONE 0
 
